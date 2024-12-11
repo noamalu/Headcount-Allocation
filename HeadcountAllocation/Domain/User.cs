@@ -26,7 +26,5 @@ namespace HeadcountAllocation.Domain{
 
         public double JobPercentage{get;set;}
 
-        public string check;
-
     }
 }
