@@ -6,8 +6,7 @@ namespace HeadcountAllocation.Domain{
         {
             Morning,
             Noon,
-            Evening,
-            bla
+            Evening
 
         }
 
