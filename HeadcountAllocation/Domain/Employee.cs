@@ -1,16 +1,17 @@
 
 
+using System.Collections.Concurrent;
 using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain{
 
-    public class User
+    public class Employee
     {
-        public string? UserName{get;set;}
+        public string? Name {get;set;}
 
-        public int Id{get;set;}
+        public int EmployeeId{get;set;}
 
-        public string? PhoneNumber{get;set;}
+        public int PhoneNumber{get;set;}
 
         public string? EmailAddress{get;set;}
 
@@ -18,7 +19,7 @@ namespace HeadcountAllocation.Domain{
         
         public List<string>? ForeignLanguages{get;set;} = new();
 
-        public Dictionary<Skills, int> Skills{get;set;} = new();
+        public ConcurrentDictionary<int, Skill> Skills{get;set;} = new();
 
         public List<Role> Roles{get;set;} = new();
 

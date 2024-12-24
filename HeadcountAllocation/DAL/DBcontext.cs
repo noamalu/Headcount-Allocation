@@ -1,3 +1,4 @@
+using HeadcountAllocation.DAL.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeadcountAllocation.DAL{
@@ -8,6 +9,23 @@ namespace HeadcountAllocation.DAL{
         public static string DbPath;
 
         private static object _lock = new object();
+
+        public virtual DbSet<EmployeeDTO> Employees { get; set; }
+        public virtual DbSet<ProjectDTO> Projects { get; set; }
+        public virtual DbSet<RoleDTO> Roles { get; set; }
+
+
+         public override void Dispose()
+        {
+
+            Employees.ExecuteDelete();
+            Roles.ExecuteDelete();
+            Projects.ExecuteDelete();
+            
+
+            SaveChanges();
+            _instance = new DBcontext();
+        }
 
 
         public static DBcontext GetInstance()
@@ -39,5 +57,56 @@ namespace HeadcountAllocation.DAL{
         }
 
 
+         protected override void OnModelCreating(ModelBuilder modelBuilder){
+
+
+            // MemberDTO
+
+            modelBuilder.Entity<EmployeeDTO>()
+                .HasMany<RoleDTO>(e => e.Roles)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<EmployeeDTO>()
+                .HasMany<SkillDTO>(e => e.Skills)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            // RoleDTO
+
+            modelBuilder.Entity<RoleDTO>()
+                .HasKey(r => new { r.ProjectId, r.EmployeeId, r.RoleId });
+
+            modelBuilder.Entity<RoleDTO>()
+                .HasOne<EmployeeDTO>()
+                .WithMany()
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RoleDTO>()
+                .HasOne<ProjectDTO>()
+                .WithMany()
+                .HasForeignKey(p => p.ProjectId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RoleDTO>()
+                .HasMany<SkillDTO>(r => r.Skills)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //ProjectDTO
+            modelBuilder.Entity<ProjectDTO>()
+                .HasMany<RoleDTO>(p => p.Roles)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+
+          
+        }
     }
 }
+
+
+
