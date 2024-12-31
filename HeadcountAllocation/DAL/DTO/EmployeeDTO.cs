@@ -65,7 +65,7 @@ namespace HeadcountAllocation.DAL.DTO
                 Skills.Add(new SkillDTO(skill.Value));
             }
             Roles = new List<RoleDTO>();
-            foreach (var role in employee.Roles)
+            foreach (var role in employee.Roles.Values)
             {
                 Roles.Add(new RoleDTO(role));
             }

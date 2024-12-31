@@ -21,11 +21,17 @@ namespace HeadcountAllocation.Domain{
 
         public ConcurrentDictionary<int, Skill> Skills{get;set;} = new();
 
-        public List<Role> Roles{get;set;} = new();
+        public Dictionary<int, Role> Roles{get;set;} = new();
 
         public int YearsExperience{get;set;}
 
         public double JobPercentage{get;set;}
+
+
+
+        public void AssignEmployeeToRole(Role role){
+            Roles.Add(role.RoleId, role);
+        }
 
     }
 }

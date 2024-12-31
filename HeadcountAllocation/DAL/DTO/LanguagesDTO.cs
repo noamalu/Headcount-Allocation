@@ -15,7 +15,14 @@ namespace HeadcountAllocation.DAL.DTO
     
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        
         public int LanguageID { get; set; }
+
+        [ForeignKey("Employees")]
+        public int? EmployeeId { get; }
+
+        [ForeignKey("Employees")]
+        public int? RoleId { get; }
         public Languages LanguageType {get; set;}
         public int Level { get; set; }
 

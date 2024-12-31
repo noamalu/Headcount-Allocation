@@ -72,6 +72,11 @@ namespace HeadcountAllocation.DAL{
                 .HasMany<SkillDTO>(e => e.Skills)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EmployeeDTO>()
+            .HasMany<LanguagesDTO>(e => e.ForeignLanguages)
+            .WithOne()
+            .HasForeignKey(l => l.EmployeeId);
             
             // RoleDTO
 
