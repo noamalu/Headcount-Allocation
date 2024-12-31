@@ -22,7 +22,7 @@ namespace HeadcountAllocation.DAL.DTO
         
         [Key, Column(Order = 1)]
         [ForeignKey("Employees")]
-        public int EmployeeId { get; }
+        public int? EmployeeId { get; }
         public TimeZones TimeZone{get;set;}
         
         public List<string>? ForeignLanguages{get;set;}

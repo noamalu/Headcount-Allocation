@@ -18,12 +18,12 @@ namespace HeadcountAllocation.DAL{
          public override void Dispose()
         {
 
-            Employees.ExecuteDelete();
-            Roles.ExecuteDelete();
-            Projects.ExecuteDelete();
+            // Employees.ExecuteDelete();
+            // Roles.ExecuteDelete();
+            // Projects.ExecuteDelete();
             
 
-            SaveChanges();
+            // SaveChanges();
             _instance = new DBcontext();
         }
 

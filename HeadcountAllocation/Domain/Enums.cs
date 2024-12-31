@@ -12,8 +12,16 @@ namespace HeadcountAllocation.Domain{
 
         public enum Skills
         {
-
+            Programing
             
+        }
+
+
+        public enum Languages
+        {
+            English,
+            Hebrew,
+            Spanish
         }
 
         

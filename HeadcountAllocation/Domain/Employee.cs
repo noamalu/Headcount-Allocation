@@ -11,13 +11,13 @@ namespace HeadcountAllocation.Domain{
 
         public int EmployeeId{get;set;}
 
-        public int PhoneNumber{get;set;}
+        public string PhoneNumber{get;set;}
 
         public string? EmailAddress{get;set;}
 
-        public TimeZones TimeZone{get;set;}
+        public int TimeZone{get;set;}
         
-        public List<string>? ForeignLanguages{get;set;} = new();
+        public ConcurrentDictionary<int, Language> ForeignLanguages{get;set;} = new();
 
         public ConcurrentDictionary<int, Skill> Skills{get;set;} = new();
 
