@@ -37,19 +37,19 @@ namespace HeadcountAllocation.DAL.DTO
             Roles = roles;
         }
 
-         public ProjectDTO(Project project)
-        {
-            ProjectId = project.ProjectId;
-            ProjectName = project.ProjectName;
-            Description = project.Description;
-            Date = project.Date;
-            RequiredHours = project.RequiredHours;
-            Roles = new List<RoleDTO>();
-            foreach (var role in project.Roles)
-            {
-                Roles.Add(new RoleDTO(role.Value));
-            }
-        }
+        //  public ProjectDTO(Project project)
+        // {
+        //     ProjectId = project.ProjectId;
+        //     ProjectName = project.ProjectName;
+        //     Description = project.Description;
+        //     Date = project.Date;
+        //     RequiredHours = project.RequiredHours;
+        //     Roles = new List<RoleDTO>();
+        //     foreach (var role in project.Roles)
+        //     {
+        //         Roles.Add(new RoleDTO(role.Value));
+        //     }
+        // }
     }
 
 

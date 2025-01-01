@@ -68,20 +68,20 @@ namespace HeadcountAllocation.DAL{
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            // modelBuilder.Entity<EmployeeDTO>()
-            //     .HasMany<SkillDTO>(e => e.Skills)
-            //     .WithOne()
-            //     .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<EmployeeDTO>()
+            .HasMany<EmployeeSkillsDTO>(e => e.Skills)
+            .WithOne()
+            .HasForeignKey(l => l.EmployeeId);
 
             modelBuilder.Entity<EmployeeDTO>()
-            .HasMany<LanguagesDTO>(e => e.ForeignLanguages)
+            .HasMany<EmployeeLanguagesDTO>(e => e.ForeignLanguages)
             .WithOne()
             .HasForeignKey(l => l.EmployeeId);
             
             // RoleDTO
 
             modelBuilder.Entity<RoleDTO>()
-                .HasKey(r => new { r.ProjectId, r.RoleId });
+                .HasKey(r => new { r.RoleId, r.ProjectId, r.EmployeeId});
 
             modelBuilder.Entity<RoleDTO>()
                 .HasOne<EmployeeDTO>()
@@ -92,7 +92,7 @@ namespace HeadcountAllocation.DAL{
             modelBuilder.Entity<RoleDTO>()
                 .HasOne<ProjectDTO>()
                 .WithMany()
-                .HasForeignKey(p => p.ProjectId)
+                .HasForeignKey(r => r.ProjectId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // modelBuilder.Entity<RoleDTO>()

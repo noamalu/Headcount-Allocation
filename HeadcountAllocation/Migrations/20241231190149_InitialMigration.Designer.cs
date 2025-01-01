@@ -4,6 +4,7 @@ using HeadcountAllocation.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    partial class DBcontextModelSnapshot : ModelSnapshot
+    [Migration("20241231190149_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,15 +56,15 @@ namespace HeadcountAllocation.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.LanguagesDTO", b =>
                 {
                     b.Property<int>("LanguageID")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeDTOEmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LanguageTypeId")
+                    b.Property<int>("LanguageType")
                         .HasColumnType("int");
 
                     b.Property<int>("Level")
@@ -69,30 +72,9 @@ namespace HeadcountAllocation.Migrations
 
                     b.HasKey("LanguageID");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeDTOEmployeeId");
 
-                    b.ToTable("EmployeeLanguages");
-                });
-
-            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeSkillsDTO", b =>
-                {
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SkillId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("EmployeeSkills");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.ProjectDTO", b =>
@@ -119,17 +101,22 @@ namespace HeadcountAllocation.Migrations
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.RoleDTO", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("EmployeeId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EmployeeDTOEmployeeId")
                         .HasColumnType("int");
+
+                    b.PrimitiveCollection<string>("ForeignLanguages")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("JobPercentage")
                         .HasColumnType("float");
@@ -137,13 +124,13 @@ namespace HeadcountAllocation.Migrations
                     b.Property<int?>("ProjectDTOProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TimeZoneId")
+                    b.Property<int>("TimeZone")
                         .HasColumnType("int");
 
                     b.Property<int>("YearsExperience")
                         .HasColumnType("int");
 
-                    b.HasKey("RoleId", "ProjectId", "EmployeeId");
+                    b.HasKey("ProjectId", "EmployeeId", "RoleId");
 
                     b.HasIndex("EmployeeDTOEmployeeId");
 
@@ -151,27 +138,46 @@ namespace HeadcountAllocation.Migrations
 
                     b.HasIndex("ProjectDTOProjectId");
 
-                    b.HasIndex("ProjectId");
-
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.SkillDTO", b =>
+                {
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeDTOEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoleDTOEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoleDTOProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoleDTORoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillType")
+                        .HasColumnType("int");
+
+                    b.HasKey("SkillId");
+
+                    b.HasIndex("EmployeeDTOEmployeeId");
+
+                    b.HasIndex("RoleDTOProjectId", "RoleDTOEmployeeId", "RoleDTORoleId");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.LanguagesDTO", b =>
                 {
                     b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
                         .WithMany("ForeignLanguages")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeSkillsDTO", b =>
-                {
-                    b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeDTOEmployeeId");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.RoleDTO", b =>
@@ -198,6 +204,19 @@ namespace HeadcountAllocation.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.SkillDTO", b =>
+                {
+                    b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("EmployeeDTOEmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HeadcountAllocation.DAL.DTO.RoleDTO", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("RoleDTOProjectId", "RoleDTOEmployeeId", "RoleDTORoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeDTO", b =>
                 {
                     b.Navigation("ForeignLanguages");
@@ -210,6 +229,11 @@ namespace HeadcountAllocation.Migrations
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.ProjectDTO", b =>
                 {
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.RoleDTO", b =>
+                {
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

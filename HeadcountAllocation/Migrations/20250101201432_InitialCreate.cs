@@ -64,13 +64,33 @@ namespace HeadcountAllocation.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeSkills",
+                columns: table => new
+                {
+                    SkillId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    SkillTypeId = table.Column<int>(type: "int", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeSkills", x => x.SkillId);
+                    table.ForeignKey(
+                        name: "FK_EmployeeSkills_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true),
-                    TimeZone = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    TimeZoneId = table.Column<int>(type: "int", nullable: false),
                     YearsExperience = table.Column<int>(type: "int", nullable: false),
                     JobPercentage = table.Column<double>(type: "float", nullable: false),
                     EmployeeDTOEmployeeId = table.Column<int>(type: "int", nullable: true),
@@ -78,7 +98,7 @@ namespace HeadcountAllocation.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => new { x.ProjectId, x.RoleId });
+                    table.PrimaryKey("PK_Roles", x => new { x.RoleId, x.ProjectId, x.EmployeeId });
                     table.ForeignKey(
                         name: "FK_Roles_Employees_EmployeeDTOEmployeeId",
                         column: x => x.EmployeeDTOEmployeeId,
@@ -108,6 +128,11 @@ namespace HeadcountAllocation.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSkills_EmployeeId",
+                table: "EmployeeSkills",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Roles_EmployeeDTOEmployeeId",
                 table: "Roles",
                 column: "EmployeeDTOEmployeeId");
@@ -121,6 +146,11 @@ namespace HeadcountAllocation.Migrations
                 name: "IX_Roles_ProjectDTOProjectId",
                 table: "Roles",
                 column: "ProjectDTOProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_ProjectId",
+                table: "Roles",
+                column: "ProjectId");
         }
 
         /// <inheritdoc />
@@ -128,6 +158,9 @@ namespace HeadcountAllocation.Migrations
         {
             migrationBuilder.DropTable(
                 name: "EmployeeLanguages");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeSkills");
 
             migrationBuilder.DropTable(
                 name: "Roles");
