@@ -9,7 +9,7 @@ using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.DAL.DTO
 {
-    [Table("Languages")]
+    [Table("EmployeeLanguages")]
     public class LanguagesDTO
     {
     
@@ -19,27 +19,24 @@ namespace HeadcountAllocation.DAL.DTO
         public int LanguageID { get; set; }
 
         [ForeignKey("Employees")]
-        public int? EmployeeId { get; }
-
-        [ForeignKey("Employees")]
-        public int? RoleId { get; }
-        public Languages LanguageType {get; set;}
+        public int EmployeeId { get; }
+        public int LanguageTypeId {get; set;}
         public int Level { get; set; }
 
 
         public LanguagesDTO() { }
-        public LanguagesDTO(int LanguageID, Languages LanguageType, int Level)
+        public LanguagesDTO(int LanguageID, int LanguageTypeId, int Level)
         {
             LanguageID = LanguageID;
-            LanguageType = LanguageType;
+            LanguageTypeId = LanguageTypeId;
             Level = Level;
         }
 
-         public LanguagesDTO(Language language)
-        {
-            LanguageID = language.LanguageID;
-            LanguageType = language.LanguageType;
-            Level = language.Level;
-        }
+        //  public LanguagesDTO(Language language)
+        // {
+        //     LanguageID = language.LanguageID;
+        //     LanguageTypeId = language.LanguageTypeId;
+        //     Level = language.Level;
+        // }
     }
 }

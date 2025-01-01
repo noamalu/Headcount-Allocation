@@ -26,7 +26,7 @@ namespace HeadcountAllocation.DAL.DTO
         public List<LanguagesDTO> ForeignLanguages {get; set;}
 
         public double JobPercentage {get; set;}
-        public List<SkillDTO> Skills {get; set;}
+        // public List<SkillDTO> Skills {get; set;}
         public List <RoleDTO> Roles {get; set;}
         public int YearExp {get; set;}
 
@@ -41,7 +41,7 @@ namespace HeadcountAllocation.DAL.DTO
             TimeZone = timeZone;
             ForeignLanguages = foreignLanguages;
             JobPercentage = jobPercentage;
-            Skills = skills;
+            // Skills = skills;
             Roles = roles;
             YearExp = yearExp;
         }
@@ -53,17 +53,17 @@ namespace HeadcountAllocation.DAL.DTO
             PhoneNumber = employee.PhoneNumber;
             Email = employee.EmailAddress;
             TimeZone = employee.TimeZone;
-            ForeignLanguages = new List<LanguagesDTO>();
-            foreach (var language in employee.ForeignLanguages)
-            {
-                ForeignLanguages.Add(new LanguagesDTO(language.Value));
-            }
+            // ForeignLanguages = new List<LanguagesDTO>();
+            // foreach (var language in employee.ForeignLanguages)
+            // {
+            //     ForeignLanguages.Add(new LanguagesDTO(language.Value));
+            // }
             JobPercentage = employee.JobPercentage;
-            Skills = new List<SkillDTO>();
-            foreach (var skill in employee.Skills)
-            {
-                Skills.Add(new SkillDTO(skill.Value));
-            }
+            // Skills = new List<SkillDTO>();
+            // foreach (var skill in employee.Skills)
+            // {
+            //     Skills.Add(new SkillDTO(skill.Value));
+            // }
             Roles = new List<RoleDTO>();
             foreach (var role in employee.Roles.Values)
             {

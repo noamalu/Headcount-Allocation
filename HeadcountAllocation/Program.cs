@@ -35,7 +35,7 @@ Console.WriteLine("Hello, World!");
 
 var context = DBcontext.GetInstance();
 
-// Add test data
+//Add test data
 context.Employees.Add(new EmployeeDTO
 {
     EmployeeId = 1,
@@ -45,7 +45,7 @@ context.Employees.Add(new EmployeeDTO
     TimeZone = 1,
     ForeignLanguages = new List<LanguagesDTO>
     {
-        new LanguagesDTO { LanguageID = 1, LanguageType = Languages.English, Level = 10}
+        new LanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
     },
     JobPercentage = 0.5,
     // Skills = new List<SkillDTO>
