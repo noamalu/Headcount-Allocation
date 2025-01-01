@@ -20,14 +20,13 @@ namespace HeadcountAllocation.DAL.DTO
         [ForeignKey("Projects")]
         public int ProjectId { get; }
         
-        [Key, Column(Order = 1)]
         [ForeignKey("Employees")]
-        public int EmployeeId { get; }
+        public int? EmployeeId { get; }
         public TimeZones TimeZone{get;set;}
         
-        public List<string>? ForeignLanguages{get;set;}
+        // public List<string>? ForeignLanguages{get;set;}
 
-        public List<SkillDTO> Skills{get;set;}
+        // public List<SkillDTO> Skills{get;set;}
 
         public int YearsExperience{get;set;}
 
@@ -42,9 +41,9 @@ namespace HeadcountAllocation.DAL.DTO
             ProjectId = projectId;
             EmployeeId = employeeId;
             TimeZone = timeZone;
-            ForeignLanguages = foreignLanguages;
+            // ForeignLanguages = foreignLanguages;
             JobPercentage = jobPercentage;
-            Skills = skills;
+            // Skills = skills;
    
             YearsExperience = yearExp;
         }
@@ -55,13 +54,13 @@ namespace HeadcountAllocation.DAL.DTO
             ProjectId = role.ProjectId;
             EmployeeId = role.EmployeeId;
             TimeZone = role.TimeZone;
-            ForeignLanguages = role.ForeignLanguages;
+            // ForeignLanguages = role.ForeignLanguages;
             JobPercentage = role.JobPercentage;
-            Skills = new List<SkillDTO>();
-            foreach (var skill in role.Skills)
-            {
-                Skills.Add(new SkillDTO(skill.Value));
-            }
+            // Skills = new List<SkillDTO>();
+            // foreach (var skill in role.Skills)
+            // {
+            //     Skills.Add(new SkillDTO(skill.Value));
+            // }
             YearsExperience = role.YearsExperience;
         }
 

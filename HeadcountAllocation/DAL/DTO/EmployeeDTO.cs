@@ -16,32 +16,32 @@ namespace HeadcountAllocation.DAL.DTO
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int EmployeeId { get; set; }
-        public string Name {get; set;}
-        public int PhoneNum { get; set; }
+        public string UserName {get; set;}
+        public string PhoneNumber { get; set; }
 
         public string Email {get; set;}
 
-        public TimeZones TimeZone {get; set;}
+        public int TimeZone {get; set;}
 
-        public List<String> ForeignLanguages {get; set;}
+        public List<LanguagesDTO> ForeignLanguages {get; set;}
 
         public double JobPercentage {get; set;}
-        public List<SkillDTO> Skills {get; set;}
+        // public List<SkillDTO> Skills {get; set;}
         public List <RoleDTO> Roles {get; set;}
         public int YearExp {get; set;}
 
         public EmployeeDTO() { }
-        public EmployeeDTO(int employeeId, string name, int phoneNum, string email, TimeZones timeZone,
-         List<String> foreignLanguages, double jobPercentage, List<SkillDTO> skills, List <RoleDTO> roles, int yearExp )
+        public EmployeeDTO(int employeeId, string name, string phoneNum, string email, int timeZone,
+         List<LanguagesDTO> foreignLanguages, double jobPercentage, List<SkillDTO> skills, List <RoleDTO> roles, int yearExp )
         {
             EmployeeId = employeeId;
-            Name = name;
-            PhoneNum = phoneNum;
+            UserName = name;
+            PhoneNumber = phoneNum;
             Email = email;
             TimeZone = timeZone;
             ForeignLanguages = foreignLanguages;
             JobPercentage = jobPercentage;
-            Skills = skills;
+            // Skills = skills;
             Roles = roles;
             YearExp = yearExp;
         }
@@ -49,19 +49,23 @@ namespace HeadcountAllocation.DAL.DTO
          public EmployeeDTO(Employee employee)
         {
             EmployeeId = employee.EmployeeId;
-            Name = employee.Name;
-            PhoneNum = employee.PhoneNumber;
+            UserName = employee.Name;
+            PhoneNumber = employee.PhoneNumber;
             Email = employee.EmailAddress;
             TimeZone = employee.TimeZone;
-            ForeignLanguages = employee.ForeignLanguages;
+            // ForeignLanguages = new List<LanguagesDTO>();
+            // foreach (var language in employee.ForeignLanguages)
+            // {
+            //     ForeignLanguages.Add(new LanguagesDTO(language.Value));
+            // }
             JobPercentage = employee.JobPercentage;
-            Skills = new List<SkillDTO>();
-            foreach (var skill in employee.Skills)
-            {
-                Skills.Add(new SkillDTO(skill.Value));
-            }
+            // Skills = new List<SkillDTO>();
+            // foreach (var skill in employee.Skills)
+            // {
+            //     Skills.Add(new SkillDTO(skill.Value));
+            // }
             Roles = new List<RoleDTO>();
-            foreach (var role in employee.Roles)
+            foreach (var role in employee.Roles.Values)
             {
                 Roles.Add(new RoleDTO(role));
             }
