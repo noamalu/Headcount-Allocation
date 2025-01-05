@@ -14,19 +14,18 @@ namespace HeadcountAllocation.DAL.DTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int RoleId { get; }
+        public int RoleId { get; set; }
         
-        [Key, Column(Order = 0)]
         [ForeignKey("Projects")]
-        public int ProjectId { get; }
+        public int ProjectId { get; set; }
         
         [ForeignKey("Employees")]
-        public int? EmployeeId { get; }
-        public TimeZones TimeZone{get;set;}
+        public int EmployeeId { get; set; }
+        public int TimeZoneId{get;set;}
         
-        // public List<string>? ForeignLanguages{get;set;}
+        public List<RoleLanguagesDTO> ForeignLanguages {get; set;}
 
-        // public List<SkillDTO> Skills{get;set;}
+        public List<RoleSkillsDTO> Skills {get; set;}
 
         public int YearsExperience{get;set;}
 
@@ -34,35 +33,35 @@ namespace HeadcountAllocation.DAL.DTO
 
 
          public RoleDTO() { }
-        public RoleDTO(int roleId, int projectId, int employeeId, TimeZones timeZone,
-         List<String> foreignLanguages, double jobPercentage, List<SkillDTO> skills, int yearExp )
+        public RoleDTO(int roleId, int projectId, int employeeId, int timeZoneId,
+         List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp )
         {
             RoleId = roleId;
             ProjectId = projectId;
             EmployeeId = employeeId;
-            TimeZone = timeZone;
-            // ForeignLanguages = foreignLanguages;
+            TimeZoneId = timeZoneId;
+            ForeignLanguages = foreignLanguages;
             JobPercentage = jobPercentage;
-            // Skills = skills;
+            Skills = skills;
    
             YearsExperience = yearExp;
         }
 
-         public RoleDTO(Role role)
-        {
-            RoleId = role.RoleId;
-            ProjectId = role.ProjectId;
-            EmployeeId = role.EmployeeId;
-            TimeZone = role.TimeZone;
-            // ForeignLanguages = role.ForeignLanguages;
-            JobPercentage = role.JobPercentage;
-            // Skills = new List<SkillDTO>();
-            // foreach (var skill in role.Skills)
-            // {
-            //     Skills.Add(new SkillDTO(skill.Value));
-            // }
-            YearsExperience = role.YearsExperience;
-        }
+        //  public RoleDTO(Role role)
+        // {
+        //     RoleId = role.RoleId;
+        //     ProjectId = role.ProjectId;
+        //     EmployeeId = role.EmployeeId;
+        //     TimeZoneId = role.TimeZone;
+        //     // ForeignLanguages = role.ForeignLanguages;
+        //     JobPercentage = role.JobPercentage;
+        //     // Skills = new List<SkillDTO>();
+        //     // foreach (var skill in role.Skills)
+        //     // {
+        //     //     Skills.Add(new SkillDTO(skill.Value));
+        //     // }
+        //     YearsExperience = role.YearsExperience;
+        // }
 
     }
 

@@ -43,20 +43,56 @@ context.Employees.Add(new EmployeeDTO
     PhoneNumber = "0545598789",
     Email = "hp1@gmail.com",
     TimeZone = 1,
-    ForeignLanguages = new List<LanguagesDTO>
+    ForeignLanguages = new List<EmployeeLanguagesDTO>
     {
-        new LanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
+        new EmployeeLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
     },
     JobPercentage = 0.5,
-    // Skills = new List<SkillDTO>
-    // {
-    //     new SkillDTO { SkillId = 1, SkillType = Skills.Programing, Level = 5 },
-    //     new SkillDTO { SkillId = 2, SkillType = Skills.Programing, Level = 7 }
-    // },
-    // Roles = new List<RoleDTO>{},
+    Skills = new List<EmployeeSkillsDTO>
+    {
+        new EmployeeSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
+        new EmployeeSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
+    },
     YearExp = 2
 });
 
+context.SaveChanges();
+Console.WriteLine("Test data added successfully!");
+
+
+// context.SaveChanges();
+// Console.WriteLine("Test data added successfully!");
+
+context.Projects.Add(new ProjectDTO
+{
+    ProjectId = 1,
+    ProjectName = "project1",
+    Description = "desc1",
+    Date = DateTime.Now,
+    RequiredHours = 10,
+    Roles = new List<RoleDTO>
+    {
+        new RoleDTO
+        {
+            RoleId = 1,
+            ProjectId = 1,
+            EmployeeId = 1,
+            TimeZoneId = 1,
+            ForeignLanguages = new List<RoleLanguagesDTO>
+            {
+                new RoleLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
+            },
+            JobPercentage = 0.5,
+            Skills = new List<RoleSkillsDTO>
+            {
+                new RoleSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
+                new RoleSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
+            },
+   
+            YearsExperience = 2
+        }
+    }
+});
 
 context.SaveChanges();
 Console.WriteLine("Test data added successfully!");
