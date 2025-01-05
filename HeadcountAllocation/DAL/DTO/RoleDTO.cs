@@ -20,7 +20,7 @@ namespace HeadcountAllocation.DAL.DTO
         public int ProjectId { get; set; }
         
         [ForeignKey("Employees")]
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public int TimeZoneId{get;set;}
         
         public List<RoleLanguagesDTO> ForeignLanguages {get; set;}

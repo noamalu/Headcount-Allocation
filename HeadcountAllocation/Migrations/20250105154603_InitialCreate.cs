@@ -89,7 +89,7 @@ namespace HeadcountAllocation.Migrations
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true),
                     TimeZoneId = table.Column<int>(type: "int", nullable: false),
                     YearsExperience = table.Column<int>(type: "int", nullable: false),
                     JobPercentage = table.Column<double>(type: "float", nullable: false)
