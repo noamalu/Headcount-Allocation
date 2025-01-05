@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250105104649_InitialCreate")]
+    [Migration("20250105154603_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace HeadcountAllocation.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<double>("JobPercentage")
@@ -214,8 +214,7 @@ namespace HeadcountAllocation.Migrations
                     b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
                         .WithMany("Roles")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("HeadcountAllocation.DAL.DTO.ProjectDTO", null)
                         .WithMany("Roles")

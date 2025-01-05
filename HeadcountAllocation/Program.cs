@@ -77,7 +77,7 @@ context.Projects.Add(new ProjectDTO
         {
             RoleId = 1,
             ProjectId = 1,
-            EmployeeId = 1,
+            EmployeeId = null,
             TimeZoneId = 1,
             ForeignLanguages = new List<RoleLanguagesDTO>
             {
@@ -88,6 +88,25 @@ context.Projects.Add(new ProjectDTO
             {
                 new RoleSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
                 new RoleSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
+            },
+   
+            YearsExperience = 2
+        },
+        new RoleDTO
+        {
+            RoleId = 2,
+            ProjectId = 1,
+            EmployeeId = 1,
+            TimeZoneId = 1,
+            ForeignLanguages = new List<RoleLanguagesDTO>
+            {
+                new RoleLanguagesDTO { LanguageID = 2, LanguageTypeId = 1, Level = 10}
+            },
+            JobPercentage = 0.5,
+            Skills = new List<RoleSkillsDTO>
+            {
+                new RoleSkillsDTO { SkillId = 3, SkillTypeId = 1, Level = 5 },
+                new RoleSkillsDTO { SkillId = 4, SkillTypeId = 2, Level = 7 }
             },
    
             YearsExperience = 2
