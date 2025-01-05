@@ -27,6 +27,8 @@ namespace HeadcountAllocation.DAL.DTO
 
         public double JobPercentage {get; set;}
         public List<EmployeeSkillsDTO> Skills {get; set;}
+        
+         [NotMapped]
         public List <RoleDTO> Roles {get; set;}
         public int YearExp {get; set;}
 

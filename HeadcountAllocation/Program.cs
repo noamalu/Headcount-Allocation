@@ -78,9 +78,16 @@ context.Projects.Add(new ProjectDTO
             ProjectId = 1,
             EmployeeId = 1,
             TimeZoneId = 1,
-            // ForeignLanguages = foreignLanguages;
+            ForeignLanguages = new List<RoleLanguagesDTO>
+            {
+                new RoleLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
+            },
             JobPercentage = 0.5,
-            // Skills = skills;
+            Skills = new List<RoleSkillsDTO>
+            {
+                new RoleSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
+                new RoleSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
+            },
    
             YearsExperience = 2
         }
@@ -89,25 +96,5 @@ context.Projects.Add(new ProjectDTO
 
 context.SaveChanges();
 Console.WriteLine("Test data added successfully!");
-
-
-// context.Roles.Add(new RoleDTO
-// {
-//     RoleId = 1,
-//     ProjectId = 1;
-//     EmployeeId = role.EmployeeId;
-//     TimeZone = role.TimeZone;
-//     // ForeignLanguages = role.ForeignLanguages;
-//     JobPercentage = role.JobPercentage;
-//     // Skills = new List<SkillDTO>();
-//     // foreach (var skill in role.Skills)
-//     // {
-//     //     Skills.Add(new SkillDTO(skill.Value));
-//     // }
-//     YearsExperience = role.YearsExperience;
-// });
-
-// context.SaveChanges();
-// Console.WriteLine("Test data added successfully!");
 
 
