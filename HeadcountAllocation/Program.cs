@@ -33,6 +33,7 @@ Console.WriteLine("Hello, World!");
 //             Console.WriteLine($"An error occurred: {ex.Message}");
 //         }
 
+DBcontext.GetInstance().Dispose();
 var context = DBcontext.GetInstance();
 
 //Add test data

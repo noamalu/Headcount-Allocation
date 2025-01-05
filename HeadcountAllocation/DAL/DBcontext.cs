@@ -13,18 +13,46 @@ namespace HeadcountAllocation.DAL{
         public virtual DbSet<EmployeeDTO> Employees { get; set; }
         public virtual DbSet<ProjectDTO> Projects { get; set; }
         public virtual DbSet<RoleDTO> Roles { get; set; }
+        public virtual DbSet<EmployeeSkillsDTO> EmployeeSkills { get; set;}
+        public virtual DbSet<EmployeeLanguagesDTO> EmployeeLanguages { get; set;}
+        public virtual DbSet<RoleSkillsDTO> RoleSkills { get; set;}
+        public virtual DbSet<RoleLanguagesDTO> RoleLanguages { get; set;}
 
 
-         public override void Dispose()
+        public override void Dispose()
         {
+            lock (_lock)
+            {
+                if (_instance != null)
+                {
+                    // Clear child entities first
+                    RemoveRangeIfExists(EmployeeSkills);
+                    RemoveRangeIfExists(EmployeeLanguages);
+                    RemoveRangeIfExists(RoleSkills);
+                    RemoveRangeIfExists(RoleLanguages);
 
-            // Employees.ExecuteDelete();
-            // Roles.ExecuteDelete();
-            // Projects.ExecuteDelete();
-            
+                    // Clear entities with foreign key dependencies
+                    RemoveRangeIfExists(Roles);
 
-            // SaveChanges();
-            _instance = new DBcontext();
+                    // Clear top-level parent entities
+                    RemoveRangeIfExists(Projects);
+                    RemoveRangeIfExists(Employees);
+
+                    // Save changes to apply deletions
+                    SaveChanges();
+
+                    // Reset the singleton instance
+                    _instance = null;
+                }
+            }
+        }
+
+        private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
+        {
+            if (dbSet.Any())
+            {
+                dbSet.RemoveRange(dbSet);
+            }
         }
 
 
@@ -72,12 +100,14 @@ namespace HeadcountAllocation.DAL{
             modelBuilder.Entity<EmployeeDTO>()
                 .HasMany(e => e.Skills)
                 .WithOne()
-                .HasForeignKey(s => s.EmployeeId);
+                .HasForeignKey(s => s.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EmployeeDTO>()
                 .HasMany(e => e.ForeignLanguages)
                 .WithOne()
-                .HasForeignKey(l => l.EmployeeId);
+                .HasForeignKey(l => l.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // RoleDTO Relationships
             modelBuilder.Entity<RoleDTO>()
@@ -98,12 +128,14 @@ namespace HeadcountAllocation.DAL{
             modelBuilder.Entity<RoleDTO>()
                 .HasMany(e => e.ForeignLanguages)
                 .WithOne()
-                .HasForeignKey(l => l.RoleId);
+                .HasForeignKey(l => l.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<RoleDTO>()
                 .HasMany(e => e.Skills)
                 .WithOne()
-                .HasForeignKey(s => s.RoleId);
+                .HasForeignKey(s => s.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // ProjectDTO Relationships
             modelBuilder.Entity<ProjectDTO>()
