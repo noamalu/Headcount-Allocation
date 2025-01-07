@@ -32,11 +32,11 @@ namespace HeadcountAllocation.DAL.DTO
             Level = Level;
         }
 
-        //  public LanguagesDTO(Language language)
-        // {
-        //     LanguageID = language.LanguageID;
-        //     LanguageTypeId = language.LanguageTypeId;
-        //     Level = language.Level;
-        // }
+         public RoleLanguagesDTO(Language language)
+        {
+            LanguageID = language.LanguageID;
+            //LanguageTypeId = language.LanguageTypeId;
+            Level = language.Level;
+        }
     }
 }

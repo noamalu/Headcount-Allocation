@@ -31,12 +31,12 @@ namespace HeadcountAllocation.DAL.DTO
         Level = level;
     }
 
-        //  public SkillDTO(Skill skill)
-        // {
-        //     SkillId = skill.SkillId;
-        //     SkillTypeId = skill.SkillType;
-        //     Level = skill.Level;
-        // }
+         public EmployeeSkillsDTO(Skill skill)
+        {
+            SkillId = skill.SkillId;
+            // SkillTypeId = skill.SkillType;
+            Level = skill.Level;
+        }
 
         
     }

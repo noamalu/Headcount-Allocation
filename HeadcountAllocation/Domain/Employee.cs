@@ -1,12 +1,24 @@
 
 
 using System.Collections.Concurrent;
+using HeadcountAllocation.DAL.DTO;
 using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain{
 
     public class Employee
     {
+
+        public Employee(EmployeeDTO employeeDto)
+        {
+            Name = employeeDto.UserName;
+            EmployeeId = employeeDto.EmployeeId;
+            PhoneNumber = employeeDto.PhoneNumber;
+            EmailAddress = employeeDto.Email;
+            TimeZone = employeeDto.TimeZone;
+            ////...
+        }
+
         public string? Name {get;set;}
 
         public int EmployeeId{get;set;}

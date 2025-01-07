@@ -1,3 +1,5 @@
+using HeadcountAllocation.DAL.DTO;
+
 namespace HeadcountAllocation.Domain{
 
     public class Project{
@@ -21,6 +23,16 @@ namespace HeadcountAllocation.Domain{
             Date = date;
             RequiredHours = requiredHours;
             Roles = roles;
+        }
+
+        public Project(ProjectDTO projectDTO)
+        {
+           ProjectName = projectDTO.ProjectName;
+            ProjectId = projectDTO.ProjectId;
+            Description = projectDTO.Description;
+            Date = projectDTO.Date;
+            RequiredHours = projectDTO.RequiredHours;
+            //Roles = projectDTO.Roles;
         }
 
         public void AddRoleToProject(Role role){

@@ -47,21 +47,21 @@ namespace HeadcountAllocation.DAL.DTO
             YearsExperience = yearExp;
         }
 
-        //  public RoleDTO(Role role)
-        // {
-        //     RoleId = role.RoleId;
-        //     ProjectId = role.ProjectId;
-        //     EmployeeId = role.EmployeeId;
-        //     TimeZoneId = role.TimeZone;
-        //     // ForeignLanguages = role.ForeignLanguages;
-        //     JobPercentage = role.JobPercentage;
-        //     // Skills = new List<SkillDTO>();
-        //     // foreach (var skill in role.Skills)
-        //     // {
-        //     //     Skills.Add(new SkillDTO(skill.Value));
-        //     // }
-        //     YearsExperience = role.YearsExperience;
-        // }
+         public RoleDTO(Role role)
+        {
+            RoleId = role.RoleId;
+            ProjectId = role.ProjectId;
+            EmployeeId = role.EmployeeId;
+            //TimeZoneId = role.TimeZone;
+            // ForeignLanguages = role.ForeignLanguages;
+            JobPercentage = role.JobPercentage;
+            // Skills = new List<SkillDTO>();
+            // foreach (var skill in role.Skills)
+            // {
+            //     Skills.Add(new SkillDTO(skill.Value));
+            // }
+            YearsExperience = role.YearsExperience;
+        }
 
     }
 

@@ -48,30 +48,30 @@ namespace HeadcountAllocation.DAL.DTO
             YearExp = yearExp;
         }
 
-        //  public EmployeeDTO(Employee employee)
-        // {
-        //     EmployeeId = employee.EmployeeId;
-        //     UserName = employee.Name;
-        //     PhoneNumber = employee.PhoneNumber;
-        //     Email = employee.EmailAddress;
-        //     TimeZone = employee.TimeZone;
-        //     // ForeignLanguages = new List<LanguagesDTO>();
-        //     // foreach (var language in employee.ForeignLanguages)
-        //     // {
-        //     //     ForeignLanguages.Add(new LanguagesDTO(language.Value));
-        //     // }
-        //     JobPercentage = employee.JobPercentage;
-        //     // Skills = new List<SkillDTO>();
-        //     // foreach (var skill in employee.Skills)
-        //     // {
-        //     //     Skills.Add(new SkillDTO(skill.Value));
-        //     // }
-        //     Roles = new List<RoleDTO>();
-        //     foreach (var role in employee.Roles.Values)
-        //     {
-        //         Roles.Add(new RoleDTO(role));
-        //     }
-        //     YearExp =employee.YearsExperience;
-        // }
+         public EmployeeDTO(Employee employee)
+        {
+            EmployeeId = employee.EmployeeId;
+            UserName = employee.Name;
+            PhoneNumber = employee.PhoneNumber;
+            Email = employee.EmailAddress;
+            TimeZone = employee.TimeZone;
+            // ForeignLanguages = new List<LanguagesDTO>();
+            // foreach (var language in employee.ForeignLanguages)
+            // {
+            //     ForeignLanguages.Add(new LanguagesDTO(language.Value));
+            // }
+            JobPercentage = employee.JobPercentage;
+            // Skills = new List<SkillDTO>();
+            // foreach (var skill in employee.Skills)
+            // {
+            //     Skills.Add(new SkillDTO(skill.Value));
+            // }
+            Roles = new List<RoleDTO>();
+            foreach (var role in employee.Roles.Values)
+            {
+                Roles.Add(new RoleDTO(role));
+            }
+            YearExp =employee.YearsExperience;
+        }
     }
 }
