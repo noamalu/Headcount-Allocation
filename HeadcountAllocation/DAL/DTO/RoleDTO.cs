@@ -15,6 +15,8 @@ namespace HeadcountAllocation.DAL.DTO
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RoleId { get; set; }
+
+        public string RoleName { get; set; }
         
         [ForeignKey("Projects")]
         public int ProjectId { get; set; }
@@ -33,10 +35,11 @@ namespace HeadcountAllocation.DAL.DTO
 
 
          public RoleDTO() { }
-        public RoleDTO(int roleId, int projectId, int employeeId, int timeZoneId,
+        public RoleDTO(int roleId, string RoleName, int projectId, int employeeId, int timeZoneId,
          List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp )
         {
             RoleId = roleId;
+            RoleName = RoleName;
             ProjectId = projectId;
             EmployeeId = employeeId;
             TimeZoneId = timeZoneId;

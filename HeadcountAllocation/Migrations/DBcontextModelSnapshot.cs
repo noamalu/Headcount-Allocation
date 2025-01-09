@@ -131,6 +131,10 @@ namespace HeadcountAllocation.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TimeZoneId")
                         .HasColumnType("int");
 

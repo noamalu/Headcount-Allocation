@@ -88,6 +88,7 @@ namespace HeadcountAllocation.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: true),
                     TimeZoneId = table.Column<int>(type: "int", nullable: false),

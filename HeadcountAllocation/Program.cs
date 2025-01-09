@@ -76,6 +76,7 @@ context.Projects.Add(new ProjectDTO
         new RoleDTO
         {
             RoleId = 1,
+            RoleName = "Role1",
             ProjectId = 1,
             EmployeeId = null,
             TimeZoneId = 1,
@@ -95,6 +96,7 @@ context.Projects.Add(new ProjectDTO
         new RoleDTO
         {
             RoleId = 2,
+            RoleName = "Role1",
             ProjectId = 1,
             EmployeeId = 1,
             TimeZoneId = 1,
