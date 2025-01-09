@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250105154603_InitialCreate")]
+    [Migration("20250109154412_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -133,6 +133,10 @@ namespace HeadcountAllocation.Migrations
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TimeZoneId")
                         .HasColumnType("int");
