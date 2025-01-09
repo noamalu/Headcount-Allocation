@@ -32,7 +32,9 @@ namespace HeadcountAllocation.Domain{
             Description = projectDTO.Description;
             Date = projectDTO.Date;
             RequiredHours = projectDTO.RequiredHours;
-            //Roles = projectDTO.Roles;
+            foreach (RoleDTO roleDTO in projectDTO.Roles){
+                Roles[roleDTO.RoleId] = new Role(roleDTO);
+            }
         }
 
         public void AddRoleToProject(Role role){

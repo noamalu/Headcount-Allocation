@@ -15,8 +15,19 @@ namespace HeadcountAllocation.Domain{
             EmployeeId = employeeDto.EmployeeId;
             PhoneNumber = employeeDto.PhoneNumber;
             EmailAddress = employeeDto.Email;
-            TimeZone = employeeDto.TimeZone;
-            ////...
+            TimeZone = Enums.GetValueById<TimeZones>(employeeDto.TimeZone);
+            YearsExperience = employeeDto.YearExp;
+            JobPercentage = employeeDto.JobPercentage;
+            foreach (RoleDTO roleDTO in employeeDto.Roles){
+                Roles[roleDTO.RoleId] = new Role(roleDTO);
+            }
+            foreach (EmployeeSkillsDTO skillDTO in employeeDto.Skills){
+                Skills[skillDTO.SkillId] = new Skill(skillDTO);
+            }
+            foreach (EmployeeLanguagesDTO LanguagesDTO in employeeDto.ForeignLanguages){
+            ForeignLanguages[LanguagesDTO.LanguageID] = new Language(LanguagesDTO);
+          }
+
         }
 
         public string? Name {get;set;}
@@ -27,7 +38,7 @@ namespace HeadcountAllocation.Domain{
 
         public string? EmailAddress{get;set;}
 
-        public int TimeZone{get;set;}
+        public TimeZones TimeZone{get;set;}
         
         public ConcurrentDictionary<int, Language> ForeignLanguages{get;set;} = new();
 
