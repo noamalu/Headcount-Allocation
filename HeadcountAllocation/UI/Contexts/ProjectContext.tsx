@@ -1,0 +1,1 @@
+// Context for managing the state of projects, roles, and assignments across components.

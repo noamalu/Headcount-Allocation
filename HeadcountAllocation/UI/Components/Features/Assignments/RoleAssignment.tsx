@@ -1,0 +1,1 @@
+//  Enables assigning employees to roles based on matching attributes.
