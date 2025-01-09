@@ -13,28 +13,28 @@ namespace HeadcountAllocation.DAL.DTO
     
     public class RoleSkillsDTO
     {
-         [Key]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
 
         public int SkillId {get;set;} 
         
         [ForeignKey("Roles")]
         public int RoleId { get; }
-       public int SkillTypeId {get;set;} 
-       public int Level {get;set;} 
+        public int SkillTypeId {get;set;} 
+        public int Level {get;set;} 
 
-    public RoleSkillsDTO() { }
-    public RoleSkillsDTO(int skillId, int skillTypeId,  int level)
-    {
-        SkillId = skillId;
-        SkillTypeId = skillTypeId;
-        Level = level;
-    }
+        public RoleSkillsDTO() { }
+        public RoleSkillsDTO(int skillId, int skillTypeId,  int level)
+        {
+            SkillId = skillId;
+            SkillTypeId = skillTypeId;
+            Level = level;
+        }
 
-         public RoleSkillsDTO(Skill skill)
+        public RoleSkillsDTO(Skill skill)
         {
             SkillId = skill.SkillId;
-            // SkillTypeId = skill.SkillType;
+            SkillTypeId = Enums.GetId(skill.SkillType);
             Level = skill.Level;
         }
 

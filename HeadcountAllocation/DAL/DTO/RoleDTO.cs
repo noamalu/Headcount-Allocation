@@ -55,7 +55,7 @@ namespace HeadcountAllocation.DAL.DTO
             RoleId = role.RoleId;
             ProjectId = role.ProjectId;
             EmployeeId = role.EmployeeId;
-            //TimeZoneId = role.TimeZone;
+            TimeZoneId = Enums.GetId(role.TimeZone);
             // ForeignLanguages = role.ForeignLanguages;
             JobPercentage = role.JobPercentage;
             // Skills = new List<SkillDTO>();
