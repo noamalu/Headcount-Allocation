@@ -1,1 +1,0 @@
-// Handles API calls like getProjects, createProject, updateProject, deleteProject.

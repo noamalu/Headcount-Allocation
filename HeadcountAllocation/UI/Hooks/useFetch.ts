@@ -1,1 +1,0 @@
-// Custom hook to manage API calls and handle loading/error states.
