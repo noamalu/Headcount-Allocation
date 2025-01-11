@@ -1,3 +1,5 @@
+using HeadcountAllocation.DAL.Repositories;
+
 namespace HeadcountAllocation.Domain{
 
     public class ManagerFacade{
@@ -6,22 +8,46 @@ namespace HeadcountAllocation.Domain{
 
         public Dictionary<int, Employee> Employees{get;set;} = new();
 
+        private readonly EmployeeRepo employeeRepo;
+
+        private readonly ProjectRepo projectRepo;
+
         public int projectCount = 0;
 
         public int employeeCount = 0;
 
+        public ManagerFacade()
+        {
+            projectRepo = ProjectRepo.GetInstance();
+            employeeRepo = EmployeeRepo.GetInstance();
+        }
+
         public void CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
             Projects.Add(projectCount, project);
-            // add project to db
+            try{
+                projectRepo.Add(project);
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            }
+            
         }
 
         public void DeleteProject(int projectId){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
             Projects.Remove(projectCount);
-            // remove project from db
+            try{
+                projectRepo.Delete(projectId);
+            }
+            catch (Exception e){
+                throw new Exception($"No such project {projectId}");
+            }
         }
 
 

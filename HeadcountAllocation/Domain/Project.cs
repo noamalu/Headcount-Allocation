@@ -1,4 +1,5 @@
 using HeadcountAllocation.DAL.DTO;
+using HeadcountAllocation.DAL.Repositories;
 
 namespace HeadcountAllocation.Domain{
 
@@ -16,6 +17,8 @@ namespace HeadcountAllocation.Domain{
 
         public Dictionary<int, Role> Roles{get;set;} = new();
 
+        public RoleRepo RoleRepo;
+
         public Project(string projectName, int projectId, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             ProjectName = projectName;
             ProjectId = projectId;
@@ -23,6 +26,7 @@ namespace HeadcountAllocation.Domain{
             Date = date;
             RequiredHours = requiredHours;
             Roles = roles;
+            RoleRepo = RoleRepo.GetInstance();
         }
 
         public Project(ProjectDTO projectDTO)
@@ -35,6 +39,7 @@ namespace HeadcountAllocation.Domain{
             foreach (RoleDTO roleDTO in projectDTO.Roles){
                 Roles[roleDTO.RoleId] = new Role(roleDTO);
             }
+            RoleRepo = RoleRepo.GetInstance();
         }
 
         public void AddRoleToProject(Role role){
@@ -42,6 +47,13 @@ namespace HeadcountAllocation.Domain{
                 throw new Exception($"Role exists {role.RoleId}");
             }
             Roles.Add(role.RoleId, role);
+            try{
+                RoleRepo.Add(role);
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            }
+            
         }
 
         public Dictionary<int, Role> GetAllRolesByProject(){
