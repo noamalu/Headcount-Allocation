@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.DAL.Repositories;
+using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain{
 
@@ -18,6 +20,7 @@ namespace HeadcountAllocation.Domain{
         public Dictionary<int, Role> Roles{get;set;} = new();
 
         public RoleRepo RoleRepo;
+        private int RoleCounter = 0;
 
         public Project(string projectName, int projectId, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             ProjectName = projectName;
@@ -42,10 +45,9 @@ namespace HeadcountAllocation.Domain{
             RoleRepo = RoleRepo.GetInstance();
         }
 
-        public void AddRoleToProject(Role role){
-            if (Roles.ContainsKey(role.RoleId)){
-                throw new Exception($"Role exists {role.RoleId}");
-            }
+        public void AddRoleToProject(string roleName, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
+            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
             Roles.Add(role.RoleId, role);
             try{
                 RoleRepo.Add(role);

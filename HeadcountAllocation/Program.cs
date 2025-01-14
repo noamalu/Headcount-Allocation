@@ -1,6 +1,7 @@
 ﻿using System;
 using HeadcountAllocation.DAL;
 using HeadcountAllocation.DAL.DTO;
+using HeadcountAllocation.Domain;
 using static HeadcountAllocation.Domain.Enums;
 
 // See https://aka.ms/new-console-template for more information
@@ -118,5 +119,9 @@ context.Projects.Add(new ProjectDTO
 
 context.SaveChanges();
 Console.WriteLine("Test data added successfully!");
+
+ManagerFacade managerFacade = new ManagerFacade();
+managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
+
 
 

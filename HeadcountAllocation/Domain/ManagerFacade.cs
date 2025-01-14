@@ -1,4 +1,6 @@
+using System.Collections.Concurrent;
 using HeadcountAllocation.DAL.Repositories;
+using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain{
 
@@ -51,11 +53,12 @@ namespace HeadcountAllocation.Domain{
         }
 
 
-        public void AddRoleToProject(int projectId, Role role){
+        public void AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
-            Projects[projectId].AddRoleToProject(role);
+            Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
         }
 
         public Dictionary<int, Role> GetAllRolesByProject(int projectId){
