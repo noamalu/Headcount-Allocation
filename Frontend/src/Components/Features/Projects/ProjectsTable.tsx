@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ProjectDetailsModal from './ProjectDetailsModal';
 import { Project } from '../../../Types/ProjectType';
+import '../../../Styles/ProjectsTable.css'
+import '../../../Styles/Shared.css'
 
 
   const ProjectsTable: React.FC = () => {

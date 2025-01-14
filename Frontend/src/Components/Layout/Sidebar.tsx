@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../Styles/Layout.css'
 
 const Sidebar = () => {
   return (

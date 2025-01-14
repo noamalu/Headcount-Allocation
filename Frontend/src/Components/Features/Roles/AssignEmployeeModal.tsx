@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../../../Styles/Modal.css';
 
 interface AssignEmployeeModalProps {
   role: string; // שם התפקיד שאליו רוצים לשייך עובד

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Project } from '../../../Types/ProjectType';
 import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
-
+import '../../../Styles/Modal.css';
 
 
 interface ProjectDetailsModalProps {

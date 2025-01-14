@@ -1,0 +1,27 @@
+.sidebar {
+    width: 200px;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
+  .sidebar li.active {
+    color: pink;
+    font-weight: bold;
+  }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }

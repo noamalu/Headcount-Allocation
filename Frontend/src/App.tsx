@@ -1,9 +1,9 @@
 import Sidebar from './Components/Layout/Sidebar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Components/Layout/Header';
 import ProjectsTable from './Components/Features/Projects/ProjectsTable';
 import AddButton from './Components/Shared/AddButton';
-import './index.css';
+import './Styles/App.css'
+// import './index.css';
 
 const App = () => {
   return (
