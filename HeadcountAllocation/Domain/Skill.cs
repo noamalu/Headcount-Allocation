@@ -9,6 +9,16 @@ namespace HeadcountAllocation.Domain
 {
     public class Skill
     {
+        public int SkillId {get;set;} 
+        public Skills SkillType {get;set;} 
+        public int Level {get;set;} 
+
+        public Skill(int skillId, Skills skillType, int level){
+            SkillId = skillId;
+            SkillType = skillType;
+            Level = level;
+        }
+
         public Skill(EmployeeSkillsDTO skill)
         {
             SkillId = skill.SkillId;
@@ -21,8 +31,6 @@ namespace HeadcountAllocation.Domain
             SkillType = GetValueById<Skills>(skill.SkillTypeId);
         }
 
-        public int SkillId {get;set;} 
-        public Skills SkillType {get;set;} 
-        public int Level {get;set;} 
+        
     }
 }

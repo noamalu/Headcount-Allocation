@@ -95,6 +95,20 @@ namespace HeadcountAllocation.Migrations
                     b.ToTable("EmployeeSkills");
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.LanguageTypesDTO", b =>
+                {
+                    b.Property<int>("LanguageTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LanguageTypeId");
+
+                    b.ToTable("LanguageTypes");
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.ProjectDTO", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -190,6 +204,34 @@ namespace HeadcountAllocation.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleSkills");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.SkillTypesDTO", b =>
+                {
+                    b.Property<int>("SkillTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SkillTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SkillTypeId");
+
+                    b.ToTable("SkillTypes");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TimeZonesDTO", b =>
+                {
+                    b.Property<int>("TimeZoneId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeZoneName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TimeZoneId");
+
+                    b.ToTable("TimeZones");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>

@@ -7,7 +7,7 @@ namespace HeadcountAllocation.Domain{
     public class Role{
 
 
-        public string? RoleName{get;set;}
+        public string RoleName{get;set;}
 
         public int RoleId{get;set;}
 
@@ -24,6 +24,19 @@ namespace HeadcountAllocation.Domain{
         public int YearsExperience{get;set;}
 
         public double JobPercentage{get;set;}
+
+        public Role(string roleName, int roleId, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage)
+        {
+          RoleName = roleName;
+          RoleId = roleId;
+          ProjectId = projectId;
+          TimeZone = timeZone;
+          ForeignLanguages = foreignLanguages;
+          Skills = skills;
+          YearsExperience = yearsExperience;
+          JobPercentage = jobPercentage;
+        }
 
          public Role(RoleDTO roleDTO)
         {
