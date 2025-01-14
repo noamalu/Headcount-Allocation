@@ -29,6 +29,18 @@ namespace HeadcountAllocation.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LanguageTypes",
+                columns: table => new
+                {
+                    LanguageTypeId = table.Column<int>(type: "int", nullable: false),
+                    LanguageTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LanguageTypes", x => x.LanguageTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -41,6 +53,30 @@ namespace HeadcountAllocation.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.ProjectId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SkillTypes",
+                columns: table => new
+                {
+                    SkillTypeId = table.Column<int>(type: "int", nullable: false),
+                    SkillTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SkillTypes", x => x.SkillTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeZones",
+                columns: table => new
+                {
+                    TimeZoneId = table.Column<int>(type: "int", nullable: false),
+                    TimeZoneName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeZones", x => x.TimeZoneId);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,10 +228,19 @@ namespace HeadcountAllocation.Migrations
                 name: "EmployeeSkills");
 
             migrationBuilder.DropTable(
+                name: "LanguageTypes");
+
+            migrationBuilder.DropTable(
                 name: "RoleLanguages");
 
             migrationBuilder.DropTable(
                 name: "RoleSkills");
+
+            migrationBuilder.DropTable(
+                name: "SkillTypes");
+
+            migrationBuilder.DropTable(
+                name: "TimeZones");
 
             migrationBuilder.DropTable(
                 name: "Roles");

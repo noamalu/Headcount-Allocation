@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250109154412_InitialCreate")]
+    [Migration("20250114212034_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -96,6 +96,20 @@ namespace HeadcountAllocation.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeSkills");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.LanguageTypesDTO", b =>
+                {
+                    b.Property<int>("LanguageTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LanguageTypeId");
+
+                    b.ToTable("LanguageTypes");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.ProjectDTO", b =>
@@ -193,6 +207,34 @@ namespace HeadcountAllocation.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleSkills");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.SkillTypesDTO", b =>
+                {
+                    b.Property<int>("SkillTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SkillTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SkillTypeId");
+
+                    b.ToTable("SkillTypes");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TimeZonesDTO", b =>
+                {
+                    b.Property<int>("TimeZoneId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeZoneName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TimeZoneId");
+
+                    b.ToTable("TimeZones");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>

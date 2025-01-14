@@ -41,8 +41,8 @@ namespace HeadcountAllocation.DAL.Repositories
                     DBcontext.GetInstance().SaveChanges();
                 }
             }
-            catch(Exception){
-                throw new Exception("There was a problem in Database use- Add Project");
+            catch(Exception e){
+                throw new Exception("There was a problem in Database use- Add Project" + $" {e}");
             }
         }
 

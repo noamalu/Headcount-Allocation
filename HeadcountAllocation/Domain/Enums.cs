@@ -12,7 +12,7 @@ namespace HeadcountAllocation.Domain{
 
         public enum Skills
         {
-            Programing
+            Python
             
         }
 
