@@ -1,0 +1,75 @@
+{
+    "projects": [
+      {
+        "id": 1,
+        "name": "Bla Bla 1",
+        "deadline": "2025-01-01",
+        "progress": 50,
+        "description": "The bla bla project is bla bla...",
+        "roles": [
+          {
+            "id": 1,
+            "name": "API",
+            "employee": "Nofar Cohen",
+            "description": "",
+            "attributes": []
+          },
+          {
+            "id": 2,
+            "name": "Front",
+            "employee": "Hadas Printz",
+            "description": "",
+            "attributes": []
+          },
+          {
+            "id": 3,
+            "name": "Back",
+            "employee": "Noa Malul",
+            "description": "",
+            "attributes": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Charta 2",
+        "deadline": "2026-06-14",
+        "progress": 30,
+        "description": "Charta project details...",
+        "roles": []
+      },
+      {
+        "id": 3,
+        "name": "Stupid 3",
+        "deadline": "2025-11-26",
+        "progress": 70,
+        "description": "Details about Stupid 3...",
+        "roles": []
+      },
+      {
+        "id": 4,
+        "name": "Random 4",
+        "deadline": "2026-07-01",
+        "progress": 40,
+        "description": "Details about Random 4...",
+        "roles": []
+      },
+      {
+        "id": 5,
+        "name": "Hamtzaa 5",
+        "deadline": "2027-01-01",
+        "progress": 60,
+        "description": "Details about Hamtzaa 5...",
+        "roles": []
+      },
+      {
+        "id": 6,
+        "name": "Ein Li Musag 6",
+        "deadline": "2025-01-01",
+        "progress": 20,
+        "description": "Details about Musag 6...",
+        "roles": []
+      }
+    ]
+  }
+  

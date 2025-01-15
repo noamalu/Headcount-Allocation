@@ -9,3 +9,15 @@
     padding: 10px 20px;
     cursor: pointer;
   }
+
+  .error {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .loading {
+    font-size: 18px;
+    font-style: italic;
+    margin-top: 20px;
+  }
