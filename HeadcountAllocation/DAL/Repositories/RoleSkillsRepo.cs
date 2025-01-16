@@ -174,7 +174,7 @@ namespace HeadcountAllocation.DAL.Repositories
             List<RoleSkillsDTO> skills = dbContext.RoleSkills.ToList();
             foreach (var skill in skills)
             {
-                RolesSkills.TryAdd(skill.SkillId, new Skill(skill));
+                RolesSkills.TryAdd(skill.SkillTypeId, new Skill(skill));
                 
             }
         }

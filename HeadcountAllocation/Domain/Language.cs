@@ -14,22 +14,22 @@ namespace HeadcountAllocation.Domain
        public Languages LanguageType {get;set;} 
        public int Level {get;set;} 
 
-       public Language(int languageId, Languages languageType, int level){
-            LanguageID = languageId;
+       public Language(Languages languageType, int level){
+            LanguageID = Enums.GetId(languageType);
             LanguageType = languageType;
             Level = level;
        }
 
         public Language(EmployeeLanguagesDTO language)
         {
-            LanguageID = language.LanguageID;
+            LanguageID = language.LanguageTypeId;
             LanguageType = GetValueById<Languages>(language.LanguageTypeId);
             Level = language.Level;
         }
 
         public Language(RoleLanguagesDTO language)
         {
-            LanguageID = language.LanguageID;
+            LanguageID = language.LanguageTypeId;
             LanguageType = GetValueById<Languages>(language.LanguageTypeId);
             Level = language.Level;
         }

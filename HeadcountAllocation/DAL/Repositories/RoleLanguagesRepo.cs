@@ -174,7 +174,7 @@ namespace HeadcountAllocation.DAL.Repositories
             List<RoleLanguagesDTO> languages = dbContext.RoleLanguages.ToList();
             foreach (var language in languages)
             {
-                RolesLanguages.TryAdd(language.LanguageID, new Language(language));
+                RolesLanguages.TryAdd(language.LanguageTypeId, new Language(language));
                 
             }
         }
