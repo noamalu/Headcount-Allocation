@@ -4,6 +4,7 @@ using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using static HeadcountAllocation.Domain.Enums;
 using System.Collections.Concurrent;
+using HeadcountAllocation.Services;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
@@ -138,14 +139,27 @@ context.SkillTypes.Add(python);
 // Console.WriteLine("Test data added successfully!");
 
 Console.WriteLine("added help data");
-
-ManagerFacade managerFacade = new ManagerFacade();
-managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
 languages.TryAdd(1, new Language(0, Languages.English, 5));
 ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
 skills.TryAdd(1, new Skill(0, Skills.Python, 10));
+
+ManagerFacade managerFacade = ManagerFacade.GetInstance();
+managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
+
 managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
+
+ConcurrentDictionary<int, Language> languages2 = new ConcurrentDictionary<int, Language>();
+languages.TryAdd(1, new Language(1, Languages.English, 5));
+ConcurrentDictionary<int, Skill> skills2 = new ConcurrentDictionary<int, Skill>();
+skills.TryAdd(1, new Skill(1, Skills.Python, 10));
+
+HeadCountService headCountService = HeadCountService.GetInstance();
+headCountService.AddRoleToProject("test2", 1, TimeZones.Morning, languages2, skills2, 2, 0.5);
+Console.WriteLine("added service");
+
+
+
 
 
 
