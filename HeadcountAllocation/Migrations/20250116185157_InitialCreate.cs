@@ -83,14 +83,13 @@ namespace HeadcountAllocation.Migrations
                 name: "EmployeeLanguages",
                 columns: table => new
                 {
-                    LanguageID = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
                     LanguageTypeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeLanguages", x => x.LanguageID);
+                    table.PrimaryKey("PK_EmployeeLanguages", x => new { x.LanguageTypeId, x.EmployeeId });
                     table.ForeignKey(
                         name: "FK_EmployeeLanguages_Employees_EmployeeId",
                         column: x => x.EmployeeId,
@@ -103,15 +102,14 @@ namespace HeadcountAllocation.Migrations
                 name: "EmployeeSkills",
                 columns: table => new
                 {
-                    SkillId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
                     SkillTypeId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeSkills", x => x.SkillId);
+                    table.PrimaryKey("PK_EmployeeSkills", x => new { x.SkillTypeId, x.EmployeeId });
                     table.ForeignKey(
                         name: "FK_EmployeeSkills_Employees_EmployeeId",
                         column: x => x.EmployeeId,
@@ -152,14 +150,13 @@ namespace HeadcountAllocation.Migrations
                 name: "RoleLanguages",
                 columns: table => new
                 {
-                    LanguageID = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     LanguageTypeId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleLanguages", x => x.LanguageID);
+                    table.PrimaryKey("PK_RoleLanguages", x => new { x.LanguageTypeId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_RoleLanguages_Roles_RoleId",
                         column: x => x.RoleId,
@@ -172,15 +169,14 @@ namespace HeadcountAllocation.Migrations
                 name: "RoleSkills",
                 columns: table => new
                 {
-                    SkillId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     SkillTypeId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     Priority = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleSkills", x => x.SkillId);
+                    table.PrimaryKey("PK_RoleSkills", x => new { x.SkillTypeId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_RoleSkills_Roles_RoleId",
                         column: x => x.RoleId,

@@ -14,8 +14,8 @@ namespace HeadcountAllocation.Domain
         public int Level {get;set;}
         public int Priority {get; set;} 
 
-        public Skill(int skillId, Skills skillType, int level, int priority){
-            SkillId = skillId;
+        public Skill(Skills skillType, int level, int priority){
+            SkillId = Enums.GetId(skillType);
             SkillType = skillType;
             Level = level;
             Priority = priority;
@@ -23,7 +23,7 @@ namespace HeadcountAllocation.Domain
 
         public Skill(EmployeeSkillsDTO skill)
         {
-            SkillId = skill.SkillId;
+            SkillId = skill.SkillTypeId;
             SkillType = GetValueById<Skills>(skill.SkillTypeId);
             Level = skill.Level;
             Priority = skill.Priority;
@@ -31,7 +31,7 @@ namespace HeadcountAllocation.Domain
 
         public Skill(RoleSkillsDTO skill)
         {
-            SkillId = skill.SkillId;
+            SkillId = skill.SkillTypeId;
             SkillType = GetValueById<Skills>(skill.SkillTypeId);
             Level = skill.Level;
             Priority = skill.Priority;

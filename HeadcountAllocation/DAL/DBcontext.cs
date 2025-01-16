@@ -158,6 +158,19 @@ namespace HeadcountAllocation.DAL{
                 .WithOne()
                 .HasForeignKey(r => r.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<RoleLanguagesDTO>()
+                .HasKey(rl => new { rl.LanguageTypeId, rl.RoleId });
+
+            modelBuilder.Entity<RoleSkillsDTO>()
+                .HasKey(rl => new { rl.SkillTypeId, rl.RoleId });
+
+            modelBuilder.Entity<EmployeeLanguagesDTO>()
+                .HasKey(rl => new { rl.LanguageTypeId, rl.EmployeeId });
+
+            modelBuilder.Entity<EmployeeSkillsDTO>()
+                .HasKey(rl => new { rl.SkillTypeId, rl.EmployeeId });
         }
 
     }
