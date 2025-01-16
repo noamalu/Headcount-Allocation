@@ -1,18 +1,17 @@
 import Sidebar from './Components/Layout/Sidebar';
 import Header from './Components/Layout/Header';
-import ProjectsTable from './Components/Features/Projects/ProjectsTable';
-import AddButton from './Components/Shared/AddButton';
 import './Styles/App.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import ProjectsPage from './Pages/ProjectsPage';
 // import './index.css';
 
 const App = () => {
   return (
     <div className="app-container">
       <Sidebar />
+      <Header />
       <main>
-        <Header />
-        <ProjectsTable />
-        <AddButton />
+        <ProjectsPage />
       </main>
     </div>
   );

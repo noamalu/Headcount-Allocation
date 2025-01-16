@@ -32,7 +32,7 @@
 import React, { useEffect, useState } from 'react';
 import ProjectDetailsModal from './ProjectDetailsModal';
 import { Project } from '../../../Types/ProjectType';
-import '../../../Styles/ProjectsTable.css';
+import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
 import { getProjects } from '../../../Services/ProjectsService'; // פונקציה להבאת נתוני פרויקטים
 

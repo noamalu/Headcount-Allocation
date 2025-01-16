@@ -14,11 +14,11 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
   useEffect(() => {
-    console.log("SelectedRole changed:", selectedRole);
+    console.log('SelectedRole changed:', selectedRole);
   }, [selectedRole]);
 
   const handleOpenModal = (role: Role) => {
-    console.log("Opening role modal for:", role.name);
+    console.log('Opening role modal for:', role.name);
     setSelectedRole(role);
   };
 
@@ -26,15 +26,17 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     setSelectedRole(null);
   };
 
-// const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
         <h2>{project.name}</h2>
-        <p><strong>Deadline:</strong> {project.deadline}</p>
-        <p><strong>Description:</strong> {project.description}</p>
-        <h3>Roles</h3>
+        <div className="modal-info">
+          <div className="deadline">
+            <i className="fas fa-calendar-alt"></i> {project.deadline}
+          </div>
+          <div className="description">{project.description}</div>
+        </div>
         <table className="roles-table">
           <thead>
             <tr>
@@ -49,26 +51,33 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
                 <td>{role.name}</td>
                 <td>{role.employee}</td>
                 <td>
-                  <button className="action-button" onClick={() => handleOpenModal(role)}>🔗</button>
+                  <button className="action-button" onClick={() => handleOpenModal(role)}>
+                    🔗
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {selectedRole && (() => {
-        console.log("Rendering RoleDetailsModal for:", selectedRole);
-        return (
-          <RoleDetailsModal role={selectedRole} onClose={handleCloseModal} />
-        );
-      })()}
         <div className="modal-actions">
-          <button className="delete-button">🗑 Delete</button>
-          <button className="addRole-button">+ Add Role</button>
-          <button className="edit-button">✏ Edit</button>
+          <button className="delete-button">
+            <i className="fas fa-trash"></i> Delete
+          </button>
+          <button className="addRole-button">
+            <i className="fas fa-plus"></i> Add Role
+          </button>
+          <button className="edit-button">
+            <i className="fas fa-pen"></i> Edit
+          </button>
         </div>
+        {selectedRole && (
+          <RoleDetailsModal role={selectedRole} onClose={handleCloseModal} />
+        )}
       </div>
     </div>
   );
 };
+
+
 
 export default ProjectDetailsModal;
