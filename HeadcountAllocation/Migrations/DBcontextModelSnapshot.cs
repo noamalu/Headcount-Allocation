@@ -85,6 +85,9 @@ namespace HeadcountAllocation.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
                     b.Property<int>("SkillTypeId")
                         .HasColumnType("int");
 
@@ -191,6 +194,9 @@ namespace HeadcountAllocation.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Priority")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
