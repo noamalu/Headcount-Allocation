@@ -140,9 +140,9 @@ context.SkillTypes.Add(python);
 
 Console.WriteLine("added help data");
 ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
-languages.TryAdd(1, new Language(0, Languages.English, 5));
+languages.TryAdd(0, new Language(0, Languages.English, 5));
 ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
-skills.TryAdd(1, new Skill(0, Skills.Python, 10));
+skills.TryAdd(0, new Skill(0, Skills.Python, 10));
 
 ManagerFacade managerFacade = ManagerFacade.GetInstance();
 managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
@@ -150,9 +150,9 @@ managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Diction
 managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
 
 ConcurrentDictionary<int, Language> languages2 = new ConcurrentDictionary<int, Language>();
-languages.TryAdd(1, new Language(1, Languages.English, 5));
+languages2.TryAdd(1, new Language(1, Languages.English, 5));
 ConcurrentDictionary<int, Skill> skills2 = new ConcurrentDictionary<int, Skill>();
-skills.TryAdd(1, new Skill(1, Skills.Python, 10));
+skills2.TryAdd(1, new Skill(1, Skills.Python, 10));
 
 HeadCountService headCountService = HeadCountService.GetInstance();
 headCountService.AddRoleToProject("test2", 1, TimeZones.Morning, languages2, skills2, 2, 0.5);
