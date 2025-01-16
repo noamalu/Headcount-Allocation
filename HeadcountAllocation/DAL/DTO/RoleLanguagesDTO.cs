@@ -35,7 +35,7 @@ namespace HeadcountAllocation.DAL.DTO
          public RoleLanguagesDTO(Language language)
         {
             LanguageID = language.LanguageID;
-            //LanguageTypeId = language.LanguageTypeId;
+            LanguageTypeId = Enums.GetId(language.LanguageType);
             Level = language.Level;
         }
     }

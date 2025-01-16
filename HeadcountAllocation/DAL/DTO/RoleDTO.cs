@@ -15,6 +15,8 @@ namespace HeadcountAllocation.DAL.DTO
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RoleId { get; set; }
+
+        public string RoleName { get; set; }
         
         [ForeignKey("Projects")]
         public int ProjectId { get; set; }
@@ -33,10 +35,11 @@ namespace HeadcountAllocation.DAL.DTO
 
 
          public RoleDTO() { }
-        public RoleDTO(int roleId, int projectId, int employeeId, int timeZoneId,
+        public RoleDTO(int roleId, string roleName, int projectId, int employeeId, int timeZoneId,
          List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp )
         {
             RoleId = roleId;
+            RoleName = string.IsNullOrWhiteSpace(roleName) ? throw new ArgumentNullException("it is hereeeeeee") : roleName;
             ProjectId = projectId;
             EmployeeId = employeeId;
             TimeZoneId = timeZoneId;
@@ -50,16 +53,23 @@ namespace HeadcountAllocation.DAL.DTO
          public RoleDTO(Role role)
         {
             RoleId = role.RoleId;
+            RoleName = role.RoleName;
             ProjectId = role.ProjectId;
             EmployeeId = role.EmployeeId;
-            //TimeZoneId = role.TimeZone;
-            // ForeignLanguages = role.ForeignLanguages;
+            TimeZoneId = Enums.GetId(role.TimeZone);
+            List<RoleLanguagesDTO> roleLanguages = new List<RoleLanguagesDTO>();
+            foreach (Language language in role.ForeignLanguages.Values){
+                RoleLanguagesDTO roleLanguagesDTO = new RoleLanguagesDTO(language);
+                roleLanguages.Add(roleLanguagesDTO);
+            }
+            ForeignLanguages = roleLanguages;
             JobPercentage = role.JobPercentage;
-            // Skills = new List<SkillDTO>();
-            // foreach (var skill in role.Skills)
-            // {
-            //     Skills.Add(new SkillDTO(skill.Value));
-            // }
+            List<RoleSkillsDTO> roleSkills = new List<RoleSkillsDTO>();
+            foreach (Skill skill in role.Skills.Values){
+                RoleSkillsDTO roleSkillDTO = new RoleSkillsDTO(skill);
+                roleSkills.Add(roleSkillDTO);
+            }
+            Skills = roleSkills;
             YearsExperience = role.YearsExperience;
         }
 

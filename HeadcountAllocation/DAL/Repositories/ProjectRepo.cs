@@ -41,19 +41,19 @@ namespace HeadcountAllocation.DAL.Repositories
                     DBcontext.GetInstance().SaveChanges();
                 }
             }
-            catch(Exception){
-                throw new Exception("There was a problem in Database use- Add Project");
+            catch(Exception e){
+                throw new Exception("There was a problem in Database use- Add Project" + $" {e}");
             }
         }
 
-        public void Delete(Project project)
+        public void Delete(int projectId)
         {
         try{
             lock (_lock)
             {
-                bool shopInDomain = _projects.TryRemove(project.ProjectId, out _);
+                bool shopInDomain = _projects.TryRemove(projectId, out _);
                 DBcontext context = DBcontext.GetInstance();
-                ProjectDTO projectDTO = context.Projects.Find(project.ProjectId);
+                ProjectDTO projectDTO = context.Projects.Find(projectId);
                 if (shopInDomain)
                 {
                     context.Projects.Remove(projectDTO);
