@@ -22,13 +22,15 @@ namespace HeadcountAllocation.DAL.DTO
         public int RoleId { get; }
         public int SkillTypeId {get;set;} 
         public int Level {get;set;} 
+        public int Priority {get;set;}
 
         public RoleSkillsDTO() { }
-        public RoleSkillsDTO(int skillId, int skillTypeId,  int level)
+        public RoleSkillsDTO(int skillId, int skillTypeId,  int level, int prioriry)
         {
             SkillId = skillId;
             SkillTypeId = skillTypeId;
             Level = level;
+            Priority = prioriry;
         }
 
         public RoleSkillsDTO(Skill skill)
@@ -36,6 +38,7 @@ namespace HeadcountAllocation.DAL.DTO
             SkillId = skill.SkillId;
             SkillTypeId = Enums.GetId(skill.SkillType);
             Level = skill.Level;
+            Priority = skill.Priority;
         }
 
         
