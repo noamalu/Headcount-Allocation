@@ -84,7 +84,7 @@ const ProjectsTable: React.FC = () => {
           <tr>
             <th>Project</th>
             <th>Deadline</th>
-            <th>Progress</th>
+            <th>Positions</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -93,9 +93,7 @@ const ProjectsTable: React.FC = () => {
             <tr key={project.id}>
               <td>{project.name}</td>
               <td>{project.deadline}</td>
-              <td>
-                <progress value={project.progress} max="100"></progress>
-              </td>
+              <td>{project.roles.length}</td>
               <td>
                 <button className="action-button" onClick={() => handleOpenModal(project)}>🔗</button>
               </td>

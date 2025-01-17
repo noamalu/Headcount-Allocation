@@ -1,4 +1,37 @@
+.projects-page {
+    padding: 20px 30px;
+  }
 
+  .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4F4846;
+    margin-bottom: 20px;
+  }
+
+  .add-project-button {
+    padding: 10px 20px;
+    background-color: #266150;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    font-family: 'poppins';
+  }
+  
+  .add-project-button:hover {
+    background-color: #1E4E40;
+  }
+  
 .projects-table {
     width: 100%;
     border-collapse: separate;
@@ -58,13 +91,3 @@
     background-color: #1E4E40; /* Darker green */
 }
 
-.projects-page {
-    padding: 20px 30px;
-  }
-  
-  .page-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4F4846;
-    margin-bottom: 20px;
-  }
