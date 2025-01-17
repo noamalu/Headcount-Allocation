@@ -3,6 +3,7 @@ import { Project } from '../../../Types/ProjectType';
 import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import '../../../Styles/Modal.css';
+import '../../../Styles/Shared.css';
 
 
 interface ProjectDetailsModalProps {

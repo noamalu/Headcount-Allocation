@@ -101,58 +101,45 @@
     gap: 10px;
 }
 
-.modal-actions .delete-button,
-.modal-actions .addRole-button,
-.modal-actions .edit-button {
-    padding: 10px 20px;
-    border: none;
+.modal-info textarea {
+    width: 80%; /* תופס את כל הרוחב של הקונטיינר */
+    height: 100px; /* גובה מותאם */
+    padding: 10px; /* ריווח פנימי */
+    font-size: 12px; /* גודל טקסט נוח לקריאה */
+    border: 1px solid #E8CEBF; /* גבול בצבע עדין */
+    border-radius: 8px; /* פינות מעוגלות */
+    resize: vertical; /* אפשרות לשנות את הגובה בלבד */
+    box-sizing: border-box; /* כולל פדינג ובורדר בתוך הרוחב */
+    font-family: 'Poppins';
+}
+
+.modal-info input {
+    font-size: 12px;
     border-radius: 8px;
+    border: 1px solid #E8CEBF;
+    font-family: 'Poppins';
+}
+
+.roles-input-table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.roles-input-table th, .roles-input-table td {
+    padding: 6px;
+    text-align: center;
     font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-family: 'poppins';
-
-}
-
-.modal-actions .delete-button {
-    background: #D96666;
-    color: #FFF;
-}
-
-.modal-actions .delete-button:hover {
-    background: #B74444;
-}
-
-.modal-actions .addRole-button {
-    background: #84A59D;
-    color: #FFF;
-}
-
-.modal-actions .addRole-button:hover {
-    background: #66867E;
-}
-
-.modal-actions .edit-button {
-    background: #4B6C8E;
-    color: #FFF;
-}
-
-.modal-actions .edit-button:hover {
-    background: #3A526B;
-}
-
-.close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
     color: #4F4846;
-    transition: color 0.3s ease;
 }
 
-.close-button:hover {
-    color: #D96666;
+.roles-input-table th {
+    background: #E8CEBF;
+    font-size: 14px;
+    font-weight: normal;
 }
+
+.roles-input-table td {
+    border-top: 1px solid #E8CEBF;
+}
+

@@ -3,6 +3,7 @@ import { Project } from '../../../Types/ProjectType';
 import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import '../../../Styles/Modal.css';
+import '../../../Styles/Shared.css';
 
 
 const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -27,7 +28,7 @@ const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           <h2>Create New Project</h2>
           <div className="modal-info">
             <div>
-              <label>Project Name:</label>
+              <label>Project Name: </label>
               <input
                 type="text"
                 value={projectName}
@@ -37,7 +38,7 @@ const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               />
             </div>
             <div>
-              <label>Deadline:</label>
+              <label>Deadline: </label>
               <input
                 type="date"
                 value={deadline}
@@ -55,12 +56,11 @@ const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               className="textarea-field"
             ></textarea>
           </div>
-          <table className="roles-table">
+          <table className="roles-input-table">
             <thead>
               <tr>
                 <th>Role</th>
-                <th>Employee</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>

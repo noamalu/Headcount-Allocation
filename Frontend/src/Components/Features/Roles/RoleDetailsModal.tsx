@@ -7,7 +7,7 @@ import '../../../Styles/Modal.css';
 interface RoleDetailsModalProps {
   role: Role;
   onClose: () => void;
-  onSave: (newRole: Role) => void; // Add this line
+  onSave?: (newRole: Role) => void; // Add this line
 }
 
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) => {
