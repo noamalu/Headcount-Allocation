@@ -22,10 +22,10 @@ namespace HeadcountAllocation.Domain{
                 Roles[roleDTO.RoleId] = new Role(roleDTO);
             }
             foreach (EmployeeSkillsDTO skillDTO in employeeDto.Skills){
-                Skills[skillDTO.SkillId] = new Skill(skillDTO);
+                Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
             }
             foreach (EmployeeLanguagesDTO LanguagesDTO in employeeDto.ForeignLanguages){
-            ForeignLanguages[LanguagesDTO.LanguageID] = new Language(LanguagesDTO);
+            ForeignLanguages[LanguagesDTO.LanguageTypeId] = new Language(LanguagesDTO);
           }
 
         }

@@ -7,7 +7,7 @@ namespace HeadcountAllocation.Domain{
     public class Role{
 
 
-        public string? RoleName{get;set;}
+        public string RoleName{get;set;}
 
         public int RoleId{get;set;}
 
@@ -25,6 +25,19 @@ namespace HeadcountAllocation.Domain{
 
         public double JobPercentage{get;set;}
 
+        public Role(string roleName, int roleId, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage)
+        {
+          RoleName = roleName;
+          RoleId = roleId;
+          ProjectId = projectId;
+          TimeZone = timeZone;
+          ForeignLanguages = foreignLanguages;
+          Skills = skills;
+          YearsExperience = yearsExperience;
+          JobPercentage = jobPercentage;
+        }
+
          public Role(RoleDTO roleDTO)
         {
           RoleName = roleDTO.RoleName;
@@ -33,12 +46,12 @@ namespace HeadcountAllocation.Domain{
           ProjectId = roleDTO.ProjectId;
           TimeZone = Enums.GetValueById<TimeZones>(roleDTO.TimeZoneId);
           foreach (RoleLanguagesDTO roleLanguagesDTO in roleDTO.ForeignLanguages){
-            ForeignLanguages[roleLanguagesDTO.LanguageID]=new Language(roleLanguagesDTO);
+            ForeignLanguages[roleLanguagesDTO.LanguageTypeId]=new Language(roleLanguagesDTO);
           }
           TimeZone = Enums.GetValueById<TimeZones>(roleDTO.TimeZoneId);
           YearsExperience = roleDTO.YearsExperience;
           foreach (RoleSkillsDTO skillDTO in roleDTO.Skills){
-                Skills[skillDTO.SkillId] = new Skill(skillDTO);
+                Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
             }
           
 

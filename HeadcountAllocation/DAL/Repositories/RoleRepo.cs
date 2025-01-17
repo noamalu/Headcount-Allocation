@@ -38,12 +38,27 @@ namespace HeadcountAllocation.DAL.Repositories
             roles.TryAdd(role.RoleId, role);
             try{
                 lock(_lock){
+                    if (!DBcontext.GetInstance().TimeZones.Any(tz => tz.TimeZoneId == Enums.GetId(role.TimeZone)))
+                    throw new Exception($"TimeZoneId {Enums.GetId(role.TimeZone)} does not exist.");
+
+                    foreach (var language in role.ForeignLanguages.Values)
+                    {
+                        if (!DBcontext.GetInstance().LanguageTypes.Any(lt => lt.LanguageTypeId == Enums.GetId(language.LanguageType)))
+                            throw new Exception($"LanguageTypeId {Enums.GetId(language.LanguageType)} does not exist.");
+                    }
+
+                    foreach (var skill in role.Skills.Values)
+                    {
+                        if (!DBcontext.GetInstance().SkillTypes.Any(st => st.SkillTypeId == Enums.GetId(skill.SkillType)))
+                            throw new Exception($"SkillTypeId {skill.SkillType} does not exist.");
+                    }
+                    
                     DBcontext.GetInstance().Roles.Add(new RoleDTO(role));
                     DBcontext.GetInstance().SaveChanges();
                 }
             }
-            catch(Exception){
-                throw new Exception("There was a problem in Database use- Add Role");
+            catch(Exception e){
+                throw new Exception("There was a problem in Database use- Add Role" + $" {e}");
             }
         }
 

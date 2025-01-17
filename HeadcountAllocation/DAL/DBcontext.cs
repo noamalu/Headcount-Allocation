@@ -17,6 +17,9 @@ namespace HeadcountAllocation.DAL{
         public virtual DbSet<EmployeeLanguagesDTO> EmployeeLanguages { get; set;}
         public virtual DbSet<RoleSkillsDTO> RoleSkills { get; set;}
         public virtual DbSet<RoleLanguagesDTO> RoleLanguages { get; set;}
+        public virtual DbSet<TimeZonesDTO> TimeZones { get; set;}
+        public virtual DbSet<SkillTypesDTO> SkillTypes { get; set;}
+        public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set;}
 
 
         public override void Dispose()
@@ -25,6 +28,9 @@ namespace HeadcountAllocation.DAL{
             {
                 if (_instance != null)
                 {
+                    RemoveRangeIfExists(TimeZones);
+                    RemoveRangeIfExists(LanguageTypes);
+                    RemoveRangeIfExists(SkillTypes);
                     // Clear child entities first
                     RemoveRangeIfExists(EmployeeSkills);
                     RemoveRangeIfExists(EmployeeLanguages);
@@ -53,6 +59,12 @@ namespace HeadcountAllocation.DAL{
             {
                 dbSet.RemoveRange(dbSet);
             }
+        }
+
+        public static DBcontext Reset()
+        {
+            _instance = new DBcontext();
+            return _instance;
         }
 
 
@@ -146,6 +158,19 @@ namespace HeadcountAllocation.DAL{
                 .WithOne()
                 .HasForeignKey(r => r.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<RoleLanguagesDTO>()
+                .HasKey(rl => new { rl.LanguageTypeId, rl.RoleId });
+
+            modelBuilder.Entity<RoleSkillsDTO>()
+                .HasKey(rl => new { rl.SkillTypeId, rl.RoleId });
+
+            modelBuilder.Entity<EmployeeLanguagesDTO>()
+                .HasKey(rl => new { rl.LanguageTypeId, rl.EmployeeId });
+
+            modelBuilder.Entity<EmployeeSkillsDTO>()
+                .HasKey(rl => new { rl.SkillTypeId, rl.EmployeeId });
         }
 
     }

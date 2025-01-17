@@ -6,13 +6,14 @@ namespace HeadcountAllocation.Domain{
         {
             Morning,
             Noon,
-            Evening
+            Evening,
+            Flexible
 
         }
 
         public enum Skills
         {
-            Programing
+            Python
             
         }
 

@@ -1,35 +1,136 @@
+using System.Collections.Concurrent;
+using HeadcountAllocation.DAL.Repositories;
+using static HeadcountAllocation.Domain.Enums;
+
 namespace HeadcountAllocation.Domain{
 
     public class ManagerFacade{
+
+        private static ManagerFacade managerFacade = null;
 
         public Dictionary<int, Project> Projects{get;set;} = new();
 
         public Dictionary<int, Employee> Employees{get;set;} = new();
 
+        private readonly EmployeeRepo employeeRepo;
+
+        private readonly ProjectRepo projectRepo;
+
         public int projectCount = 0;
 
         public int employeeCount = 0;
 
+        public ManagerFacade()
+        {
+            projectRepo = ProjectRepo.GetInstance();
+            employeeRepo = EmployeeRepo.GetInstance();
+        }
+
+        public static ManagerFacade GetInstance(){
+            if (managerFacade == null){
+                managerFacade = new ManagerFacade();
+            }
+            return managerFacade;
+        }
+
+        public static void Dispose(){
+            EmployeeRepo.Dispose();
+            ProjectRepo.Dispose();
+            EmployeeLanguagesRepo.Dispose();
+            EmployeeSkillsRepo.Dispose();
+            RoleRepo.Dispose();
+            RoleLanguagesRepo.Dispose();
+            RoleSkillsRepo.Dispose();
+            managerFacade = null;
+        }
+
         public void CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
             Projects.Add(projectCount, project);
-            // add project to db
+            try{
+                projectRepo.Add(project);
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            }
+            
+        }
+
+        public void EditProjectName(int projectId, string projectName){
+            if (!Projects.ContainsKey(projectId)){
+                throw new Exception($"No such project {projectId}");
+            }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
+            Projects[projectId].EditProjectName(projectName);
+            projectRepo.Update(Projects[projectId]);
+        }
+
+        public void EditProjectDescription(int projectId, string ProjectDescription){
+            if (!Projects.ContainsKey(projectId)){
+                throw new Exception($"No such project {projectId}");
+            }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
+            Projects[projectId].EditProjectDescription(ProjectDescription);
+            projectRepo.Update(Projects[projectId]);
+        }
+
+
+        public void EditProjectDate(int projectId, DateTime date){
+            if (!Projects.ContainsKey(projectId)){
+                throw new Exception($"No such project {projectId}");
+            }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
+            Projects[projectId].EditProjectDate(date);
+            projectRepo.Update(Projects[projectId]);
+        }
+
+        public void EditProjectRequierdHours(int projectId, int requiredHours){
+            if (!Projects.ContainsKey(projectId)){
+                throw new Exception($"No such project {projectId}");
+            }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
+            Projects[projectId].EditProjectRequierdHours(requiredHours);
+            projectRepo.Update(Projects[projectId]);
         }
 
         public void DeleteProject(int projectId){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
+            if (projectRepo.GetById(projectId) == null){
+                throw new Exception($"No such project {projectId}");
+            }
             Projects.Remove(projectCount);
-            // remove project from db
+            try{
+                projectRepo.Delete(projectId);
+            }
+            catch (Exception e){
+                throw new Exception($"No such project {projectId} " + $"{e}");
+            }
         }
 
 
-        public void AddRoleToProject(int projectId, Role role){
+        public void AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
-            Projects[projectId].AddRoleToProject(role);
+            Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+        }
+
+        public void RemoveRole(int projectId, int roleId){
+            if (!Projects.ContainsKey(projectId)){
+                throw new Exception($"No such project {projectId}");
+            }
+            Projects[projectId].RemoveRole(roleId);
         }
 
         public Dictionary<int, Role> GetAllRolesByProject(int projectId){
