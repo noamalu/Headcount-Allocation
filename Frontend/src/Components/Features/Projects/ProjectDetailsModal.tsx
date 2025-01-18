@@ -19,7 +19,8 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   }, [selectedRole]);
 
   const handleOpenModal = (role: Role) => {
-    console.log('Opening role modal for:', role.name);
+    console.log('Opening role modal for:', role.roleName);
+    console.log("Opening role modal for:", role.roleName, "Role data:", role); // בדוק את הערך
     setSelectedRole(role);
   };
 
@@ -31,10 +32,15 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>{project.name}</h2>
+        <h2>{project.projectName}</h2>
         <div className="modal-info">
-          <div className="deadline">
-            <i className="fas fa-calendar-alt"></i> {project.deadline}
+          <div className="modal-info-row">
+            <div className="deadline">
+              <i className="fas fa-calendar-alt"></i> {project.date}
+            </div>
+            <div className="required-hours">
+              <i className="fas fa-clock"></i> {project.requiredHours} hours
+            </div>
           </div>
           <div className="description">{project.description}</div>
         </div>
@@ -48,9 +54,9 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           </thead>
           <tbody>
             {project.roles.map((role) => (
-              <tr key={role.id}>
-                <td>{role.name}</td>
-                <td>{role.employee}</td>
+              <tr key={role.roleId}>
+                <td>{role.roleName}</td>
+                <td>{role.employeeId}</td>
                 <td>
                   <button className="action-button" onClick={() => handleOpenModal(role)}>
                     🔗

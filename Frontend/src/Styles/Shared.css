@@ -40,7 +40,8 @@
 
  .delete-button,
  .addRole-button,
- .edit-button {
+ .edit-button,
+ .assign-button {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -76,4 +77,13 @@
 
 .edit-button:hover {
     background: #3A526B;
+}
+
+.assign-button {
+  background: #a9a5f5;
+  color: white;
+}
+
+.assign-button:hover {
+  background: #817bf3;
 }

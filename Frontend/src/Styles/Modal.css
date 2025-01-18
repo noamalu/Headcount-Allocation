@@ -43,6 +43,14 @@
     width: 100%; /* התאמת רוחב מלא */
 }
 
+.modal-info-row {
+    display: flex;
+    justify-content: center; /* מרכז את האלמנטים */
+    align-items: center; /* מיושר במרכז האנכי */
+    gap: 20px; /* רווח בין התאריך לשעות */
+    margin-bottom: 15px; /* מרווח תחתון */
+  }
+
 .modal-info .deadline {
     font-size: 16px;
     font-weight: 500;
@@ -55,6 +63,19 @@
     padding: 10px 15px;
     border-radius: 8px;
     width: 200px;
+}
+.modal-info .required-hours {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4F4846;
+    margin-bottom: 10px;
+    text-align: center;
+    gap: 10px;
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 150px;
 }
 
 .modal-info .description {
@@ -120,6 +141,13 @@
     font-family: 'Poppins';
 }
 
+.modal-info number-field {
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1px solid #E8CEBF;
+    font-family: 'Poppins';
+}
+
 .roles-input-table {
     width: 70%;
     border-collapse: collapse;
@@ -142,4 +170,85 @@
 .roles-input-table td {
     border-top: 1px solid #E8CEBF;
 }
+
+.modal-content.role-modal {
+    text-align: center;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* כותרת תפקיד */
+  .role-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4F4846;
+    margin-bottom: 20px;
+  }
+  
+  /* פרטי עובד */
+  .employee-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .employee-avatar {
+    font-size: 24px;
+    color: #6C63FF;
+  }
+  
+  .employee-name {
+    font-size: 16px;
+    color: #4F4846;
+  }
+  
+  /* תיאור תפקיד */
+  .role-description {
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .role-description h3 {
+    font-size: 18px;
+    color: #4F4846;
+    margin-bottom: 10px;
+  }
+  
+  .role-description p {
+    font-size: 14px;
+    color: #4F4846;
+  }
+  
+  /* טבלת מיומנויות */
+  .skills-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .skills-table th {
+    background: #E8CEBF;
+    color: #4F4846;
+    font-size: 14px;
+    padding: 10px;
+  }
+  
+  .skills-table td {
+    background: #FDF8F5;
+    color: #4F4846;
+    font-size: 14px;
+    padding: 10px;
+    border-top: 1px solid #E8CEBF;
+  }
+
 

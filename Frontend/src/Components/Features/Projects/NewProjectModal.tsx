@@ -9,12 +9,14 @@ import '../../../Styles/Shared.css';
 const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [projectName, setProjectName] = useState('');
     const [deadline, setDeadline] = useState('');
+    const [requiredHours, setRequiredHoursline] = useState<number>(0);
     const [description, setDescription] = useState('');
   
     const handleSubmit = () => {
       const newProject = {
         name: projectName,
         deadline,
+        requiredHours,
         description,
       };
       console.log('Creating Project:', newProject);
@@ -43,6 +45,15 @@ const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 type="date"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
+                className="input-field"
+              />
+            </div>
+            <div>
+              <label>Required Hours: </label>
+              <input
+                type="number"
+                value={requiredHours}
+                onChange={(e) => setRequiredHoursline(Number(e.target.value))}
                 className="input-field"
               />
             </div>

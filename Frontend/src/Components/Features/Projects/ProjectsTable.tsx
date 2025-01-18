@@ -90,9 +90,9 @@ const ProjectsTable: React.FC = () => {
         </thead>
         <tbody>
           {projects.map((project) => (
-            <tr key={project.id}>
-              <td>{project.name}</td>
-              <td>{project.deadline}</td>
+            <tr key={project.projectId}>
+              <td>{project.projectName}</td>
+              <td>{project.date}</td>
               <td>{project.roles.length}</td>
               <td>
                 <button className="action-button" onClick={() => handleOpenModal(project)}>🔗</button>
