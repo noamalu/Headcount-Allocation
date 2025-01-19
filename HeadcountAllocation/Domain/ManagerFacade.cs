@@ -136,6 +136,22 @@ namespace HeadcountAllocation.Domain{
             Employees[employeeId].AssignEmployeeToRole(role);
         }
 
+        public Dictionary <Employee, int> EmployeesToAssign(Role role){
+           Dictionary<Employee, int> employees = new Dictionary<Employee, int>();
+           foreach (Employee employee in Employees.Values){
+            int score = 0;
+                foreach (Skill skill in employee.Skills){
+                    Skill roleSkill = role.Skills[skill.SkillId];
+                    if (skill.Level == roleSkill.Level)
+                        score = score +3*roleSkill.p
+                }
+           }
+
+
+
+           return employees;
+        }
+
 
     }
 }
