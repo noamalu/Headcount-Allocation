@@ -4,6 +4,7 @@ using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using static HeadcountAllocation.Domain.Enums;
 using System.Collections.Concurrent;
+using HeadcountAllocation.Services;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
@@ -42,9 +43,11 @@ var context = DBcontext.GetInstance();
 TimeZonesDTO morning = new TimeZonesDTO(TimeZones.Morning);
 TimeZonesDTO noon = new TimeZonesDTO(TimeZones.Noon);
 TimeZonesDTO evening = new TimeZonesDTO(TimeZones.Evening);
+TimeZonesDTO flexible = new TimeZonesDTO(TimeZones.Flexible);
 context.TimeZones.Add(morning);
 context.TimeZones.Add(noon);
 context.TimeZones.Add(evening);
+context.TimeZones.Add(flexible);
 
 LanguageTypesDTO english = new LanguageTypesDTO(Languages.English);
 LanguageTypesDTO hebrew = new LanguageTypesDTO(Languages.Hebrew);
@@ -138,14 +141,23 @@ context.SkillTypes.Add(python);
 // Console.WriteLine("Test data added successfully!");
 
 Console.WriteLine("added help data");
-
-ManagerFacade managerFacade = new ManagerFacade();
-managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
-languages.TryAdd(1, new Language(0, Languages.English, 5));
+languages.TryAdd(Enums.GetId(Languages.English), new Language(Languages.English, 5));
+languages.TryAdd(Enums.GetId(Languages.Hebrew), new Language(Languages.Hebrew, 10));
 ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
-skills.TryAdd(1, new Skill(0, Skills.Python, 10));
+skills.TryAdd(Enums.GetId(Skills.Python), new Skill(Skills.Python, 10, 1));
+
+ManagerFacade managerFacade = ManagerFacade.GetInstance();
+managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
+
 managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
+
+HeadCountService headCountService = HeadCountService.GetInstance();
+headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, skills, 2, 0.5);
+Console.WriteLine("added service");
+
+
+
 
 
 

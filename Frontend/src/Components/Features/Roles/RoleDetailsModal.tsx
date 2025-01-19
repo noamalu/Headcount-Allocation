@@ -1,0 +1,90 @@
+import React, { useState, useEffect } from 'react';
+import AssignEmployeeModal from './AssignEmployeeModal';
+import { Role } from '../../../Types/RoleType';
+import '../../../Styles/Modal.css';
+import '../../../Styles/Shared.css';
+
+
+interface RoleDetailsModalProps {
+  role: Role;
+  onClose: () => void;
+  onSave?: (newRole: Role) => void; // Add this line
+}
+
+const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) => {
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+
+  useEffect(() => {
+    console.log("RoleDetailsModal mounted or updated for role:", role);
+  }, [role]);
+
+  const handleAssign = (newEmployee: string) => {
+    console.log(`Assigned ${newEmployee} to role ${role.roleName}`);
+    // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
+  };
+
+  return (
+    <div className="modal-overlay role-modal">
+      <div className="modal-content role-modal">
+        {/* כפתור סגירה */}
+        <button className="close-button" onClick={onClose}>✖</button>
+        
+        {/* כותרת עם שם התפקיד */}
+        <h2 className="role-name">{role.roleName}</h2>
+        
+        {/* שם העובד המשויך */}
+        <div className="employee-info">
+          <span className="employee-avatar">👤</span>
+          <p className="employee-name">{role.employeeId || "No employee assigned"}</p>
+        </div>
+
+        {/* תיאור התפקיד */}
+        <div className="role-description">
+          <p>{role.description}</p>
+        </div>
+
+        {/* טבלת מאפיינים */}
+        <div className="skills-section">
+          <table className="skills-table">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th>Required ranking</th>
+                <th>Priority</th>
+                <th>Employee’s ranking</th>
+              </tr>
+            </thead>
+            <tbody>
+            {role.skills.map((skill) => (
+                <tr key={skill.skillTypeId}>
+                  <td>{skill.skillTypeName}</td>
+                  <td>{skill.level}</td>
+                  <td>{skill.priority}</td>
+                  <td> {0}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* כפתורי פעולה */}
+        <div className="modal-actions">
+          <button className="delete-button">🗑 Delete</button>
+          <button onClick={() => setIsAssignModalOpen(true)} className="assign-button">👤 Assign Employee</button>
+          <button className="edit-button">✏ Edit</button>
+        </div>
+      </div>
+
+      {/* חלון שיוך עובד */}
+      {isAssignModalOpen && (
+        <AssignEmployeeModal
+          role={role.roleName}
+          onClose={() => setIsAssignModalOpen(false)}
+          onAssign={handleAssign}
+        />
+      )}
+    </div>
+  );
+};
+
+export default RoleDetailsModal;

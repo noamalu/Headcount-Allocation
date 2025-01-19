@@ -6,6 +6,8 @@ namespace HeadcountAllocation.Domain{
 
     public class ManagerFacade{
 
+        private static ManagerFacade managerFacade = null;
+
         public Dictionary<int, Project> Projects{get;set;} = new();
 
         public Dictionary<int, Employee> Employees{get;set;} = new();
@@ -22,6 +24,24 @@ namespace HeadcountAllocation.Domain{
         {
             projectRepo = ProjectRepo.GetInstance();
             employeeRepo = EmployeeRepo.GetInstance();
+        }
+
+        public static ManagerFacade GetInstance(){
+            if (managerFacade == null){
+                managerFacade = new ManagerFacade();
+            }
+            return managerFacade;
+        }
+
+        public static void Dispose(){
+            EmployeeRepo.Dispose();
+            ProjectRepo.Dispose();
+            EmployeeLanguagesRepo.Dispose();
+            EmployeeSkillsRepo.Dispose();
+            RoleRepo.Dispose();
+            RoleLanguagesRepo.Dispose();
+            RoleSkillsRepo.Dispose();
+            managerFacade = null;
         }
 
         public void CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){

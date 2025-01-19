@@ -1,7 +1,20 @@
-import Sidebar from './Sidebar';
+import Sidebar from './Components/Layout/Sidebar';
+import Header from './Components/Layout/Header';
+import './Styles/App.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import ProjectsPage from './Pages/ProjectsPage';
+// import './index.css';
 
-function App() {
-  return <div><Sidebar></Sidebar></div>;
-}
+const App = () => {
+  return (
+    <div className="app-container">
+      <Sidebar />
+      <Header />
+      <main>
+        <ProjectsPage />
+      </main>
+    </div>
+  );
+};
 
 export default App;

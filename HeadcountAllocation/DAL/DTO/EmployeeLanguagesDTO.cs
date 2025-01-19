@@ -12,29 +12,23 @@ namespace HeadcountAllocation.DAL.DTO
     [Table("EmployeeLanguages")]
     public class EmployeeLanguagesDTO
     {
-    
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        
-        public int LanguageID { get; set; }
+        public int LanguageTypeId { get; set; }
 
         [ForeignKey("Employees")]
         public int EmployeeId { get; }
-        public int LanguageTypeId {get; set;}
         public int Level { get; set; }
 
 
         public EmployeeLanguagesDTO() { }
-        public EmployeeLanguagesDTO(int LanguageID, int LanguageTypeId, int Level)
+        public EmployeeLanguagesDTO(int languageTypeId, int employeeId, int level)
         {
-            LanguageID = LanguageID;
-            LanguageTypeId = LanguageTypeId;
-            Level = Level;
+            LanguageTypeId = languageTypeId;
+            EmployeeId = employeeId;
+            Level = level;
         }
 
          public EmployeeLanguagesDTO(Language language)
         {
-            LanguageID = language.LanguageID;
             LanguageTypeId = Enums.GetId(language.LanguageType);
             Level = language.Level;
         }
