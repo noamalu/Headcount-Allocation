@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Project } from '../../../Types/ProjectType';
 import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
+import EditProjectModal from './EditProjectModal';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 
@@ -13,19 +14,25 @@ interface ProjectDetailsModalProps {
 
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 
   useEffect(() => {
     console.log('SelectedRole changed:', selectedRole);
   }, [selectedRole]);
 
   const handleOpenModal = (role: Role) => {
-    console.log('Opening role modal for:', role.roleName);
     console.log("Opening role modal for:", role.roleName, "Role data:", role); // בדוק את הערך
     setSelectedRole(role);
   };
 
   const handleCloseModal = () => {
     setSelectedRole(null);
+  };
+
+  const handleEditSave = (updatedProject: Project) => {
+    console.log('Project updated:', updatedProject);
+    // Update the project details here (e.g., send to API or update state)
   };
 
   return (
@@ -67,19 +74,25 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           </tbody>
         </table>
         <div className="modal-actions">
-          <button className="delete-button">
-            <i className="fas fa-trash"></i> Delete
+        <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
+            <i className="fas fa-pen"></i> Edit
           </button>
           <button className="addRole-button">
             <i className="fas fa-plus"></i> Add Role
           </button>
-          <button className="edit-button">
-            <i className="fas fa-pen"></i> Edit
+          <button className="delete-button">
+            <i className="fas fa-trash"></i> Delete
           </button>
         </div>
         {selectedRole && (
           <RoleDetailsModal role={selectedRole} onClose={handleCloseModal} />
         )}
+         {isEditModalOpen && (
+          <EditProjectModal
+            project={project}
+            onClose={() => setIsEditModalOpen(false)}
+            onSave={handleEditSave} />
+          )}
       </div>
     </div>
   );

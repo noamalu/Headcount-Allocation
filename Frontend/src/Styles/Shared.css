@@ -41,7 +41,10 @@
  .delete-button,
  .addRole-button,
  .edit-button,
- .assign-button {
+ .assign-button,
+ .cancel-button,
+ .save-button 
+  {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -86,4 +89,22 @@
 
 .assign-button:hover {
   background: #817bf3;
+}
+
+.cancel-button {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background: #e0e0e0;
+}
+
+.save-button {
+  background: rgb(34, 173, 120);
+  color: white;
+}
+
+.save-button:hover {
+  background: rgb(1, 128, 79);
 }
