@@ -59,6 +59,28 @@ yarn-error.log*
 *.scaffolding
 ScaffoldingReadMe.txt
 
+# Build output directories
+bin/
+obj/
+
+# Intermediate build files
+*.dll
+*.exe
+*.pdb
+
+# NuGet and project-specific files
+*.nuget.cache
+*.dgspec.json
+*.assets.cache
+*.AssemblyInfoInputs.cache
+*.AssemblyReference.cache
+*.CoreCompileInputs.cache
+*.sourcelink.json
+apphost.exe
+ref/
+refint/
+project.assets.json
+
 # Logs and Temp Files
 *.log
 *.tmp
