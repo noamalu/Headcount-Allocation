@@ -1,7 +1,7 @@
-export interface RoleSkill {
+export interface EmployeeSkill {
     skillId: number;
     skillName: string;
-    roleId: number; 
+    employeeId: number; 
     level: number;
     priority: number;
 }

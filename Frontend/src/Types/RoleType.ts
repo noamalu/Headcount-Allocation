@@ -6,7 +6,7 @@ export interface Role {
     projectId: number;
     employeeId?: number;
     description: string;
-    timeZoneId: number;
+    timeZone: number;
     foreignLanguages: string[];
     skills: RoleSkill[];
     yearsExperience: number;

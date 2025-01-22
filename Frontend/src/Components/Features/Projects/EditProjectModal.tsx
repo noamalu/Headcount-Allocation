@@ -58,7 +58,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
                 type="date"
                 id="deadline"
                 name="date"
-                value={editedProject.date}
+                value={editedProject.deadline}
                 onChange={handleInputChange}
                 className="input-field"
               />

@@ -1,0 +1,64 @@
+.modal-info .deadline {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4F4846;
+    margin-bottom: 10px;
+    text-align: center;
+    gap: 10px;
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 150px;
+}
+.modal-info .required-hours {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4F4846;
+    margin-bottom: 10px;
+    text-align: center;
+    gap: 10px;
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 150px;
+}
+
+.modal-info .description {
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4F4846;
+    max-height: 150px;
+    text-align: left;
+    width: 90%; 
+    overflow-y: auto; /* הוספת גלילה */
+}
+
+.roles-table {
+    width: 70%;
+    border-collapse: separate;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.roles-table th, .roles-table td {
+    padding: 6px;
+    text-align: center;
+    font-size: 12px;
+    color: #4F4846;
+}
+
+.roles-table th {
+    background: #E8CEBF;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.roles-table td {
+    border-top: 1px solid #E8CEBF;
+}

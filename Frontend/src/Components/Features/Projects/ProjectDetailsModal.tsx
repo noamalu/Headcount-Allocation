@@ -43,7 +43,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
         <div className="modal-info">
           <div className="modal-info-row">
             <div className="deadline">
-              <i className="fas fa-calendar-alt"></i> {project.date}
+              <i className="fas fa-calendar-alt"></i> {project.deadline}
             </div>
             <div className="required-hours">
               <i className="fas fa-clock"></i> {project.requiredHours} hours

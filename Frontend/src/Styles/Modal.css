@@ -94,7 +94,8 @@
 
 .roles-table {
     width: 70%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-radius: 10px;
     margin-top: 20px;
 }
 
@@ -209,14 +210,10 @@
   
   /* תיאור תפקיד */
   .role-description {
-    background: #FDF8F5;
-    border: 1px solid #E8CEBF;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    text-align: left;
+    align-items: center; 
+    width: 100%;
   }
-  
+
   .role-description h3 {
     font-size: 18px;
     color: #4F4846;
@@ -227,6 +224,49 @@
     font-size: 14px;
     color: #4F4846;
   }
+
+  .role-details {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    justify-content: center;
+    padding: 20px;
+    /* background: #f7e7de;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    gap: 15px;
+  }
+  
+  .detail-banner {
+    display: flex;
+    align-items: center; 
+    text-align: center; 
+    flex-wrap: wrap;
+    padding: 15px;
+    background: #FDF8F5;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    gap: 10px;
+  }
+  
+   .detail-banner i {
+    font-size: 36px;
+    color: #266150;
+  }
+  
+  .detail-banner span {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .wide-banner {
+    flex: 1 1 100%; 
+    justify-content: center; 
+    text-align: center; 
+  }
+  
+  
   
   /* טבלת מיומנויות */
   .skills-table {
@@ -234,6 +274,8 @@
     border-collapse: collapse;
     margin-top: 20px;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
   }
   
   .skills-table th {
