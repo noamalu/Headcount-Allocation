@@ -42,7 +42,7 @@
                 ProjectId = project.ProjectId;
                 ProjectName = project.ProjectName;
                 Description = project.Description;
-                Date = project.Date;
+                Date = project.Deadline;
                 RequiredHours = project.RequiredHours;
                 Roles = new List<RoleDTO>();
                 foreach (var role in project.Roles)

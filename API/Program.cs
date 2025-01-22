@@ -1,10 +1,13 @@
 using HeadcountAllocation.Domain;
+using HeadcountAllocation.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ManagerFacade>(); // Register ManagerFacade as a singleton
+builder.Services.AddSingleton<HeadCountService>(); // Register ManagerFacade as a singleton
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

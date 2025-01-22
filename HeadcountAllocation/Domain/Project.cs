@@ -13,7 +13,7 @@ namespace HeadcountAllocation.Domain{
 
         public string? Description{get;set;}
 
-        public DateTime Date{get;set;}
+        public DateTime Deadline{get;set;}
 
         public int RequiredHours{get;set;}
 
@@ -26,7 +26,7 @@ namespace HeadcountAllocation.Domain{
             ProjectName = projectName;
             ProjectId = projectId;
             Description = description;
-            Date = date;
+            Deadline = date;
             RequiredHours = requiredHours;
             Roles = roles;
             RoleRepo = RoleRepo.GetInstance();
@@ -37,7 +37,7 @@ namespace HeadcountAllocation.Domain{
            ProjectName = projectDTO.ProjectName;
             ProjectId = projectDTO.ProjectId;
             Description = projectDTO.Description;
-            Date = projectDTO.Date;
+            Deadline = projectDTO.Date;
             RequiredHours = projectDTO.RequiredHours;
             foreach (RoleDTO roleDTO in projectDTO.Roles){
                 Roles[roleDTO.RoleId] = new Role(roleDTO);
@@ -84,7 +84,7 @@ namespace HeadcountAllocation.Domain{
         } 
 
         public void EditProjectDate(DateTime date){
-            Date = date;   
+            Deadline = date;   
         } 
 
         public void EditProjectRequierdHours(int requiredHours){
