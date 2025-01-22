@@ -3,10 +3,9 @@ import { Role } from './RoleType'
 
 export interface Employee {
     employeeId: number; 
-    userName: string;
+    employeeName: string;
     phoneNumber: string;
     email: string;
-    projectId: number;
     timeZone: number[];
     foreignLanguages: string[];
     jobPercentage: number;
