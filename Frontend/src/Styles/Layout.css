@@ -1,0 +1,86 @@
+.sidebar {
+  grid-area: sidebar; /* מיקום ה-sidebar */
+  background: linear-gradient(180deg, #FDF8F5, #E8CEBF); 
+  position: fixed;
+  /* background: linear-gradient(180deg, #518478, #405955); גוון רך מפלטת הצבעים */
+  color: #4F4846; 
+  margin-top: 70px; 
+  padding: 20px;
+  height: 100vh; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.sidebar li {
+  font-family: 'Poppins';
+  font-size: 18px; 
+  font-weight: 500;
+  margin: 15px 0;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar li:hover {
+  background-color: #DDAF94; /* רקע קליל בעת ריחוף */
+  color: #FFFFFF; /* טקסט לבן */
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to right, #FDF8F5, #E8CEBF);
+  color: #4F4846;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+/* Navigation container */
+.header nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.breadcrumb {
+  font-size: 18px;
+  font-weight: 500;
+  color: #4F4846;
+  margin: 0;
+}
+
+.icon-container {
+  display: flex;
+  gap: 20px; /* רווח בין האייקונים */
+  justify-content: flex-end; /* מוודא שהאייקונים נצמדים לימין */
+}
+
+.icon-container i {
+  font-size: 20px;
+  color: #356859;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.icon-container i:hover {
+  color: #1E4E40;
+}

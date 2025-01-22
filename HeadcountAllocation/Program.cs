@@ -43,9 +43,11 @@ var context = DBcontext.GetInstance();
 TimeZonesDTO morning = new TimeZonesDTO(TimeZones.Morning);
 TimeZonesDTO noon = new TimeZonesDTO(TimeZones.Noon);
 TimeZonesDTO evening = new TimeZonesDTO(TimeZones.Evening);
+TimeZonesDTO flexible = new TimeZonesDTO(TimeZones.Flexible);
 context.TimeZones.Add(morning);
 context.TimeZones.Add(noon);
 context.TimeZones.Add(evening);
+context.TimeZones.Add(flexible);
 
 LanguageTypesDTO english = new LanguageTypesDTO(Languages.English);
 LanguageTypesDTO hebrew = new LanguageTypesDTO(Languages.Hebrew);

@@ -46,12 +46,12 @@ namespace HeadcountAllocation.Domain{
           ProjectId = roleDTO.ProjectId;
           TimeZone = Enums.GetValueById<TimeZones>(roleDTO.TimeZoneId);
           foreach (RoleLanguagesDTO roleLanguagesDTO in roleDTO.ForeignLanguages){
-            ForeignLanguages[roleLanguagesDTO.LanguageID]=new Language(roleLanguagesDTO);
+            ForeignLanguages[roleLanguagesDTO.LanguageTypeId]=new Language(roleLanguagesDTO);
           }
           TimeZone = Enums.GetValueById<TimeZones>(roleDTO.TimeZoneId);
           YearsExperience = roleDTO.YearsExperience;
           foreach (RoleSkillsDTO skillDTO in roleDTO.Skills){
-                Skills[skillDTO.SkillId] = new Skill(skillDTO);
+                Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
             }
           
 
