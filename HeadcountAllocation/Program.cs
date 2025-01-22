@@ -111,7 +111,7 @@ context.SkillTypes.Add(python);
 //                 new RoleSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
 //                 new RoleSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
 //             },
-   
+
 //             YearsExperience = 2
 //         },
 //         new RoleDTO
@@ -131,7 +131,7 @@ context.SkillTypes.Add(python);
 //                 new RoleSkillsDTO { SkillId = 3, SkillTypeId = 1, Level = 5 },
 //                 new RoleSkillsDTO { SkillId = 4, SkillTypeId = 2, Level = 7 }
 //             },
-   
+
 //             YearsExperience = 2
 //         }
 //     }
@@ -147,8 +147,8 @@ languages.TryAdd(Enums.GetId(Languages.Hebrew), new Language(Languages.Hebrew, 1
 ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
 skills.TryAdd(Enums.GetId(Skills.Python), new Skill(Skills.Python, 10, 1));
 
-ManagerFacade managerFacade = ManagerFacade.GetInstance();
-managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
+// ManagerFacade managerFacade = ManagerFacade.GetInstance();
+// managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 
 managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
 
