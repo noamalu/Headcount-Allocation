@@ -1,7 +1,8 @@
 using HeadcountAllocation.DAL.DTO;
 using Microsoft.EntityFrameworkCore;
 
-namespace HeadcountAllocation.DAL{
+namespace HeadcountAllocation.DAL
+{
 
     public class DBcontext : DbContext
     {
@@ -13,13 +14,13 @@ namespace HeadcountAllocation.DAL{
         public virtual DbSet<EmployeeDTO> Employees { get; set; }
         public virtual DbSet<ProjectDTO> Projects { get; set; }
         public virtual DbSet<RoleDTO> Roles { get; set; }
-        public virtual DbSet<EmployeeSkillsDTO> EmployeeSkills { get; set;}
-        public virtual DbSet<EmployeeLanguagesDTO> EmployeeLanguages { get; set;}
-        public virtual DbSet<RoleSkillsDTO> RoleSkills { get; set;}
-        public virtual DbSet<RoleLanguagesDTO> RoleLanguages { get; set;}
-        public virtual DbSet<TimeZonesDTO> TimeZones { get; set;}
-        public virtual DbSet<SkillTypesDTO> SkillTypes { get; set;}
-        public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set;}
+        public virtual DbSet<EmployeeSkillsDTO> EmployeeSkills { get; set; }
+        public virtual DbSet<EmployeeLanguagesDTO> EmployeeLanguages { get; set; }
+        public virtual DbSet<RoleSkillsDTO> RoleSkills { get; set; }
+        public virtual DbSet<RoleLanguagesDTO> RoleLanguages { get; set; }
+        public virtual DbSet<TimeZonesDTO> TimeZones { get; set; }
+        public virtual DbSet<SkillTypesDTO> SkillTypes { get; set; }
+        public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set; }
 
 
         public override void Dispose()
@@ -92,12 +93,12 @@ namespace HeadcountAllocation.DAL{
         {
             if (!optionsBuilder.IsConfigured)
             {
-                  optionsBuilder.UseSqlServer($"{DbPath}"); // Use DbPath to configure the database connection
+                optionsBuilder.UseSqlServer($"{DbPath}"); // Use DbPath to configure the database connection
             }
         }
 
 
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // EmployeeDTO Relationships
             modelBuilder.Entity<EmployeeDTO>()
