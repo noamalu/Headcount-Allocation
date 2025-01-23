@@ -46,8 +46,8 @@ namespace HeadcountAllocation.Domain{
         }
 
         public Role AddRoleToProject(string roleName, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
-            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
+            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
             try{
                 RoleRepo.Add(role);
             }

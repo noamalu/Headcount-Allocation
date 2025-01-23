@@ -128,7 +128,8 @@ namespace HeadcountAllocation.Migrations
                     EmployeeId = table.Column<int>(type: "int", nullable: true),
                     TimeZoneId = table.Column<int>(type: "int", nullable: false),
                     YearsExperience = table.Column<int>(type: "int", nullable: false),
-                    JobPercentage = table.Column<double>(type: "float", nullable: false)
+                    JobPercentage = table.Column<double>(type: "float", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

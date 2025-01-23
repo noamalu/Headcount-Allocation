@@ -145,17 +145,11 @@ skills.TryAdd(Enums.GetId(Skills.Java), new Skill(Skills.Java, 2, 1));
 HeadCountService headCountService = HeadCountService.GetInstance();
 headCountService.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 
-Role role = headCountService.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 0.5).Value;
+Role role = headCountService.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 0.5, "role").Value;
 
-headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, skills, 2, 0.5);
+headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, skills, 2, 0.5, "role");
 Console.WriteLine("added service");
 
-// try{
-//     Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
-// }
-// catch (Exception e){
-//     Console.WriteLine(e);
-// }
 
 Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
 Console.WriteLine("here0");
