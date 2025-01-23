@@ -20,9 +20,10 @@ namespace API.Controllers
         }
 
         [HttpPost("Create")] 
-        public ActionResult<Response<int>> Create([Required][FromBody]Project project)
+        public ActionResult<Response<int>?> Create([Required][FromBody]Project project)
         {            
-            return Ok(_headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new()));
+            var projectId = _headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new());
+            return Ok(projectId);
         }
 
         [HttpDelete("Delete/{projectId}")]
