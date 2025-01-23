@@ -28,13 +28,12 @@ namespace HeadcountAllocation.Services{
         }
 
 
-        public Response CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
+        public Response<int> CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             try{
-                _managerFacade.CreateProject(projectName, description, date, requiredHours, roles);
-                return new Response();
+                return Response<int>.FromValue(_managerFacade.CreateProject(projectName, description, date, requiredHours, roles));
             }
             catch (Exception e){
-                return new Response(e.Message);
+                return Response<int>.FromError(e.Message);
             }            
         }
 
