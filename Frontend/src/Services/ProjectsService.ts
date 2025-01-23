@@ -3,6 +3,30 @@ import { fetchResponse } from './GeneralService';
 import ClientResponse from './Response';
 import { Project } from '../Types/ProjectType';
 
+class ProjectsService {
+
+
+ static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<Project> {
+        try {
+            const response = await APIClient('/api/Project/Create', {
+                method: 'POST',
+                body: JSON.stringify(project),
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (response.status === 200) {
+                return response.data; // מחזיר את האובייקט המלא (כולל ה-ID)
+            } else {
+                throw new Error("Failed to create project: " + response.statusText);
+            }
+        } catch (error) {
+            console.error("Error in sendCreateProject:", error);
+            throw error; // זורק את השגיאה לטיפול במקום הקריאה
+        }
+    }
+}
+
+
 // export const getProjects = async (): Promise<Project[]> => {
 //     return fetchResponse(
 //       APIClient('/projects', { method: 'GET' }).then((res) => res.data as ClientResponse<Project[]>)
@@ -40,3 +64,5 @@ export const createProject = async (projectData: {
     console.log('createProject Response:', response); // לוג לבדיקה
     return fetchResponse(response); // שמירה על הקריאה ל-fetchResponse
   };
+
+  export default ProjectsService;

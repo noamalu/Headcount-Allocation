@@ -4,24 +4,46 @@ import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
+import ProjectsService from '../../../Services/ProjectsService';
 
 
-const NewProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const NewProjectModal: React.FC<{ 
+  onClose: () => void; 
+  onProjectCreated: (project: Project) => void; 
+}> = ({ onClose, onProjectCreated }) => {
     const [projectName, setProjectName] = useState('');
     const [deadline, setDeadline] = useState('');
     const [requiredHours, setRequiredHoursline] = useState<number>(0);
     const [description, setDescription] = useState('');
+    const [error, setError] = useState<string>(""); 
   
-    const handleSubmit = () => {
-      const newProject = {
-        name: projectName,
+    const handleSubmit = async () => {
+      if (!projectName || !description || !deadline || requiredHours <= 0) {
+        setError("All fields are required, and required hours must be greater than 0.");
+        return;
+      }
+      const newProject: Project = {
+        projectId: -1, 
+        projectName,
+        description,
         deadline,
         requiredHours,
-        description,
+        roles: [], 
       };
-      console.log('Creating Project:', newProject);
-      onClose();
-    };
+      try {
+        const createdProject = await ProjectsService.sendCreateProject(newProject);
+
+        console.log('Project created successfully:', createdProject);
+
+        // קריאה לפונקציה שמעדכנת את הטבלה
+        onProjectCreated(createdProject);
+
+        onClose(); // סגירת המודל
+    } catch (error) {
+        console.error('Error creating project:', error);
+        setError('An error occurred while creating the project.');
+    }
+  };
   
     return (
       <div className="modal-overlay">

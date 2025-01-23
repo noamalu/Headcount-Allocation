@@ -77,6 +77,10 @@ const ProjectsTable: React.FC = () => {
     return <p className="error">{error}</p>;
   }
 
+  const handleProjectCreated = (newProject: Project) => {
+    setProjects((prevProjects) => [...prevProjects, newProject]); // מוסיף את הפרויקט לטבלה
+  };
+
   return (
     <div>
       <table className="projects-table">

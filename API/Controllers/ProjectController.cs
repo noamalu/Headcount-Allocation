@@ -18,8 +18,8 @@ namespace API.Controllers
             _headCountService = headcountService;
         }
 
-        [HttpPost("Create")] 
-        public IActionResult Create([Required][FromBody]Project project)
+        [HttpPost("Create")]
+        public IActionResult Create([Required][FromBody] Project project)
         {
             _headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new());
             return Ok("Project created successfully");
@@ -65,7 +65,7 @@ namespace API.Controllers
             {
                 return NotFound(ex.Message);
             }
-        }    
+        }
 
     }
 }
