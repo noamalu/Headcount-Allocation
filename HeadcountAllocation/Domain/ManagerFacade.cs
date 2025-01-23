@@ -156,6 +156,44 @@ namespace HeadcountAllocation.Domain{
             Employees[employeeId].AssignEmployeeToRole(role);
         }
 
+        public Dictionary <Employee, double> EmployeesToAssign(Role role){
+           Dictionary<Employee, double> employees = new Dictionary<Employee, double>();
+           foreach (Employee employee in Employees.Values){
+            double score = 0;
+            bool disqualified = false; 
+                if(employee.YearsExperience < role.YearsExperience)
+                    disqualified = true;
+                
+                foreach (Language language in role.ForeignLanguages.Values){
+                    //Language roleLanguage = role.ForeignLanguages[language.LanguageID];
+                    if(employee.ForeignLanguages.TryGetValue(language.LanguageID, out var employeeLang))
+                        if(employeeLang.Level < language.Level)
+                            disqualified = true;
+                    else
+                        disqualified = true;
+                }
+                if (disqualified == true)
+                    continue;
+            
+                foreach (Skill skill in role.Skills.Values){
+                    if (employee.Skills.ContainsKey(skill.SkillId)){
+                        Skill employeeSkill = employee.Skills[skill.SkillId];
+                        if (employeeSkill.Level == skill.Level)
+                            score = score +3 * skill.Priority/10;
+                        else if (employeeSkill.Level > skill.Level)
+                            score = score +2 * skill.Priority/10;
+                        else if (employeeSkill.Level+1 == skill.Level)
+                            score = score +1 * skill.Priority/10;
+                    }
+                }
+
+                employees[employee] = score;
+           }
+
+           Dictionary<Employee, double> sortedEmployees= employees.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
+           return sortedEmployees;
+        }
+
 
     }
 }
