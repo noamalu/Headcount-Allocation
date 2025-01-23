@@ -161,6 +161,8 @@ namespace HeadcountAllocation.Domain{
            foreach (Employee employee in Employees.Values){
             double score = 0;
             bool disqualified = false; 
+                if (employee.TimeZone != role.TimeZone & employee.TimeZone!= Enums.TimeZones.Flexible)
+                    disqualified = true;
                 if(employee.YearsExperience < role.YearsExperience)
                     disqualified = true;
                 
