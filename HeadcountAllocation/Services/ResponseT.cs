@@ -8,7 +8,7 @@ namespace HeadcountAllocation.Services
 
     public class Response<T> : Response
     {
-        public readonly T Value;
+        public T Value {get;}
         private Response(T value, string msg) : base(msg)
         {
             this.Value = value;

@@ -16,7 +16,7 @@ namespace API.Models
         public int? EmployeeId { get; set; }
         public int TimeZone{get;set;}
         
-        public List<string> ForeignLanguages {get; set;}
+        public List<Language> ForeignLanguages {get; set;}
 
         public List<Skill> Skills {get; set;}
 

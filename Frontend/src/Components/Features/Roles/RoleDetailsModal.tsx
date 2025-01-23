@@ -87,13 +87,13 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
             </thead>
             <tbody>
             {role.skills.map((skill) => (
-                <tr key={skill.skillId}>
-                  <td>{skill.skillName}</td>
-                  <td>{skill.level}</td>
-                  <td>{skill.priority}</td>
-                  <td> {0}</td>
-                </tr>
-              ))}
+                // <tr key={skill.skillId}>
+                //   <td>{skill.skillName}</td>
+                //   <td>{skill.level}</td>
+                //   <td>{skill.priority}</td>
+                //   <td> {0}</td>
+                // </tr>
+              0))}
             </tbody>
           </table>
         </div>

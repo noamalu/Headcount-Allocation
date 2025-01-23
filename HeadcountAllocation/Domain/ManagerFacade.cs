@@ -119,12 +119,13 @@ namespace HeadcountAllocation.Domain{
         }
 
 
-        public void AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+        public Role AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
                     ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
-            Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+            var roleId = Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+            return Projects[projectId].Roles[roleId];
         }
 
         public void RemoveRole(int projectId, int roleId){

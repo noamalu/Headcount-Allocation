@@ -1,17 +1,17 @@
 import { RoleSkill } from './RoleSkillType'
 
 export interface Role {
-    roleId: number; 
+    // roleId: number; 
     roleName: string;
     projectId: number;
     employeeId?: number;
     description: string;
     timeZone: number;
-    foreignLanguages: string[];
-    skills: RoleSkill[];
+    // foreignLanguages: [];
+    // skills: [];
     yearsExperience: number;
     jobPercentage: number;
     // attributes: { attribute: string; requiredRank: number | string; priority: number }[];
-    // foreignLanguages: RoleLanguage[];
-    // skills: RoleSkill[];
+    foreignLanguages: [];
+    skills: [];
   }

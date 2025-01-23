@@ -89,15 +89,15 @@ namespace HeadcountAllocation.Services{
         }
 
 
-        public Response AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+        public Response<Role> AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
                     ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
             try{
                 Console.WriteLine("got to manager facade");
-                _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
-                return new Response();
+                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+                return Response<Role>.FromValue(role);
             }
             catch (Exception e){
-                return new Response(e.Message);
+                return Response<Role>.FromError(e.Message);
             }     
         }
 

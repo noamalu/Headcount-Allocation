@@ -6,5 +6,5 @@ export interface Project {
     description: string;
     deadline: string; // To change to date when connecting API
     requiredHours: number;
-    roles: Role[];
+    // roles: Role[];
   }

@@ -1,3 +1,4 @@
+using API.Services;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
 
@@ -5,11 +6,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddSingleton<ManagerFacade>(); // Register ManagerFacade as a singleton
-builder.Services.AddSingleton<HeadCountService>(); // Register ManagerFacade as a singleton
+builder.Services.AddSingleton<ManagerFacade>(); 
+builder.Services.AddSingleton<HeadCountService>(); 
+builder.Services.AddSingleton<ProjectService>(); 
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder => builder
+            .WithOrigins("http://localhost:5173") // Frontend URL
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -21,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend"); // Add this line to apply the CORS policy
 
 app.UseAuthorization();
 app.MapControllers();

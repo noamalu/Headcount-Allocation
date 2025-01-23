@@ -6,7 +6,7 @@ namespace HeadcountAllocation.Services
     ///Otherwise, <c>ErrorOccured = false</c> and <c>ErrorMessage = null</c>.</summary>
     public class Response
     {
-        public readonly string ErrorMessage;
+        public string ErrorMessage {get;}
         public bool ErrorOccured { get => ErrorMessage != null; }
         internal Response() { }
         internal Response(string msg)

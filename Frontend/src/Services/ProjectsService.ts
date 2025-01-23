@@ -2,6 +2,7 @@ import { APIClient } from './APIClient';
 import { fetchResponse } from './GeneralService';
 import ClientResponse from './Response';
 import { Project } from '../Types/ProjectType';
+import { Role } from '../Types/RoleType';
 
 class ProjectsService {
 
@@ -23,7 +24,32 @@ class ProjectsService {
             throw error; 
         }
     }
+
+  //   static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
+  //     try {
+  //         const response = await APIClient(`/api/Project/${projectId}/Roles`, {
+  //             method: 'POST',
+  //             body: JSON.stringify(roles),
+  //             headers: { 'Content-Type': 'application/json' },
+  //         });
+  //         if (response.status === 200) {
+  //             return response.data; 
+  //         } else {
+  //             throw new Error("Failed to add roles to project: " + response.statusText);
+  //         }
+  //     } catch (error) {
+  //         console.error("Error in addRolesToProject:", error);
+  //         throw error; 
+  //     }
+  // }
+  
+
 }
+
+
+
+
+
 
 
 // export const getProjects = async (): Promise<Project[]> => {

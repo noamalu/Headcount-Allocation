@@ -5,6 +5,7 @@ import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import ProjectsService from '../../../Services/ProjectsService';
+// import AddRoleModal from '../Roles/NewRoleModal';
 
 
 const NewProjectModal: React.FC<{ 
@@ -16,6 +17,8 @@ const NewProjectModal: React.FC<{
     const [requiredHours, setRequiredHoursline] = useState<number>(0);
     const [description, setDescription] = useState('');
     const [error, setError] = useState<string>(""); 
+    // const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
+    // const [roles, setRoles] = useState<Role[]>([]);    
   
     const handleSubmit = async () => {
       if (!projectName || !description || !deadline || requiredHours <= 0) {
@@ -27,11 +30,15 @@ const NewProjectModal: React.FC<{
         projectName,
         description,
         deadline,
-        requiredHours,
-        roles: [], 
+        requiredHours
       };
       try {
         const createdProject = await ProjectsService.sendCreateProject(newProject);
+
+        // if (roles.length > 0) {
+        //   await ProjectsService.addRolesToProject(createdProject.projectId, roles);
+        //   console.log('Roles added to project successfully');
+        // }
 
         console.log('Project created successfully:', createdProject);
 
@@ -97,19 +104,45 @@ const NewProjectModal: React.FC<{
               </tr>
             </thead>
             <tbody>
-              {/* טבלה ריקה לעת עתה */}
+            {
+            // roles.map((role, index) => (
+            //   <tr key={index}>
+            //     <td>{role.roleName}</td>
+            //     <td>
+            //       <button
+            //         onClick={() =>
+            //           setRoles(roles.filter((_, idx) => idx !== index))
+            //         }
+            //       >
+            //         Remove
+            //       </button>
+            //     </td>
+            //   </tr>
+            // ))
+            }
             </tbody>
           </table>
           <div className="modal-actions">
             <button
               className="addRole-button"
-              onClick={() => {
-                // כרגע אין פעולה בכפתור
+              onClick={() => 
+              {                  
                 console.log('Add Role button clicked');
-              }}
-            >
+              }
+                //  setIsAddRoleModalOpen(true)
+                }
+                >
               + Add Role
             </button>
+            {/* {isAddRoleModalOpen && (
+            <AddRoleModal
+              onSave={(newRole) => {
+                setRoles([...roles, newRole]);
+                setIsAddRoleModalOpen(false);
+              }}
+              onClose={() => setIsAddRoleModalOpen(false)}
+            />
+          )} */}
             <button className="edit-button" onClick={handleSubmit}>
               Save Project
             </button>
