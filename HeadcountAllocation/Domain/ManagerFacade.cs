@@ -158,6 +158,9 @@ namespace HeadcountAllocation.Domain{
             Employees[employeeId].AssignEmployeeToRole(role);
         }
 
-
+        public List<Project> GetAllProjects()
+        {
+            return Projects.Values.ToList();
+        }
     }
 }

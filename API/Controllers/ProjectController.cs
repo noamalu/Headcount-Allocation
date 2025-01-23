@@ -32,6 +32,13 @@ namespace API.Controllers
             return Ok(projectId);
         }
 
+        [HttpGet("All")] 
+        public ActionResult<Response<int>> GetAllProjects()
+        {            
+            var projects = _headCountService.GetAllProjects();
+            return Ok(projects);
+        }
+
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute]int projectId)
         {
@@ -45,19 +52,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("{projectId}/Roles")]
-        public async Task<ActionResult<List<Response<Role>>>> AddRole([Required][FromRoute]int projectId, 
-            [Required][FromBody]List<Role> roles)
-        {
-            try
-            {                
-                return Ok(await _projectService.LinkRolesToProject(projectId, roles));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
+        // [HttpPost("{projectId}/Roles")]
+        // public async Task<ActionResult<List<Response<Role>>>> AddRole([Required][FromRoute]int projectId, 
+        //     [Required][FromBody]List<Role> roles)
+        // {
+        //     try
+        //     {                
+        //         return Ok(await _projectService.LinkRolesToProject(projectId, roles));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return NotFound(ex.Message);
+        //     }
+        // }
 
         // [HttpGet("{projectId}/Roles")]
         // public ActionResult<Response<Role>> GetRoles([Required][FromRoute]int projectId)

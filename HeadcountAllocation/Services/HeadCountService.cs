@@ -27,6 +27,14 @@ namespace HeadcountAllocation.Services{
             _headCountService = null;
         }
 
+        public Response<List<Project>> GetAllProjects(){
+            try{
+                return Response<List<Project>>.FromValue(_managerFacade.GetAllProjects());
+            }
+            catch (Exception e){
+                return Response<List<Project>>.FromError(e.Message);
+            }            
+        }
 
         public Response<int> CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             try{
