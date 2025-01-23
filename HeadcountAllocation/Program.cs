@@ -140,21 +140,25 @@ context.SkillTypes.Add(python);
 // context.SaveChanges();
 // Console.WriteLine("Test data added successfully!");
 
-Console.WriteLine("added help data");
-ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
-languages.TryAdd(Enums.GetId(Languages.English), new Language(Languages.English, 5));
-languages.TryAdd(Enums.GetId(Languages.Hebrew), new Language(Languages.Hebrew, 10));
-ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
-skills.TryAdd(Enums.GetId(Skills.Python), new Skill(Skills.Python, 10, 1));
+// Console.WriteLine("added help data");
+// ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
+// languages.TryAdd(1, new Language(0, Languages.English, 5));
+// ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
+// skills.TryAdd(1, new Skill(0, Skills.Python, 10));
 
 // ManagerFacade managerFacade = ManagerFacade.GetInstance();
 // managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 
-managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
+// managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
 
-HeadCountService headCountService = HeadCountService.GetInstance();
-headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, skills, 2, 0.5);
-Console.WriteLine("added service");
+// ConcurrentDictionary<int, Language> languages2 = new ConcurrentDictionary<int, Language>();
+// languages.TryAdd(1, new Language(1, Languages.English, 5));
+// ConcurrentDictionary<int, Skill> skills2 = new ConcurrentDictionary<int, Skill>();
+// skills.TryAdd(1, new Skill(1, Skills.Python, 10));
+
+// HeadCountService headCountService = HeadCountService.GetInstance();
+// headCountService.AddRoleToProject("test2", 1, TimeZones.Morning, languages2, skills2, 2, 0.5);
+// Console.WriteLine("added service");
 
 
 
