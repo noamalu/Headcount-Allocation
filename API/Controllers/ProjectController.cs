@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
 using static HeadcountAllocation.Domain.Enums;
 using HeadcountAllocation.DAL.DTO;
 using System.ComponentModel.DataAnnotations;
+using API.Models;
+using System.Collections.Concurrent;
 
 namespace API.Controllers
 {
@@ -18,20 +19,19 @@ namespace API.Controllers
             _headCountService = headcountService;
         }
 
-        [HttpPost("Create")]
-        public IActionResult Create([Required][FromBody] Project project)
-        {
-            _headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new());
-            return Ok("Project created successfully");
+        [HttpPost("Create")] 
+        public ActionResult<Response<int>?> Create([Required][FromBody]Project project)
+        {            
+            var projectId = _headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new());
+            return Ok(projectId);
         }
 
         [HttpDelete("Delete/{projectId}")]
-        public IActionResult Delete(int projectId)
+        public ActionResult<Response> Delete([Required][FromRoute]int projectId)
         {
             try
-            {
-                _headCountService.DeleteProject(projectId);
-                return Ok("Project deleted successfully");
+            {                
+                return Ok(_headCountService.DeleteProject(projectId));
             }
             catch (Exception ex)
             {
@@ -39,12 +39,16 @@ namespace API.Controllers
             }
         }
 
-        // [HttpPost("{projectId}/Roles/Add")]
-        // public IActionResult AddRole(int projectId, RoleDTO role)
+        // [HttpPost("{projectId}/Roles")]
+        // public ActionResult<Response> AddRole([Required][FromRoute]int projectId, 
+        //     [Required][FromBody]Role role)
         // {
         //     try
         //     {
-        //         _headCountService.AddRoleToProject(role.RoleName, projectId, Enums.GetValueById<TimeZones>(role.TimeZoneId), role.ForeignLanguages, role.Skills, role.YearsExperience, role.JobPercentage);
+        //         // _headCountService.AddRoleToProject(role.RoleName, projectId,
+        //         //     GetValueById<TimeZones>(role.TimeZone), 
+        //         //     role.ForeignLanguages, role.Skills, 
+        //         //     role.YearsExperience, role.JobPercentage);
         //         return Ok("Role added to project successfully");
         //     }
         //     catch (Exception ex)
@@ -53,19 +57,18 @@ namespace API.Controllers
         //     }
         // }
 
-        [HttpGet("{projectId}/Roles")]
-        public ActionResult<Role> GetRoles(int projectId)
-        {
-            try
-            {
-                var roles = _headCountService.GetAllRolesByProject(projectId);
-                return Ok(roles);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
+        // [HttpGet("{projectId}/Roles")]
+        // public ActionResult<Response<Role>> GetRoles([Required][FromRoute]int projectId)
+        // {
+        //     try
+        //     {
+        //         return Ok(_headCountService.GetAllRolesByProject(projectId));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return NotFound(ex.Message);
+        //     }
+        // }    
 
     }
 }

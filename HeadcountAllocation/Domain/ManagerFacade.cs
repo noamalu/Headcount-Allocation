@@ -44,11 +44,12 @@ namespace HeadcountAllocation.Domain{
             managerFacade = null;
         }
 
-        public void CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
+        public int CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
             Projects.Add(projectCount, project);
             try{
                 projectRepo.Add(project);
+                return project.ProjectId;
             }
             catch (Exception e){
                 throw new Exception(e.Message);
