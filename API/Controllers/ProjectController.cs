@@ -19,19 +19,17 @@ namespace API.Controllers
         }
 
         [HttpPost("Create")] 
-        public IActionResult Create([Required][FromBody]Project project)
-        {
-            _headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new());
-            return Ok("Project created successfully");
+        public ActionResult<Response> Create([Required][FromBody]Project project)
+        {            
+            return Ok(_headCountService.CreateProject(project.ProjectName, project.Description, project.Deadline, project.RequiredHours, new()));
         }
 
         [HttpDelete("Delete/{projectId}")]
-        public IActionResult Delete(int projectId)
+        public ActionResult<Response> Delete([Required][FromRoute]int projectId)
         {
             try
-            {
-                _headCountService.DeleteProject(projectId);
-                return Ok("Project deleted successfully");
+            {                
+                return Ok(_headCountService.DeleteProject(projectId));
             }
             catch (Exception ex)
             {
@@ -40,7 +38,7 @@ namespace API.Controllers
         }
 
         // [HttpPost("{projectId}/Roles/Add")]
-        // public IActionResult AddRole(int projectId, RoleDTO role)
+        // public ActionResult<Response> AddRole(int projectId, RoleDTO role)
         // {
         //     try
         //     {
@@ -54,12 +52,11 @@ namespace API.Controllers
         // }
 
         [HttpGet("{projectId}/Roles")]
-        public ActionResult<Role> GetRoles(int projectId)
+        public ActionResult<Response<Role>> GetRoles([Required][FromRoute]int projectId)
         {
             try
             {
-                var roles = _headCountService.GetAllRolesByProject(projectId);
-                return Ok(roles);
+                return Ok(_headCountService.GetAllRolesByProject(projectId));
             }
             catch (Exception ex)
             {
