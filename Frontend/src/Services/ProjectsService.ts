@@ -13,15 +13,14 @@ class ProjectsService {
                 body: JSON.stringify(project),
                 headers: { 'Content-Type': 'application/json' },
             });
-
             if (response.status === 200) {
-                return response.data; // מחזיר את האובייקט המלא (כולל ה-ID)
+                return response.data; 
             } else {
                 throw new Error("Failed to create project: " + response.statusText);
             }
         } catch (error) {
             console.error("Error in sendCreateProject:", error);
-            throw error; // זורק את השגיאה לטיפול במקום הקריאה
+            throw error; 
         }
     }
 }
