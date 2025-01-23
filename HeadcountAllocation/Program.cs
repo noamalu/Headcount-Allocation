@@ -55,106 +55,119 @@ context.LanguageTypes.Add(english);
 context.LanguageTypes.Add(hebrew);
 
 SkillTypesDTO python = new SkillTypesDTO(Skills.Python);
+SkillTypesDTO sql = new SkillTypesDTO(Skills.SQL);
+SkillTypesDTO api = new SkillTypesDTO(Skills.API);
+SkillTypesDTO java = new SkillTypesDTO(Skills.Java);
+SkillTypesDTO ui = new SkillTypesDTO(Skills.UI);
 context.SkillTypes.Add(python);
+context.SkillTypes.Add(sql);
+context.SkillTypes.Add(api);
+context.SkillTypes.Add(java);
+context.SkillTypes.Add(ui);
 
-// //Add test data
-// context.Employees.Add(new EmployeeDTO
-// {
-//     EmployeeId = 1,
-//     UserName = "John Doe",
-//     PhoneNumber = "0545598789",
-//     Email = "hp1@gmail.com",
-//     TimeZone = 1,
-//     ForeignLanguages = new List<EmployeeLanguagesDTO>
-//     {
-//         new EmployeeLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
-//     },
-//     JobPercentage = 0.5,
-//     Skills = new List<EmployeeSkillsDTO>
-//     {
-//         new EmployeeSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
-//         new EmployeeSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
-//     },
-//     YearExp = 2
-// });
-
-// context.SaveChanges();
-// Console.WriteLine("Test data added successfully!");
+// perfect employee
+List<EmployeeLanguagesDTO> emp_languages = new List<EmployeeLanguagesDTO>();
+emp_languages.Add(new EmployeeLanguagesDTO(0, 0, 1));
+emp_languages.Add(new EmployeeLanguagesDTO(1, 0, 3));
+List<EmployeeSkillsDTO> emp_skills = new List<EmployeeSkillsDTO>();
+emp_skills.Add(new EmployeeSkillsDTO(0, 2, 0));
+emp_skills.Add(new EmployeeSkillsDTO(2, 2, 0));
+emp_skills.Add(new EmployeeSkillsDTO(3, 2, 0));
+EmployeeDTO employee0 = new EmployeeDTO(0, "employee1", "123", "mail", 0, emp_languages, 1, emp_skills, new List<RoleDTO>(), 10);
+context.Employees.Add(employee0);
 
 
-// // context.SaveChanges();
-// // Console.WriteLine("Test data added successfully!");
+// all over employee
+List<EmployeeLanguagesDTO> emp_languages1 = new List<EmployeeLanguagesDTO>();
+emp_languages1.Add(new EmployeeLanguagesDTO(0, 1, 1));
+emp_languages1.Add(new EmployeeLanguagesDTO(1, 1, 3));
+List<EmployeeSkillsDTO> emp_skills1 = new List<EmployeeSkillsDTO>();
+emp_skills1.Add(new EmployeeSkillsDTO(0, 3, 0));
+emp_skills1.Add(new EmployeeSkillsDTO(2, 3, 0));
+emp_skills1.Add(new EmployeeSkillsDTO(3, 3, 0));
+EmployeeDTO employee1 = new EmployeeDTO(1, "employee2", "123", "mail", 0, emp_languages1, 1, emp_skills1, new List<RoleDTO>(), 10);
+context.Employees.Add(employee1);
 
-// context.Projects.Add(new ProjectDTO
-// {
-//     ProjectId = 1,
-//     ProjectName = "project1",
-//     Description = "desc1",
-//     Date = DateTime.Now,
-//     RequiredHours = 10,
-//     Roles = new List<RoleDTO>
-//     {
-//         new RoleDTO
-//         {
-//             RoleId = 1,
-//             RoleName = "Role1",
-//             ProjectId = 1,
-//             EmployeeId = null,
-//             TimeZoneId = 1,
-//             ForeignLanguages = new List<RoleLanguagesDTO>
-//             {
-//                 new RoleLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
-//             },
-//             JobPercentage = 0.5,
-//             Skills = new List<RoleSkillsDTO>
-//             {
-//                 new RoleSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
-//                 new RoleSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
-//             },
-   
-//             YearsExperience = 2
-//         },
-//         new RoleDTO
-//         {
-//             RoleId = 2,
-//             RoleName = "Role1",
-//             ProjectId = 1,
-//             EmployeeId = 1,
-//             TimeZoneId = 1,
-//             ForeignLanguages = new List<RoleLanguagesDTO>
-//             {
-//                 new RoleLanguagesDTO { LanguageID = 2, LanguageTypeId = 1, Level = 10}
-//             },
-//             JobPercentage = 0.5,
-//             Skills = new List<RoleSkillsDTO>
-//             {
-//                 new RoleSkillsDTO { SkillId = 3, SkillTypeId = 1, Level = 5 },
-//                 new RoleSkillsDTO { SkillId = 4, SkillTypeId = 2, Level = 7 }
-//             },
-   
-//             YearsExperience = 2
-//         }
-//     }
-// });
+// all below employee
+List<EmployeeLanguagesDTO> emp_languages2 = new List<EmployeeLanguagesDTO>();
+emp_languages2.Add(new EmployeeLanguagesDTO(0, 2, 1));
+emp_languages2.Add(new EmployeeLanguagesDTO(1, 2, 3));
+List<EmployeeSkillsDTO> emp_skills2 = new List<EmployeeSkillsDTO>();
+emp_skills2.Add(new EmployeeSkillsDTO(0, 1, 0));
+emp_skills2.Add(new EmployeeSkillsDTO(2, 1, 0));
+emp_skills2.Add(new EmployeeSkillsDTO(3, 1, 0));
+EmployeeDTO employee2 = new EmployeeDTO(2, "employee3", "123", "mail", 0, emp_languages2, 1, emp_skills2, new List<RoleDTO>(), 10);
+context.Employees.Add(employee2);
 
-// context.SaveChanges();
-// Console.WriteLine("Test data added successfully!");
+// no languages employee
+List<EmployeeLanguagesDTO> emp_languages3 = new List<EmployeeLanguagesDTO>();
+emp_languages3.Add(new EmployeeLanguagesDTO(0, 3, 1));
+emp_languages3.Add(new EmployeeLanguagesDTO(1, 3, 1));
+List<EmployeeSkillsDTO> emp_skills3 = new List<EmployeeSkillsDTO>();
+emp_skills3.Add(new EmployeeSkillsDTO(0, 2, 0));
+emp_skills3.Add(new EmployeeSkillsDTO(2, 2, 0));
+emp_skills3.Add(new EmployeeSkillsDTO(3, 2, 0));
+EmployeeDTO employee3 = new EmployeeDTO(3, "employee4", "123", "mail", 0, emp_languages3, 1, emp_skills3, new List<RoleDTO>(), 10);
+context.Employees.Add(employee3);
+
+// all below employee
+List<EmployeeLanguagesDTO> emp_languages4 = new List<EmployeeLanguagesDTO>();
+emp_languages4.Add(new EmployeeLanguagesDTO(0, 4, 1));
+emp_languages4.Add(new EmployeeLanguagesDTO(1, 4, 3));
+List<EmployeeSkillsDTO> emp_skills4 = new List<EmployeeSkillsDTO>();
+emp_skills4.Add(new EmployeeSkillsDTO(0, 3, 0));
+emp_skills4.Add(new EmployeeSkillsDTO(2, 3, 0));
+EmployeeDTO employee4 = new EmployeeDTO(4, "employee5", "123", "mail", 0, emp_languages4, 1, emp_skills4, new List<RoleDTO>(), 10);
+context.Employees.Add(employee4);
+
+ManagerFacade managerFacade = ManagerFacade.GetInstance();
+Employee emp0 = new Employee(employee0);
+Employee emp1 = new Employee(employee1);
+Employee emp2 = new Employee(employee2);
+Employee emp3 = new Employee(employee3);
+Employee emp4 = new Employee(employee4);
+managerFacade.Employees.TryAdd(emp0.EmployeeId, emp0);
+managerFacade.Employees.TryAdd(emp1.EmployeeId, emp1);
+managerFacade.Employees.TryAdd(emp2.EmployeeId, emp2);
+managerFacade.Employees.TryAdd(emp3.EmployeeId, emp3);
+managerFacade.Employees.TryAdd(emp4.EmployeeId, emp4);
+
 
 Console.WriteLine("added help data");
 ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
-languages.TryAdd(Enums.GetId(Languages.English), new Language(Languages.English, 5));
-languages.TryAdd(Enums.GetId(Languages.Hebrew), new Language(Languages.Hebrew, 10));
+languages.TryAdd(Enums.GetId(Languages.English), new Language(Languages.English, 1));
+languages.TryAdd(Enums.GetId(Languages.Hebrew), new Language(Languages.Hebrew, 3));
 ConcurrentDictionary<int, Skill> skills = new ConcurrentDictionary<int, Skill>();
-skills.TryAdd(Enums.GetId(Skills.Python), new Skill(Skills.Python, 10, 1));
-
-ManagerFacade managerFacade = ManagerFacade.GetInstance();
-managerFacade.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
-
-managerFacade.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 1);
+skills.TryAdd(Enums.GetId(Skills.Python), new Skill(Skills.Python, 2, 1));
+skills.TryAdd(Enums.GetId(Skills.API), new Skill(Skills.API, 2, 1));
+skills.TryAdd(Enums.GetId(Skills.Java), new Skill(Skills.Java, 2, 1));
 
 HeadCountService headCountService = HeadCountService.GetInstance();
+headCountService.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
+
+Role role = headCountService.AddRoleToProject("testRole1", 1, TimeZones.Morning, languages, skills, 5, 0.5).Value;
+
 headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, skills, 2, 0.5);
 Console.WriteLine("added service");
+
+// try{
+//     Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
+// }
+// catch (Exception e){
+//     Console.WriteLine(e);
+// }
+
+Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
+Console.WriteLine("here0");
+foreach (var entry in employees)
+{
+    var employee = entry.Key; // The Employee object
+    var score = entry.Value;  // The double value associated with the employee
+    Console.WriteLine("here1");
+    Console.WriteLine($"{employee.EmployeeId}, {employee.Name}, {score}");
+}
+
+
 
 
 

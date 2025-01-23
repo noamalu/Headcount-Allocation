@@ -13,7 +13,11 @@ namespace HeadcountAllocation.Domain{
 
         public enum Skills
         {
-            Python
+            Python,
+            SQL,
+            API,
+            Java,
+            UI
             
         }
 
