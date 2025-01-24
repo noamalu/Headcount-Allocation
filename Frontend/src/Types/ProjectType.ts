@@ -4,7 +4,12 @@ export interface Project {
     projectId: number; 
     projectName: string;
     description: string;
-    deadline: string; // To change to date when connecting API
+    deadline: string; 
     requiredHours: number;
     roles: Role[];
   }
+
+  export const formatDate = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("en-GB"); // פורמט יום/חודש/שנה
+};

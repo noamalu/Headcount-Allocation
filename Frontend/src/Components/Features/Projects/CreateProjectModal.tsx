@@ -38,13 +38,10 @@ const CreateProjectModal: React.FC<{
         roles: []
       };
       try {
-        const createdProject = await ProjectsService.sendCreateProject(newProject);
-        // if (roles.length > 0) {
-        //   await ProjectsService.addRolesToProject(createdProject.projectId, roles);
-        //   console.log('Roles added to project successfully');
-        // }
-        console.log('Project created successfully:', createdProject);
-        onProjectCreated(createdProject);
+        const newProjectId = await ProjectsService.sendCreateProject(newProject);
+        newProject.projectId = newProjectId;
+        console.log('Project created successfully:', newProject);
+        onProjectCreated(newProject);
         onClose(); // סגירת המודל
     } catch (error) {
         console.error('Error creating project:', error);
