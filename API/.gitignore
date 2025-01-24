@@ -147,3 +147,6 @@ UI/UI.sln
 
 # Ignore all files in the net8.0 directory
 Headcount-Allocation/API/bin/Debug/net8.0/
+# Ignore all Debug directories
+**/bin/
+**/obj/
