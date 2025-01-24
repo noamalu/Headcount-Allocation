@@ -17,7 +17,7 @@ namespace API.Services
         {
             _headCountService = headcountService;
         }
-        public async Task<List<Response<HeadcountAllocation.Domain.Role>>> LinkRolesToProject(int projectId, List<Role> roles)
+        public async Task<List<Response<Role>>> LinkRolesToProject(int projectId, List<Role> roles)
         {
             var createRoleTasks = new List<Task<Response<HeadcountAllocation.Domain.Role>>>();
             foreach (var role in roles){
@@ -38,8 +38,29 @@ namespace API.Services
                     languages, skills, 
                     role.YearsExperience, role.JobPercentage)));
             }
-                await Task.WhenAll(createRoleTasks.ToArray());
-                return createRoleTasks.Select(task => task.Result).ToList();
+            await Task.WhenAll(createRoleTasks.ToArray());
+            return createRoleTasks.Select(task => task.Result)
+                .Select(role => Response<Role>
+                            .FromValue(
+                                        new Role
+                                        {
+                                            RoleId = role.Value.RoleId,
+                                            RoleName = role.Value.RoleName,
+                                            ProjectId = role.Value.ProjectId,
+                                            EmployeeId = role.Value.EmployeeId,
+                                            TimeZone = HeadcountAllocation.Domain.Enums.GetId(role.Value.TimeZone),
+                                            ForeignLanguages = role.Value.ForeignLanguages.Values?.Select(language => new Language{
+                                                    LanguageID = language.LanguageID,
+                                                    LanguageTypeId = HeadcountAllocation.Domain.Enums.GetId(language.LanguageType),
+                                                    Level = language.Level                                                        
+                                        }).ToList() ??new(),
+                                            Skills = role.Value.Skills.Values?.Select(skill => new Skill{
+                                                    SkillTypeId = HeadcountAllocation.Domain.Enums.GetId(skill.SkillType),
+                                                    Level = skill.Level
+                                        }).ToList() ??new(),
+                                            YearsExperience = role.Value.YearsExperience,
+                                            JobPercentage = role.Value.JobPercentage
+                                        })).ToList();
         }
     }
 }
