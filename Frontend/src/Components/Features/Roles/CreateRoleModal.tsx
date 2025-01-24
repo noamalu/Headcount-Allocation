@@ -3,12 +3,12 @@ import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 
-interface AddRoleModalProps {
+interface CreateRoleModalProps {
   onSave: (newRole: Role) => void;
   onClose: () => void;
 }
 
-const AddRoleModal: React.FC<AddRoleModalProps> = ({ onSave, onClose }) => {
+const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ onSave, onClose }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
   const [timeZone, setTimeZone] = useState(0);
@@ -21,6 +21,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ onSave, onClose }) => {
       return;
     }
     const newRole: Role = {
+      roleId: -1,
       roleName,
       projectId: 0, // Will be assigned later when linked to a project
       description,
@@ -85,4 +86,4 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ onSave, onClose }) => {
   );
 };
 
-export default AddRoleModal;
+export default CreateRoleModal;

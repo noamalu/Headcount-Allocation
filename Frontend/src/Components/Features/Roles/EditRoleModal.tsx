@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AssignEmployeeModal from './AssignEmployeeModal';
 import { Role } from '../../../Types/RoleType';
+import {RoleSkill} from '../../../Types/RoleSkillType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';

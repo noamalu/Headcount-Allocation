@@ -59,7 +59,7 @@ class ProjectsService {
 //   };
 
 export const getProjects = async (): Promise<Project[]> => {
-    const response = await APIClient('/projects', { method: 'GET' });
+    const response = await APIClient('/api/Project/All', { method: 'GET' });
     console.log('getProjects Response:', response); // לוג לבדיקה
     return fetchResponse(response); // עדיין משתמשים ב-fetchResponse כדי לשמר את הזרימה
   };

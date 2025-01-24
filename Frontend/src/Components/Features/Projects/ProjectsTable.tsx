@@ -36,7 +36,7 @@ import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
 import { getProjects } from '../../../Services/ProjectsService'; // פונקציה להבאת נתוני פרויקטים
 
-const ProjectsTable: React.FC = () => {
+const ProjectsTable: React.FC<{ onProjectCreated: (callback: (project: Project) => void) => void }> = ({ onProjectCreated }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,23 +59,32 @@ const ProjectsTable: React.FC = () => {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+}, []);
 
-  const handleOpenModal = (project: Project) => {
-    setSelectedProject(project);
-  };
+// עדכון הרשימה עם פרויקט חדש
+useEffect(() => {
+    const handleProjectCreated = (newProject: Project) => {
+        setProjects((prevProjects) => [...prevProjects, newProject]);
+    };
+    onProjectCreated(handleProjectCreated); // רישום callback לקבלת פרויקט חדש
+}, [onProjectCreated]);
 
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-  };
+const handleOpenModal = (project: Project) => {
+  setSelectedProject(project);
+};
 
-  if (isLoading) {
+const handleCloseModal = () => {
+  setSelectedProject(null);
+};
+
+if (isLoading) {
     return <p>Loading projects...</p>;
-  }
+}
 
-  if (error) {
+if (error) {
     return <p className="error">{error}</p>;
-  }
+}
+
 
   const handleProjectCreated = (newProject: Project) => {
     setProjects((prevProjects) => [...prevProjects, newProject]); // מוסיף את הפרויקט לטבלה

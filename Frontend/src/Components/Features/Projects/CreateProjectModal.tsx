@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Project } from '../../../Types/ProjectType';
 import { Role } from '../../../Types/RoleType';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
+import ProjectsTable from './ProjectsTable';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import ProjectsService from '../../../Services/ProjectsService';
 // import AddRoleModal from '../Roles/NewRoleModal';
 
 
-const NewProjectModal: React.FC<{ 
-  onClose: () => void; 
-  onProjectCreated: (project: Project) => void; 
-}> = ({ onClose, onProjectCreated }) => {
+const CreateProjectModal: React.FC<{ 
+  onClose: () => void;
+   onProjectCreated: (project: Project) => void }>
+    = ({
+      onClose,
+      onProjectCreated,
+    }) => {
     const [projectName, setProjectName] = useState('');
     const [deadline, setDeadline] = useState('');
     const [requiredHours, setRequiredHoursline] = useState<number>(0);
@@ -30,21 +34,17 @@ const NewProjectModal: React.FC<{
         projectName,
         description,
         deadline,
-        requiredHours
+        requiredHours,
+        roles: []
       };
       try {
         const createdProject = await ProjectsService.sendCreateProject(newProject);
-
         // if (roles.length > 0) {
         //   await ProjectsService.addRolesToProject(createdProject.projectId, roles);
         //   console.log('Roles added to project successfully');
         // }
-
         console.log('Project created successfully:', createdProject);
-
-        // קריאה לפונקציה שמעדכנת את הטבלה
         onProjectCreated(createdProject);
-
         onClose(); // סגירת המודל
     } catch (error) {
         console.error('Error creating project:', error);
@@ -152,5 +152,5 @@ const NewProjectModal: React.FC<{
     );
   };
   
-  export default NewProjectModal;
+  export default CreateProjectModal;
   
