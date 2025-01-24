@@ -5,3 +5,4 @@ export interface RoleSkill {
     level: number;
     priority: number;
 }
+

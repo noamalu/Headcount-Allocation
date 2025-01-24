@@ -55,10 +55,6 @@ if (error) {
 }
 
 
-  const handleProjectCreated = (newProject: Project) => {
-    setProjects((prevProjects) => [...prevProjects, newProject]); // מוסיף את הפרויקט לטבלה
-  };
-
   return (
     <div>
       <table className="projects-table">

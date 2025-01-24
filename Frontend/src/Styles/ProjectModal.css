@@ -62,3 +62,26 @@
 .roles-table td {
     border-top: 1px solid #E8CEBF;
 }
+
+.roles-input-table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.roles-input-table th, .roles-input-table td {
+    padding: 6px;
+    text-align: center;
+    font-size: 14px;
+    color: #4F4846;
+}
+
+.roles-input-table th {
+    background: #E8CEBF;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.roles-input-table td {
+    border-top: 1px solid #E8CEBF;
+}

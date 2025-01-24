@@ -1,15 +1,15 @@
 .add-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    font-size: 24px;
-    padding: 10px 15px;
-    cursor: pointer;
-  }
-
+  background-color: #266150;
+  margin-left: 5px;
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  font-family: 'poppins';
+}
   .error {
     color: red;
     font-weight: bold;
@@ -40,6 +40,7 @@
 
  .delete-button,
  .addRole-button,
+ .addSkill-button,
  .edit-button,
  .assign-button,
  .cancel-button,
@@ -64,13 +65,15 @@
     background: #B74444;
 }
 
- .addRole-button {
-    background: #84A59D;
+.addRole-button,
+.addSkill-button{
+    background: #9e84a5;
     color: #FFF;
 }
 
- .addRole-button:hover {
-    background: #66867E;
+ .addRole-button:hover,
+ .addSkill-button:hover {
+    background: #6a586e;
 }
 
  .edit-button {
@@ -101,10 +104,90 @@
 }
 
 .save-button {
-  background: rgb(34, 173, 120);
+  background: rgb(91, 161, 134);
   color: white;
 }
 
 .save-button:hover {
-  background: rgb(1, 128, 79);
+  background: rgb(64, 119, 98);
+}
+
+.slider-container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: first baseline;
+  gap: 10px;
+  width: 60%;
+  margin: 5px auto;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.slider:hover {
+  background: #ccc;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #266150;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: #1c473b;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #266150;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-value {
+  font-size: 14px;
+  font-weight: normal;
+  color: #333;
+  text-align: center;
+}
+
+.dropdown {
+  width: 50%;
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-family: 'poppins';
+  margin: 5px auto;
+}
+
+.delete-record-button {
+  background: none;
+  border: none;
+  color: rgb(173, 3, 3);
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-record-button:hover {
+  color: darkred;
 }

@@ -21,6 +21,7 @@ const CreateProjectModal: React.FC<{
     const [requiredHours, setRequiredHoursline] = useState<number>(0);
     const [description, setDescription] = useState('');
     const [error, setError] = useState<string>(""); 
+    const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
     // const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
     // const [roles, setRoles] = useState<Role[]>([]);    
   
@@ -120,17 +121,12 @@ const CreateProjectModal: React.FC<{
             </tbody>
           </table>
           <div className="modal-actions">
-            <button
-              className="addRole-button"
-              onClick={() => 
-              {                  
-                console.log('Add Role button clicked');
-              }
-                //  setIsAddRoleModalOpen(true)
-                }
-                >
-              + Add Role
+            <button className="save-button" onClick={handleSubmit}>
+              <i className="fas fa-save"></i> Save Project
             </button>
+            <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
+            <i className="fas fa-plus"></i> Add Role
+          </button>
             {/* {isAddRoleModalOpen && (
             <AddRoleModal
               onSave={(newRole) => {
@@ -140,9 +136,6 @@ const CreateProjectModal: React.FC<{
               onClose={() => setIsAddRoleModalOpen(false)}
             />
           )} */}
-            <button className="edit-button" onClick={handleSubmit}>
-              Save Project
-            </button>
           </div>
         </div>
       </div>

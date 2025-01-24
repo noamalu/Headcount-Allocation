@@ -4,7 +4,7 @@ export interface Role {
     roleId: number; 
     roleName: string;
     projectId: number;
-    employeeId?: number;
+    employeeId: number;
     description: string;
     timeZone: number;
     foreignLanguages: [];

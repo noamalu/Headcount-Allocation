@@ -56,3 +56,67 @@
     margin-left: 5px;
     font-family: 'Poppins';
 }
+
+.skills-section {
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: #f9f9f9; /* רקע בהיר */
+  border: 1px solid #ddd; /* גבול קל */
+  border-radius: 8px; /* פינות מעוגלות */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* צל קל */
+}
+
+.skills-input-table {
+  margin: 5px auto;
+  width: 70%;
+  border-collapse: collapse;
+}
+
+.skills-input-table th, .skills-input-table td {
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #4F4846;
+}
+
+.skills-input-table th {
+  background: #E8CEBF;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.skills-input-table td {
+  border-top: 1px solid #E8CEBF;
+}
+
+
+.languages-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.languages-input-table {
+  margin: 5px auto;
+  width: 50%;
+  border-collapse: collapse;
+}
+
+.languages-input-table th,
+.languages-input-table td {
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #4F4846;
+}
+
+.languages-input-table th {
+  background: #E8CEBF;
+  font-size: 14px;
+  font-weight: normal;
+}
