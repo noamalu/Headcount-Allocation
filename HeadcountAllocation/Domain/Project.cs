@@ -45,13 +45,14 @@ namespace HeadcountAllocation.Domain{
             RoleRepo = RoleRepo.GetInstance();
         }
 
-        public int AddRoleToProject(string roleName, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
-            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);            
+        public Role AddRoleToProject(string roleName, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
+            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
+            Roles.Add(role.RoleId, role);
             try{
                 Roles.Add(role.RoleId, role);
                 RoleRepo.Add(role);
-                return role.RoleId;
+                return role;
             }
             catch (Exception e){
                 throw new Exception(e.Message);

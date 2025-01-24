@@ -55,35 +55,38 @@ context.LanguageTypes.Add(english);
 context.LanguageTypes.Add(hebrew);
 
 SkillTypesDTO python = new SkillTypesDTO(Skills.Python);
+SkillTypesDTO sql = new SkillTypesDTO(Skills.SQL);
+SkillTypesDTO api = new SkillTypesDTO(Skills.API);
+SkillTypesDTO java = new SkillTypesDTO(Skills.Java);
+SkillTypesDTO ui = new SkillTypesDTO(Skills.UI);
 context.SkillTypes.Add(python);
+context.SkillTypes.Add(sql);
+context.SkillTypes.Add(api);
+context.SkillTypes.Add(java);
+context.SkillTypes.Add(ui);
 
-// //Add test data
-// context.Employees.Add(new EmployeeDTO
-// {
-//     EmployeeId = 1,
-//     UserName = "John Doe",
-//     PhoneNumber = "0545598789",
-//     Email = "hp1@gmail.com",
-//     TimeZone = 1,
-//     ForeignLanguages = new List<EmployeeLanguagesDTO>
-//     {
-//         new EmployeeLanguagesDTO { LanguageID = 1, LanguageTypeId = 1, Level = 10}
-//     },
-//     JobPercentage = 0.5,
-//     Skills = new List<EmployeeSkillsDTO>
-//     {
-//         new EmployeeSkillsDTO { SkillId = 1, SkillTypeId = 1, Level = 5 },
-//         new EmployeeSkillsDTO { SkillId = 2, SkillTypeId = 2, Level = 7 }
-//     },
-//     YearExp = 2
-// });
-
-// context.SaveChanges();
-// Console.WriteLine("Test data added successfully!");
+// perfect employee
+List<EmployeeLanguagesDTO> emp_languages = new List<EmployeeLanguagesDTO>();
+emp_languages.Add(new EmployeeLanguagesDTO(0, 0, 1));
+emp_languages.Add(new EmployeeLanguagesDTO(1, 0, 3));
+List<EmployeeSkillsDTO> emp_skills = new List<EmployeeSkillsDTO>();
+emp_skills.Add(new EmployeeSkillsDTO(0, 2, 0));
+emp_skills.Add(new EmployeeSkillsDTO(2, 2, 0));
+emp_skills.Add(new EmployeeSkillsDTO(3, 2, 0));
+EmployeeDTO employee0 = new EmployeeDTO(0, "employee1", "123", "mail", 0, emp_languages, 1, emp_skills, new List<RoleDTO>(), 10);
+context.Employees.Add(employee0);
 
 
-// // context.SaveChanges();
-// // Console.WriteLine("Test data added successfully!");
+// all over employee
+List<EmployeeLanguagesDTO> emp_languages1 = new List<EmployeeLanguagesDTO>();
+emp_languages1.Add(new EmployeeLanguagesDTO(0, 1, 1));
+emp_languages1.Add(new EmployeeLanguagesDTO(1, 1, 3));
+List<EmployeeSkillsDTO> emp_skills1 = new List<EmployeeSkillsDTO>();
+emp_skills1.Add(new EmployeeSkillsDTO(0, 3, 0));
+emp_skills1.Add(new EmployeeSkillsDTO(2, 3, 0));
+emp_skills1.Add(new EmployeeSkillsDTO(3, 3, 0));
+EmployeeDTO employee1 = new EmployeeDTO(1, "employee2", "123", "mail", 0, emp_languages1, 1, emp_skills1, new List<RoleDTO>(), 10);
+context.Employees.Add(employee1);
 
 // context.Projects.Add(new ProjectDTO
 // {
@@ -137,8 +140,6 @@ context.SkillTypes.Add(python);
 //     }
 // });
 
-// context.SaveChanges();
-// Console.WriteLine("Test data added successfully!");
 
 // Console.WriteLine("added help data");
 // ConcurrentDictionary<int, Language> languages = new ConcurrentDictionary<int, Language>();
@@ -159,6 +160,19 @@ context.SkillTypes.Add(python);
 // HeadCountService headCountService = HeadCountService.GetInstance();
 // headCountService.AddRoleToProject("test2", 1, TimeZones.Morning, languages2, skills2, 2, 0.5);
 // Console.WriteLine("added service");
+
+
+// Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
+// Console.WriteLine("here0");
+// foreach (var entry in employees)
+// {
+//     var employee = entry.Key; // The Employee object
+//     var score = entry.Value;  // The double value associated with the employee
+//     Console.WriteLine("here1");
+//     Console.WriteLine($"{employee.EmployeeId}, {employee.Name}, {score}");
+// }
+
+
 
 
 

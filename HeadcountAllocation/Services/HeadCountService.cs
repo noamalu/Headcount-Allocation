@@ -98,10 +98,10 @@ namespace HeadcountAllocation.Services{
 
 
         public Response<Role> AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage){
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
             try{
                 Console.WriteLine("got to manager facade");
-                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage);
+                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
                 return Response<Role>.FromValue(role);
             }
             catch (Exception e){
@@ -144,6 +144,17 @@ namespace HeadcountAllocation.Services{
             var project = _managerFacade.GetProjectById(projectId);
             return project;
         }
+        public Response<Dictionary <Employee, double>> EmployeesToAssign(Role role){
+            try{
+                Dictionary<Employee, double> employees = _managerFacade.EmployeesToAssign(role);
+                return Response<Dictionary<Employee, double>>.FromValue(employees);
+            }
+            catch (Exception e){
+                return Response<Dictionary<Employee, double>>.FromError(e.Message);
+            }    
+        }
+
+
     }
 }
 

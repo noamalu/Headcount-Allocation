@@ -36,7 +36,7 @@ namespace API.Services
                 createRoleTasks.Add(Task.Run(() =>_headCountService.AddRoleToProject(role.RoleName, projectId,
                     GetValueById<TimeZones>(role.TimeZone), 
                     languages, skills, 
-                    role.YearsExperience, role.JobPercentage)));
+                    role.YearsExperience, role.JobPercentage, role.Description)));
             }
             await Task.WhenAll(createRoleTasks.ToArray());
             return createRoleTasks.Select(task => task.Result)
@@ -59,7 +59,8 @@ namespace API.Services
                                                     Level = skill.Level
                                         }).ToList() ??new(),
                                             YearsExperience = role.Value.YearsExperience,
-                                            JobPercentage = role.Value.JobPercentage
+                                            JobPercentage = role.Value.JobPercentage,
+                                            Description = role.Value.Description
                                         })).ToList();
         }
     }

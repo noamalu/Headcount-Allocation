@@ -24,5 +24,8 @@ namespace API.Models
 
         public double JobPercentage{get;set;}
 
+        public string Description { get; set; }
+
+
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using HeadcountAllocation.Domain;
+using Microsoft.Net.Http.Headers;
 using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.DAL.DTO
@@ -33,10 +34,12 @@ namespace HeadcountAllocation.DAL.DTO
 
         public double JobPercentage{get;set;}
 
+        public string Description{get;set;}
+
 
          public RoleDTO() { }
         public RoleDTO(int roleId, string roleName, int projectId, int employeeId, int timeZoneId,
-         List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp )
+         List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp, string description)
         {
             RoleId = roleId;
             RoleName = string.IsNullOrWhiteSpace(roleName) ? throw new ArgumentNullException("it is hereeeeeee") : roleName;
@@ -46,8 +49,8 @@ namespace HeadcountAllocation.DAL.DTO
             ForeignLanguages = foreignLanguages;
             JobPercentage = jobPercentage;
             Skills = skills;
-   
             YearsExperience = yearExp;
+            Description = description;
         }
 
          public RoleDTO(Role role)
@@ -71,6 +74,7 @@ namespace HeadcountAllocation.DAL.DTO
             }
             Skills = roleSkills;
             YearsExperience = role.YearsExperience;
+            Description = role.Description;
         }
 
     }
