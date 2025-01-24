@@ -162,5 +162,10 @@ namespace HeadcountAllocation.Domain{
         {
             return Projects.Values.ToList();
         }
+
+        public Project GetProjectById(int projectId)
+        {
+            return Projects.TryGetValue(projectId, out Project project) ? project : null;
+        }
     }
 }

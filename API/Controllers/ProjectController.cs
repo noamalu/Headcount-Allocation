@@ -39,6 +39,13 @@ namespace API.Controllers
             return Ok(projects);
         }
 
+        [HttpGet("/{projectId}")] 
+        public ActionResult<Response<Project>> GetProjectById([Required][FromRoute]int projectId)
+        {            
+            var project = _headCountService.GetProjectById(projectId);
+            return Ok(project);
+        }
+
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute]int projectId)
         {

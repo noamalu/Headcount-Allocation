@@ -139,7 +139,11 @@ namespace HeadcountAllocation.Services{
             }
         }
 
-
+        public Project GetProjectById(int projectId)
+        {
+            var project = _managerFacade.GetProjectById(projectId);
+            return project;
+        }
     }
 }
 
