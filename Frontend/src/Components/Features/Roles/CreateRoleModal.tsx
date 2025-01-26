@@ -18,9 +18,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   const [timeZone, setTimeZone] = useState(0);
   const [yearsExperience, setYearsExperience] = useState(0);
   const [jobPercentage, setJobPercentage] = useState(0);
-  const [foreignLanguages, setForeignLanguages] = useState(0);
   const [error, setError] = useState<string>(""); 
-  const [isAddSkillModalOpen, setIsAddSkillModalOpen] = useState(false);
   const [skills, setSkills] = useState<{ skill: SkillEnum; level: number }[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<SkillEnum | "">("");
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
@@ -106,9 +104,9 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
     };
 
     try {
-      // const newRoleId = await ProjectsService.sendCreateRole(projectId, [newRole]);
-      // newRole.roleId = newRoleId;
-      // console.log('Role created successfully:', newRole);
+      const addedRoles = await ProjectsService.addRolesToProject(projectId, [newRole]);
+      newRole.roleId = addedRoles[0].roleId;
+      console.log('Role created successfully:', newRole);
       onRoleCreated(newRole);
       onClose(); // סגירת המודל
     } catch (error) {

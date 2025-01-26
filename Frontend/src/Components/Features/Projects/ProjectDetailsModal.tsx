@@ -11,22 +11,28 @@ import CreateRoleModal from '../Roles/CreateRoleModal';
 interface ProjectDetailsModalProps {
   project: Project; // Specify that the prop is of type Project
   onClose: () => void; // Callback for closing the modal
+  onRoleCreated: (callback: (role: Role) => void) => void
 }
 
-const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {
+const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onRoleCreated }) => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
 
-
-  useEffect(() => {
-    console.log('SelectedRole changed:', selectedRole);
-  }, [selectedRole]);
-
   const handleRoleCreated = (newRole: Role) => {
-          setRoles((prevRoles) => [...prevRoles, newRole]);
-      };
+    setRoles((prevRoles) => [...prevRoles, newRole]);
+  };
+
+//   useEffect(() => {
+//   const handleRoleCreated = (newRole: Role) => {
+//           setRoles((prevRoles) => [...prevRoles, newRole]);
+//       };
+//       onRoleCreated(handleRoleCreated); // רישום callback לקבלת פרויקט חדש
+// }, [onRoleCreated]);
+
+// console.log('SelectedRole changed:', selectedRole);
+//   }, [selectedRole]);
       
   const handleOpenModal = (role: Role) => {
     console.log("Opening role modal for:", role.roleName, "Role data:", role); // בדוק את הערך

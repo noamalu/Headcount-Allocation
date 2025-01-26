@@ -27,23 +27,24 @@ class ProjectsService {
         }
     }
 
-  //   static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
-  //     try {
-  //         const response = await APIClient(`/api/Project/${projectId}/Roles`, {
-  //             method: 'POST',
-  //             body: JSON.stringify(roles),
-  //             headers: { 'Content-Type': 'application/json' },
-  //         });
-  //         if (response.status === 200) {
-  //             return response.data; 
-  //         } else {
-  //             throw new Error("Failed to add roles to project: " + response.statusText);
-  //         }
-  //     } catch (error) {
-  //         console.error("Error in addRolesToProject:", error);
-  //         throw error; 
-  //     }
-  // }
+    static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
+      console.log("attempt to add role " + roles[0].roleName + " to project id: " + projectId);
+      try {
+          const response = await APIClient(`/api/Project/${projectId}/Roles`, {
+              method: 'POST',
+              body: JSON.stringify(roles),
+              headers: { 'Content-Type': 'application/json' },
+          });
+          if (!response.errorOccured) {
+            return response.value; 
+          } else {
+              throw new Error("Failed to add roles to project: " + JSON.stringify(response, null, 2));
+          }
+      } catch (error) {
+          console.error("Error in addRolesToProject:", error);
+          throw error; 
+      }
+  }
   
 
 }
