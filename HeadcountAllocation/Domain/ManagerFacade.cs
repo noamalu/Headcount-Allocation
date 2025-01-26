@@ -44,11 +44,12 @@ namespace HeadcountAllocation.Domain{
             managerFacade = null;
         }
 
-        public void CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
+        public int CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
             Projects.Add(projectCount, project);
             try{
                 projectRepo.Add(project);
+                return project.ProjectId;
             }
             catch (Exception e){
                 throw new Exception(e.Message);
@@ -116,6 +117,7 @@ namespace HeadcountAllocation.Domain{
             }
         }
 
+
         public Role AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
                     ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
             if (!Projects.ContainsKey(projectId)){
@@ -154,6 +156,10 @@ namespace HeadcountAllocation.Domain{
             Employees[employeeId].AssignEmployeeToRole(role);
         }
 
+        public List<Project> GetAllProjects()
+        {
+            return Projects.Values.ToList();
+        }
         public Dictionary <Employee, double> EmployeesToAssign(Role role){
             Console.WriteLine("intoFacade");
             Dictionary<Employee, double> employees = new Dictionary<Employee, double>();
@@ -194,10 +200,11 @@ namespace HeadcountAllocation.Domain{
            Dictionary<Employee, double> sortedEmployees= employees.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
            return sortedEmployees;
         }
-        public List<Project> GetAllProjects()
-        {
-            return Projects.Values.ToList();
-        }
 
+
+        public Project GetProjectById(int projectId)
+        {
+            return Projects.TryGetValue(projectId, out Project project) ? project : null;
+        }
     }
 }
