@@ -107,6 +107,14 @@ namespace HeadcountAllocation.Domain{
             if (projectRepo.GetById(projectId) == null){
                 throw new Exception($"No such project {projectId}");
             }
+            //remove roles of project from employees
+            Dictionary<int, Role> projectRoles = Projects[projectId].Roles;
+            foreach (var role in projectRoles){
+                int? employeeId = role.Value.EmployeeId;
+                if (employeeId != null){
+                    Employees[(int)employeeId].Roles.Remove(role.Key);
+                }
+            }
             Projects.Remove(projectCount);
             try{
                 projectRepo.Delete(projectId);
@@ -127,6 +135,10 @@ namespace HeadcountAllocation.Domain{
         public void RemoveRole(int projectId, int roleId){
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
+            }
+            int? employeeId = Projects[projectId].Roles[roleId].EmployeeId;
+            if (employeeId != null){
+                Employees[(int)employeeId].Roles.Remove(roleId);
             }
             Projects[projectId].RemoveRole(roleId);
         }
