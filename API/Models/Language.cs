@@ -7,7 +7,7 @@ namespace API.Models
 {
     public class Language
     {
-        public int LanguageID {get;set;} 
+        public int LanguageId {get;set;} 
         public int LanguageTypeId {get;set;} 
         public int Level {get;set;} 
         

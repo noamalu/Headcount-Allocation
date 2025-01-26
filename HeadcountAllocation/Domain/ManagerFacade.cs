@@ -46,7 +46,7 @@ namespace HeadcountAllocation.Domain{
 
         public int CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
-            Projects.Add(projectCount, project);
+            Projects.Add(project.ProjectId, project);
             try{
                 projectRepo.Add(project);
                 return project.ProjectId;
@@ -205,6 +205,11 @@ namespace HeadcountAllocation.Domain{
         public Project GetProjectById(int projectId)
         {
             return Projects.TryGetValue(projectId, out Project project) ? project : null;
+        }
+
+        internal List<Employee> GetAllEmployees()
+        {
+            return Employees.Values.ToList();
         }
     }
 }

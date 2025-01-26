@@ -139,11 +139,6 @@ namespace HeadcountAllocation.Services{
             }
         }
 
-        public Project GetProjectById(int projectId)
-        {
-            var project = _managerFacade.GetProjectById(projectId);
-            return project;
-        }
         public Response<Dictionary <Employee, double>> EmployeesToAssign(Role role){
             try{
                 Dictionary<Employee, double> employees = _managerFacade.EmployeesToAssign(role);
@@ -154,7 +149,15 @@ namespace HeadcountAllocation.Services{
             }    
         }
 
-
+        public Response<List<Employee>> GetAllEmployees()
+        {
+            try{
+                return Response<List<Employee>>.FromValue(_managerFacade.GetAllEmployees());
+            }
+            catch (Exception e){
+                return Response<List<Employee>>.FromError(e.Message);
+            } 
+        }
     }
 }
 
