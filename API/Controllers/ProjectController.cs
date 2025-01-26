@@ -32,19 +32,19 @@ namespace API.Controllers
             return Ok(projectId);
         }
 
-        [HttpGet("All")] 
-        public ActionResult<Response<int>> GetAllProjects()
-        {            
-            var projects = _headCountService.GetAllProjects();
-            return Ok(projects);
-        }
+        // [HttpGet("All")] 
+        // public ActionResult<Response<int>> GetAllProjects()
+        // {            
+        //     var projects = _headCountService.GetAllProjects();
+        //     return Ok(projects);
+        // }
 
-        [HttpGet("/{projectId}")] 
-        public ActionResult<Response<Project>> GetProjectById([Required][FromRoute]int projectId)
-        {            
-            var project = _headCountService.GetProjectById(projectId);
-            return Ok(project);
-        }
+        // [HttpGet("/{projectId}")] 
+        // public ActionResult<Response<Project>> GetProjectById([Required][FromRoute]int projectId)
+        // {            
+        //     var project = _headCountService.GetProjectById(projectId);
+        //     return Ok(project);
+        // }
 
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute]int projectId)
@@ -73,18 +73,18 @@ namespace API.Controllers
             }
         }
 
-        // [HttpGet("{projectId}/Roles")]
-        // public ActionResult<Response<Role>> GetRoles([Required][FromRoute]int projectId)
-        // {
-        //     try
-        //     {
-        //         return Ok(_headCountService.GetAllRolesByProject(projectId));
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return NotFound(ex.Message);
-        //     }
-        // }    
+        [HttpGet("{projectId}/Roles")]
+        public ActionResult<Response<Role>> GetRoles([Required][FromRoute]int projectId)
+        {
+            try
+            {
+                return Ok(_headCountService.GetAllRolesByProject(projectId));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }    
 
     }
 }
