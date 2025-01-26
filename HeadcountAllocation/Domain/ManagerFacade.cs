@@ -194,7 +194,10 @@ namespace HeadcountAllocation.Domain{
            Dictionary<Employee, double> sortedEmployees= employees.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
            return sortedEmployees;
         }
-
+        public List<Project> GetAllProjects()
+        {
+            return Projects.Values.ToList();
+        }
 
     }
 }
