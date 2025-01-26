@@ -50,7 +50,7 @@ namespace API.Services
                                             EmployeeId = role.Value.EmployeeId,
                                             TimeZone = HeadcountAllocation.Domain.Enums.GetId(role.Value.TimeZone),
                                             ForeignLanguages = role.Value.ForeignLanguages.Values?.Select(language => new Language{
-                                                    LanguageID = language.LanguageID,
+                                                    LanguageId = language.LanguageID,
                                                     LanguageTypeId = HeadcountAllocation.Domain.Enums.GetId(language.LanguageType),
                                                     Level = language.Level                                                        
                                         }).ToList() ??new(),

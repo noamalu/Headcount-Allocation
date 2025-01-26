@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using HeadcountAllocation.Domain;
 using System;
+using HeadcountAllocation.Services;
+using HeadcountAllocation.DAL.DTO;
 
 namespace API.Controllers
 {
@@ -8,20 +10,32 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
-        private readonly ManagerFacade _managerFacade;
+        private readonly HeadCountService _headCountService;
 
-        public EmployeeController(ManagerFacade managerFacade)
+        public EmployeeController(HeadCountService headCountService)
         {
-            _managerFacade = managerFacade;
+            _headCountService = headCountService;
         }
 
         [HttpPost("{employeeId}/Assign")]
-        public IActionResult AssignToRole(int employeeId, Role role)
-        {
+        public ActionResult<Response> AssignToRole(int employeeId, Role role)
+        {            
             try
             {
-                _managerFacade.AssignEmployeeToRole(employeeId, role);
-                return Ok("Employee assigned to role successfully");
+                return Ok(_headCountService.AssignEmployeeToRole(employeeId, role));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("All")]
+        public ActionResult<Response> GetAllEmployees()
+        {            
+            try
+            {
+                return Ok(_headCountService.GetAllEmployees());
             }
             catch (Exception ex)
             {

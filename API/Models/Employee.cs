@@ -19,12 +19,12 @@ namespace API.Models
 
         public int TimeZone{get;set;}
         
-        public List<string> ForeignLanguages{get;set;} = new();
+        public List<Language> ForeignLanguages{get;set;} = new();
 
         public List<Skill> Skills{get;set;} = new();
 
         public int YearsExperience{get;set;}
 
-        public double JobPercentage{get;set;}
+        public double JobPercentage{get;set;}        
     }
 }

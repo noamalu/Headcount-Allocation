@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using HeadcountAllocation.Services;
 using static HeadcountAllocation.Domain.Enums;
-using HeadcountAllocation.DAL.DTO;
 using System.ComponentModel.DataAnnotations;
 using API.Models;
 using System.Collections.Concurrent;
 using System;
 using API.Services;
 using System.Threading.Tasks;
+using HeadcountAllocation.DAL.DTO;
+
 
 namespace API.Controllers
 {
@@ -17,12 +18,14 @@ namespace API.Controllers
     {
         private readonly HeadCountService _headCountService;
         private readonly ProjectService _projectService;
+        private readonly EmployeeService _employeeService;
 
 
-        public ProjectController(HeadCountService headcountService, ProjectService projectService)
+        public ProjectController(HeadCountService headcountService, ProjectService projectService, EmployeeService employeeService)
         {
             _projectService = projectService;
             _headCountService = headcountService;
+            _employeeService = employeeService;
         }
 
         [HttpPost("Create")] 
@@ -45,6 +48,22 @@ namespace API.Controllers
         //     var project = _headCountService.GetProjectById(projectId);
         //     return Ok(project);
         // }
+
+        [HttpPut("/{projectId}/Edit")] 
+        public async Task<ActionResult<Response>> EditProject([Required][FromRoute]int projectId, [Required][FromRoute]Project project)
+        {            
+                var tasks = new Task[]
+                {
+                    Task.Run(() => _headCountService.EditProjectDate(projectId, project.Deadline)),
+                    Task.Run(() => _headCountService.EditProjectDescription(projectId, project.Description)),
+                    Task.Run(() => _headCountService.EditProjectName(projectId, project.ProjectName)),
+                    Task.Run(() => _headCountService.EditProjectRequierdHours(projectId, project.RequiredHours))
+                };
+
+                await Task.WhenAll(tasks);
+
+            return Ok(new());
+        }
 
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute]int projectId)
@@ -79,6 +98,25 @@ namespace API.Controllers
             try
             {
                 return Ok(_headCountService.GetAllRolesByProject(projectId));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }    
+
+        [HttpGet("{projectId}/Roles/{roleId}/Assign")]
+        public ActionResult<Response<List<Employee>>> GetMatchedEmployees([Required][FromRoute]int projectId, [Required][FromRoute]int roleId)
+        {
+            try
+            {
+                var roles = _headCountService.GetAllRolesByProject(projectId);
+                roles.Value.TryGetValue(roleId, out HeadcountAllocation.Domain.Role role);
+                var employees = _headCountService.EmployeesToAssign(role).Value
+                    .OrderByDescending(kvp => kvp.Value) 
+                    .Select(kvp => _employeeService.TranslateEmployee(kvp.Key)) 
+                    .ToList();                
+                return Ok(Response<List<Employee>>.FromValue(employees));
             }
             catch (Exception ex)
             {
