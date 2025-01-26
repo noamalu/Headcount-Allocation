@@ -32,12 +32,12 @@ namespace API.Controllers
             return Ok(projectId);
         }
 
-        // [HttpGet("All")] 
-        // public ActionResult<Response<int>> GetAllProjects()
-        // {            
-        //     var projects = _headCountService.GetAllProjects();
-        //     return Ok(projects);
-        // }
+        [HttpGet("All")] 
+        public ActionResult<Response<int>> GetAllProjects()
+        {            
+            var projects = _headCountService.GetAllProjects();
+            return Ok(projects);
+        }
 
         // [HttpGet("/{projectId}")] 
         // public ActionResult<Response<Project>> GetProjectById([Required][FromRoute]int projectId)

@@ -38,6 +38,15 @@ namespace HeadcountAllocation.Services{
             }            
         }
 
+        public Response<List<Project>> GetAllProjects(){
+            try{
+                return Response<List<Project>>.FromValue(_managerFacade.GetAllProjects());
+            }
+            catch (Exception e){
+                return Response<List<Project>>.FromError(e.Message);
+            }            
+        }
+
         public Response EditProjectName(int projectId, string projectName){
             try{
                 _managerFacade.EditProjectName(projectId, projectName);
