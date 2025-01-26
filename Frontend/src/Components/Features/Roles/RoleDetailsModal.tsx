@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AssignEmployeeModal from './AssignEmployeeModal';
+import EditRoleModal from './EditRoleModal';
 import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
@@ -13,6 +14,7 @@ interface RoleDetailsModalProps {
 
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("RoleDetailsModal mounted or updated for role:", role);
@@ -22,6 +24,16 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
     console.log(`Assigned ${newEmployee} to role ${role.roleName}`);
     // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
   };
+
+  const handleCloseModal = () => {
+  };
+
+    const handleEditSave = (updatedRole: Role) => {
+      console.log('Role updated:', updatedRole);
+      // Update the role details here (e.g., send to API or update state)
+    };
+
+  
 
   return (
     <div className="modal-overlay role-modal">
@@ -38,10 +50,29 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
           <p className="employee-name">{role.employeeId || "No employee assigned"}</p>
         </div>
 
-        {/* תיאור התפקיד */}
-        <div className="role-description">
-          <p>{role.description}</p>
+        {/* פרטי התפקיד */}
+        <div className="role-details">
+          <div className="detail-banner">
+            <i className="fas fa-globe" ></i>
+            <span><strong>Time Zone:</strong> {role.timeZone}</span>
+          </div>
+          <div className="detail-banner">
+            <i className="fas fa-briefcase"></i>
+            <span><strong>Years of Experience:</strong> {role.yearsExperience}</span>
+          </div>
+          <div className="detail-banner">
+            <i className="fas fa-percentage"></i>
+            <span><strong>Job Percentage:</strong> {role.jobPercentage * 100}%</span>
+          </div>
+          <div className="detail-banner">
+            <i className="fas fa-language"></i>
+            <span><strong>Foreign Languages:</strong> {role.foreignLanguages.length > 0 ? role.foreignLanguages.join(', ') : "None"}</span>
+          </div>
         </div>
+          <div className="detail-banner">
+            <i className="fas fa-align-left"></i>
+            <span><strong>Description:</strong> {role.description}</span>
+          </div>
 
         {/* טבלת מאפיינים */}
         <div className="skills-section">
@@ -56,13 +87,13 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
             </thead>
             <tbody>
             {role.skills.map((skill) => (
-                <tr key={skill.skillTypeId}>
-                  <td>{skill.skillTypeName}</td>
-                  <td>{skill.level}</td>
-                  <td>{skill.priority}</td>
-                  <td> {0}</td>
-                </tr>
-              ))}
+                // <tr key={skill.skillId}>
+                //   <td>{skill.skillName}</td>
+                //   <td>{skill.level}</td>
+                //   <td>{skill.priority}</td>
+                //   <td> {0}</td>
+                // </tr>
+              0))}
             </tbody>
           </table>
         </div>
@@ -71,8 +102,9 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
         <div className="modal-actions">
           <button className="delete-button">🗑 Delete</button>
           <button onClick={() => setIsAssignModalOpen(true)} className="assign-button">👤 Assign Employee</button>
-          <button className="edit-button">✏ Edit</button>
-        </div>
+          <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
+            <i className="fas fa-pen"></i> Edit
+          </button>        </div>
       </div>
 
       {/* חלון שיוך עובד */}
@@ -83,6 +115,12 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
           onAssign={handleAssign}
         />
       )}
+      {isEditModalOpen && (
+          <EditRoleModal
+            role={role}
+            onClose={() => setIsEditModalOpen(false)}
+            onSave={handleEditSave} />
+          )}
     </div>
   );
 };

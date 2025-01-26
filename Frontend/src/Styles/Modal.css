@@ -62,7 +62,7 @@
     border: 1px solid #E8CEBF;
     padding: 10px 15px;
     border-radius: 8px;
-    width: 200px;
+    width: 150px;
 }
 .modal-info .required-hours {
     font-size: 16px;
@@ -94,7 +94,8 @@
 
 .roles-table {
     width: 70%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-radius: 10px;
     margin-top: 20px;
 }
 
@@ -129,8 +130,8 @@
     font-size: 12px; /* גודל טקסט נוח לקריאה */
     border: 1px solid #E8CEBF; /* גבול בצבע עדין */
     border-radius: 8px; /* פינות מעוגלות */
-    resize: vertical; /* אפשרות לשנות את הגובה בלבד */
-    box-sizing: border-box; /* כולל פדינג ובורדר בתוך הרוחב */
+    resize: vertical;
+    box-sizing: border-box; 
     font-family: 'Poppins';
 }
 
@@ -141,35 +142,14 @@
     font-family: 'Poppins';
 }
 
-.modal-info number-field {
+.modal-info .number-field {
+    width: 60px;
     font-size: 12px;
     border-radius: 8px;
     border: 1px solid #E8CEBF;
     font-family: 'Poppins';
 }
 
-.roles-input-table {
-    width: 70%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.roles-input-table th, .roles-input-table td {
-    padding: 6px;
-    text-align: center;
-    font-size: 14px;
-    color: #4F4846;
-}
-
-.roles-input-table th {
-    background: #E8CEBF;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-.roles-input-table td {
-    border-top: 1px solid #E8CEBF;
-}
 
 .modal-content.role-modal {
     text-align: center;
@@ -209,14 +189,10 @@
   
   /* תיאור תפקיד */
   .role-description {
-    background: #FDF8F5;
-    border: 1px solid #E8CEBF;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    text-align: left;
+    align-items: center; 
+    width: 100%;
   }
-  
+
   .role-description h3 {
     font-size: 18px;
     color: #4F4846;
@@ -227,6 +203,49 @@
     font-size: 14px;
     color: #4F4846;
   }
+
+  .role-details {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    justify-content: center;
+    padding: 20px;
+    /* background: #f7e7de;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    gap: 15px;
+  }
+  
+  .detail-banner {
+    display: flex;
+    align-items: center; 
+    text-align: center; 
+    flex-wrap: wrap;
+    padding: 15px;
+    background: #FDF8F5;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    gap: 10px;
+  }
+  
+   .detail-banner i {
+    font-size: 36px;
+    color: #266150;
+  }
+  
+  .detail-banner span {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .wide-banner {
+    flex: 1 1 100%; 
+    justify-content: center; 
+    text-align: center; 
+  }
+  
+  
   
   /* טבלת מיומנויות */
   .skills-table {
@@ -234,6 +253,8 @@
     border-collapse: collapse;
     margin-top: 20px;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
   }
   
   .skills-table th {
@@ -250,5 +271,88 @@
     padding: 10px;
     border-top: 1px solid #E8CEBF;
   }
+
+  .modal-info .edit {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    width: 100%; 
+}
+
+.modal-info .edit input {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4F4846;
+    margin-bottom: 10px;
+    text-align: center;
+    gap: 10px;
+    background: #FDF8F5;
+    border: 1px dashed #E8CEBF;
+    padding: 5px 10px;
+    border-radius: 8px;
+    width: 150px;
+}
+
+
+.field-with-icon {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #4F4846;
+    margin-bottom: 10px;
+    text-align: center;
+    gap: 10px;
+    background: #FDF8F5;
+    border: 1px dashed #E8CEBF;
+    padding: 5px 10px;
+    border-radius: 8px;
+    width: 150px;
+  }
+  
+  .field-with-icon input {
+    border-style: dashed;
+    align-content: center;
+    padding: 0px 2px;
+    font-size: 14px;
+    width: 60px; 
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 0px;
+  }
+
+  .modal-info .edit textarea {
+    background: #FDF8F5;
+    border: 1px dashed #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4F4846;
+    max-height: 150px;
+    text-align: left;
+    width: 95%; 
+    overflow-y: auto; 
+    font-family: 'Poppins';
+}
+  
+.input-as-h2-field {
+  all: unset; 
+  font-size: 2em; 
+  font-weight: bold; 
+  line-height: 1.2; 
+  color: #333; 
+  display: block; 
+  border: 1px dashed #E8CEBF;
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.input-as-h2-field:focus {
+  outline: none; 
+}
 
 

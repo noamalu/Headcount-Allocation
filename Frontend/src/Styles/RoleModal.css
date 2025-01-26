@@ -1,0 +1,122 @@
+.detail-banner-edit {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+    flex-direction: row;
+    padding: 15px;
+    background: #FDF8F5;
+    border-radius: 10px;
+    border: 1px dashed #E8CEBF;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    gap: 10px;
+  }
+  
+   .detail-banner-edit i {
+    font-size: 36px;
+    color: #266150;
+  }
+  
+  .detail-banner-edit span {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+
+
+  .detail-banner-edit input {
+    align-content: center;
+    padding: 0px 2px;
+    font-size: 14px;
+    width: 60px; 
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 0px;
+    color: #4F4846;
+    background: #FDF8F5;
+    border: 1px dashed #E8CEBF;
+    margin-left: 5px;
+  }
+
+
+  .detail-banner-edit textarea {
+    background: #FDF8F5;
+    border: 1px dashed #E8CEBF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4F4846;
+    max-height: 150px;
+    text-align: left;
+    width: 70%; 
+    overflow-y: auto; 
+    margin-left: 5px;
+    font-family: 'Poppins';
+}
+
+.skills-section {
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: #f9f9f9; /* רקע בהיר */
+  border: 1px solid #ddd; /* גבול קל */
+  border-radius: 8px; /* פינות מעוגלות */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* צל קל */
+}
+
+.skills-input-table {
+  margin: 5px auto;
+  width: 70%;
+  border-collapse: collapse;
+}
+
+.skills-input-table th, .skills-input-table td {
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #4F4846;
+}
+
+.skills-input-table th {
+  background: #E8CEBF;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.skills-input-table td {
+  border-top: 1px solid #E8CEBF;
+}
+
+
+.languages-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.languages-input-table {
+  margin: 5px auto;
+  width: 50%;
+  border-collapse: collapse;
+}
+
+.languages-input-table th,
+.languages-input-table td {
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #4F4846;
+}
+
+.languages-input-table th {
+  background: #E8CEBF;
+  font-size: 14px;
+  font-weight: normal;
+}
