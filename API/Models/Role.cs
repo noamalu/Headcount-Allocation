@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,30 @@ namespace API.Models
 
         public string Description { get; set; }
 
+        public static explicit operator HeadcountAllocation.Domain.Role(Role role)
+        {
+            return new HeadcountAllocation.Domain.Role(
+                role.RoleName,
+                role.RoleId,
+                role.ProjectId,
+                HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.TimeZones>(role.TimeZone),
+                new ConcurrentDictionary<int, HeadcountAllocation.Domain.Language>(
+                    role.ForeignLanguages.Select(language => 
+                        new KeyValuePair<int, HeadcountAllocation.Domain.Language>(
+                            language.LanguageId, (HeadcountAllocation.Domain.Language)language)
+                    )
+                ),
+                new ConcurrentDictionary<int, HeadcountAllocation.Domain.Skill>(
+                    role.Skills.Select(skill => 
+                        new KeyValuePair<int, HeadcountAllocation.Domain.Skill>(
+                            skill.SkillId, (HeadcountAllocation.Domain.Skill)skill)
+                    )
+                ),
+                role.YearsExperience,
+                role.JobPercentage,
+                role.Description
+            );
+        }
 
     }
 }

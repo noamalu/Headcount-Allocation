@@ -154,6 +154,9 @@ namespace HeadcountAllocation.Domain{
                 throw new Exception($"No such role {role.RoleId}");
             }
             Employees[employeeId].AssignEmployeeToRole(role);
+            role.EmployeeId = employeeId;
+            Projects[role.ProjectId].AssignEmployeeToRole(role);
+
         }
 
         public List<Project> GetAllProjects()

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using HeadcountAllocation.Domain;
 using System;
 using HeadcountAllocation.Services;
 using HeadcountAllocation.DAL.DTO;
+using API.Models;
 
 namespace API.Controllers
 {
@@ -18,11 +18,11 @@ namespace API.Controllers
         }
 
         [HttpPost("{employeeId}/Assign")]
-        public ActionResult<Response> AssignToRole(int employeeId, Role role)
+        public ActionResult<Response> AssignToRole([FromRoute]int employeeId, [FromBody]Role role)
         {            
             try
             {
-                return Ok(_headCountService.AssignEmployeeToRole(employeeId, role));
+                return Ok(_headCountService.AssignEmployeeToRole(employeeId, (HeadcountAllocation.Domain.Role)role));
             }
             catch (Exception ex)
             {
