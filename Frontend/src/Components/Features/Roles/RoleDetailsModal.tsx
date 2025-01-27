@@ -10,12 +10,13 @@ import { formateSkillToString } from '../../../Types/SkillType';
 
 
 interface RoleDetailsModalProps {
+  projectId: number;
   role: Role;
   onClose: () => void;
   onSave?: (newRole: Role) => void; // Add this line
 }
 
-const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) => {
+const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose }) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -142,6 +143,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
       {/* חלון שיוך עובד */}
       {isAssignModalOpen && (
         <AssignEmployeeModal
+          projectId={projectId}
           roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
           onAssign={handleAssign}

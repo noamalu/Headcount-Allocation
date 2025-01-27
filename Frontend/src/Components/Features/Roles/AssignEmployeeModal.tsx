@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import '../../../Styles/Modal.css';
 import { Employee } from '../../../Types/EmployeeType'
+import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
 
 const AssignEmployeeModal = ({
+  projectId,
   roleId,
   onClose,
   onAssign,
 }: {
+  projectId: number;
   roleId: number;
   onClose: () => void;
   onAssign: (employeeId: number) => void;
@@ -19,8 +22,7 @@ const AssignEmployeeModal = ({
     // קריאה ל-API להחזרת העובדים המובילים לתפקיד
     const fetchEmployees = async () => {
       try {
-        const response = await fetch(`/api/employees/top-candidates?roleId=${roleId}`);
-        const data: Employee[] = await response.json(); // הגדרת טיפוס התשובה
+        const data: Employee[] = await getAssignOptionsToRole(projectId, roleId);
         setEmployees(data);
       } catch (error) {
         console.error('Error fetching employees:', error);
