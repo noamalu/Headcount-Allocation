@@ -3,7 +3,7 @@ import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
-import { SkillEnum, LanguageEnum } from '../../../Types/EnumType';
+import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
@@ -92,15 +92,15 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
     // יצירת מערך של RoleSkill מהנתונים
     const roleSkills: Skill[] = skills.map((skill, index) => ({
       skillId: index, // ערך זמני, יתעדכן בשרת
-      SkillTypeId: -1, // יתקבל מהשרת לאחר יצירת ה-Role
+      SkillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
       level: skill.level,
       priority: skills.length - index, // חישוב עדיפות
     }));
-  
+ 
     // יצירת מערך של Language מהנתונים
     const roleLanguages: Language[] = languages.map((lang, index) => ({
-      languageId: -1, // ערך זמני, יתעדכן בשרת
-      languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), // מיפוי ה-Enum ל-ID מתאים
+      languageId: index, // ערך זמני, יתעדכן בשרת
+      languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
       level: lang.level,
     }));
   

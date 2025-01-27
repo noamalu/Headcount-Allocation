@@ -7,7 +7,10 @@ export interface Skill {
     priority: number;
 }
 
-export const formateSkill = (type: number): string => {
+export const formateSkillToString = (type: number): string => {
     return getSkillStringByIndex(type); // פורמט יום/חודש/שנה
 };
+
+
+
 

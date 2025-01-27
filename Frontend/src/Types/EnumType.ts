@@ -13,6 +13,26 @@ export enum LanguageEnum {
     Hebrew = "Hebrew",
 }
 
+export const skillEnumToId = (skill : SkillEnum): number => {
+    const entries = Object.entries(SkillEnum);
+    for (const [key, value] of entries) {
+        if (key === skill) {
+            return Number(value);
+        }
+    }
+    return -1;
+}
+
+export const languageEnumToId = (language : LanguageEnum): number => {
+    const entries = Object.entries(LanguageEnum);
+    for (const [key, value] of entries) {
+        if (key === language) {
+            return Number(value);
+        }
+    }
+    return -1;
+}
+
 export const getLanguageStringByIndex  = (index: number): string => {
     const languages = Object.values(LanguageEnum); 
     console.log("Langs list: " + languages);
