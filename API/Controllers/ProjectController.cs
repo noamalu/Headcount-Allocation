@@ -38,7 +38,13 @@ namespace API.Controllers
         [HttpGet("All")] 
         public ActionResult<Response<int>> GetAllProjects()
         {            
-            var projects = _headCountService.GetAllProjects();
+            var projects = _headCountService.GetAllProjects().Value.Select(Project => new Project{
+                ProjectName = Project.ProjectName,
+                ProjectId = Project.ProjectId,
+                Description = Project.Description,
+                Deadline = Project.Date,
+                RequiredHours = Project.RequiredHours
+            }).ToList();
             return Ok(projects);
         }
 
