@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../../Styles/Modal.css';
+import '../../../Styles/AssignModal.css';
 import { Employee } from '../../../Types/EmployeeType'
 import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
 
@@ -37,6 +38,7 @@ const AssignEmployeeModal = ({
   };
 
   const handleAssign = () => {
+    console.log("handleAssign in AssignEmployeeModal");
     if (selectedEmployee) {
       onAssign(selectedEmployee);
       onClose();
