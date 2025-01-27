@@ -7,6 +7,7 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
 import { formateSkillToString } from '../../../Types/SkillType';
+import EmployeesService from '../../../Services/EmployeesService';
 
 
 interface RoleDetailsModalProps {
@@ -19,6 +20,8 @@ interface RoleDetailsModalProps {
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose }) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [error, setError] = useState<string>(""); 
+  
 
   useEffect(() => {
 
@@ -28,9 +31,17 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
     console.log("Content of foreignLanguages:", role.foreignLanguages);
   }, [role]);
 
-  const handleAssign = (employeeId: number) => {
+  const handleAssign = async (employeeId: number) => {
     console.log(`Assigned ${employeeId} to role ${role.roleName}`);
-    // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
+    try {
+      const res = await EmployeesService.assignEmployeeToRole(employeeId, role);
+      role.employeeId = employeeId;
+      console.log('employee assigned successfully:', employeeId);
+      onClose(); // סגירת המודל
+    } catch (error) {
+        console.error('Error assigning employee:', error);
+      setError('An error occurred while assigning the employee');
+    }
   };
 
   const handleCloseModal = () => {

@@ -101,8 +101,8 @@ export const getProjects = async (): Promise<Project[]> => {
       throw error; // משליכים את השגיאה לטיפול חיצוני
     }
   };
-  
-  
+
+
 
 
   export default ProjectsService;
