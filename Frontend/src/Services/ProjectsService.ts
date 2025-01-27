@@ -30,20 +30,38 @@ class ProjectsService {
     static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
       console.log("attempt to add role " + roles[0].roleName + " to project id: " + projectId);
       try {
-          const response = await APIClient(`/api/Project/${projectId}/Roles`, {
+        //   const response = await APIClient(`/api/Project/${projectId}/Roles`, {
+            const response: Array<{ value: Role; errorMessage: string | null; errorOccured: boolean }> = await APIClient(`/api/Project/${projectId}/Roles`, {
+
               method: 'POST',
               body: JSON.stringify(roles),
               headers: { 'Content-Type': 'application/json' },
           });
-          if (!response.errorOccured) {
-            return response.value; 
-          } else {
-              throw new Error("Failed to add roles to project: " + JSON.stringify(response, null, 2));
-          }
-      } catch (error) {
-          console.error("Error in addRolesToProject:", error);
-          throw error; 
-      }
+
+          console.log("Response from APIClient:", response);
+
+        // ווידוא שהתגובה היא מערך
+        if (!Array.isArray(response)) {
+            throw new Error("Unexpected response format. Expected an array.");
+        }
+
+        // בדיקת כל איבר במערך
+        response.forEach((item) => {
+            if (item.errorOccured) {
+                throw new Error(`Error for role: ${item.errorMessage || "Unknown error"}`);
+            }
+        });
+
+        // חילוץ המידע מתוך המערך
+        const newRoles = response.map((item) => item.value);
+        console.log("Parsed roles:", newRoles);
+
+        return newRoles;
+
+    } catch (error) {
+        console.error("Error in addRolesToProject:", error);
+        throw error;
+    }
   }
   
 
@@ -54,6 +72,19 @@ export const getProjects = async (): Promise<Project[]> => {
     console.log('getProjects Response:', response); // לוג לבדיקה
     return fetchResponse(response); // עדיין משתמשים ב-fetchResponse כדי לשמר את הזרימה
   };
+
+
+  export const getProjectRoles = async (projectId: number): Promise<Role[]> => {
+    try {
+      const response = await APIClient(`/api/Project/${projectId}/Roles`, { method: 'GET' });
+      console.log('getProjectRoles Response:', response); // לוג לבדיקה
+      return fetchResponse(response); // שימוש בפונקציה fetchResponse לעיבוד התגובה
+    } catch (error) {
+      console.error(`Error fetching roles for project ID ${projectId}:`, error);
+      throw error;
+    }
+  };
+  
 
 
   export default ProjectsService;

@@ -1,4 +1,5 @@
-import { RoleSkill } from './RoleSkillType'
+import { Skill } from './SkillType'
+import { Language } from './LanguageType';
 
 export interface Role {
     roleId: number; 
@@ -7,8 +8,8 @@ export interface Role {
     employeeId: number;
     description: string;
     timeZone: number;
-    foreignLanguages: [];
-    skills:RoleSkill [];
+    foreignLanguages: Language[];
+    skills:Skill [];
     yearsExperience: number;
     jobPercentage: number;
     // attributes: { attribute: string; requiredRank: number | string; priority: number }[];
