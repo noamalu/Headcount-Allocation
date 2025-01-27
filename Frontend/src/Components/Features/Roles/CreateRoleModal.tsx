@@ -92,12 +92,12 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
     // יצירת מערך של RoleSkill מהנתונים
     const roleSkills: Skill[] = skills.map((skill, index) => ({
       skillId: index, // ערך זמני, יתעדכן בשרת
-      SkillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
+      skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
       level: skill.level,
       priority: skills.length - index, // חישוב עדיפות
     }));
 
-    console.log("in CreateRoleModal, SkillTypeId: " + roleSkills[0].SkillTypeId);
+    console.log("in CreateRoleModal, skillTypeId: " + roleSkills[0].skillTypeId);
  
     // יצירת מערך של Language מהנתונים
     const roleLanguages: Language[] = languages.map((lang, index) => ({

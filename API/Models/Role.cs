@@ -37,13 +37,13 @@ namespace API.Models
                 new ConcurrentDictionary<int, HeadcountAllocation.Domain.Language>(
                     role.ForeignLanguages.Select(language => 
                         new KeyValuePair<int, HeadcountAllocation.Domain.Language>(
-                            language.LanguageId, (HeadcountAllocation.Domain.Language)language)
+                            language.LanguageTypeId, (HeadcountAllocation.Domain.Language)language)
                     )
                 ),
                 new ConcurrentDictionary<int, HeadcountAllocation.Domain.Skill>(
                     role.Skills.Select(skill => 
                         new KeyValuePair<int, HeadcountAllocation.Domain.Skill>(
-                            skill.SkillId, (HeadcountAllocation.Domain.Skill)skill)
+                            skill.SkillTypeId, (HeadcountAllocation.Domain.Skill)skill)
                     )
                 ),
                 role.YearsExperience,

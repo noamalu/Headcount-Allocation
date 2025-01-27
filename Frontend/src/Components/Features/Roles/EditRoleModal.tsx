@@ -132,7 +132,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, 
             <tbody>
             {role.skills.map((skill) => (
                 <tr key={skill.skillId}>
-                  <td>{skill.SkillTypeId}</td>
+                  <td>{skill.skillTypeId}</td>
                   <td>{skill.level}</td>
                   <td>{skill.priority}</td>
                   <td> {0}</td>

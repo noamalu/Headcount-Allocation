@@ -125,7 +125,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
                   {role.skills && Object.keys(role.skills).length > 0 ? (
                     role.skills.map((skill, index) => (
                       <tr key={index}>
-                        <td>{formateSkillToString(skill.SkillTypeId)}</td>  
+                        <td>{formateSkillToString(skill.skillTypeId)}</td>  
                         <td>{skill.level}</td>
                         <td>{skill.priority}</td>
                         <td>0</td> {/* Employee ranking - ערך לדוגמה */}

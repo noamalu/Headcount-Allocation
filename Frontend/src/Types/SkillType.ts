@@ -2,7 +2,7 @@ import { getSkillStringByIndex } from "./EnumType";
 
 export interface Skill {
     skillId: number;
-    SkillTypeId: number;
+    skillTypeId: number;
     level: number;
     priority: number;
 }

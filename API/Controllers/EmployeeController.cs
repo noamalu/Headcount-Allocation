@@ -26,7 +26,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
             }
         }
 
@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
             }
         }
     }
