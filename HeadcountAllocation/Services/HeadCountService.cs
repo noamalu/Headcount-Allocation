@@ -27,14 +27,21 @@ namespace HeadcountAllocation.Services{
             _headCountService = null;
         }
 
-
-        public Response CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
+        public Response<List<Project>> GetAllProjects(){
             try{
-                _managerFacade.CreateProject(projectName, description, date, requiredHours, roles);
-                return new Response();
+                return Response<List<Project>>.FromValue(_managerFacade.GetAllProjects());
             }
             catch (Exception e){
-                return new Response(e.Message);
+                return Response<List<Project>>.FromError(e.Message);
+            }            
+        }
+
+        public Response<int> CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
+            try{
+                return Response<int>.FromValue(_managerFacade.CreateProject(projectName, description, date, requiredHours, roles));
+            }
+            catch (Exception e){
+                return Response<int>.FromError(e.Message);
             }            
         }
 
@@ -94,7 +101,7 @@ namespace HeadcountAllocation.Services{
                     ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
             try{
                 Console.WriteLine("got to manager facade");
-                Role role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
+                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
                 return Response<Role>.FromValue(role);
             }
             catch (Exception e){
@@ -142,7 +149,15 @@ namespace HeadcountAllocation.Services{
             }    
         }
 
-
+        public Response<List<Employee>> GetAllEmployees()
+        {
+            try{
+                return Response<List<Employee>>.FromValue(_managerFacade.GetAllEmployees());
+            }
+            catch (Exception e){
+                return Response<List<Employee>>.FromError(e.Message);
+            } 
+        }
     }
 }
 

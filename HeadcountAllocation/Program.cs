@@ -151,7 +151,7 @@ headCountService.AddRoleToProject("test2", 1, TimeZones.Flexible, languages, ski
 Console.WriteLine("added service");
 
 
-Dictionary <Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
+Dictionary<Employee, double> employees = headCountService.EmployeesToAssign(role).Value;
 Console.WriteLine("here0");
 foreach (var entry in employees)
 {

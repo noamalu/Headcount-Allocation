@@ -1,0 +1,88 @@
+.employees-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .employees-table th,
+  .employees-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .employees-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .employees-table tr:hover {
+    background-color: #f9f9f9;
+  }
+
+.show-details-button {
+  background-color: #E8CEBF; /* Light blue background */
+  border: 1px solid #4F4846; /* Blue border */
+  border-radius: 4px; /* Rounded corners */
+  color: #4F4846; /* Blue text */
+  padding: 2px 5px; /* Padding for a nice size */
+  font-size: 14px; /* Adjust font size */
+  cursor: pointer; /* Change cursor on hover */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  font-family: 'poppins';
+}
+
+.show-details-button:hover {
+  background-color: #e4ae8f; /* Blue background on hover */
+  color: #fff; /* White text on hover */
+}
+
+/* עיצוב רדיו-באטן */
+.custom-radio {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4F4846; /* מסגרת בצבע כהה */
+  border-radius: 50%; /* צורה עגולה */
+  background-color: #E8CEBF; /* רקע בצבע בז' */
+  cursor: pointer; /* סמן לחיץ */
+  transition: all 0.3s ease; /* מעבר חלק */
+}
+
+.custom-radio:hover {
+  background-color: #e4ae8f; /* רקע כהה יותר בהובר */
+}
+
+.custom-radio:checked {
+  background-color: #e4ae8f; /* רקע כהה יותר בהובר */
+}
+
+.custom-radio input[type="radio"] {
+  opacity: 0; /* הסתרת הרדיו המקורי */
+  position: absolute;
+  z-index: -1; /* שמירת האלמנט מתחת */
+}
+
+.custom-radio input[type="radio"]:checked + .custom-radio {
+  background-color: #e4ae8f; /* רקע כהה יותר כאשר נבחר */
+  border-color: #4F4846; /* מסגרת כהה */
+}
+
+.custom-radio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #4F4846; /* נקודה בצבע כהה */
+  border-radius: 50%; /* עיגול */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + .custom-radio::after {
+  opacity: 1; /* הצגת הנקודה כאשר נבחר */
+}

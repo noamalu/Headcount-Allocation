@@ -90,9 +90,12 @@ namespace HeadcountAllocation.Domain{
 
         public void EditProjectRequierdHours(int requiredHours){
             RequiredHours = requiredHours;   
-        } 
+        }
 
-
+        internal void AssignEmployeeToRole(Role role)
+        {
+            RoleRepo.Update(role);
+        }
     }
 
 

@@ -1,42 +1,115 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../Styles/Modal.css';
+import '../../../Styles/AssignModal.css';
+import { Employee } from '../../../Types/EmployeeType'
+import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
 
-interface AssignEmployeeModalProps {
-  role: string; // שם התפקיד שאליו רוצים לשייך עובד
-  onClose: () => void; // פונקציה לסגירת החלון
-  onAssign: (employee: string) => void; // פונקציה שמבצעת את השיוך בפועל
-}
+const AssignEmployeeModal = ({
+  projectId,
+  roleId,
+  onClose,
+  onAssign,
+}: {
+  projectId: number;
+  roleId: number;
+  onClose: () => void;
+  onAssign: (employeeId: number) => void;
+}) => {
+  const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
+  const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null);
+  const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
 
-const AssignEmployeeModal: React.FC<AssignEmployeeModalProps> = ({ role, onClose, onAssign }) => {
-  const [selectedEmployee, setSelectedEmployee] = useState('');
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const data: Employee[] = await getAssignOptionsToRole(projectId, roleId);
+        setEmployees(data);
+        if (data.length > 0) {
+          setSelectedEmployee(data[0].employeeId);
+        }
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, [roleId]);
+
+  const handleExpand = (employeeId: number) => {
+    setExpandedEmployeeId(expandedEmployeeId === employeeId ? null : employeeId);
+  };
 
   const handleAssign = () => {
+    console.log("handleAssign in AssignEmployeeModal");
     if (selectedEmployee) {
       onAssign(selectedEmployee);
-      onClose(); // סוגר את החלון לאחר השיוך
+      onClose();
     }
   };
 
   return (
-    <div className="modal">
-      <div className="modal-header">
-        <h2>Assign Employee to {role}</h2>
-        <button onClick={onClose}>X</button>
-      </div>
-      <div className="modal-body">
-        <label htmlFor="employee">Select Employee:</label>
-        <select
-          id="employee"
-          value={selectedEmployee}
-          onChange={(e) => setSelectedEmployee(e.target.value)}
-        >
-          <option value="">--Select Employee--</option>
-          {/* לדוגמה: */}
-          <option value="Employee A">Employee A</option>
-          <option value="Employee B">Employee B</option>
-          <option value="Employee C">Employee C</option>
-        </select>
-        <button onClick={handleAssign}>Assign</button>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-button" onClick={onClose}>✖</button>
+        <h2>Assign Employee to Role</h2>
+        <p>Select the best candidate for the role based on their qualifications.</p>
+
+        <table className="employees-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Experience</th>
+              <th>Job Percentage</th>
+              <th>Phone Number</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employees.map((employee) => (
+              <React.Fragment key={employee.employeeId}>
+                <tr>
+                  <td><input
+                      type="radio"
+                      name="selectedEmployee"
+                      className="custom-radio"
+                      checked={selectedEmployee === employee.employeeId}
+                      onChange={() => setSelectedEmployee(employee.employeeId)} // עדכון הבחירה
+                    /></td>
+                  <td>{employee.employeeName}</td>
+                  <td>{employee.yearsExperience} years</td>
+                  <td>{employee.jobPercentage}%</td>
+                  <td>{employee.phoneNumber}</td>
+                  <td>
+                    <button className= "show-details-button" onClick={() => handleExpand(employee.employeeId)}>
+                      {expandedEmployeeId === employee.employeeId ? 'Hide Details' : 'Show Details'}
+                    </button>
+                  </td>
+                </tr>
+                {expandedEmployeeId === employee.employeeId && (
+                  <tr className="employee-details">
+                    <td colSpan={6}>
+                      {/* requiresMap! */}
+                      <strong>Skills:</strong> {employee.skills.join(', ')}<br />
+                      <strong>Languages:</strong> {employee.foreignLanguages.join(', ')}<br />
+                      <strong>Time Zone:</strong> {employee.timeZone}
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="modal-actions">
+          <button
+            className="assign-button"
+            onClick={handleAssign}
+            disabled={!selectedEmployee}
+          >
+            Assign
+          </button>
+        </div>
       </div>
     </div>
   );
