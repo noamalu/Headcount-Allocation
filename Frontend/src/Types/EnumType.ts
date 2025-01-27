@@ -1,16 +1,24 @@
 
 export enum SkillEnum {
-    Programming = "Programming",
-    Communication = "Communication",
-    Leadership = "Leadership",
-    ProblemSolving = "ProblemSolving",
-    Creativity = "Creativity",
+    Python = "Python",
+    SQL = "SQL",
+    API = "API",
+    Java = "Java",
+    UI = "UI"
 }
 
 export enum LanguageEnum {
     English = "English",
     Spanish = "Spanish",
     Hebrew = "Hebrew",
+}
+
+export enum TimeZonesEnum
+{
+    Morning = "Morning",
+    Noon = "Noon",
+    Evening = "Evening",
+    Flexible = "Flexible"
 }
 
 export const skillEnumToId = (skill : SkillEnum): number => {
@@ -33,11 +41,14 @@ export const languageEnumToId = (language : LanguageEnum): number => {
     return -1;
 }
 
-export const getLanguageStringByIndex  = (index: number): string => {
-    const languages = Object.values(LanguageEnum); 
-    console.log("Langs list: " + languages);
-    console.log(index + " " + languages[index]);
-    return languages[index] || "Other"; 
+export const timeZoneEnumToId = (timeZone : TimeZonesEnum): number => {
+    const entries = Object.entries(TimeZonesEnum);
+    for (const [key, value] of entries) {
+        if (key === timeZone) {
+            return Number(value);
+        }
+    }
+    return -1;
 }
 
 export const getSkillStringByIndex  = (index: number): string => {
@@ -46,3 +57,20 @@ export const getSkillStringByIndex  = (index: number): string => {
     console.log(index + " " + skills[index]);
     return skills[index] || "Other"; 
 }
+
+export const getLanguageStringByIndex  = (index: number): string => {
+    const languages = Object.values(LanguageEnum); 
+    console.log("Langs list: " + languages);
+    console.log(index + " " + languages[index]);
+    return languages[index] || "Other"; 
+}
+
+export const getTimeZoneStringByIndex  = (index: number): string => {
+    const timeZones = Object.values(TimeZonesEnum); 
+    console.log("timeZones list: " + timeZones);
+    console.log(index + " " + timeZones[index]);
+    return timeZones[index] || "Other"; 
+}
+
+
+

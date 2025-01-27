@@ -20,11 +20,13 @@ const AssignEmployeeModal = ({
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
 
   useEffect(() => {
-    // קריאה ל-API להחזרת העובדים המובילים לתפקיד
     const fetchEmployees = async () => {
       try {
         const data: Employee[] = await getAssignOptionsToRole(projectId, roleId);
         setEmployees(data);
+        if (data.length > 0) {
+          setSelectedEmployee(data[0].employeeId);
+        }
       } catch (error) {
         console.error('Error fetching employees:', error);
       }
@@ -55,10 +57,11 @@ const AssignEmployeeModal = ({
         <table className="employees-table">
           <thead>
             <tr>
+              <th></th>
               <th>Name</th>
               <th>Experience</th>
               <th>Job Percentage</th>
-              <th>Rating</th>
+              <th>Phone Number</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -66,25 +69,27 @@ const AssignEmployeeModal = ({
             {employees.map((employee) => (
               <React.Fragment key={employee.employeeId}>
                 <tr>
+                  <td><input
+                      type="radio"
+                      name="selectedEmployee"
+                      className="custom-radio"
+                      checked={selectedEmployee === employee.employeeId}
+                      onChange={() => setSelectedEmployee(employee.employeeId)} // עדכון הבחירה
+                    /></td>
                   <td>{employee.employeeName}</td>
                   <td>{employee.yearsExperience} years</td>
                   <td>{employee.jobPercentage}%</td>
                   <td>{employee.phoneNumber}</td>
                   <td>
-                    <button onClick={() => handleExpand(employee.employeeId)}>
+                    <button className= "show-details-button" onClick={() => handleExpand(employee.employeeId)}>
                       {expandedEmployeeId === employee.employeeId ? 'Hide Details' : 'Show Details'}
                     </button>
-                    <input
-                      type="radio"
-                      name="selectedEmployee"
-                      checked={selectedEmployee === employee.employeeId}
-                      onChange={() => setSelectedEmployee(employee.employeeId)}
-                    />
                   </td>
                 </tr>
                 {expandedEmployeeId === employee.employeeId && (
                   <tr className="employee-details">
-                    <td colSpan={5}>
+                    <td colSpan={6}>
+                      {/* requiresMap! */}
                       <strong>Skills:</strong> {employee.skills.join(', ')}<br />
                       <strong>Languages:</strong> {employee.foreignLanguages.join(', ')}<br />
                       <strong>Time Zone:</strong> {employee.timeZone}
