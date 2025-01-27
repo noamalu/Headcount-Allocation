@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import AssignEmployeeModal from './AssignEmployeeModal';
 import EditRoleModal from './EditRoleModal';
 import { Role } from '../../../Types/RoleType';
+import { Language, formateLanguage } from '../../../Types/LanguageType';
 import '../../../Styles/Modal.css';
+import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
+import { formateSkill } from '../../../Types/SkillType';
 
 
 interface RoleDetailsModalProps {
@@ -17,7 +20,11 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
+
     console.log("RoleDetailsModal mounted or updated for role:", role);
+    console.log("Type of foreignLanguages:", typeof role.foreignLanguages);
+    console.log("Is foreignLanguages an array?:", Array.isArray(role.foreignLanguages));
+    console.log("Content of foreignLanguages:", role.foreignLanguages);
   }, [role]);
 
   const handleAssign = (newEmployee: string) => {
@@ -66,13 +73,39 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
           </div>
           <div className="detail-banner">
             <i className="fas fa-language"></i>
-            <span><strong>Foreign Languages:</strong> {role.foreignLanguages.length > 0 ? role.foreignLanguages.join(', ') : "None"}</span>
+            <span>
+              <strong>Foreign Languages:</strong> 
+              {role.foreignLanguages.length > 0 ? role.foreignLanguages.join(', ') : "None"}
+              </span>
           </div>
         </div>
           <div className="detail-banner">
             <i className="fas fa-align-left"></i>
             <span><strong>Description:</strong> {role.description}</span>
           </div>
+
+          <table className="languages-input-table">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                {role.foreignLanguages && Object.keys(role.foreignLanguages).length > 0 ? (
+                  Object.entries(role.foreignLanguages).map(([key, lang]) => (
+                    <tr key={key}>
+                      <td>{formateLanguage(lang.languageTypeId)}</td>
+                      <td>{lang.level}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={2}>No foreign languages</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
         {/* טבלת מאפיינים */}
         <div className="skills-section">
@@ -86,14 +119,20 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
               </tr>
             </thead>
             <tbody>
-            {role.skills.map((skill) => (
-                // <tr key={skill.skillId}>
-                //   <td>{skill.skillName}</td>
-                //   <td>{skill.level}</td>
-                //   <td>{skill.priority}</td>
-                //   <td> {0}</td>
-                // </tr>
-              0))}
+            {role.skills && Object.keys(role.skills).length > 0 ? (
+              Object.entries(role.skills).map(([key, skill]) => (
+                <tr key={key}>
+                  <td>{formateSkill(skill.SkillTypeId)}</td>
+                  <td>{skill.level}</td>
+                  <td>{skill.priority}</td>
+                  <td>{0}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4}>No skills available</td>
+              </tr>
+            )}
             </tbody>
           </table>
         </div>

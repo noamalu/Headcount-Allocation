@@ -5,6 +5,8 @@ import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
 import { SkillEnum, LanguageEnum } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';
+import { Language } from '../../../Types/LanguageType';
+import { Skill } from '../../../Types/SkillType';
 
 interface CreateRoleModalProps {
   projectId: number;
@@ -18,9 +20,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   const [timeZone, setTimeZone] = useState(0);
   const [yearsExperience, setYearsExperience] = useState(0);
   const [jobPercentage, setJobPercentage] = useState(0);
-  const [foreignLanguages, setForeignLanguages] = useState(0);
   const [error, setError] = useState<string>(""); 
-  const [isAddSkillModalOpen, setIsAddSkillModalOpen] = useState(false);
   const [skills, setSkills] = useState<{ skill: SkillEnum; level: number }[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<SkillEnum | "">("");
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
@@ -88,32 +88,47 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       alert('Please fill in all fields.');
       return;
     }
-    const prioritizedSkills = skills.map((skill, index) => ({
-      ...skill,
+  
+    // יצירת מערך של RoleSkill מהנתונים
+    const roleSkills: Skill[] = skills.map((skill, index) => ({
+      skillId: index, // ערך זמני, יתעדכן בשרת
+      SkillTypeId: -1, // יתקבל מהשרת לאחר יצירת ה-Role
+      level: skill.level,
       priority: skills.length - index, // חישוב עדיפות
-  }));
+    }));
+  
+    // יצירת מערך של Language מהנתונים
+    const roleLanguages: Language[] = languages.map((lang, index) => ({
+      languageId: -1, // ערך זמני, יתעדכן בשרת
+      languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), // מיפוי ה-Enum ל-ID מתאים
+      level: lang.level,
+    }));
+  
     const newRole: Role = {
-      roleId: -1,
       roleName,
+      roleId: -1, // ערך זמני, יתעדכן בשרת
       projectId: projectId,
       employeeId: -1,
       description,
       timeZone,
-      foreignLanguages: [],
-      skills: [],
+      foreignLanguages: roleLanguages, // הוספת השפות כנתון
+      skills: roleSkills, // הוספת הכישורים כנתון
       yearsExperience,
-      jobPercentage     
+      jobPercentage,
     };
-
+  
     try {
-      // const newRoleId = await ProjectsService.sendCreateRole(projectId, [newRole]);
-      // newRole.roleId = newRoleId;
-      // console.log('Role created successfully:', newRole);
-      onRoleCreated(newRole);
+      // שליחת הנתונים לשרת
+      const addedRoles = await ProjectsService.addRolesToProject(projectId, [newRole]);
+      console.log("Type of response:", typeof addedRoles);
+      console.log("Response keys:", Object.keys(addedRoles));
+      newRole.roleId = addedRoles[0].roleId;
+      console.log('Role created successfully:', newRole);
+      onRoleCreated(newRole); // עדכון ברכיב האב
       onClose(); // סגירת המודל
     } catch (error) {
-        console.error('Error creating role:', error);
-        setError('An error occurred while creating the role.');
+      console.error('Error creating role:', error);
+      setError('An error occurred while creating the role.');
     }
   };
 

@@ -54,7 +54,6 @@ if (error) {
     return <p className="error">{error}</p>;
 }
 
-
   return (
     <div>
       <table className="projects-table">
@@ -62,7 +61,7 @@ if (error) {
           <tr>
             <th>Project</th>
             <th>Deadline</th>
-            <th>Positions</th>
+            <th>Required Hours</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -71,7 +70,7 @@ if (error) {
             <tr key={project.projectId}>
               <td>{project.projectName}</td>
               <td>{formatDate(project.deadline)}</td>
-              <td>{project.roles.length || 0}</td>
+              <td>{project.requiredHours}</td>
               <td>
                 <button className="action-button" onClick={() => handleOpenModal(project)}>🔗</button>
               </td>
