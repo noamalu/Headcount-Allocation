@@ -11,6 +11,8 @@ export enum LanguageEnum {
     English = "English",
     Spanish = "Spanish",
     Hebrew = "Hebrew",
+    Russian = "Russian",
+    Persian = "Persian"
 }
 
 export enum TimeZonesEnum

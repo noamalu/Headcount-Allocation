@@ -8,12 +8,13 @@ import '../../../Styles/Shared.css';
 
 
 interface EditRoleModalProps {
+  projectId: number;
   role: Role;
   onClose: () => void;
   onSave: (newRole: Role) => void; // Add this line
 }
 
-const EditRoleModal: React.FC<EditRoleModalProps> = ({ role, onClose, onSave }) => {
+const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, onSave }) => {
   const [editedRole, setEditedRole] = useState<Role>({ ...role });
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
@@ -31,8 +32,8 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ role, onClose, onSave }) 
     onClose();
   };
 
-  const handleAssign = (newEmployee: string) => {
-    console.log(`Assigned ${newEmployee} to role ${role.roleName}`);
+  const handleAssign = (employeeId: number) => {
+    console.log(`Assigned ${employeeId} to role ${role.roleName}`);
     // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
   };
 
@@ -152,7 +153,8 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ role, onClose, onSave }) 
       {/* חלון שיוך עובד */}
       {isAssignModalOpen && (
         <AssignEmployeeModal
-          role={role.roleName}
+          projectId={projectId}
+          roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
           onAssign={handleAssign}
         />

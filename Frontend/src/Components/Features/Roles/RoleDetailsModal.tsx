@@ -37,7 +37,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
       const res = await EmployeesService.assignEmployeeToRole(employeeId, role);
       role.employeeId = employeeId;
       console.log('employee assigned successfully:', employeeId);
-      onClose(); // סגירת המודל
+      onClose(); 
     } catch (error) {
         console.error('Error assigning employee:', error);
       setError('An error occurred while assigning the employee');
@@ -162,6 +162,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
       )}
       {isEditModalOpen && ( 
           <EditRoleModal
+            projectId={projectId}
             role={role}
             onClose={() => setIsEditModalOpen(false)}
             onSave={handleEditSave} />
