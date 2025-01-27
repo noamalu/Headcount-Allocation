@@ -27,8 +27,8 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
     console.log("Content of foreignLanguages:", role.foreignLanguages);
   }, [role]);
 
-  const handleAssign = (newEmployee: string) => {
-    console.log(`Assigned ${newEmployee} to role ${role.roleName}`);
+  const handleAssign = (employeeId: number) => {
+    console.log(`Assigned ${employeeId} to role ${role.roleName}`);
     // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
   };
 
@@ -71,79 +71,64 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
             <i className="fas fa-percentage"></i>
             <span><strong>Job Percentage:</strong> {role.jobPercentage * 100}%</span>
           </div>
-          <div className="detail-banner">
-            <i className="fas fa-language"></i>
-            <span>
-              <strong>Foreign Languages:</strong> 
-              {role.foreignLanguages.length > 0 ? role.foreignLanguages.join(', ') : "None"}
-              </span>
-          </div>
         </div>
+        <div className="role-details">
           <div className="detail-banner">
             <i className="fas fa-align-left"></i>
             <span><strong>Description:</strong> {role.description}</span>
           </div>
 
+          {/* Languages Section */}
           <div className="detail-banner">
-          <i className="fas fa-language"></i>
-            {/* <span> */}
-              <strong>Foreign Languages:</strong> 
-              {/* </span> */}
-            <table className="languages-input-table">
+            <i className="fas fa-language"></i>
+            <strong>Foreign Languages:</strong>
+            <div className="languages-list">
+              {role.foreignLanguages && Object.keys(role.foreignLanguages).length > 0 ? (
+                Object.entries(role.foreignLanguages).map(([key, lang]) => (
+                  <div key={key} className="language-item">
+                    <strong>{formateLanguage(lang.languageTypeId)}</strong>: Level {lang.level}
+                  </div>
+                ))
+              ) : (
+                <span className="no-data">No foreign languages</span>
+              )}
+            </div>
+          </div>
+  
+          {/* Skills Section */}
+          <div className="detail-banner">
+          <div className="skills-section">
+          <i className="fas fa-tools"></i>
+          <strong> Skills:</strong>
+              <table className="skills-table">
                 <thead>
                   <tr>
-                    <th>Language</th>
-                    <th>Level</th>
+                    <th>Skill</th>
+                    <th>Required Ranking</th>
+                    <th>Priority</th>
+                    <th>Employee’s Ranking</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {role.foreignLanguages && Object.keys(role.foreignLanguages).length > 0 ? (
-                    Object.entries(role.foreignLanguages).map(([key, lang]) => (
+                  {role.skills && Object.keys(role.skills).length > 0 ? (
+                    Object.entries(role.skills).map(([key, skill]) => (
                       <tr key={key}>
-                        <td>{formateLanguage(lang.languageTypeId)}</td>
-                        <td>{lang.level}</td>
+                        <td>{formateSkillToString(skill.SkillTypeId)}</td>
+                        <td>{skill.level}</td>
+                        <td>{skill.priority}</td>
+                        <td>0</td> {/* Employee ranking - ערך לדוגמה */}
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={2}>No foreign languages</td>
+                      <td colSpan={4}>No skills available</td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
-        {/* טבלת מאפיינים */}
-
-        <div className="detail-banner">
-        <div className="skills-section">
-          <table className="skills-table">
-            <thead>
-              <tr>
-                <th>Skill</th>
-                <th>Required ranking</th>
-                <th>Priority</th>
-                <th>Employee’s ranking</th>
-              </tr>
-            </thead>
-            <tbody>
-            {role.skills && Object.keys(role.skills).length > 0 ? (
-              Object.entries(role.skills).map(([key, skill]) => (
-                <tr key={key}>
-                  <td>{formateSkillToString(skill.SkillTypeId)}</td>
-                  <td>{skill.level}</td>
-                  <td>{skill.priority}</td>
-                  <td>{0}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4}>No skills available</td>
-              </tr>
-            )}
-            </tbody>
-          </table>
-        </div>
-        </div>
+          </div>
+          </div>
 
         {/* כפתורי פעולה */}
         <div className="modal-actions">
@@ -157,12 +142,12 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ role, onClose }) =>
       {/* חלון שיוך עובד */}
       {isAssignModalOpen && (
         <AssignEmployeeModal
-          role={role.roleName}
+          roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
           onAssign={handleAssign}
         />
       )}
-      {isEditModalOpen && (
+      {isEditModalOpen && ( 
           <EditRoleModal
             role={role}
             onClose={() => setIsEditModalOpen(false)}

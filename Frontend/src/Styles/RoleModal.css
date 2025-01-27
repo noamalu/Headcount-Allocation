@@ -62,10 +62,9 @@
   margin-top: 20px;
   margin-bottom: 10px;
   padding: 15px;
-  background-color: #f9f9f9; /* רקע בהיר */
-  border: 1px solid #ddd; /* גבול קל */
-  border-radius: 8px; /* פינות מעוגלות */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* צל קל */
+  text-align: left; /* יישור טקסט לשמאל */
+  margin: 2px auto;
+
 }
 
 .skills-input-table {
@@ -119,4 +118,27 @@
   background: #E8CEBF;
   font-size: 14px;
   font-weight: normal;
+}
+
+.languages-list,
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* ריווח בין הפריטים */
+  margin-top: 8px;
+}
+
+.language-item,
+.skill-item {
+  background-color: #f9f9f9; /* צבע רקע עדין */
+  border: 1px solid #ddd; /* מסגרת דקה */
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.no-data {
+  color: #999;
+  font-style: italic;
 }

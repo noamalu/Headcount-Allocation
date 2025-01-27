@@ -3,6 +3,7 @@ import { fetchResponse } from './GeneralService';
 import ClientResponse from './Response';
 import { Project } from '../Types/ProjectType';
 import { Role } from '../Types/RoleType';
+import { Employee } from '../Types/EmployeeType';
 
 class ProjectsService {
 
@@ -84,6 +85,23 @@ export const getProjects = async (): Promise<Project[]> => {
       throw error;
     }
   };
+
+  export const getAssignOptionsToRole = async (projectId: number, roleId: number): Promise<Employee[]> => {
+    try {
+      const response = await APIClient(`/api/Project/${projectId}/Roles/${roleId}/Assign`, { method: 'GET' });
+      console.log('getAssignOptionsToRole Response:', response); // לוג לבדיקה
+      if (!response.errorOccured) {
+        return  fetchResponse(response); 
+      } else {
+          throw new Error("Failed to getAssignOptionsToRole: " + JSON.stringify(response, null, 2));
+      }
+       // שימוש בפונקציה fetchResponse לעיבוד התגובה
+    } catch (error) {
+      console.error(`Error fetching assign options for project ID ${projectId} and role ID ${roleId}:`, error);
+      throw error; // משליכים את השגיאה לטיפול חיצוני
+    }
+  };
+  
   
 
 
