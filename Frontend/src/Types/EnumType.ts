@@ -10,9 +10,9 @@ export enum SkillEnum {
 export enum LanguageEnum {
     English = "English",
     Spanish = "Spanish",
-    Hebrew = "Hebrew",
-    Russian = "Russian",
-    Persian = "Persian"
+    Hebrew = "Hebrew"
+    // Russian = "Russian",
+    // Persian = "Persian"
 }
 
 export enum TimeZonesEnum
@@ -55,22 +55,16 @@ export const timeZoneEnumToId = (timeZone : TimeZonesEnum): number => {
 
 export const getSkillStringByIndex  = (index: number): string => {
     const skills = Object.values(SkillEnum);
-    console.log("skills list: " + skills);
-    console.log(index + " " + skills[index]);
     return skills[index] || "Other"; 
 }
 
 export const getLanguageStringByIndex  = (index: number): string => {
     const languages = Object.values(LanguageEnum); 
-    console.log("Langs list: " + languages);
-    console.log(index + " " + languages[index]);
     return languages[index] || "Other"; 
 }
 
 export const getTimeZoneStringByIndex  = (index: number): string => {
     const timeZones = Object.values(TimeZonesEnum); 
-    console.log("timeZones list: " + timeZones);
-    console.log(index + " " + timeZones[index]);
     return timeZones[index] || "Other"; 
 }
 

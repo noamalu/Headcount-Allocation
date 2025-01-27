@@ -8,7 +8,8 @@ export interface Skill {
 }
 
 export const formateSkillToString = (type: number): string => {
-    return getSkillStringByIndex(type); // פורמט יום/חודש/שנה
+    console.log("formateSkillToString input: " + type + " ");
+    return getSkillStringByIndex(type);
 };
 
 

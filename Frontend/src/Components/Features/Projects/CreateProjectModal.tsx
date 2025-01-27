@@ -94,32 +94,6 @@ const CreateProjectModal: React.FC<{
               className="textarea-field"
             ></textarea>
           </div>
-          <table className="roles-input-table">
-            <thead>
-              <tr>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-            // roles.map((role, index) => (
-            //   <tr key={index}>
-            //     <td>{role.roleName}</td>
-            //     <td>
-            //       <button
-            //         onClick={() =>
-            //           setRoles(roles.filter((_, idx) => idx !== index))
-            //         }
-            //       >
-            //         Remove
-            //       </button>
-            //     </td>
-            //   </tr>
-            // ))
-            }
-            </tbody>
-          </table>
           <div className="modal-actions">
             <button className="save-button" onClick={handleSubmit}>
               <i className="fas fa-save"></i> Save Project

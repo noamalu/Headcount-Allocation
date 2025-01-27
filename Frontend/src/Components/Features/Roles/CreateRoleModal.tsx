@@ -96,6 +96,8 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       level: skill.level,
       priority: skills.length - index, // חישוב עדיפות
     }));
+
+    console.log("in CreateRoleModal, SkillTypeId: " + roleSkills[0].SkillTypeId);
  
     // יצירת מערך של Language מהנתונים
     const roleLanguages: Language[] = languages.map((lang, index) => ({
@@ -181,9 +183,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                 <option value="" disabled>
                   Select a time zone
                 </option>
-                <option value={1}>UTC</option>
-                <option value={2}>GMT</option>
-                <option value={3}>IST</option>
+                <option value={1}>Morning</option>
+                <option value={2}>Noon</option>
+                <option value={3}>Evening</option>
+                <option value={4}>Flexible</option>
               </select>
             </div>
           </div>

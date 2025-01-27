@@ -26,9 +26,9 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
   useEffect(() => {
 
     console.log("RoleDetailsModal mounted or updated for role:", role);
-    console.log("Type of foreignLanguages:", typeof role.foreignLanguages);
-    console.log("Is foreignLanguages an array?:", Array.isArray(role.foreignLanguages));
-    console.log("Content of foreignLanguages:", role.foreignLanguages);
+    console.log("Type of skills:", typeof role.skills);
+    console.log("Is skills an array?:", Array.isArray(role.skills));
+    console.log("Content of skills:", role.skills);
   }, [role]);
 
   const handleAssign = async (employeeId: number) => {
@@ -123,9 +123,9 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
                 </thead>
                 <tbody>
                   {role.skills && Object.keys(role.skills).length > 0 ? (
-                    Object.entries(role.skills).map(([key, skill]) => (
-                      <tr key={key}>
-                        <td>{formateSkillToString(skill.SkillTypeId)}</td>
+                    role.skills.map((skill, index) => (
+                      <tr key={index}>
+                        <td>{formateSkillToString(skill.SkillTypeId)}</td>  
                         <td>{skill.level}</td>
                         <td>{skill.priority}</td>
                         <td>0</td> {/* Employee ranking - ערך לדוגמה */}

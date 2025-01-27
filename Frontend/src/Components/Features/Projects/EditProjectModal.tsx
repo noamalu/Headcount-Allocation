@@ -124,7 +124,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
           </button>
         </div>
         {selectedRole && (
-          <RoleDetailsModal role={selectedRole} onClose={handleCloseModal} />
+          <RoleDetailsModal projectId = {project.projectId} role={selectedRole} onClose={handleCloseModal} />
         )}
       </div>
     </div>
