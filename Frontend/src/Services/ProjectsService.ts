@@ -33,32 +33,22 @@ class ProjectsService {
       try {
         //   const response = await APIClient(`/api/Project/${projectId}/Roles`, {
             const response: Array<{ value: Role; errorMessage: string | null; errorOccured: boolean }> = await APIClient(`/api/Project/${projectId}/Roles`, {
-
               method: 'POST',
               body: JSON.stringify(roles),
               headers: { 'Content-Type': 'application/json' },
           });
-
           console.log("Response from APIClient:", response);
-
-        // ווידוא שהתגובה היא מערך
         if (!Array.isArray(response)) {
             throw new Error("Unexpected response format. Expected an array.");
         }
-
-        // בדיקת כל איבר במערך
         response.forEach((item) => {
             if (item.errorOccured) {
                 throw new Error(`Error for role: ${item.errorMessage || "Unknown error"}`);
             }
         });
-
-        // חילוץ המידע מתוך המערך
         const newRoles = response.map((item) => item.value);
         console.log("Parsed roles:", newRoles);
-
         return newRoles;
-
     } catch (error) {
         console.error("Error in addRolesToProject:", error);
         throw error;

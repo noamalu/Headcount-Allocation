@@ -98,9 +98,9 @@ const CreateProjectModal: React.FC<{
             <button className="save-button" onClick={handleSubmit}>
               <i className="fas fa-save"></i> Save Project
             </button>
-            <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
+            {/* <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
             <i className="fas fa-plus"></i> Add Role
-          </button>
+          </button> */}
             {/* {isAddRoleModalOpen && (
             <AddRoleModal
               onSave={(newRole) => {

@@ -15,10 +15,10 @@ export async function fetchResponse<T>(
         console.error('Response format is incorrect:', serverResponse);
         throw new Error('Response format is incorrect');
       }
-  
       if (serverResponse.errorOccured) {
         return Promise.reject(serverResponse.errorMessage || 'Unknown error');
       }
+      console.log('Returned value from fetchResponse:', serverResponse.value); // לוג נוסף לבדיקה
       return serverResponse.value;
     } catch (e) {
       console.error('Error in fetchResponse:', e);
