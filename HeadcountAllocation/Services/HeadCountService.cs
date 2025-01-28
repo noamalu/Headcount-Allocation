@@ -158,6 +158,16 @@ namespace HeadcountAllocation.Services{
                 return Response<List<Employee>>.FromError(e.Message);
             } 
         }
+
+        public Response<Employee> GetEmployeeById(int employeeId)
+        {
+            try{
+                return Response<Employee>.FromValue(_managerFacade.GetEmployeeById(employeeId));
+            }
+            catch (Exception e){
+                return Response<Employee>.FromError(e.Message);
+            } 
+        }
     }
 }
 
