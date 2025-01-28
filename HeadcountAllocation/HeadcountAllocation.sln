@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeadcountAllocation", "Head
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "..\API\API.csproj", "{D53A46EB-A9FE-4891-8582-8B0059B3B15B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesToAssign.Tests", "..\EmployeesToAssign.Tests\EmployeesToAssign.Tests.csproj", "{4D30888A-A7CC-4FF5-89CB-21E590967CCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{3644303F-08DE-4D31-A744-68DDF44BCE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3644303F-08DE-4D31-A744-68DDF44BCE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3644303F-08DE-4D31-A744-68DDF44BCE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D30888A-A7CC-4FF5-89CB-21E590967CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D30888A-A7CC-4FF5-89CB-21E590967CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D30888A-A7CC-4FF5-89CB-21E590967CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D30888A-A7CC-4FF5-89CB-21E590967CCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
