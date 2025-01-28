@@ -36,9 +36,11 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
   const handleAssign = async (employee: Employee) => {
     console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
     try {
-      const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
       role.employeeId = employee.employeeId;
+      console.log("selectedEmployeeName before change: " + selectedEmployeeName + ", will be changed to: " + employee.employeeName);
       setSelectedEmployeeName(employee.employeeName);
+      console.log("selectedEmployeeName after change: " + selectedEmployeeName);
+      const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
       console.log('employee assigned successfully:', employee.employeeId);
       onClose(); 
     } catch (error) {
@@ -70,7 +72,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
         <div className="employee-info">
           <span className="employee-avatar">👤</span>
           <p className="employee-name">
-            {selectedEmployeeName != "" ? selectedEmployeeName : "No employee assigned"}
+            {selectedEmployeeName != "" ? selectedEmployeeName : role.employeeId != -1 ? role.employeeId : "No employee assigned"}
           </p>
         </div>
 

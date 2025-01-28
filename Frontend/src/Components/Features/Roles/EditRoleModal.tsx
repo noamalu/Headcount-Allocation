@@ -5,6 +5,7 @@ import {Skill} from '../../../Types/SkillType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
+import { Employee } from '../../../Types/EmployeeType';
 
 
 interface EditRoleModalProps {
@@ -32,8 +33,8 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, 
     onClose();
   };
 
-  const handleAssign = (employeeId: number) => {
-    console.log(`Assigned ${employeeId} to role ${role.roleName}`);
+  const handleAssign = (employee: Employee) => {
+    console.log(`Assigned ${employee.employeeId} to role ${role.roleName}`);
     // כאן תוכל להוסיף לוגיקה של עדכון Backend או Frontend
   };
 
