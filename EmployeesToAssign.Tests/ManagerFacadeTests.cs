@@ -87,9 +87,9 @@ namespace EmployeesToAssign.Tests
                 },
                 new ConcurrentDictionary<int, Skill>
                 {
-                    [Enums.GetId(Skills.API)] = new Skill(Skills.API, 3, 10),
-                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 5),
-                    [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 8)
+                    [Enums.GetId(Skills.API)] = new Skill(Skills.API, 3, 1),
+                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 3),
+                    [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 2)
                 },
                 0, // No minimum experience
                 50, // Part-time
@@ -103,9 +103,9 @@ namespace EmployeesToAssign.Tests
                 YearExp = 5,
                 Skills = new List<EmployeeSkillsDTO>
                 {
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 3, Priority = 10 },
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 5 },
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.SQL), Level = 2, Priority = 8 }
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 3, Priority = 1 },
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 3 },
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.SQL), Level = 2, Priority = 2 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>
                 {
@@ -121,7 +121,7 @@ namespace EmployeesToAssign.Tests
                 YearExp = 1,
                 Skills = new List<EmployeeSkillsDTO>
                 {
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 2, Priority = 10 }
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 2, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>
                 {
@@ -160,7 +160,7 @@ namespace EmployeesToAssign.Tests
                 },
                 new ConcurrentDictionary<int, Skill>
                 {
-                    [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 10)
+                    [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 1)
                 },
                 3, // Minimum 3 years experience
                 100, // Full-time
@@ -174,7 +174,7 @@ namespace EmployeesToAssign.Tests
                 YearExp = 1,
                 Skills = new List<EmployeeSkillsDTO>
                 {
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 2, Priority = 10 }
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 2, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>
                 {
@@ -206,7 +206,7 @@ namespace EmployeesToAssign.Tests
                 new ConcurrentDictionary<int, Language>(),
                 new ConcurrentDictionary<int, Skill>
                 {
-                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 3, 10)
+                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 3, 1)
                 },
                 0, // No minimum experience
                 100, // Full-time
@@ -220,7 +220,7 @@ namespace EmployeesToAssign.Tests
                 YearExp = 5,
                 Skills = new List<EmployeeSkillsDTO>
                 {
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 3, Priority = 10 }
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 3, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>(),
                 Roles = new()
@@ -233,7 +233,7 @@ namespace EmployeesToAssign.Tests
                 YearExp = 5,
                 Skills = new List<EmployeeSkillsDTO>
                 {
-                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 10 }
+                    new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>(),
                 Roles = new()
@@ -303,9 +303,9 @@ namespace EmployeesToAssign.Tests
                 },
                 new ConcurrentDictionary<int, Skill>
                 {
-                    [Enums.GetId(Skills.API)] = new Skill(Skills.API, 3, 10),
-                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 5),
-                    [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 8)
+                    [Enums.GetId(Skills.API)] = new Skill(Skills.API, 3, 1),
+                    [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 3),
+                    [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 2)
                 },
                 0, // No minimum experience
                 50, // Part-time
@@ -323,7 +323,7 @@ namespace EmployeesToAssign.Tests
                 },
                 new ConcurrentDictionary<int, Skill>
                 {
-                    [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 10)
+                    [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 1)
                 },
                 3, // Minimum 3 years experience
                 100, // Full-time
@@ -381,7 +381,7 @@ namespace EmployeesToAssign.Tests
                     YearExp = 3,
                     Skills = new List<EmployeeSkillsDTO>
                     {
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 3, Priority = 10 }
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 3, Priority = 1 }
                     },
                     ForeignLanguages = new List<EmployeeLanguagesDTO>
                     {
@@ -396,7 +396,7 @@ namespace EmployeesToAssign.Tests
                     YearExp = 4,
                     Skills = new List<EmployeeSkillsDTO>
                     {
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 3, Priority = 10 }
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 3, Priority = 1 }
                     },
                     ForeignLanguages = new List<EmployeeLanguagesDTO>
                     {
@@ -411,7 +411,7 @@ namespace EmployeesToAssign.Tests
                     YearExp = 2, // Does not qualify for Python Role
                     Skills = new List<EmployeeSkillsDTO>
                     {
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 2, Priority = 10 }
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Python), Level = 2, Priority = 1 }
                     },
                     ForeignLanguages = new List<EmployeeLanguagesDTO>
                     {
@@ -428,9 +428,9 @@ namespace EmployeesToAssign.Tests
                     YearExp = 5,
                     Skills = new List<EmployeeSkillsDTO>
                     {
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 3, Priority = 10 },
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 5 },
-                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.SQL), Level = 2, Priority = 8 }
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.API), Level = 3, Priority = 1 },
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 3 },
+                        new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.SQL), Level = 2, Priority = 2 }
                     },
                     ForeignLanguages = new List<EmployeeLanguagesDTO>
                     {

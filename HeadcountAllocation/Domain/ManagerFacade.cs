@@ -201,11 +201,11 @@ namespace HeadcountAllocation.Domain{
                     if (employee.Skills.ContainsKey(skill.SkillId)){
                         Skill employeeSkill = employee.Skills[skill.SkillId];
                         if (employeeSkill.Level == skill.Level)
-                            score = score +3 * (double)skill.Priority/10;
+                            score = score +3 * (double)(role.Skills.Count -skill.Priority + 1)/10;
                         else if (employeeSkill.Level > skill.Level)
-                            score = score +2 * (double)skill.Priority/10;
+                            score = score +2 * (double)(role.Skills.Count -skill.Priority + 1)/10;
                         else if (employeeSkill.Level+1 == skill.Level)
-                            score = score +1 * (double)skill.Priority/10;
+                            score = score +1 * (double)(role.Skills.Count -skill.Priority + 1)/10;
                     }
                 }
 
