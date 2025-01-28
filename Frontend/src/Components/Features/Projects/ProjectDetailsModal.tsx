@@ -74,6 +74,12 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     // Update the project details here (e.g., send to API or update state)
   };
 
+  const handleAssignEmployeeToRole = (roleId: number, employeeName: String) => {
+    console.log("ProjectDetailsModal - handleAssignEmployeeToRole: " + roleId + " employee " + employeeName);
+    
+    // Update the project details here (e.g., send to API or update state)
+  };
+
   if (selectedRole) {
     console.log("Selected role being passed to RoleDetailsModal:", selectedRole);
   }

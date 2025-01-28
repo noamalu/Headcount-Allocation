@@ -19,7 +19,6 @@ export async function fetchResponse<T>(
       if (serverResponse.errorOccured) {
         return Promise.reject(serverResponse.errorMessage || 'Unknown error');
       }
-  
       return serverResponse.value;
     } catch (e) {
       console.error('Error in fetchResponse:', e);
