@@ -226,5 +226,10 @@ namespace HeadcountAllocation.Domain{
         {
             return Employees.Values.ToList();
         }
+
+        internal Employee GetEmployeeById(int employeeId)
+        {
+            return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
+        }
     }
 }

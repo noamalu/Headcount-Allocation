@@ -3,6 +3,7 @@ using System;
 using HeadcountAllocation.Services;
 using HeadcountAllocation.DAL.DTO;
 using API.Models;
+using API.Services;
 
 namespace API.Controllers
 {
@@ -11,10 +12,12 @@ namespace API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly HeadCountService _headCountService;
+        private readonly EmployeeService _employeeService;
 
-        public EmployeeController(HeadCountService headCountService)
+        public EmployeeController(HeadCountService headCountService, EmployeeService employeeService)
         {
             _headCountService = headCountService;
+            _employeeService = employeeService;
         }
 
         [HttpPost("{employeeId}/Assign")]
@@ -36,7 +39,19 @@ namespace API.Controllers
         {            
             try
             {
-                return Ok(_headCountService.GetAllEmployees());
+                return Ok(Response<List<Employee>>.FromValue(_headCountService.GetAllEmployees().Value.Select(_employeeService.TranslateEmployee).ToList()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+            }
+        }
+        [HttpGet("{employeeId}")]
+        public ActionResult<Response> GetEmployeeById([FromRoute]int employeeId)
+        {            
+            try
+            {
+                return Ok(_employeeService.TranslateEmployee(_headCountService.GetEmployeeById(employeeId).Value));
             }
             catch (Exception ex)
             {
