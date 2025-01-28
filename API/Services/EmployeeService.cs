@@ -15,9 +15,9 @@ namespace API.Services
         {
             _headCountService = headcountService;
         }
-        public Employee TranslateEmployee(HeadcountAllocation.Domain.Employee employee)
+        public EmployeeOption TranslateEmployee(HeadcountAllocation.Domain.Employee employee)
         {
-            var translatedEmployee = new Employee
+            var translatedEmployee = new EmployeeOption
             {
                 EmployeeName = employee.Name,
                 EmployeeId = employee.EmployeeId,

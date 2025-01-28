@@ -137,7 +137,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{projectId}/Roles/{roleId}/Assign")]
-        public ActionResult<Response<List<Employee>>> GetMatchedEmployees([Required][FromRoute] int projectId, [Required][FromRoute] int roleId)
+        public ActionResult<Response<List<EmployeeOption>>> GetMatchedEmployees([Required][FromRoute] int projectId, [Required][FromRoute] int roleId)
         {
             try
             {
@@ -145,9 +145,9 @@ namespace API.Controllers
                 roles.Value.TryGetValue(roleId, out HeadcountAllocation.Domain.Role role);
                 var employees = _headCountService.EmployeesToAssign(role).Value
                     .OrderByDescending(kvp => kvp.Value)
-                    .Select(kvp => _employeeService.TranslateEmployee(kvp.Key))
+                    .Select(kvp => {var emp = (EmployeeOption)_employeeService.TranslateEmployee(kvp.Key); emp.Score = kvp.Value; return emp;})
                     .ToList();
-                return Ok(Response<List<Employee>>.FromValue(employees));
+                return Ok(Response<List<EmployeeOption>>.FromValue(employees));
             }
             catch (Exception ex)
             {

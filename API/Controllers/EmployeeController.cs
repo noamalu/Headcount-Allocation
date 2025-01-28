@@ -39,7 +39,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(Response<List<Employee>>.FromValue(_headCountService.GetAllEmployees().Value.Select(_employeeService.TranslateEmployee).ToList()));
+                return Ok(Response<List<Employee>>.FromValue(_headCountService.GetAllEmployees().Value.Select(emp => (Employee)_employeeService.TranslateEmployee(emp)).ToList()));
             }
             catch (Exception ex)
             {
