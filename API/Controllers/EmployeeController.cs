@@ -23,7 +23,7 @@ namespace API.Controllers
             try
             {       
                 var response = _headCountService.AssignEmployeeToRole(employeeId, (HeadcountAllocation.Domain.Role)role);
-                return Ok(Response<bool>.FromValue(response.ErrorOccured));
+                return Ok(Response<bool>.FromValue(!response.ErrorOccured));
             }
             catch (Exception ex)
             {
