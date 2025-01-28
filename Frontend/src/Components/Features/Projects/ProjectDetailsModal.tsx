@@ -50,6 +50,19 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     });
   };
 
+  const handleRoleEdited = (updatedRole: Role) => {
+    setRoles((prevRoles) => {
+      const updatedRoles = {
+        ...prevRoles,
+        [updatedRole.roleId]: { 
+          ...prevRoles[updatedRole.roleId], 
+          ...updatedRole, 
+        },
+      };
+      return updatedRoles;
+    });
+  };
+
 //   useEffect(() => {
 //   const handleRoleCreated = (newRole: Role) => {
 //           setRoles((prevRoles) => [...prevRoles, newRole]);
@@ -72,6 +85,18 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const handleEditSave = (updatedProject: Project) => {
     console.log('Project updated:', updatedProject);
     // Update the project details here (e.g., send to API or update state)
+  };
+
+  const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
+    console.log("Assigning employee", employeeId, "to role", roleId);
+    setRoles((prevRoles) => {
+      const updatedRoles = { ...prevRoles }; // יצירת עותק של roles
+      if (updatedRoles[roleId]) {
+        updatedRoles[roleId].employeeId = employeeId; // עדכון ה-employeeId עבור התפקיד המתאים
+      }
+      return updatedRoles; // החזרת המצב המעודכן
+    });
+    console.log("Updated roles:", roles); // וידוא התוצאה
   };
 
   if (selectedRole) {
@@ -98,7 +123,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           <thead>
             <tr>
               <th>Role</th>
-              <th>Employee</th>
+              <th>Employee ID</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -137,7 +162,11 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           </button>
         </div>
         {selectedRole && (
-          <RoleDetailsModal projectId={project.projectId} role={selectedRole} onClose={handleCloseModal} />
+          <RoleDetailsModal 
+          projectId={project.projectId} 
+          role={selectedRole} 
+          onClose={handleCloseModal}
+          onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}
         {isCreateRoleModalOpen && (
           <CreateRoleModal 

@@ -16,33 +16,52 @@ interface RoleDetailsModalProps {
   role: Role;
   onClose: () => void;
   onSave?: (newRole: Role) => void; // Add this line
-}
+  onAssignEmployeeToRole: (roleId: number, employeeId: number) => void}
 
-const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose }) => {
+const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose, onSave, onAssignEmployeeToRole}) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [error, setError] = useState<string>(""); 
   
 
   useEffect(() => {
-
-    console.log("RoleDetailsModal mounted or updated for role:", role);
-    console.log("Type of skills:", typeof role.skills);
-    console.log("Is skills an array?:", Array.isArray(role.skills));
-    console.log("Content of skills:", role.skills);
+    if (role.employeeId != -1 && selectedEmployee == null) {
+      handleEmployeeDetails(role.employeeId);
+    }
   }, [role]);
+
+  useEffect(() => {
+    if (selectedEmployee) {
+      console.log("Selected employee updated:", selectedEmployee);
+    }
+  }, [selectedEmployee]);
 
   const handleAssign = async (employee: Employee) => {
     console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
     try {
       role.employeeId = employee.employeeId;
-      console.log("selectedEmployeeName before change: " + selectedEmployeeName + ", will be changed to: " + employee.employeeName);
-      setSelectedEmployeeName(employee.employeeName);
-      console.log("selectedEmployeeName after change: " + selectedEmployeeName);
+      console.log("selectedEmployeeName before change: " + selectedEmployee?.employeeName + ", will be changed to: " + employee.employeeName);
+      setSelectedEmployee({ ...employee });
+      console.log("selectedEmployeeName after change: " + selectedEmployee?.employeeName);
       const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
+      onAssignEmployeeToRole(role.roleId, employee.employeeId);
       console.log('employee assigned successfully:', employee.employeeId);
-      onClose(); 
+    } catch (error) {
+        console.error('Error assigning employee:', error);
+      setError('An error occurred while assigning the employee');
+    }
+  };
+
+  const handleEmployeeDetails = async (employeeId: number) => {
+    console.log(`handleEmployeeDetails: ${employeeId}`);
+    try {
+      const employee =  await EmployeesService.getEmployeeById(employeeId);
+      console.log("selectedEmployeeName before change: " + selectedEmployee);
+      console.log("selectedEmployeeName should be: " + employee);
+      setSelectedEmployee({ ...employee });
+      console.log("selectedEmployeeName should be after: " + employee);
+      console.log("selectedEmployeeName after change: " + selectedEmployee);
     } catch (error) {
         console.error('Error assigning employee:', error);
       setError('An error occurred while assigning the employee');
@@ -72,7 +91,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
         <div className="employee-info">
           <span className="employee-avatar">👤</span>
           <p className="employee-name">
-            {selectedEmployeeName != "" ? selectedEmployeeName : role.employeeId != -1 ? role.employeeId : "No employee assigned"}
+            {selectedEmployee != null ? selectedEmployee.employeeName : role.employeeId != -1 ? role.employeeId : "No employee assigned"}
           </p>
         </div>
 
@@ -135,7 +154,13 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
                         <td>{formateSkillToString(skill.skillTypeId)}</td>  
                         <td>{skill.level}</td>
                         <td>{skill.priority}</td>
-                        <td>0</td> {/* Employee ranking - ערך לדוגמה */}
+                        <td>
+                          {selectedEmployee?
+                             selectedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)
+                              ? selectedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)!.level
+                              : "-" 
+                            : "-"} 
+                        </td>
                       </tr>
                     ))
                   ) : (

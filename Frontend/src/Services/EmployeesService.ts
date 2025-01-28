@@ -2,6 +2,7 @@ import { APIClient } from './APIClient';
 import { fetchResponse } from './GeneralService';
 import { Role } from '../Types/RoleType';
 import ClientResponse from './Response';
+import { Employee } from '../Types/EmployeeType';
 
 class EmployeesService {
 
@@ -30,6 +31,23 @@ class EmployeesService {
       throw error; // משליכים את השגיאה לטיפול חיצוני
     }
   }
+
+
+static async getEmployeeById(employeeId : number): Promise<Employee> {
+    try {
+      const response = await APIClient(`/api/Employee/${employeeId}`, { method: 'GET' });
+      console.log('GetEmployeeById Response:', response); 
+      if (!response.errorOccured) {
+        return  fetchResponse(response); 
+      } else {
+          throw new Error("Failed to GetEmployeeById: " + JSON.stringify(response, null, 2));
+      }
+    } catch (error) {
+      console.error(`Error GetEmployeeById ${employeeId} `, error);
+      throw error; 
+    }
+  }
+
 }
 
 export default EmployeesService;

@@ -8,7 +8,7 @@ export interface Employee {
     employeeName: string;
     phoneNumber: string;
     email?: string;
-    timeZone: number[];
+    timeZone: number;
     foreignLanguages: Language[];
     skills: Skill[];
     yearsExperience: number;

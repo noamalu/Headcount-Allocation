@@ -92,6 +92,12 @@ const AssignEmployeeModal = ({
       {expandedEmployeeId === employee.employeeId && (
         <tr className="employee-details">
           <td colSpan={6}>
+            {/* Time Zone */}
+              <strong>Time Zone:</strong> 
+              <ul className="details-list">
+                {getTimeZoneStringByIndex(employee.timeZone)}
+              </ul>        
+              
             {/* Skills */}
             <strong>Skills:</strong>
             {employee.skills.length > 0 ? (
@@ -119,16 +125,7 @@ const AssignEmployeeModal = ({
             ) : (
               <span>No languages available</span>
             )}
-
-            {/* Time Zone */}
-            <strong>Time Zone:</strong>
-            {employee.timeZone && employee.timeZone.length > 0 ? (
-              employee.timeZone
-                .map((zone) => getTimeZoneStringByIndex(zone)) 
-                .join(', ') 
-            ) : (
-              'N/A'
-            )}
+            
           </td>
         </tr>
       )}

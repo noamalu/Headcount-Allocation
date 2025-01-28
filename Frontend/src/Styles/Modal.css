@@ -191,6 +191,9 @@
   .role-description {
     align-items: center; 
     width: 100%;
+    max-height: 150px;
+    text-align: left;
+    overflow-y: auto; /* הוספת גלילה */
   }
 
   .role-description h3 {
@@ -202,6 +205,9 @@
   .role-description p {
     font-size: 14px;
     color: #4F4846;
+    max-height: 150px;
+    text-align: left;
+    overflow-y: auto; /* הוספת גלילה */
   }
 
   .role-details {
@@ -214,6 +220,7 @@
     border-radius: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
     gap: 15px;
+    max-width: 90%; 
   }
   
   .detail-banner {
@@ -225,24 +232,32 @@
     background: #FDF8F5;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 90%; 
     gap: 10px;
   }
   
    .detail-banner i {
     font-size: 36px;
     color: #266150;
+    max-width: 90%; 
+
   }
   
   .detail-banner span {
     font-size: 14px;
     color: #333;
     white-space: nowrap;
+    max-width: 90%; 
+    white-space: normal;
+        overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .wide-banner {
     flex: 1 1 100%; 
     justify-content: center; 
     text-align: center; 
+    max-width: 90%; 
   }
   
   
