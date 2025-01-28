@@ -21,8 +21,9 @@ namespace API.Controllers
         public ActionResult<Response> AssignToRole([FromRoute]int employeeId, [FromBody]Role role)
         {            
             try
-            {
-                return Ok(_headCountService.AssignEmployeeToRole(employeeId, (HeadcountAllocation.Domain.Role)role));
+            {       
+                var response = _headCountService.AssignEmployeeToRole(employeeId, (HeadcountAllocation.Domain.Role)role);
+                return Ok(Response<bool>.FromValue(response.ErrorOccured));
             }
             catch (Exception ex)
             {
