@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../../Styles/Modal.css';
 import '../../../Styles/AssignModal.css';
 import { Employee } from '../../../Types/EmployeeType'
+import { getTimeZoneStringByIndex, getLanguageStringByIndex, getSkillStringByIndex } from '../../../Types/EnumType';
 import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
 
 const AssignEmployeeModal = ({
@@ -13,10 +14,10 @@ const AssignEmployeeModal = ({
   projectId: number;
   roleId: number;
   onClose: () => void;
-  onAssign: (employeeId: number) => void;
+  onAssign: (employee: Employee) => void;
 }) => {
   const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
-  const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const AssignEmployeeModal = ({
         const data: Employee[] = await getAssignOptionsToRole(projectId, roleId);
         setEmployees(data);
         if (data.length > 0) {
-          setSelectedEmployee(data[0].employeeId);
+          setSelectedEmployee(data[0]);
         }
       } catch (error) {
         console.error('Error fetching employees:', error);
@@ -66,39 +67,74 @@ const AssignEmployeeModal = ({
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
-              <React.Fragment key={employee.employeeId}>
-                <tr>
-                  <td><input
-                      type="radio"
-                      name="selectedEmployee"
-                      className="custom-radio"
-                      checked={selectedEmployee === employee.employeeId}
-                      onChange={() => setSelectedEmployee(employee.employeeId)} // עדכון הבחירה
-                    /></td>
-                  <td>{employee.employeeName}</td>
-                  <td>{employee.yearsExperience} years</td>
-                  <td>{employee.jobPercentage}%</td>
-                  <td>{employee.phoneNumber}</td>
-                  <td>
-                    <button className= "show-details-button" onClick={() => handleExpand(employee.employeeId)}>
-                      {expandedEmployeeId === employee.employeeId ? 'Hide Details' : 'Show Details'}
-                    </button>
-                  </td>
-                </tr>
-                {expandedEmployeeId === employee.employeeId && (
-                  <tr className="employee-details">
-                    <td colSpan={6}>
-                      {/* requiresMap! */}
-                      <strong>Skills:</strong> {employee.skills.join(', ')}<br />
-                      <strong>Languages:</strong> {employee.foreignLanguages.join(', ')}<br />
-                      <strong>Time Zone:</strong> {employee.timeZone}
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
+  {employees.map((employee) => (
+    <React.Fragment key={employee.employeeId}>
+      <tr>
+        <td>
+          <input
+            type="radio"
+            name="selectedEmployee"
+            className="custom-radio"
+            checked={selectedEmployee === employee}
+            onChange={() => setSelectedEmployee(employee)} // עדכון הבחירה
+          />
+        </td>
+        <td>{employee.employeeName}</td>
+        <td>{employee.yearsExperience} years</td>
+        <td>{employee.jobPercentage}%</td>
+        <td>{employee.phoneNumber}</td>
+        <td>
+          <button className="show-details-button" onClick={() => handleExpand(employee.employeeId)}>
+            {expandedEmployeeId === employee.employeeId ? 'Hide Details' : 'Show Details'}
+          </button>
+        </td>
+      </tr>
+      {expandedEmployeeId === employee.employeeId && (
+        <tr className="employee-details">
+          <td colSpan={6}>
+            {/* Skills */}
+            <strong>Skills:</strong>
+            {employee.skills.length > 0 ? (
+              <ul className="details-list">
+                {employee.skills.map((skill, index) => (
+                  <li key={index}>
+                    {getSkillStringByIndex(skill.skillTypeId)} (Level: {skill.level})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span>No skills available</span>
+            )}
+
+            {/* Languages */}
+            <strong>Languages:</strong>
+            {employee.foreignLanguages.length > 0 ? (
+              <ul className="details-list">
+                {employee.foreignLanguages.map((language, index) => (
+                  <li key={index}>
+                    {getLanguageStringByIndex(language.languageTypeId)} (Level: {language.level})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span>No languages available</span>
+            )}
+
+            {/* Time Zone */}
+            <strong>Time Zone:</strong>
+            {employee.timeZone && employee.timeZone.length > 0 ? (
+              employee.timeZone
+                .map((zone) => getTimeZoneStringByIndex(zone)) 
+                .join(', ') 
+            ) : (
+              'N/A'
+            )}
+          </td>
+        </tr>
+      )}
+    </React.Fragment>
+  ))}
+</tbody>
         </table>
 
         <div className="modal-actions">

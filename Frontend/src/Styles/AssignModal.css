@@ -86,3 +86,19 @@
 .custom-radio input[type="radio"]:checked + .custom-radio::after {
   opacity: 1; /* הצגת הנקודה כאשר נבחר */
 }
+
+.details-list {
+  margin: 0;
+  padding: 0;
+  list-style: none; /* הסרת הנקודות מרשימות */
+}
+
+.details-list li {
+  margin-bottom: 4px; /* רווח בין השורות */
+}
+
+.employee-details {
+  background-color: #f9f9f9; /* רקע בהיר לפרטים נוספים */
+  border-top: 1px solid #ddd; /* קו הפרדה */
+  padding: 10px;
+}

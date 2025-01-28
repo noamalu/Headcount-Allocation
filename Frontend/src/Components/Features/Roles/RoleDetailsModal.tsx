@@ -8,6 +8,7 @@ import '../../../Styles/RoleModal.css';
 import '../../../Styles/Shared.css';
 import { formateSkillToString } from '../../../Types/SkillType';
 import EmployeesService from '../../../Services/EmployeesService';
+import { Employee } from '../../../Types/EmployeeType';
 
 
 interface RoleDetailsModalProps {
@@ -20,6 +21,7 @@ interface RoleDetailsModalProps {
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose }) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
   const [error, setError] = useState<string>(""); 
   
 
@@ -31,12 +33,13 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
     console.log("Content of skills:", role.skills);
   }, [role]);
 
-  const handleAssign = async (employeeId: number) => {
-    console.log(`Assigned ${employeeId} to role ${role.roleName}`);
+  const handleAssign = async (employee: Employee) => {
+    console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
     try {
-      const res = await EmployeesService.assignEmployeeToRole(employeeId, role);
-      role.employeeId = employeeId;
-      console.log('employee assigned successfully:', employeeId);
+      const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
+      role.employeeId = employee.employeeId;
+      setSelectedEmployeeName(employee.employeeName);
+      console.log('employee assigned successfully:', employee.employeeId);
       onClose(); 
     } catch (error) {
         console.error('Error assigning employee:', error);
@@ -66,7 +69,9 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
         {/* שם העובד המשויך */}
         <div className="employee-info">
           <span className="employee-avatar">👤</span>
-          <p className="employee-name">{role.employeeId || "No employee assigned"}</p>
+          <p className="employee-name">
+            {selectedEmployeeName != "" ? selectedEmployeeName : "No employee assigned"}
+          </p>
         </div>
 
         {/* פרטי התפקיד */}
