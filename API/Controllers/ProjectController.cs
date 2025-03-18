@@ -122,7 +122,8 @@ namespace API.Controllers
                     Skills = role.Skills.Values?.Select(skill => new Skill
                     {
                         SkillTypeId = GetId(skill.SkillType),
-                        Level = skill.Level
+                        Level = skill.Level,
+                        Priority = skill.Priority
                     }).ToList() ?? new(),
                     YearsExperience = role.YearsExperience,
                     JobPercentage = role.JobPercentage,
