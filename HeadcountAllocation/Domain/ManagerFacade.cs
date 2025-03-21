@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text;
 using HeadcountAllocation.DAL.Repositories;
 using static HeadcountAllocation.Domain.Enums;
 
@@ -116,7 +117,7 @@ namespace HeadcountAllocation.Domain{
                     Employees[(int)employeeId].Roles.Remove(role.Key);
                 }
             }
-            Projects.Remove(projectCount);
+            Projects.Remove(projectId);
             try{
                 projectRepo.Delete(projectId);
             }
@@ -231,5 +232,72 @@ namespace HeadcountAllocation.Domain{
         {
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
+
+        public static string GeneratePassword()
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder password = new StringBuilder(8);
+        
+        for (int i = 0; i < 8; i++)
+        {
+            password.Append(chars[random.Next(chars.Length)]);
+        }
+        
+        return password.ToString();
     }
-}
+
+        public Tuple<string, string> CreateEmployee(string name, string phoneNumber, string email, 
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, int jobPercentage, bool isManager){
+            string password = GeneratePassword();
+            Employee employee = new Employee(name, employeeCount++, phoneNumber, email, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, password, isManager);
+            Employees.Add(employee.EmployeeId, employee);
+            try{
+                employeeRepo.Add(employee);
+                Tuple<string, string> userNamePass = new Tuple<string, string>(name, password);
+                return userNamePass; 
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            } 
+        }
+
+        public void DeleteEmployee(int employeeId){
+            if (!Employees.ContainsKey(employeeId)){
+                throw new Exception($"No such employee {employeeId}");
+            }
+            if (employeeRepo.GetById(employeeId) == null){
+                throw new Exception($"No such employee {employeeId}");
+            }
+            //remove assign roles of employee
+            foreach (var project in Projects.Values){
+                Dictionary<int, Role> roles = project.GetRoles();
+                foreach (var role in roles.Values){
+                    if (role.EmployeeId == employeeId){
+                        role.RemoveEmployeeAssign();
+                    }
+                }
+            }
+            Employees.Remove(employeeId);
+            try{
+                employeeRepo.Delete(employeeId);
+            }
+            catch (Exception e){
+                throw new Exception($"No such employee {employeeId} " + $"{e}");
+            }
+        }
+
+        public void Login(string userName, string password){
+            try{
+                var employee = employeeRepo.GetByUserName(userName);
+                if (employee.VerifyPassword(password, employee.Password)){
+                    throw new Exception("Wrong password");
+                }
+            }
+            catch(Exception){
+                throw;
+
+        }
+    }
+}}

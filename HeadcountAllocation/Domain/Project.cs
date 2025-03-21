@@ -96,6 +96,10 @@ namespace HeadcountAllocation.Domain{
         {
             RoleRepo.Update(role);
         }
+
+        public Dictionary<int, Role> GetRoles(){
+            return Roles;
+        }
     }
 
 

@@ -21,7 +21,9 @@ namespace HeadcountAllocation.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TimeZone = table.Column<int>(type: "int", nullable: false),
                     JobPercentage = table.Column<double>(type: "float", nullable: false),
-                    YearExp = table.Column<int>(type: "int", nullable: false)
+                    YearExp = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsManager = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -31,10 +31,13 @@ namespace HeadcountAllocation.DAL.DTO
          [NotMapped]
         public List <RoleDTO> Roles {get; set;}
         public int YearExp {get; set;}
+        public string Password {get; set;}
+
+        public bool IsManager {get; set;}
 
         public EmployeeDTO() { }
         public EmployeeDTO(int employeeId, string name, string phoneNum, string email, int timeZone,
-         List<EmployeeLanguagesDTO> foreignLanguages, double jobPercentage, List<EmployeeSkillsDTO> skills, List <RoleDTO> roles, int yearExp )
+         List<EmployeeLanguagesDTO> foreignLanguages, double jobPercentage, List<EmployeeSkillsDTO> skills, List <RoleDTO> roles, int yearExp, string password, bool isManager)
         {
             EmployeeId = employeeId;
             UserName = name;
@@ -46,6 +49,8 @@ namespace HeadcountAllocation.DAL.DTO
             Skills = skills;
             Roles = roles;
             YearExp = yearExp;
+            Password = password;
+            IsManager = isManager;
         }
 
          public EmployeeDTO(Employee employee)
@@ -55,23 +60,27 @@ namespace HeadcountAllocation.DAL.DTO
             PhoneNumber = employee.PhoneNumber;
             Email = employee.EmailAddress;
             TimeZone = Enums.GetId(employee.TimeZone);
-            // ForeignLanguages = new List<LanguagesDTO>();
-            // foreach (var language in employee.ForeignLanguages)
-            // {
-            //     ForeignLanguages.Add(new LanguagesDTO(language.Value));
-            // }
+            ForeignLanguages = new List<EmployeeLanguagesDTO>();
+            foreach (var language in employee.ForeignLanguages)
+            {
+                EmployeeLanguagesDTO employeeLanguage = new EmployeeLanguagesDTO(language.Value);
+                ForeignLanguages.Add(employeeLanguage);
+            }
             JobPercentage = employee.JobPercentage;
-            // Skills = new List<SkillDTO>();
-            // foreach (var skill in employee.Skills)
-            // {
-            //     Skills.Add(new SkillDTO(skill.Value));
-            // }
+            Skills = new List<EmployeeSkillsDTO>();
+            foreach (var skill in employee.Skills)
+            {
+                EmployeeSkillsDTO employeeSkills = new EmployeeSkillsDTO(skill.Value);
+                Skills.Add(employeeSkills);
+            }
             Roles = new List<RoleDTO>();
             foreach (var role in employee.Roles.Values)
             {
                 Roles.Add(new RoleDTO(role));
             }
             YearExp =employee.YearsExperience;
+            Password = employee.Password;
+            IsManager = employee.IsManager;
         }
     }
 }
