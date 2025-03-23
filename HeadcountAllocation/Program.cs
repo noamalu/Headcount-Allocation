@@ -76,7 +76,7 @@ List<EmployeeSkillsDTO> emp_skills = new List<EmployeeSkillsDTO>();
 emp_skills.Add(new EmployeeSkillsDTO(0, 2, 0));
 emp_skills.Add(new EmployeeSkillsDTO(2, 2, 0));
 emp_skills.Add(new EmployeeSkillsDTO(3, 2, 0));
-EmployeeDTO employee0 = new EmployeeDTO(0, "employee1", "123", "mail", 0, emp_languages, 1, emp_skills, new List<RoleDTO>(), 10, "pass", false);
+EmployeeDTO employee0 = new EmployeeDTO(0, "employee1", "123", "mail@gmail.com", 0, emp_languages, 1, emp_skills, new List<RoleDTO>(), 10, "pass", false);
 context.Employees.Add(employee0);
 context.SaveChanges();
 
@@ -89,7 +89,7 @@ List<EmployeeSkillsDTO> emp_skills1 = new List<EmployeeSkillsDTO>();
 emp_skills1.Add(new EmployeeSkillsDTO(0, 3, 0));
 emp_skills1.Add(new EmployeeSkillsDTO(2, 3, 0));
 emp_skills1.Add(new EmployeeSkillsDTO(3, 3, 0));
-EmployeeDTO employee1 = new EmployeeDTO(1, "employee2", "123", "mail", 0, emp_languages1, 1, emp_skills1, new List<RoleDTO>(), 10, "pass", false);
+EmployeeDTO employee1 = new EmployeeDTO(1, "employee2", "123", "mail@gmail.com", 0, emp_languages1, 1, emp_skills1, new List<RoleDTO>(), 10, "pass", false);
 context.Employees.Add(employee1);
 context.SaveChanges();
 
@@ -101,7 +101,7 @@ List<EmployeeSkillsDTO> emp_skills2 = new List<EmployeeSkillsDTO>();
 emp_skills2.Add(new EmployeeSkillsDTO(0, 1, 0));
 emp_skills2.Add(new EmployeeSkillsDTO(2, 1, 0));
 emp_skills2.Add(new EmployeeSkillsDTO(3, 1, 0));
-EmployeeDTO employee2 = new EmployeeDTO(2, "employee3", "123", "mail", 0, emp_languages2, 1, emp_skills2, new List<RoleDTO>(), 10, "pass", false);
+EmployeeDTO employee2 = new EmployeeDTO(2, "employee3", "123", "mail@gmail.com", 0, emp_languages2, 1, emp_skills2, new List<RoleDTO>(), 10, "pass", false);
 context.Employees.Add(employee2);
 context.SaveChanges();
 
@@ -113,7 +113,7 @@ List<EmployeeSkillsDTO> emp_skills3 = new List<EmployeeSkillsDTO>();
 emp_skills3.Add(new EmployeeSkillsDTO(0, 2, 0));
 emp_skills3.Add(new EmployeeSkillsDTO(2, 2, 0));
 emp_skills3.Add(new EmployeeSkillsDTO(3, 2, 0));
-EmployeeDTO employee3 = new EmployeeDTO(3, "employee4", "123", "mail", 0, emp_languages3, 1, emp_skills3, new List<RoleDTO>(), 10, "pass", false);
+EmployeeDTO employee3 = new EmployeeDTO(3, "employee4", "123", "mail@gmail.com", 0, emp_languages3, 1, emp_skills3, new List<RoleDTO>(), 10, "pass", false);
 context.Employees.Add(employee3);
 context.SaveChanges();
 
@@ -124,7 +124,7 @@ emp_languages4.Add(new EmployeeLanguagesDTO(1, 4, 3));
 List<EmployeeSkillsDTO> emp_skills4 = new List<EmployeeSkillsDTO>();
 emp_skills4.Add(new EmployeeSkillsDTO(0, 3, 0));
 emp_skills4.Add(new EmployeeSkillsDTO(2, 3, 0));
-EmployeeDTO employee4 = new EmployeeDTO(4, "employee5", "123", "mail", 0, emp_languages4, 1, emp_skills4, new List<RoleDTO>(), 10, "pass", false);
+EmployeeDTO employee4 = new EmployeeDTO(4, "employee5", "123", "mail@gmail.com", 0, emp_languages4, 1, emp_skills4, new List<RoleDTO>(), 10, "pass", false);
 context.Employees.Add(employee4);
 context.SaveChanges();
 
@@ -166,7 +166,7 @@ foreach (var entry in employees)
     var employee = entry.Key; // The Employee object
     var score = entry.Value;  // The double value associated with the employee
     Console.WriteLine("here1");
-    Console.WriteLine($"{employee.EmployeeId}, {employee.Name}, {score}");
+    Console.WriteLine($"{employee.EmployeeId}, {employee.UserName}, {score}");
 }
 
 
