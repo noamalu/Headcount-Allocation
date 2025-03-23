@@ -56,9 +56,9 @@ namespace HeadcountAllocation.DAL.DTO
          public EmployeeDTO(Employee employee)
         {
             EmployeeId = employee.EmployeeId;
-            UserName = employee.Name;
+            UserName = employee.UserName;
             PhoneNumber = employee.PhoneNumber;
-            Email = employee.EmailAddress;
+            Email = employee.Email.Address;
             TimeZone = Enums.GetId(employee.TimeZone);
             ForeignLanguages = new List<EmployeeLanguagesDTO>();
             foreach (var language in employee.ForeignLanguages)
