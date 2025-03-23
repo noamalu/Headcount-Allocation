@@ -168,6 +168,37 @@ namespace HeadcountAllocation.Services{
                 return Response<Employee>.FromError(e.Message);
             } 
         }
+
+        public Response<Tuple<string, string>> AddEmployee(string name, string phoneNumber, string email, 
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, int jobPercentage, bool isManager){
+            try{
+                return Response<Tuple<string, string>>.FromValue(_managerFacade.CreateEmployee(name, phoneNumber, email, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, isManager));
+            }
+            catch (Exception e){
+                return Response<Tuple<string, string>>.FromError(e.Message);
+            }
+        }
+
+        public Response DeleteEmployee(int employeeId){
+            try{
+                _managerFacade.DeleteEmployee(employeeId);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }     
+        }
+
+        public Response Login(string userName, string password){
+            try{
+                _managerFacade.Login(userName, password);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }
+        }
     }
 }
 

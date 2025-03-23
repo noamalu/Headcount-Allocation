@@ -25,26 +25,27 @@ namespace HeadcountAllocation.DAL
 
         public override void Dispose()
         {
+            // Prevent deletion logic when called by EF tooling
+            if (AppDomain.CurrentDomain.FriendlyName.Contains("ef"))
+                return;
             lock (_lock)
             {
                 if (_instance != null)
                 {
-                    RemoveRangeIfExists(TimeZones);
-                    RemoveRangeIfExists(LanguageTypes);
-                    RemoveRangeIfExists(SkillTypes);
-                    // Clear child entities first
                     RemoveRangeIfExists(EmployeeSkills);
                     RemoveRangeIfExists(EmployeeLanguages);
                     RemoveRangeIfExists(RoleSkills);
                     RemoveRangeIfExists(RoleLanguages);
 
-                    // Clear entities with foreign key dependencies
-                    RemoveRangeIfExists(Roles);
-
-                    // Clear top-level parent entities
-                    RemoveRangeIfExists(Projects);
                     RemoveRangeIfExists(Employees);
+                    RemoveRangeIfExists(Roles);
+                    RemoveRangeIfExists(Projects);
 
+                    RemoveRangeIfExists(TimeZones);
+                    RemoveRangeIfExists(LanguageTypes);
+                    RemoveRangeIfExists(SkillTypes);
+                    // Clear child entities first
+                
                     // Save changes to apply deletions
                     SaveChanges();
 
@@ -56,9 +57,10 @@ namespace HeadcountAllocation.DAL
 
         private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
         {
-            if (dbSet.Any())
+            var entities = dbSet.ToList(); // Ensures EF is tracking them
+            if (entities.Any())
             {
-                dbSet.RemoveRange(dbSet);
+                dbSet.RemoveRange(entities);
             }
         }
 
