@@ -166,8 +166,9 @@ namespace HeadcountAllocation.Domain{
             if (!RoleExists){
                 throw new Exception($"No such role {role.RoleId}");
             }
-            Employees[employeeId].AssignEmployeeToRole(role);
             role.EmployeeId = employeeId;
+            Employees[employeeId].AssignEmployeeToRole(role);
+            Projects[role.ProjectId].Roles[role.RoleId] = role;
             Projects[role.ProjectId].AssignEmployeeToRole(role);
 
         }

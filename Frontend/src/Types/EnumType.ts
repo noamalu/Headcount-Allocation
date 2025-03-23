@@ -9,8 +9,8 @@ export enum SkillEnum {
 
 export enum LanguageEnum {
     English = "English",
-    Spanish = "Spanish",
-    Hebrew = "Hebrew"
+    Hebrew = "Hebrew",
+    Spanish = "Spanish"
     // Russian = "Russian",
     // Persian = "Persian"
 }
