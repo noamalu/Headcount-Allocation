@@ -1,3 +1,5 @@
+
+
 body {
   background: linear-gradient(180deg, #FDF8F5 0%, #FAEDEB 100%);
   font-family: 'Poppins';
@@ -13,15 +15,34 @@ main {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   padding: 30px;
   margin: 100px auto;
-  width: 85%;
-  max-width: 1200px;
+  width: 80%;
+  max-width: 1000px;
+  margin-left: 220px;
 }
 
-.app-container {
+.app-container{
   display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: auto;
+  grid-template-areas: "sidebar main";
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+}
+
+.app-container-temp {
   grid-template-columns: 200px auto; /* 200px ל-sidebar והשאר ל-main */
   grid-template-rows: auto; /* גובה דינמי */
-  grid-template-areas: 
-    "sidebar main"; /* חלוקת האזורים */
+ 
   height: 100vh; /* גובה מלא של הדף */
 }
+
+/* במסך login – נבטל את הגריד ונעבור ל־flex */
+.app-container.login-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+/* חסר: ליישר את הסרגל צד למעלה ולעשות מרווח להתחלה של כפתורים
+להבין מה הבעיה של המיקום של הפרופיל ולתקן
+לנסות להבין אם זה משפיע לי גם על הprojects */

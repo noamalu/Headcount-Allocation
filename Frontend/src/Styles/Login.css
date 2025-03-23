@@ -1,0 +1,82 @@
+/* src/Styles/Login.css */
+
+.login-page {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom right, #FDF8F5, #E8CEBF);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins';
+  }
+  
+  .login-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .login-box h2 {
+    margin-bottom: 20px;
+    color: #4F4846;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #E8CEBF;
+    border-radius: 8px;
+    background: #FDF8F5;
+    font-size: 14px;
+    color: #4F4846;
+  }
+  
+  .login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin: 10px 0;
+    color: #4F4846;
+  }
+  
+  .forgot-password {
+    background: none;
+    border: none;
+    color: #4B6C8E;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .forgot-password:hover {
+    color: #3A526B;
+  }
+  
+  .login-error {
+    color: #D96666;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4B6C8E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #3A526B;
+  }
+  

@@ -1,0 +1,89 @@
+/* src/Styles/Profile.css */
+
+.profile-page {
+    padding: 30px;
+    text-align: center;
+    font-family: 'Poppins';
+    color: #4F4846;
+  }
+  
+  .page-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .profile-card {
+    background: #FDF8F5;
+    border: 1px solid #E8CEBF;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .avatar-icon {
+    font-size: 48px;
+    color: #6C63FF;
+    margin-bottom: 10px;
+  }
+  
+  .username {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .role-badge {
+    font-size: 14px;
+    padding: 5px 12px;
+    background: #9e84a5;
+    color: white;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-details {
+    text-align: left;
+    padding: 20px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid #E8CEBF;
+    margin-bottom: 20px;
+  }
+  
+  .detail-row {
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  
+  .detail-row span {
+    font-weight: bold;
+    margin-right: 6px;
+  }
+  
+  .logout-button {
+    background: #D96666;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins';
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background: #B74444;
+  }
+  

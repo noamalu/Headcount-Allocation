@@ -6,7 +6,7 @@
   color: #4F4846; 
   margin-top: 70px; 
   padding: 20px;
-  height: 100vh; 
+  height: 120%; 
   display: flex;
   flex-direction: column; 
   justify-content: flex-start;
@@ -83,4 +83,61 @@
 
 .icon-container i:hover {
   color: #1E4E40;
+}
+
+.user-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 160px;
+  font-family: 'Poppins';
+}
+
+.user-dropdown p {
+  margin: 0 0 10px;
+  font-weight: bold;
+  font-family: 'Poppins';
+}
+
+.user-dropdown button {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  color: #4F4846;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.user-dropdown button:hover {
+  background-color: #E8CEBF;
+  color: white;
+}
+
+.username-label {
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4F4846;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 5px 10px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  font-family: 'Poppins';
 }
