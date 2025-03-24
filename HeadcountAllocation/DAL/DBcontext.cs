@@ -88,7 +88,7 @@ namespace HeadcountAllocation.DAL
 
         public DBcontext()
         {
-            DbPath = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HeadCountDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;Application Intent=ReadWrite;MultiSubnetFailover=False";
+            DbPath = "Server=localhost,1433;Database=HeadCountDB;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;";
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
