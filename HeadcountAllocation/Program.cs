@@ -39,6 +39,7 @@ Console.WriteLine("Hello, World!");
 // DBcontext.GetInstance().Database.EnsureDeleted();
 DBcontext.GetInstance().Dispose();
 var context = DBcontext.GetInstance();
+// context.ClearDatabase();
 
 TimeZonesDTO morning = new TimeZonesDTO(TimeZones.Morning);
 TimeZonesDTO noon = new TimeZonesDTO(TimeZones.Noon);
