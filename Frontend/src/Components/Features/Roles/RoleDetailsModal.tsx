@@ -16,7 +16,7 @@ interface RoleDetailsModalProps {
   role: Role;
   onClose: () => void;
   onSave?: (newRole: Role) => void; // Add this line
-  onAssignEmployeeToRole: (roleId: number, employeeId: number) => void}
+  onAssignEmployeeToRole?: (roleId: number, employeeId: number) => void}
 
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose, onSave, onAssignEmployeeToRole}) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
@@ -45,7 +45,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
       setSelectedEmployee({ ...employee });
       console.log("selectedEmployeeName after change: " + selectedEmployee?.employeeName);
       const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
-      onAssignEmployeeToRole(role.roleId, employee.employeeId);
+      onAssignEmployeeToRole?.(role.roleId, employee.employeeId);
       console.log('employee assigned successfully:', employee.employeeId);
     } catch (error) {
         console.error('Error assigning employee:', error);
