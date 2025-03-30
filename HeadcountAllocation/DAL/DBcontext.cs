@@ -1,5 +1,6 @@
 using HeadcountAllocation.DAL.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace HeadcountAllocation.DAL
 {
@@ -23,43 +24,49 @@ namespace HeadcountAllocation.DAL
         public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set; }
 
 
+        public void ClearDatabase()
+        {
+            // Delete from most dependent tables first
+            EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
+            EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
+            RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
+            RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
+
+            Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            Employees.ExecuteDelete();           // FK to TimeZones
+            Projects.ExecuteDelete();            // no FKs to Projects
+
+            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+
+            SaveChanges();
+            _instance = new DBcontext();
+        }
+
         public override void Dispose()
         {
-            lock (_lock)
-            {
-                if (_instance != null)
-                {
-                    RemoveRangeIfExists(TimeZones);
-                    RemoveRangeIfExists(LanguageTypes);
-                    RemoveRangeIfExists(SkillTypes);
-                    // Clear child entities first
-                    RemoveRangeIfExists(EmployeeSkills);
-                    RemoveRangeIfExists(EmployeeLanguages);
-                    RemoveRangeIfExists(RoleSkills);
-                    RemoveRangeIfExists(RoleLanguages);
+            EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
+            EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
+            RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
+            RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
 
-                    // Clear entities with foreign key dependencies
-                    RemoveRangeIfExists(Roles);
+            Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            Employees.ExecuteDelete();           // FK to TimeZones
+            Projects.ExecuteDelete();            // no FKs to Projects
 
-                    // Clear top-level parent entities
-                    RemoveRangeIfExists(Projects);
-                    RemoveRangeIfExists(Employees);
+            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
 
-                    // Save changes to apply deletions
-                    SaveChanges();
-
-                    // Reset the singleton instance
-                    _instance = null;
-                }
-            }
+            SaveChanges();
+            _instance = new DBcontext();
         }
 
         private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
         {
-            if (dbSet.Any())
-            {
-                dbSet.RemoveRange(dbSet);
-            }
+            var entities = dbSet.ToList(); // tracked
+            dbSet.RemoveRange(entities);
         }
 
         public static DBcontext Reset()
@@ -84,16 +91,33 @@ namespace HeadcountAllocation.DAL
             return _instance;
         }
 
+        public DBcontext(DbContextOptions<DBcontext> options) : base(options) { }
+
         public DBcontext()
         {
-            DbPath = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HeadCountDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;Application Intent=ReadWrite;MultiSubnetFailover=False";
+            DbPath = "Server=localhost,1433;Database=HeadCountDB;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;";
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer($"{DbPath}"); // Use DbPath to configure the database connection
+                var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile("appsettings.json", optional: false)
+                    .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                    .Build();
+
+                var connectionString = config.GetConnectionString("DefaultConnection");
+
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                }
+
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

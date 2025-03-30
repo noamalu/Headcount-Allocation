@@ -97,9 +97,8 @@ namespace HeadcountAllocation.Domain{
             RoleRepo.Update(role);
         }
 
-        internal void Notify(string v)
-        {
-            throw new NotImplementedException();
+        public Dictionary<int, Role> GetRoles(){
+            return Roles;
         }
     }
 

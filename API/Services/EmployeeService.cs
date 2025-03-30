@@ -19,10 +19,10 @@ namespace API.Services
         {
             var translatedEmployee = new EmployeeOption
             {
-                EmployeeName = employee.Name,
+                EmployeeName = employee.UserName,
                 EmployeeId = employee.EmployeeId,
                 PhoneNumber = employee.PhoneNumber,
-                Email = employee.EmailAddress,
+                Email = employee.Email.Address,
                 TimeZone = (int)employee.TimeZone,
                 YearsExperience = employee.YearsExperience,
                 JobPercentage = employee.JobPercentage,

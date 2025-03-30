@@ -11,6 +11,8 @@ namespace HeadcountAllocation.DAL.Repositories
     {
          private static Dictionary<int, Employee> Employees;
 
+         private static Dictionary<string, Employee> EmployeesNames;
+
         private object Lock;
 
         private static EmployeeRepo _employeeRepo = null;
@@ -48,13 +50,14 @@ namespace HeadcountAllocation.DAL.Repositories
             try{
                 lock (Lock)
                 {
-                    dbContext.Employees.Add(new EmployeeDTO(employee));
+                    EmployeeDTO empdto = new EmployeeDTO(employee);
+                    dbContext.Employees.Add(empdto);
                     
                     dbContext.SaveChanges();
                 }
             }
-            catch(Exception){
-                throw new Exception("There was a problem in Database use- Add employee");
+            catch(Exception e){
+                throw new Exception($"There was a problem in Database use- Add employee + {e}");
             }
             
 
@@ -106,6 +109,34 @@ namespace HeadcountAllocation.DAL.Repositories
                         return Employees[id];
                     }
                     throw new ArgumentException("Invalid user ID.");
+                }
+                catch(Exception){
+                throw new Exception("There was a problem in Database use- Get Member");
+                }
+            }
+        }
+
+        public Employee GetByUserName(string userName)
+        {
+            if (EmployeesNames.ContainsKey(userName))
+                return EmployeesNames[userName];
+            else
+            {
+                try{
+                    EmployeeDTO empDto;
+                    lock(Lock){
+                        var dbContext = DBcontext.GetInstance();
+                        empDto = dbContext.Employees.FirstOrDefault(m => m.UserName == userName);
+                    }
+                    if (empDto != null)
+                    {
+                        LoadEmployee(empDto);
+                        return EmployeesNames[userName];
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Invalid user name.");
+                    }
                 }
                 catch(Exception){
                 throw new Exception("There was a problem in Database use- Get Member");

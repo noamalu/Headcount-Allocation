@@ -1,4 +1,6 @@
 using System.Collections.Concurrent;
+using System.Net.Mail;
+using System.Text;
 using HeadcountAllocation.DAL.Repositories;
 using static HeadcountAllocation.Domain.Enums;
 
@@ -116,7 +118,7 @@ namespace HeadcountAllocation.Domain{
                     Employees[(int)employeeId].Roles.Remove(role.Key);
                 }
             }
-            Projects.Remove(projectCount);
+            Projects.Remove(projectId);
             try{
                 projectRepo.Delete(projectId);
             }
@@ -232,5 +234,202 @@ namespace HeadcountAllocation.Domain{
         {
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
+
+        public static string GeneratePassword()
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder password = new StringBuilder(8);
+        
+        for (int i = 0; i < 8; i++)
+        {
+            password.Append(chars[random.Next(chars.Length)]);
+        }
+        
+        return password.ToString();
     }
-}
+
+        public Tuple<string, string> CreateEmployee(string name, string phoneNumber, string email, 
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, bool isManager){
+            string password = GeneratePassword();
+            try{
+                var mailParsed = ValidateEmail(email);
+                Employee employee = new Employee(name, employeeCount++, phoneNumber, mailParsed, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, password, isManager);
+                Employees.Add(employee.EmployeeId, employee);
+                employeeRepo.Add(employee);
+                Tuple<string, string> userNamePass = new Tuple<string, string>(name, password);
+                return userNamePass; 
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            } 
+        }
+
+         private MailAddress ValidateEmail(string email){
+            try{
+                return new MailAddress(email);                
+            }
+            catch (FormatException){
+                throw new ArgumentException("Email address is not valid.");
+            }
+            
+        }
+
+        public void DeleteEmployee(int employeeId){
+            if (!Employees.ContainsKey(employeeId)){
+                throw new Exception($"No such employee {employeeId}");
+            }
+            if (employeeRepo.GetById(employeeId) == null){
+                throw new Exception($"No such employee {employeeId}");
+            }
+            //remove assign roles of employee
+            foreach (var project in Projects.Values){
+                Dictionary<int, Role> roles = project.GetRoles();
+                foreach (var role in roles.Values){
+                    if (role.EmployeeId == employeeId){
+                        role.RemoveEmployeeAssign();
+                    }
+                }
+            }
+            Employees.Remove(employeeId);
+            try{
+                employeeRepo.Delete(employeeId);
+            }
+            catch (Exception e){
+                throw new Exception($"No such employee {employeeId} " + $"{e}");
+            }
+        }
+
+        public bool Login(string userName, string password){
+            try{
+                var employee = employeeRepo.GetByUserName(userName);
+                if (employee.VerifyPassword(password, employee.Password)){
+                    throw new Exception("Wrong password");
+                }
+                return employee.Login();
+            }
+            catch(Exception){
+                throw;
+
+            }
+        }
+
+        public void EditEmail(int userId, string newEmail){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            try{
+                var emailAddress = ValidateEmail(newEmail);
+                employee.EditEmail(emailAddress);
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            }
+            
+        }
+
+        public void EditPhoneNumber(int userId, string newPhoneNumber){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            employee.EditPhoneNumber(newPhoneNumber);
+        }
+
+        public void EditTimeZone(int userId, TimeZones newTimeZone){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            employee.EditTimeZone(newTimeZone);
+        }
+
+        public void EditYearOfExpr(int userId, int newyearOfExpr){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            employee.EditYearOfExpr(newyearOfExpr);
+        }
+
+        public void EditJobPercentage(int userId, double newJobPercentage){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            employee.EditJobPercentage(newJobPercentage);
+        }
+
+        public void AddSkill(int userId, Skill newSkill){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            if (employee.GetSkills().ContainsKey(newSkill.SkillId)){
+                throw new Exception($"Skill {newSkill.SkillId} exists in employee {userId}");
+            }
+            employee.AddSkill(newSkill);
+        }
+
+        public void RemoveSkill(int userId, int skillId){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            if (!employee.GetSkills().ContainsKey(skillId)){
+                throw new Exception($"Skill {skillId} does not exists in employee {userId}");
+            }
+            employee.RemoveSkill(skillId);
+        }
+
+        public void AddLanguage(int userId, Language newLanguage){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            if (employee.GetLanguages().ContainsKey(newLanguage.LanguageID)){
+                throw new Exception($"Language {newLanguage.LanguageID} exists in employee {userId}");
+            }
+            employee.AddLanguage(newLanguage);
+        }
+
+        public void RemoveLanguage(int userId, int languageID){
+            if (!Employees.ContainsKey(userId)){
+                throw new Exception($"No such employee {userId}");
+            }
+            var employee = employeeRepo.GetById(userId);
+            if (employee == null){
+                throw new Exception($"No such employee {userId}");
+            }
+            if (!employee.GetLanguages().ContainsKey(languageID)){
+                throw new Exception($"Language {languageID} does not exists in employee {userId}");
+            }
+            employee.RemoveLanguage(languageID);
+        }
+}}

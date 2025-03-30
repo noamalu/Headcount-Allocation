@@ -20,7 +20,7 @@ builder.Services.AddSingleton<EmployeeService>();
             emp_skills.Add(new (0, 2, 0)); //python
             emp_skills.Add(new (2, 2, 0)); //api
             emp_skills.Add(new (3, 2, 0)); //java
-            EmployeeDTO employee0 = new (0, "Stas", "0545382555", "stas@intel.com", 3, emp_languages, 1, emp_skills, new (), 10);
+            EmployeeDTO employee0 = new (0, "Stas", "0545382555", "stas@intel.com", 3, emp_languages, 1, emp_skills, new (), 10, "pass", false);
 
             // all over employee
             List<EmployeeLanguagesDTO> emp_languages1 = new ();
@@ -30,7 +30,7 @@ builder.Services.AddSingleton<EmployeeService>();
             emp_skills1.Add(new EmployeeSkillsDTO(0, 3, 0)); //python
             emp_skills1.Add(new EmployeeSkillsDTO(2, 3, 0)); //api
             emp_skills1.Add(new EmployeeSkillsDTO(3, 3, 0)); //java
-            EmployeeDTO employee1 = new (1, "Chava", "0528972555", "chava@intel.com", 0, emp_languages1, 1, emp_skills1, new (), 10);
+            EmployeeDTO employee1 = new (1, "Chava", "0528972555", "chava@intel.com", 0, emp_languages1, 1, emp_skills1, new (), 10, "pass", false);
 
             // all below employee
             List<EmployeeLanguagesDTO> emp_languages2 = new ();
@@ -40,7 +40,7 @@ builder.Services.AddSingleton<EmployeeService>();
             emp_skills2.Add(new (0, 1, 0));
             emp_skills2.Add(new (2, 1, 0));
             emp_skills2.Add(new (3, 1, 0));
-            EmployeeDTO employee2 = new (2, "Michal", "0529587456", "michal@intel.com", 0, emp_languages2, 1, emp_skills2, new (), 10);
+            EmployeeDTO employee2 = new (2, "Michal", "0529587456", "michal@intel.com", 0, emp_languages2, 1, emp_skills2, new (), 10, "pass", false);
 
             // no languages employee
             List<EmployeeLanguagesDTO> emp_languages3 = new ();
@@ -50,7 +50,7 @@ builder.Services.AddSingleton<EmployeeService>();
             emp_skills3.Add(new (0, 2, 0));
             emp_skills3.Add(new (2, 2, 0));
             emp_skills3.Add(new (3, 2, 0));
-            EmployeeDTO employee3 = new (3, "Asaf", "0549647682", "asaf@intel.com", 0, emp_languages3, 1, emp_skills3, new (), 10);
+            EmployeeDTO employee3 = new (3, "Asaf", "0549647682", "asaf@intel.com", 0, emp_languages3, 1, emp_skills3, new (), 10, "pass", false);
 
             // all below employee
             List<EmployeeLanguagesDTO> emp_languages4 = new List<EmployeeLanguagesDTO>();
@@ -59,7 +59,7 @@ builder.Services.AddSingleton<EmployeeService>();
             List<EmployeeSkillsDTO> emp_skills4 = new ();
             emp_skills4.Add(new (0, 3, 0));
             emp_skills4.Add(new (2, 3, 0));
-            EmployeeDTO employee4 = new (4, "Harel", "0523664965", "harel@intel.com", 0, emp_languages4, 1, emp_skills4, new (), 10);
+            EmployeeDTO employee4 = new (4, "Harel", "0523664965", "harel@intel.com", 0, emp_languages4, 1, emp_skills4, new (), 10, "pass", false);
 
             HeadcountAllocation.Domain.ManagerFacade managerFacade = HeadcountAllocation.Domain.ManagerFacade.GetInstance();
             HeadcountAllocation.Domain.Employee emp0 = new (employee0);
