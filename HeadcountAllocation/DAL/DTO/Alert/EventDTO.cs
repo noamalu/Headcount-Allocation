@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace HeadcountAllocation.Domain.Alert
+namespace HeadcountAllocation.DAL.DTO.Alert
 {
     [Table("Events")]
     public class EventDTO
@@ -13,14 +13,12 @@ namespace HeadcountAllocation.Domain.Alert
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ProjectId { get; set; }
-        // public UserDto Listener { get; set; }
+        public EmployeeDTO Listener { get; set; }
         public EventDTO() { }
-        public EventDTO(string name, int projectId)//, MemberDTO listener)
+        public EventDTO(string name, EmployeeDTO listener)
         {
             Name = name;
-            ProjectId = projectId;
-            // Listener = listener;
+            Listener = listener;
         }
     }
 }

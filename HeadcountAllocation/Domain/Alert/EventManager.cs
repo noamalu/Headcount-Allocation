@@ -1,8 +1,10 @@
 
 using System.Collections.Concurrent;
 using HeadcountAllocation.DAL;
+using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.DAL.DTO.Alert;
 using HeadcountAllocation.DAL.Repositories;
+using HeadcountAllocation.Domain.Notification;
 
 namespace HeadcountAllocation.Domain.Alert
 {
@@ -22,18 +24,18 @@ namespace HeadcountAllocation.Domain.Alert
         private void UploadEventsFromContext()
         {
             DBcontext context = DBcontext.GetInstance();
-            // List<EventDTO> events =  context.Events.Where((e) => e.ProjectId == _projectId).ToList();
-            // List<UserDTO> users = context.Users.Where((m)=>m.IsSystemAdmin==true).ToList();
-            // foreach(EventDTO e in events)
-            // {
-                // _listeners[e.Name].Add(EmployeeRepo.GetInstance().GetById(e.Listener.Id));
-            // }
-            // foreach(UserDTO user in users)
-            // {
-            //     User member = EmployeeRepo.GetInstance().GetById(user.Id);
-            //     if (!_listeners["Report Event"].Contains(member))
-            //         _listeners["Report Event"].Add(member);
-            // }
+            List<EventDTO> events =  context.Events.Where((e) => e.ProjectId == _projectId).ToList();
+            List<EmployeeDTO> users = context.Employees.ToList();
+            foreach(EventDTO e in events)
+            {
+                _listeners[e.Name].Add(EmployeeRepo.GetInstance().GetById(e.Listener.EmployeeId));
+            }
+            foreach(EmployeeDTO user in users)
+            {
+                User member = EmployeeRepo.GetInstance().GetById(user.EmployeeId);
+                if (!_listeners["Report Event"].Contains(member))
+                    _listeners["Report Event"].Add(member);
+            }
         }
 
         public void Subscribe(User user, Event e)
@@ -41,7 +43,7 @@ namespace HeadcountAllocation.Domain.Alert
             if (!_listeners[e.Name].Contains(user))
             {
                 _listeners[e.Name].Add(user);
-                // DBcontext.GetInstance().Events.Add(new EventDTO(e.Name, _projectId, DBcontext.GetInstance().Users.Find(user.Id)));
+                DBcontext.GetInstance().Events.Add(new EventDTO(e.Name, DBcontext.GetInstance().Employees.Find(new EmployeeDTO((Employee)user).EmployeeId)));
                 DBcontext.GetInstance().SaveChanges();
             }
             else throw new Exception("User already sign to this event.");
@@ -52,9 +54,9 @@ namespace HeadcountAllocation.Domain.Alert
             if (_listeners[e.Name].Contains(user))
             {
                 _listeners[e.Name].Remove(user);
-                // EventDTO eventDTO = DBcontext.GetInstance().Events
-                //     .Where((e)=>e.Listener.Id == user.Id && e.ProjectId == _projectId).FirstOrDefault();
-                // DBcontext.GetInstance().Events.Remove(eventDTO);
+                EventDTO eventDTO = DBcontext.GetInstance().Events
+                    .Where((e)=>e.Listener.Id == ((Employee)user).EmployeeId && e.ProjectId == _projectId).FirstOrDefault();
+                DBcontext.GetInstance().Events.Remove(eventDTO);
                 DBcontext.GetInstance().SaveChanges();
             }
             else throw new Exception("User already not sign to this event.");
@@ -66,7 +68,7 @@ namespace HeadcountAllocation.Domain.Alert
             foreach (string eventName in events)
             {
                 _listeners[eventName].Add(user);
-                // DBcontext.GetInstance().Events.Add(new EventDTO(eventName, _projectId, DBcontext.GetInstance().Users.Find(user.Id)));
+                DBcontext.GetInstance().Events.Add(new EventDTO(eventName, DBcontext.GetInstance().Employees.Find(new EmployeeDTO((Employee)user).EmployeeId)));
                 DBcontext.GetInstance().SaveChanges();
             }
         }
@@ -78,9 +80,9 @@ namespace HeadcountAllocation.Domain.Alert
                 if (_listeners[eventName].Contains(user))
                 {
                     _listeners[eventName].Remove(user);
-                    // EventDTO eventDTO = DBcontext.GetInstance().Events
-                    //     .Where((e) => e.Listener.Id == user.Id && e.StoreId == _projectId).FirstOrDefault();
-                    // DBcontext.GetInstance().Events.Remove(eventDTO);
+                    EventDTO eventDTO = DBcontext.GetInstance().Events
+                        .Where((e) => e.Listener.Id == ((Employee)user).EmployeeId && e.StoreId == _projectId).FirstOrDefault();
+                    DBcontext.GetInstance().Events.Remove(eventDTO);
                 }
             }
         }

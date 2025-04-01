@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HeadcountAllocation.Domain.Alert;
 
-namespace HeadcountAllocation.Domain.Alert
+namespace HeadcountAllocation.DAL.DTO.Alert
 {
     [Table("Messages")]
     public class MessageDTO
