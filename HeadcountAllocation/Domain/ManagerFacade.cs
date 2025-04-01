@@ -13,19 +13,24 @@ namespace HeadcountAllocation.Domain{
         public Dictionary<int, Project> Projects{get;set;} = new();
 
         public Dictionary<int, Employee> Employees{get;set;} = new();
+        public Dictionary<int, Ticket> Tickets{get;set;} = new();
 
         private readonly EmployeeRepo employeeRepo;
 
         private readonly ProjectRepo projectRepo;
+        private readonly TicketRepo ticketRepo;
 
         public int projectCount = 0;
 
         public int employeeCount = 0;
 
+        public int ticketCount = 0;
+
         public ManagerFacade()
         {
             projectRepo = ProjectRepo.GetInstance();
             employeeRepo = EmployeeRepo.GetInstance();
+            ticketRepo = TicketRepo.GetInstance();
         }
 
         public static ManagerFacade GetInstance(){
@@ -43,6 +48,7 @@ namespace HeadcountAllocation.Domain{
             RoleRepo.Dispose();
             RoleLanguagesRepo.Dispose();
             RoleSkillsRepo.Dispose();
+            TicketRepo.Dispose();
             managerFacade = null;
         }
 
@@ -234,6 +240,57 @@ namespace HeadcountAllocation.Domain{
         {
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
+
+        public int AddTicket(int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description){
+            Ticket ticket = new Ticket(ticketCount++, employeeId, employeeName, startDate, endDate, description);
+            Tickets.Add(ticket.TicketId, ticket);
+            try{
+                ticketRepo.Add(ticket);
+                return ticket.TicketId;
+            }
+            catch (Exception e){
+                throw new Exception(e.Message);
+            } 
+        }
+
+        public void CloseTicket(int ticketId){
+            Ticket ticket = ticketRepo.GetById(ticketId);
+            try{
+                Tickets[ticketId].CloseTicket();
+                ticket.CloseTicket();
+                ticketRepo.Update(ticket);
+            }
+            catch (Exception e){
+                throw new Exception("ticket is not exist");
+            }
+        }
+
+        public List<Ticket> GetOpensTickets(){
+            List<Ticket> OpensTickets = new List<Ticket>();
+            foreach (Ticket ticket in Tickets.Values){
+                if (ticket.Open == true)
+                    OpensTickets.Add(ticket);
+            }
+
+            return OpensTickets;
+        }
+
+       public List<Ticket> GetOpensTickets5days() {
+            List<Ticket> OpensTickets = new List<Ticket>();
+            DateTime now = DateTime.Now;
+
+            foreach (Ticket ticket in Tickets.Values)
+            {
+                if (ticket.Open && (ticket.StartDate - now).TotalDays <= 5)
+                {
+                    OpensTickets.Add(ticket);
+                }
+            }
+
+            return OpensTickets;
+        }
+
+
 
         public static string GeneratePassword()
     {
