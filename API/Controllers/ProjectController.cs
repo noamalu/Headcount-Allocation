@@ -59,7 +59,7 @@ namespace API.Controllers
         // }
 
         [HttpPut("/{projectId}/Edit")]
-        public async Task<ActionResult<Response>> EditProject([Required][FromRoute] int projectId, [Required][FromRoute] Project project)
+        public async Task<ActionResult<Response>> EditProject([Required][FromRoute] int projectId, [Required][FromBody] Project project)
         {
             var tasks = new Task[]
             {
@@ -154,7 +154,7 @@ namespace API.Controllers
             {
                 return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
             }
-        }
+        }        
 
     }
 }
