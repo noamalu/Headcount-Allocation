@@ -37,6 +37,7 @@ Console.WriteLine("Hello, World!");
 //         }
 
 // DBcontext.GetInstance().Database.EnsureDeleted();
+
 DBcontext.GetInstance().Dispose();
 var context = DBcontext.GetInstance();
 // context.ClearDatabase();
@@ -170,6 +171,26 @@ foreach (var entry in employees)
     Console.WriteLine($"{employee.EmployeeId}, {employee.UserName}, {score}");
 }
 
+
+headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
+Console.WriteLine("add ticket");
+List<Ticket> tickets = headCountService.GetOpensTickets().Value;
+foreach (var ticket in tickets){
+    Console.WriteLine(ticket.Description);
+}
+Console.WriteLine("got ticket");
+headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
+Console.WriteLine("add ticket 10 days");
+List<Ticket> tickets5days = headCountService.GetOpensTickets5days().Value;
+foreach (var ticket in tickets5days){
+    Console.WriteLine(ticket.Description);
+}
+headCountService.CloseTicket(0);
+Console.WriteLine("closed bla ticket");
+List<Ticket> ticketsopen = headCountService.GetOpensTickets().Value;
+foreach (var ticket in ticketsopen){
+    Console.WriteLine(ticket.Description);
+}
 
 
 

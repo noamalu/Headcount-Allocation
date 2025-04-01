@@ -1,4 +1,5 @@
 using HeadcountAllocation.DAL.DTO;
+using HeadcountAllocation.DAL.DTO.Alert;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -22,6 +23,10 @@ namespace HeadcountAllocation.DAL
         public virtual DbSet<TimeZonesDTO> TimeZones { get; set; }
         public virtual DbSet<SkillTypesDTO> SkillTypes { get; set; }
         public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set; }
+        public virtual DbSet<TicketDTO> Tickets {get; set;}
+        public virtual DbSet<EventDTO> Events {get; set;}
+        public virtual DbSet<MessageDTO> Messages {get; set;}
+
 
 
         public void ClearDatabase()
@@ -46,6 +51,9 @@ namespace HeadcountAllocation.DAL
 
         public override void Dispose()
         {
+            Tickets.ExecuteDelete();
+            Messages.ExecuteDelete();
+            Events.ExecuteDelete();
             EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
             EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
             RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
@@ -196,6 +204,26 @@ namespace HeadcountAllocation.DAL
 
             modelBuilder.Entity<EmployeeSkillsDTO>()
                 .HasKey(rl => new { rl.SkillTypeId, rl.EmployeeId });
+
+            modelBuilder.Entity<TicketDTO>()
+                .HasKey(t => t.TicketId);
+
+            modelBuilder.Entity<TicketDTO>()
+                .HasOne<EmployeeDTO>()
+                .WithMany()
+                .HasForeignKey(t => t.EmployeeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventDTO>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<EventDTO>()
+                .HasOne(e => e.Listener)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<MessageDTO>()
+                .HasKey(m => m.Id);
         }
 
     }

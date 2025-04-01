@@ -1,7 +1,9 @@
 using API.Services;
+using EcommerceAPI.initialize;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
+using WebSocketSharp.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,14 @@ builder.Services.AddSingleton<ManagerFacade>();
 builder.Services.AddSingleton<HeadCountService>(); 
 builder.Services.AddSingleton<ProjectService>(); 
 builder.Services.AddSingleton<EmployeeService>(); 
+builder.Services.AddSingleton<WebSocketServer>(sp =>
+{
+    var configurate = sp.GetRequiredService<Configurate>();
+    string port = configurate.Parse();
+    var alertServer = new WebSocketServer("ws://127.0.0.1:" + port);
+    alertServer.Start();
+    return alertServer;
+});
 
             // perfect employee
             List<EmployeeLanguagesDTO> emp_languages = new ();
