@@ -34,19 +34,28 @@ namespace API.Controllers
             }
         }
 
-        // [HttpGet("Tickets")]
-        // public ActionResult<Response> GetOpenTickets()
-        // {
-        //     try
-        //     {
-        //         var response = _headCountService.GetOpensTickets();   
-        //         return Ok(Response<List<Ticket>>.FromValue((Ticket)response.Value));
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
-        //     }
-        // }
+        [HttpGet("Tickets")]
+        public ActionResult<Response> GetOpenTickets()
+        {
+            try
+            {
+                var response = _headCountService.GetOpensTickets();   
+                var tickets = response.Value.Select(ticket => new Ticket
+                {
+                    TicketId = ticket.TicketId,
+                    EmployeeId = ticket.EmployeeId,
+                    EmployeeName = ticket.EmployeeName,
+                    StartDate = ticket.StartDate,
+                    EndDate = ticket.EndDate,
+                    Description = ticket.Description
+                }).ToList();
+                return Ok(Response<List<Ticket>>.FromValue(tickets));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }        
         
     }
 }
