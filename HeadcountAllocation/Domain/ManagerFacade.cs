@@ -301,13 +301,16 @@ namespace HeadcountAllocation.Domain{
             }
         }
 
-        public bool Login(string userName, string password){
+        public int? Login(string userName, string password){
             try{
                 var employee = employeeRepo.GetByUserName(userName);
                 if (employee.VerifyPassword(password, employee.Password)){
                     throw new Exception("Wrong password");
                 }
-                return employee.Login();
+                if(employee.Login())
+                    return employee.EmployeeId;
+                else 
+                    return null;
             }
             catch(Exception){
                 throw;

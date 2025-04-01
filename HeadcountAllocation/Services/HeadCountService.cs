@@ -190,12 +190,12 @@ namespace HeadcountAllocation.Services{
             }     
         }
 
-        public Response<bool> Login(string userName, string password){
+        public Response<int?> Login(string userName, string password){
             try{
-                return Response<bool>.FromValue(_managerFacade.Login(userName, password));
+                return Response<int?>.FromValue(_managerFacade.Login(userName, password));
             }
             catch (Exception e){
-                return Response<bool>.FromError(e.Message);
+                return Response<int?>.FromError(e.Message);
             }
         }
 
