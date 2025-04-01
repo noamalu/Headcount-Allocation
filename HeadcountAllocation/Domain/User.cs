@@ -1,0 +1,14 @@
+
+using System.Net.Mail;
+
+namespace HeadcountAllocation.Domain{
+    public class User{
+
+        public string UserName{get; set;}
+
+        public string Password{get; set;}
+
+        public MailAddress Email{get; set;}
+
+    }
+}

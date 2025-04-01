@@ -168,6 +168,130 @@ namespace HeadcountAllocation.Services{
                 return Response<Employee>.FromError(e.Message);
             } 
         }
+
+        public Response<Tuple<string, string>> AddEmployee(string name, string phoneNumber, string email, 
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, bool isManager){
+            try{
+                return Response<Tuple<string, string>>.FromValue(_managerFacade.CreateEmployee(name, phoneNumber, email, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, isManager));
+            }
+            catch (Exception e){
+                return Response<Tuple<string, string>>.FromError(e.Message);
+            }
+        }
+
+        public Response DeleteEmployee(int employeeId){
+            try{
+                _managerFacade.DeleteEmployee(employeeId);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }     
+        }
+
+        public Response<bool> Login(string userName, string password){
+            try{
+                return Response<bool>.FromValue(_managerFacade.Login(userName, password));
+            }
+            catch (Exception e){
+                return Response<bool>.FromError(e.Message);
+            }
+        }
+
+        public Response EditEmail(int userId, string newEmail){
+            try{
+                _managerFacade.EditEmail(userId, newEmail);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response EditPhoneNumber(int userId, string newPhoneNumber){
+            try{
+                _managerFacade.EditPhoneNumber(userId, newPhoneNumber);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response EditTimeZone(int userId, TimeZones newTimeZone){
+            try{
+                _managerFacade.EditTimeZone(userId, newTimeZone);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response EditYearOfExpr(int userId, int newyearOfExpr){
+            try{
+                _managerFacade.EditYearOfExpr(userId, newyearOfExpr);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response EditJobPercentage(int userId, double newJobPercentage){
+            try{
+                _managerFacade.EditJobPercentage(userId, newJobPercentage);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response AddSkill(int userId, Skill newSkill){
+            try{
+                _managerFacade.AddSkill(userId, newSkill);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response RemoveSkill(int userId, int SkillId){
+            try{
+                _managerFacade.RemoveSkill(userId, SkillId);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response AddLanguage(int userId, Language newLanguage){
+            try{
+                _managerFacade.AddLanguage(userId, newLanguage);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response RemoveLanguage(int userId, int languageID){
+            try{
+                _managerFacade.RemoveLanguage(userId, languageID);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        
+
+        
     }
 }
 

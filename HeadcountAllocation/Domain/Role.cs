@@ -60,5 +60,9 @@ namespace HeadcountAllocation.Domain{
           
 
         }
+
+        public void RemoveEmployeeAssign(){
+          EmployeeId = null;
+        }
     }
 }
