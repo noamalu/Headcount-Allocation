@@ -1,23 +1,22 @@
 ﻿using System.Text.Json;
 using WebSocketSharp.Server;
 
-namespace HeadcountAllocation.Domain.Notification
+namespace HeadcountAllocation.Domain.Alert
 {
-    public class NotificationManager
+    public class AlertManager
     {
-        private static NotificationManager _alertsManager = null;
+        private static AlertManager _alertsManager = null;
         private static object _lock = new object();
         private WebSocketServer _alertsServer;
 
-        private NotificationManager(WebSocketServer alertsServer) 
+        private AlertManager(WebSocketServer alertsServer) 
         {
             _alertsServer = alertsServer;
         }
-        private NotificationManager() 
-        {
-        }
+        private AlertManager() 
+        {}
 
-        public static NotificationManager GetInstance(WebSocketServer alertsServer)
+        public static AlertManager GetInstance(WebSocketServer alertsServer)
         {            
             if (_alertsManager is not null){
                 _alertsManager._alertsServer = alertsServer;
@@ -25,23 +24,23 @@ namespace HeadcountAllocation.Domain.Notification
             }
             lock (_lock)
             {
-                _alertsManager ??= new NotificationManager(alertsServer);
+                _alertsManager ??= new AlertManager(alertsServer);
             }
             return _alertsManager;
         }
 
-        public static NotificationManager GetInstance()
+        public static AlertManager GetInstance()
         {            
             if (_alertsManager is not null)
                 return _alertsManager;
             lock (_lock)
             {
-                _alertsManager ??= new NotificationManager();
+                _alertsManager ??= new AlertManager();
             }
             return _alertsManager;
         }
 
-        public void SendNotification(string message, string username)
+        public void SendAlert(string message, string username)
         {
             var relativePath = $"/{username}-alerts";
 

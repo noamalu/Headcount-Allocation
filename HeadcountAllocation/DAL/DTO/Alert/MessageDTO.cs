@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using HeadcountAllocation.Domain.Notification;
+using HeadcountAllocation.Domain.Alert;
 
-namespace HeadcountAllocation.DAL.DTO.Notification
+namespace HeadcountAllocation.Domain.Alert
 {
     [Table("Messages")]
     public class MessageDTO

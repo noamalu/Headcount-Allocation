@@ -1,5 +1,5 @@
 
-namespace HeadcountAllocation.Domain.Notification
+namespace HeadcountAllocation.Domain.Alert
 {
     public class Message
     {
