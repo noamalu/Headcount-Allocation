@@ -172,14 +172,14 @@ foreach (var entry in employees)
 }
 
 
-headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
+headCountService.AddTicket(0, DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
 Console.WriteLine("add ticket");
 List<Ticket> tickets = headCountService.GetOpensTickets().Value;
 foreach (var ticket in tickets){
     Console.WriteLine(ticket.Description);
 }
 Console.WriteLine("got ticket");
-headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
+headCountService.AddTicket(0, DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
 Console.WriteLine("add ticket 10 days");
 List<Ticket> tickets5days = headCountService.GetOpensTickets5days().Value;
 foreach (var ticket in tickets5days){

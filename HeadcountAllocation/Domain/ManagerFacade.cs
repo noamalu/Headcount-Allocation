@@ -241,8 +241,9 @@ namespace HeadcountAllocation.Domain{
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
 
-        public int AddTicket(int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description){
-            Ticket ticket = new Ticket(ticketCount++, employeeId, employeeName, startDate, endDate, description);
+        public int AddTicket(int employeeId, DateTime startDate ,DateTime endDate, string description){
+            Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
+            Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description);
             Tickets.Add(ticket.TicketId, ticket);
             try{
                 ticketRepo.Add(ticket);
