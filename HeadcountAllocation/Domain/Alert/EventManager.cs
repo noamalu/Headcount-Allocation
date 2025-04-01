@@ -24,7 +24,7 @@ namespace HeadcountAllocation.Domain.Alert
         private void UploadEventsFromContext()
         {
             DBcontext context = DBcontext.GetInstance();
-            List<EventDTO> events =  context.Events.Where((e) => e.ProjectId == _projectId).ToList();
+            List<EventDTO> events =  context.Events.ToList();
             List<EmployeeDTO> users = context.Employees.ToList();
             foreach(EventDTO e in events)
             {
@@ -55,7 +55,7 @@ namespace HeadcountAllocation.Domain.Alert
             {
                 _listeners[e.Name].Remove(user);
                 EventDTO eventDTO = DBcontext.GetInstance().Events
-                    .Where((e)=>e.Listener.Id == ((Employee)user).EmployeeId && e.ProjectId == _projectId).FirstOrDefault();
+                    .Where((e)=>e.Listener.EmployeeId == ((Employee)user).EmployeeId).FirstOrDefault();
                 DBcontext.GetInstance().Events.Remove(eventDTO);
                 DBcontext.GetInstance().SaveChanges();
             }
@@ -81,7 +81,7 @@ namespace HeadcountAllocation.Domain.Alert
                 {
                     _listeners[eventName].Remove(user);
                     EventDTO eventDTO = DBcontext.GetInstance().Events
-                        .Where((e) => e.Listener.Id == ((Employee)user).EmployeeId && e.StoreId == _projectId).FirstOrDefault();
+                        .Where((e) => e.Listener.EmployeeId == ((Employee)user).EmployeeId).FirstOrDefault();
                     DBcontext.GetInstance().Events.Remove(eventDTO);
                 }
             }

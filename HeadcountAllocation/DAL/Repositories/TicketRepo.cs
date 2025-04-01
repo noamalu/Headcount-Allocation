@@ -144,7 +144,7 @@ namespace HeadcountAllocation.DAL.Repositories
             List<TicketDTO> tickets = dbContext.Tickets.ToList();
             foreach (TicketDTO ticket in tickets)
             {
-                tickets.TryAdd(ticket.TicketId, new Ticket(ticket));
+                Tickets.TryAdd(ticket.TicketId, new Ticket(ticket));
                 
             }
         }
@@ -153,6 +153,33 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             Ticket ticket = new Ticket(ticketDto);
             Tickets[ticket.TicketId] = ticket;
+            
+        }
+
+        public void Update(Ticket ticket)
+        {
+            try{
+                Tickets[ticket.TicketId] = ticket;
+                lock(Lock){
+                    TicketDTO ticketDTO = DBcontext.GetInstance().Tickets.Find(ticket.TicketId);
+                    TicketDTO newTicket = new TicketDTO(ticket);
+                    if (ticketDTO != null)
+                    {
+                        ticketDTO.TicketId = newTicket.TicketId;
+                        ticketDTO.EmployeeId = newTicket.EmployeeId;
+                        ticketDTO.EmployeeName = newTicket.EmployeeName;
+                        ticketDTO.StartDate = newTicket.StartDate;
+                        ticketDTO.EndDate = newTicket.EndDate;
+                        ticketDTO.Description = newTicket.Description;
+                        ticketDTO.Open = newTicket.Open;
+                    }
+                    else DBcontext.GetInstance().Tickets.Add(newTicket);
+                    DBcontext.GetInstance().SaveChanges();
+                }
+            }
+            catch(Exception){
+                throw new Exception("There was a problem in Database use- Update Role");
+            }
             
         }
     }

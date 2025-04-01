@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250326170325_InitialCreate")]
+    [Migration("20250401142825_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,48 @@ namespace HeadcountAllocation.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.Alert.EventDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ListenerEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListenerEmployeeId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.Alert.MessageDTO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("MessageContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Seen")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeDTO", b =>
                 {
@@ -228,6 +270,38 @@ namespace HeadcountAllocation.Migrations
                     b.ToTable("SkillTypes");
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TicketDTO", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Open")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TimeZonesDTO", b =>
                 {
                     b.Property<int>("TimeZoneId")
@@ -240,6 +314,17 @@ namespace HeadcountAllocation.Migrations
                     b.HasKey("TimeZoneId");
 
                     b.ToTable("TimeZones");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.Alert.EventDTO", b =>
+                {
+                    b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", "Listener")
+                        .WithMany()
+                        .HasForeignKey("ListenerEmployeeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Listener");
                 });
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>
@@ -289,6 +374,15 @@ namespace HeadcountAllocation.Migrations
                         .WithMany("Skills")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TicketDTO", b =>
+                {
+                    b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

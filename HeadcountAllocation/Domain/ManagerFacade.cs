@@ -258,6 +258,7 @@ namespace HeadcountAllocation.Domain{
             try{
                 Tickets[ticketId].CloseTicket();
                 ticket.CloseTicket();
+                ticketRepo.Update(ticket);
             }
             catch (Exception e){
                 throw new Exception("ticket is not exist");

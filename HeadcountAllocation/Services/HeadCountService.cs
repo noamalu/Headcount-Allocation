@@ -289,6 +289,43 @@ namespace HeadcountAllocation.Services{
             }  
         }
 
+        public Response<int> AddTicket(int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description){
+            try{
+                return Response<int>.FromValue(_managerFacade.AddTicket(employeeId, employeeName, startDate , endDate, description));
+            }
+            catch (Exception e){
+                return Response<int>.FromError(e.Message);
+            }
+        }
+
+        public Response CloseTicket(int ticketId){
+            try{
+                _managerFacade.CloseTicket(ticketId);
+                return new Response();
+            }
+            catch (Exception e){
+                return new Response(e.Message);
+            }  
+        }
+
+        public Response<List<Ticket>> GetOpensTickets(){
+            try{
+                return Response<List<Ticket>>.FromValue(_managerFacade.GetOpensTickets());
+            }
+            catch (Exception e){
+                return Response<List<Ticket>>.FromError(e.Message);
+            }
+        }
+
+        public Response<List<Ticket>> GetOpensTickets5days(){
+            try{
+                return Response<List<Ticket>>.FromValue(_managerFacade.GetOpensTickets5days());
+            }
+            catch (Exception e){
+                return Response<List<Ticket>>.FromError(e.Message);
+            }
+        }
+
         
 
         
