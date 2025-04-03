@@ -56,8 +56,10 @@ namespace HeadcountAllocation.Domain{
             YearsExperience = employeeDto.YearExp;
             JobPercentage = employeeDto.JobPercentage;
             Password = employeeDto.Password;
-            foreach (RoleDTO roleDTO in employeeDto.Roles){
-                Roles[roleDTO.RoleId] = new Role(roleDTO);
+            if (employeeDto.Roles != null){
+                foreach (RoleDTO roleDTO in employeeDto.Roles){
+                    Roles[roleDTO.RoleId] = new Role(roleDTO);
+                }
             }
             foreach (EmployeeSkillsDTO skillDTO in employeeDto.Skills){
                 Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);

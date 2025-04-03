@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace HeadcountAllocation.DAL.Repositories
 {
@@ -214,7 +215,9 @@ namespace HeadcountAllocation.DAL.Repositories
         private void Load()
         {
             var dbContext = DBcontext.GetInstance();
-            List<EmployeeDTO> employees = dbContext.Employees.ToList();
+            List<EmployeeDTO> employees = dbContext.Employees.Include(e => e.ForeignLanguages)
+        .Include(e => e.Skills)
+        .ToList();
             foreach (EmployeeDTO employee in employees)
             {
                 Employees.TryAdd(employee.EmployeeId, new Employee(employee));
