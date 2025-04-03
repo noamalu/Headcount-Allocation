@@ -31,6 +31,19 @@ namespace HeadcountAllocation.Domain{
             projectRepo = ProjectRepo.GetInstance();
             employeeRepo = EmployeeRepo.GetInstance();
             ticketRepo = TicketRepo.GetInstance();
+            List<Ticket> TicketsList = ticketRepo.getAll();
+            foreach (var ticket in TicketsList){
+                Tickets[ticket.TicketId] = ticket;
+            }
+             List<Employee> EmployeeList = employeeRepo.GetAll();
+            foreach (var employee in EmployeeList){
+                Employees[employee.EmployeeId] = employee;
+            }
+             List<Project> ProjectList = projectRepo.GetAll();
+            foreach (var project in ProjectList){
+                Projects[project.ProjectId] = project;
+            }
+
         }
 
         public static ManagerFacade GetInstance(){
