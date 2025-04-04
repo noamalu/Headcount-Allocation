@@ -50,4 +50,19 @@ static async getEmployeeById(employeeId : number): Promise<Employee> {
 
 }
 
+export const getEmployees = async (): Promise<Employee[]> => {
+  try {
+    const response = await  APIClient('/api/Employee/All', { method: 'GET' });
+    console.log('GetEmployees Response:', response); 
+    if (!response.errorOccured) {
+      return  fetchResponse(response); 
+    } else {
+        throw new Error("Failed to GetEmployees: " + JSON.stringify(response, null, 2));
+    }
+  } catch (error) {
+    console.error(`Error GetEmployees `, error);
+    throw error; 
+  }
+};
+
 export default EmployeesService;

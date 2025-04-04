@@ -1,0 +1,111 @@
+/* Coupling with ProjectsPage */
+
+.employees-page {
+    padding: 20px 30px;
+  }
+
+  .employees-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4F4846;
+    margin-bottom: 20px;
+  }
+
+  .add-employee-button {
+    padding: 10px 20px;
+    background-color: #266150;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    font-family: 'poppins';
+  }
+  
+  .add-employee-button:hover {
+    background-color: #1E4E40;
+  }
+
+
+  .employees-span {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    justify-items: center;
+}
+
+@media (max-width: 768px) {
+    .employees-span {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .employees-span {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+
+
+.employee-card {
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.employee-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-container {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    background-color: #E8CEBF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.employee-card .avatar-icon {
+    font-size: 2.5rem;
+    color: #4F4846;
+}
+
+.employee-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #4F4846;
+}
+
+.employee-experience {
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+.employee-department {
+    font-size: 0.75rem;
+    color: #9CA3AF;
+}
+

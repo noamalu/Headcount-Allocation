@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import '../Styles/Login.css';
+import '../Styles/Shared.css';
+
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -42,7 +44,7 @@ const LoginPage: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="login-options">
-          <label>
+          <label className="checkbox-label">
             <input
               type="checkbox"
               checked={showPassword}

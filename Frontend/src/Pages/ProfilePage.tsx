@@ -38,7 +38,7 @@ const ProfilePage: React.FC = () => {
           <div className="detail-row"><span>Email:</span> {user.email}</div>
           <div className="detail-row"><span>Phone:</span> {user.phoneNumber}</div>
           <div className="detail-row"><span>Experience:</span> {user.yearExp} years</div>
-          <div className="detail-row"><span>Job %:</span> {user.jobPercentage}%</div>
+          <div className="detail-row"><span>Job Percentage:</span> {user.jobPercentage}%</div>
           <div className="detail-row"><span>Time Zone:</span> {user.timeZone}</div>
         </div>
 

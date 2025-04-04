@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProjectsPage from './Pages/ProjectsPage';
+import EmployeesPage from './Pages/EmployeesPage';
 import ProfilePage from './Pages/ProfilePage';
 import LoginPage from './Pages/LoginPage';
 import Layout from './Components/Layout/Layout';
@@ -18,6 +19,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/projects" element={<PrivateRoute><ProjectsPage /></PrivateRoute>} />
+            <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Layout>
