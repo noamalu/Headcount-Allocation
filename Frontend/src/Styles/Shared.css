@@ -1,3 +1,10 @@
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
 .add-button {
   background-color: #266150;
   margin-left: 5px;
