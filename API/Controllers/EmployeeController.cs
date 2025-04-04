@@ -20,6 +20,20 @@ namespace API.Controllers
             _employeeService = employeeService;
         }
 
+        [HttpPost("Login")]
+        public ActionResult<Response> EmployeeLogin([FromQuery]string userName, [FromBody]string password)
+        {
+            try
+            {
+                var response = _headCountService.Login(userName, password);
+                return Ok(Response<int?>.FromValue(response.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
         [HttpPost("{employeeId}/Assign")]
         public ActionResult<Response> AssignToRole([FromRoute] int employeeId, [FromBody] Role role)
         {
@@ -46,6 +60,7 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
+        
         [HttpGet("{employeeId}")]
         public ActionResult<Response> GetEmployeeById([FromRoute] int employeeId)
         {
@@ -58,5 +73,20 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
+
+        [HttpPost("{employeeId}/Ticket")]
+        public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
+        {
+            try
+            {
+                var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, ticket.Description);   
+                return Ok(Response<int>.FromValue(response.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+        
     }
 }
