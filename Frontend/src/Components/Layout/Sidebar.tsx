@@ -13,6 +13,8 @@ const Sidebar = () => {
         <li>  
           <NavLink to="/employees" className={getActiveClass}>Employees</NavLink>
         </li>
+        <li>Calendar</li>
+        <li>Tickets</li>
         <li>Notifications</li>
       </ul>
     </div>

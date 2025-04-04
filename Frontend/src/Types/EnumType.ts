@@ -23,6 +23,18 @@ export enum TimeZonesEnum
     Flexible = "Flexible"
 }
 
+export enum AbsenceReasonEnum {
+    ReserveDuty = "Reserve Duty",
+    MaterPaterLeave = "Maternity / Paternity Leave",
+    StudyLeave = "Study Leave",
+    SickLeave = "Long-term Sick Leave",
+    MourningLeave = "Extended Mourning Leave",
+    LongVacation = "LongVacation",
+    PersonalLeave = "Extended Personal Leave",
+    MissionAbroad = "Company Mission Abroad",
+    Other = "Other"
+}
+
 export const skillEnumToId = (skill : SkillEnum): number => {
     const entries = Object.entries(SkillEnum);
     for (const [key, value] of entries) {

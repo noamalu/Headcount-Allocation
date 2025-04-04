@@ -3,7 +3,7 @@ import AssignEmployeeModal from './AssignEmployeeModal';
 import { Role } from '../../../Types/RoleType';
 import {Skill} from '../../../Types/SkillType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { Employee } from '../../../Types/EmployeeType';
 
@@ -58,7 +58,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, 
         </div>
 
         {/* פרטי התפקיד */}
-        <div className="role-details">
+        <div className="details-section">
           <div className="detail-banner-edit">
             <i className="fas fa-globe" ></i>
             <span>
