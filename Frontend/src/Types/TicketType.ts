@@ -6,7 +6,7 @@ export interface Ticket {
     employeeName: string;
     startDate: string;
     endDate: string;
-    reason: AbsenceReasonEnum;
+    absenceReason: AbsenceReasonEnum;
     description: string;
     isOpen: boolean;
   }

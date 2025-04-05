@@ -9,6 +9,7 @@ import Layout from './Components/Layout/Layout';
 import { AuthProvider, useAuth } from './Context/AuthContext';
 import './Styles/layout.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import TicketsPage from './Pages/TicketsPage';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/projects" element={<PrivateRoute><ProjectsPage /></PrivateRoute>} />
             <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
+            <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Layout>

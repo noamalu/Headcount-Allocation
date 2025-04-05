@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../Styles/Employees.css';
+import '../../../Styles/Employees.css'
 import {Employee} from '../../../Types/EmployeeType'
 
 

@@ -184,6 +184,10 @@
   margin: 5px auto;
 }
 
+.input-field, .input-field option {
+    font-family: 'Poppins'
+}
+
 .delete-record-button {
   background: none;
   border: none;
@@ -197,4 +201,22 @@
 
 .delete-record-button:hover {
   color: darkred;
+}
+
+.status-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.status-open {
+  background-color: #3b883d; 
+  color: white;
+  justify-content: center;
+}
+
+.status-closed {
+  background-color: #a72b23; 
 }

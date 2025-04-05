@@ -14,7 +14,9 @@ const Sidebar = () => {
           <NavLink to="/employees" className={getActiveClass}>Employees</NavLink>
         </li>
         <li>Calendar</li>
-        <li>Tickets</li>
+        <li>
+          <NavLink to="/tickets" className={getActiveClass}>Tickets</NavLink>
+        </li>
         <li>Notifications</li>
       </ul>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';

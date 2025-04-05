@@ -48,7 +48,7 @@
 .projects-table th {
     background-color: #E8CEBF; /* Blush pink for headers */
     color: #4F4846; /* Dark highlight */
-    text-align: left;
+    text-align: center;
     padding: 15px;
     font-family: 'Poppins';
     font-weight: 600;
@@ -62,6 +62,7 @@
     font-family: 'Poppins';
     font-size: 14px;
     border-bottom: 1px solid #E8CEBF; /* Row separator */
+    text-align: center;
 }
 
 .projects-table tr:nth-child(even) {
