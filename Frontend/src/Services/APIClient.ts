@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5278';
+const API_BASE_URL = 'http://localhost:5278'; //'http://132.73.84.247:5000'; //server URL
 
 export const APIClient = async (
   endpoint: string,
