@@ -375,13 +375,13 @@ namespace HeadcountAllocation.Domain{
         public int? Login(string userName, string password){
             try{
                 var employee = employeeRepo.GetByUserName(userName);
-                if (employee.VerifyPassword(password, employee.Password)){
+                if (!employee.VerifyPassword(password, employee.Password)){
                     throw new Exception("Wrong password");
                 }
-                if(employee.Login())
-                    return employee.EmployeeId;
-                else 
-                    return null;
+                // if(employee.Login())//fix here ...
+                //     return employee.EmployeeId;
+
+                return employee.EmployeeId;
             }
             catch(Exception){
                 throw;
