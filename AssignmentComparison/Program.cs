@@ -81,37 +81,72 @@ namespace AssignmentComparison
             return result.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        public static Dictionary<Role, Employee> SmartAssign(List<Role> roles, List<Employee> employees)
+        public static Dictionary<Role, Employee> SmartAssign(Role role, List<Employee> employees)
         {
             var assigned = new Dictionary<Role, Employee>();
             var used = new HashSet<int>();
 
-            foreach (var role in roles)
+            var scored = EmployeesToAssign(role, employees);
+            var best = scored.Keys.FirstOrDefault(e => !used.Contains(e.Id));
+            if (best != null)
             {
-                var scored = EmployeesToAssign(role, employees);
-                var best = scored.Keys.FirstOrDefault(e => !used.Contains(e.Id));
-                if (best != null)
-                {
-                    assigned[role] = best;
-                    used.Add(best.Id);
-                }
+                assigned[role] = best;
+                used.Add(best.Id);
             }
             return assigned;
         }
 
-        public static Dictionary<Role, Employee> GreedyAssign(List<Role> roles, List<Employee> employees)
+        public static Dictionary<Role, Employee> GreedyAssign(Role role, List<Employee> employees)
         {
             var assigned = new Dictionary<Role, Employee>();
+            Employee best = null;
+            int bestScore = -1;
 
-            foreach (var role in roles)
+            foreach (var employee in employees)
             {
-                var scored = EmployeesToAssign(role, employees);
-                var best = scored.Keys.FirstOrDefault();
-                if (best != null)
+                int score = 0;
+                bool disqualified = employee.YearsExperience < role.YearsExperience;
+
+                // Check languages
+                foreach (var requiredLang in role.ForeignLanguages.Values)
                 {
-                    assigned[role] = best;
+                    if (employee.ForeignLanguages.TryGetValue(requiredLang.LanguageID, out var empLang))
+                    {
+                        score += empLang.Level;
+                        if (empLang.Level < requiredLang.Level)
+                            disqualified = true;
+                    }
+                    else
+                    {
+                        disqualified = true;
+                    }
+                }
+
+                // Check skills
+                foreach (var requiredSkill in role.Skills.Values)
+                {
+                    if (employee.Skills.TryGetValue(requiredSkill.SkillId, out var empSkill))
+                    {
+                        score += empSkill.Level;
+                        if (empSkill.Level + 1 < requiredSkill.Level)
+                            disqualified = true;
+                    }
+                    else
+                    {
+                        disqualified = true;
+                    }
+                }
+
+                if (!disqualified && score > bestScore)
+                {
+                    bestScore = score;
+                    best = employee;
                 }
             }
+
+            if (best != null)
+                assigned[role] = best;
+
             return assigned;
         }
     }
@@ -148,15 +183,19 @@ namespace AssignmentComparison
                 new Role { RoleId = 5, RoleName = "Junior Developer", YearsExperience = 2, Skills = new() { { java, new Skill { SkillId = java, SkillType = "Java", Level = 2, Priority = 0 } } }, ForeignLanguages = new() { { eng, new Language { LanguageID = eng, LanguageType = "English", Level = 2 } } } },
             };
 
-            Console.WriteLine("--- Greedy Assignment ---");
-            var greedy = AssignmentAlgorithms.GreedyAssign(roles, employees);
-            foreach (var pair in greedy)
-                Console.WriteLine($"Role {pair.Key.RoleName} -> {pair.Value.Name}");
+            foreach (Role role in roles){
+                Console.WriteLine($"\nRole: {role.RoleName}");
+                Console.WriteLine("--- Greedy Assignment ---");
+                var greedy = AssignmentAlgorithms.GreedyAssign(role, employees);
+                foreach (var pair in greedy)
+                    Console.WriteLine($"Role {pair.Key.RoleName} -> {pair.Value.Name}");
 
-            Console.WriteLine("\n--- Smart Assignment (no duplicates) ---");
-            var smart = AssignmentAlgorithms.SmartAssign(roles, employees);
-            foreach (var pair in smart)
-                Console.WriteLine($"Role {pair.Key.RoleName} -> {pair.Value.Name}");
+                Console.WriteLine("\n--- Smart Assignment (no duplicates) ---");
+                var smart = AssignmentAlgorithms.SmartAssign(role, employees);
+                foreach (var pair in smart)
+                    Console.WriteLine($"Role {pair.Key.RoleName} -> {pair.Value.Name}");
+            }
+            
         }
     }
 }
