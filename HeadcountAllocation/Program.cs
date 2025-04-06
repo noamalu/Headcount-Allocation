@@ -131,16 +131,16 @@ context.Employees.Add(employee4);
 context.SaveChanges();
 
 ManagerFacade managerFacade = ManagerFacade.GetInstance();
-Employee emp0 = new Employee(employee0);
-Employee emp1 = new Employee(employee1);
-Employee emp2 = new Employee(employee2);
-Employee emp3 = new Employee(employee3);
-Employee emp4 = new Employee(employee4);
-managerFacade.Employees.TryAdd(emp0.EmployeeId, emp0);
-managerFacade.Employees.TryAdd(emp1.EmployeeId, emp1);
-managerFacade.Employees.TryAdd(emp2.EmployeeId, emp2);
-managerFacade.Employees.TryAdd(emp3.EmployeeId, emp3);
-managerFacade.Employees.TryAdd(emp4.EmployeeId, emp4);
+// Employee emp0 = new Employee(employee0);
+// Employee emp1 = new Employee(employee1);
+// Employee emp2 = new Employee(employee2);
+// Employee emp3 = new Employee(employee3);
+// Employee emp4 = new Employee(employee4);
+// managerFacade.Employees.TryAdd(emp0.EmployeeId, emp0);
+// managerFacade.Employees.TryAdd(emp1.EmployeeId, emp1);
+// managerFacade.Employees.TryAdd(emp2.EmployeeId, emp2);
+// managerFacade.Employees.TryAdd(emp3.EmployeeId, emp3);
+// managerFacade.Employees.TryAdd(emp4.EmployeeId, emp4);
 
 
 Console.WriteLine("added help data");
@@ -172,14 +172,14 @@ foreach (var entry in employees)
 }
 
 
-headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
+headCountService.AddTicket(0, DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
 Console.WriteLine("add ticket");
 List<Ticket> tickets = headCountService.GetOpensTickets().Value;
 foreach (var ticket in tickets){
     Console.WriteLine(ticket.Description);
 }
 Console.WriteLine("got ticket");
-headCountService.AddTicket(0, "employee1", DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
+headCountService.AddTicket(0, DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
 Console.WriteLine("add ticket 10 days");
 List<Ticket> tickets5days = headCountService.GetOpensTickets5days().Value;
 foreach (var ticket in tickets5days){
