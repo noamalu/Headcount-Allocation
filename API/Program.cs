@@ -34,37 +34,37 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-// var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
-// context.Dispose();
-// // context.ClearDatabase();
+var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
+context.Dispose();
+// context.ClearDatabase();
 
-// TimeZonesDTO morning = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Morning);
-// TimeZonesDTO noon = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Noon);
-// TimeZonesDTO evening = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Evening);
-// TimeZonesDTO flexible = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Flexible);
-// context.TimeZones.Add(morning);
-// context.TimeZones.Add(noon);
-// context.TimeZones.Add(evening);
-// context.TimeZones.Add(flexible);
-// context.SaveChanges();
+TimeZonesDTO morning = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Morning);
+TimeZonesDTO noon = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Noon);
+TimeZonesDTO evening = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Evening);
+TimeZonesDTO flexible = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Flexible);
+context.TimeZones.Add(morning);
+context.TimeZones.Add(noon);
+context.TimeZones.Add(evening);
+context.TimeZones.Add(flexible);
+context.SaveChanges();
 
-// LanguageTypesDTO english = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.English);
-// LanguageTypesDTO hebrew = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.Hebrew);
-// context.LanguageTypes.Add(english);
-// context.LanguageTypes.Add(hebrew);
-// context.SaveChanges();
+LanguageTypesDTO english = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.English);
+LanguageTypesDTO hebrew = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.Hebrew);
+context.LanguageTypes.Add(english);
+context.LanguageTypes.Add(hebrew);
+context.SaveChanges();
 
-// SkillTypesDTO python = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Python);
-// SkillTypesDTO sql = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.SQL);
-// SkillTypesDTO api = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.API);
-// SkillTypesDTO java = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Java);
-// SkillTypesDTO ui = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.UI);
-// context.SkillTypes.Add(python);
-// context.SkillTypes.Add(sql);
-// context.SkillTypes.Add(api);
-// context.SkillTypes.Add(java);
-// context.SkillTypes.Add(ui);
-// context.SaveChanges();
+SkillTypesDTO python = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Python);
+SkillTypesDTO sql = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.SQL);
+SkillTypesDTO api = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.API);
+SkillTypesDTO java = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Java);
+SkillTypesDTO ui = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.UI);
+context.SkillTypes.Add(python);
+context.SkillTypes.Add(sql);
+context.SkillTypes.Add(api);
+context.SkillTypes.Add(java);
+context.SkillTypes.Add(ui);
+context.SaveChanges();
 
 var app = builder.Build();
 
