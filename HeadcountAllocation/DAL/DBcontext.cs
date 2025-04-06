@@ -51,24 +51,24 @@ namespace HeadcountAllocation.DAL
 
         public override void Dispose()
         {
-            Tickets.ExecuteDelete();
-            Messages.ExecuteDelete();
-            Events.ExecuteDelete();
-            EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
-            EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
-            RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
-            RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
+            // Tickets.ExecuteDelete();
+            // Messages.ExecuteDelete();
+            // Events.ExecuteDelete();
+            // EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
+            // EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
+            // RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
+            // RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
 
-            Roles.ExecuteDelete();               // FK to Projects, TimeZones
-            Employees.ExecuteDelete();           // FK to TimeZones
-            Projects.ExecuteDelete();            // no FKs to Projects
+            // Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            // Employees.ExecuteDelete();           // FK to TimeZones
+            // Projects.ExecuteDelete();            // no FKs to Projects
 
-            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
-            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
-            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+            // SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            // LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            // TimeZones.ExecuteDelete();           // referenced by Employees / Roles
 
-            SaveChanges();
-            _instance = new DBcontext();
+            // SaveChanges();
+            // _instance = new DBcontext();
         }
 
         private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
