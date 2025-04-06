@@ -25,6 +25,8 @@ namespace HeadcountAllocation.Domain{
         public int employeeCount = 0;
 
         public int ticketCount = 0;
+        public int roleCounter = 0;
+
 
         public ManagerFacade()
         {
@@ -43,7 +45,10 @@ namespace HeadcountAllocation.Domain{
             foreach (var project in ProjectList){
                 Projects[project.ProjectId] = project;
             }
-
+            ticketCount = Tickets.Count;
+            employeeCount = Employees.Count;
+            projectCount = Projects.Count;
+            roleCounter = Projects?.Values?.SelectMany(p => p?.Roles?.Values?.Select(role => role?.RoleId))?.Max() ?? 0;
         }
 
         public static ManagerFacade GetInstance(){
@@ -152,7 +157,7 @@ namespace HeadcountAllocation.Domain{
             if (!Projects.ContainsKey(projectId)){
                 throw new Exception($"No such project {projectId}");
             }
-            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
+            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, roleCounter++);
         }
 
         public void RemoveRole(int projectId, int roleId){
