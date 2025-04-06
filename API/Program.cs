@@ -78,6 +78,19 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend"); // Add this line to apply the CORS policy
 
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"🔥 Unhandled Exception: {ex.Message}\n{ex.StackTrace}");
+        throw; // Re-throw so the default handler still kicks in
+    }
+});
+
 app.UseAuthorization();
 app.MapControllers();
 
