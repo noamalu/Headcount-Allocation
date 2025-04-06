@@ -140,8 +140,14 @@ namespace HeadcountAllocation.DAL.Repositories
          private void Load()
         {
             var dbContext = DBcontext.GetInstance();
-            List<ProjectDTO> projects = dbContext.Projects.Include(e => e.Roles)
-        .ToList();
+            // List<ProjectDTO> projects = dbContext.Projects.Include(e => e.Roles.Include()).ToList();
+            List<ProjectDTO> projects = dbContext.Projects
+                .Include(p => p.Roles)
+                    .ThenInclude(r => r.Skills)       
+                .Include(p => p.Roles)
+                    .ThenInclude(r => r.ForeignLanguages)         
+                .ToList();
+
             foreach (ProjectDTO project in projects)
             {
                 Projects.TryAdd(project.ProjectId, new Project(project));

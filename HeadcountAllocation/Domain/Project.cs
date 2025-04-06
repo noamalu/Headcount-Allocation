@@ -20,7 +20,6 @@ namespace HeadcountAllocation.Domain{
         public Dictionary<int, Role> Roles{get;set;} = new();
 
         public RoleRepo RoleRepo;
-        private int RoleCounter = 1;
 
         public Project(string projectName, int projectId, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles){
             ProjectName = projectName;
@@ -46,8 +45,8 @@ namespace HeadcountAllocation.Domain{
         }
 
         public Role AddRoleToProject(string roleName, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description){
-            Role role = new Role(roleName, RoleCounter++, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description, int roleId){
+            Role role = new Role(roleName, roleId, ProjectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
             try{
                 RoleRepo.Add(role);
             }
