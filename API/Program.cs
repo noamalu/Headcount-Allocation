@@ -35,6 +35,7 @@ builder.Services.AddCors(options =>
 });
 
 var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
+context.Dispose();
 // context.ClearDatabase();
 
 TimeZonesDTO morning = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Morning);
