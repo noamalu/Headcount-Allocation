@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace HeadcountAllocation.DAL.Repositories
 {
@@ -73,40 +74,11 @@ namespace HeadcountAllocation.DAL.Repositories
         
         }
 
-        // public IEnumerable<Store> getAll()
-        // {
-        //     try{
-        //         lock (_lock)
-        //         {
-        //             List<StoreDTO> storesList = DBcontext.GetInstance().Stores.ToList();
-        //             foreach (StoreDTO storeDTO in storesList)
-        //             {
-        //                 List<ProductDTO> products = DBcontext.GetInstance().Products.ToList();
-        //                 foreach (ProductDTO productDTO in products)
-        //                 {
-        //                     if (productDTO.ProductId / 10 == storeDTO.Id){
-        //                         storeDTO.Products.Add(productDTO);
-        //                     }
-        //                 }
-        //                 List<PurchaseDTO> purchases = DBcontext.GetInstance().Purchases.ToList();
-        //                 foreach (PurchaseDTO purchaseDTO in purchases)
-        //                 {
-        //                     if (purchaseDTO.StoreId == storeDTO.Id){
-        //                         storeDTO.Purchases.Add(purchaseDTO);
-        //                     }
-        //                 }
-        //                 _projects.TryAdd(storeDTO.Id, new Store(storeDTO));
-        //             }
-                    
-        //         }
-        //     }
-        //     catch(Exception){
-        //         throw new Exception("There was a problem in Database use- Get all Stores");
-        //     }
-            
-            
-        //     return _projects.Values.ToList();
-        // }
+        public List<Project> GetAll()
+        {
+            Load();
+            return Projects.Values.ToList();
+        }
 
         public Project GetById(int id)
         {
@@ -162,6 +134,19 @@ namespace HeadcountAllocation.DAL.Repositories
                 throw new Exception("There was a problem in Database use- Update Project");
             }
             
+        }
+
+
+         private void Load()
+        {
+            var dbContext = DBcontext.GetInstance();
+            List<ProjectDTO> projects = dbContext.Projects.Include(e => e.Roles)
+        .ToList();
+            foreach (ProjectDTO project in projects)
+            {
+                Projects.TryAdd(project.ProjectId, new Project(project));
+                
+            }
         }
     }
  }

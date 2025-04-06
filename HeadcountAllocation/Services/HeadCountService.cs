@@ -190,12 +190,12 @@ namespace HeadcountAllocation.Services{
             }     
         }
 
-        public Response<bool> Login(string userName, string password){
+        public Response<int?> Login(string userName, string password){
             try{
-                return Response<bool>.FromValue(_managerFacade.Login(userName, password));
+                return Response<int?>.FromValue(_managerFacade.Login(userName, password));
             }
             catch (Exception e){
-                return Response<bool>.FromError(e.Message);
+                return Response<int?>.FromError(e.Message);
             }
         }
 
@@ -289,9 +289,9 @@ namespace HeadcountAllocation.Services{
             }  
         }
 
-        public Response<int> AddTicket(int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description){
+        public Response<int> AddTicket(int employeeId, DateTime startDate ,DateTime endDate, string description){
             try{
-                return Response<int>.FromValue(_managerFacade.AddTicket(employeeId, employeeName, startDate , endDate, description));
+                return Response<int>.FromValue(_managerFacade.AddTicket(employeeId, startDate , endDate, description));
             }
             catch (Exception e){
                 return Response<int>.FromError(e.Message);

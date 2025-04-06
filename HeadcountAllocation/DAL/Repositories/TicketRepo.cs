@@ -30,10 +30,10 @@ namespace HeadcountAllocation.DAL.Repositories
             _ticketRepo = new TicketRepo();
         }
 
-        public IEnumerable<Ticket> getAll()
+        public List<Ticket> getAll()
         {
             Load();
-            return Tickets.Values;
+            return Tickets.Values.ToList();
         }
 
         public void Delete(Ticket ticket)
