@@ -76,7 +76,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowFrontend"); // Add this line to apply the CORS policy
+app.UseCors("AllowFrontend"); // Enable CORS for all requests
 
 app.Use(async (context, next) =>
 {
