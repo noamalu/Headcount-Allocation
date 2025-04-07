@@ -188,6 +188,7 @@ namespace HeadcountAllocation.Services{
                 return Response<int>.FromValue(_managerFacade.CreateEmployee(name, password, phoneNumber, email, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, isManager));
             }
             catch (Exception e){
+                Console.WriteLine($"🔥 Unhandled Exception: {e.Message}\n{e.StackTrace}");
                 return Response<int>.FromError(e.Message);
             }
         }
