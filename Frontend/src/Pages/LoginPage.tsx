@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
     }
 
     const isAdmin = username.toLowerCase() === 'admin'; // סימולציה
-    login(username, isAdmin);
+    login(username, password);
     navigate('/profile');
   };
 
