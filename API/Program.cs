@@ -83,12 +83,22 @@ app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
     {
-        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-        var exception = exceptionHandlerPathFeature?.Error;
+        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var ex = feature?.Error;
 
-        Console.WriteLine($"🔥 [ExceptionHandler] {exception?.Message}\n{exception?.StackTrace}");
+        Console.WriteLine("🔥 [EXCEPTION HANDLER TRIGGERED]");
+        if (ex != null)
+        {
+            Console.WriteLine($"🔥 Exception: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+        }
+        else
+        {
+            Console.WriteLine("⚠️ No exception found in ExceptionHandlerPathFeature.");
+        }
+
         context.Response.StatusCode = 500;
-        await context.Response.WriteAsync("Internal server error");
+        await context.Response.WriteAsync("Internal Server Error");
     });
 });
 
