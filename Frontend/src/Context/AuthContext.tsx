@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import SessionService from '../Services/SessionService';
 
 interface AuthContextType {
@@ -29,9 +29,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const userId = await SessionService.login(username, password);
       if (userId) {
         setIsLoggedIn(true);
-        setIsAdmin(false); // To update in future
+        setIsAdmin(false);
         setCurrentUser(username);
-        console.log(`User ${username} logged in successfully with ID: ${userId}`);
+        setCurrentId(userId);
+        console.log(`User ${currentUser} logged in successfully with ID: ${currentId}`);
       } else {
         throw new Error('Invalid login credentials');
       }
@@ -48,6 +49,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentId(-1);
     console.log('User logged out');
   };
+
+  useEffect(() => {
+    console.log(`🔄 State updated: isLoggedIn=${isLoggedIn}, currentUser=${currentUser}, currentId=${currentId}`);
+  }, [isLoggedIn, currentUser, currentId]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, isAdmin, currentUser, currentId, login, logout }}>

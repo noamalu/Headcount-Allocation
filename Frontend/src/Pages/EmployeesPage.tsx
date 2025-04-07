@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-// import CreateEmployeeModal from '../Components/Features/Employees/CreateEmployeeModal';
+import CreateEmployeeModal from '../Components/Features/Employees/CreateEmployeeModal';
 import '../Styles/Projects.css';
 import { Employee } from '../Types/EmployeeType';
 import EmployeesSpan from '../Components/Features/Employees/EmployeesSpan';
@@ -31,12 +31,12 @@ const EmployeesPage: React.FC = () => {
                 <button className="add-employee-button" onClick={handleOpenModal}>+ New Employee</button>
             </div>
             <EmployeesSpan onEmployeeCreated={(callback) => (spanRef.current = callback)} />            
-            {/* {isModalOpen && (
+            {isModalOpen && (
                 <CreateEmployeeModal
                     onClose={() => setIsModalOpen(false)} 
-                    onProjectCreated={handleEmployeeCreated} 
+                    onEmployeeCreated={handleEmployeeCreated} 
                 />
-            )} */}
+            )}
         </div>
     );
 };

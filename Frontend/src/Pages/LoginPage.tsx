@@ -14,15 +14,18 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!username || !password) {
       setError('Please enter both username and password.');
       return;
     }
-
-    const isAdmin = username.toLowerCase() === 'admin'; // סימולציה
-    login(username, password);
-    navigate('/profile');
+    const isAdmin = username.toLowerCase() === 'admin'; // TO CHANGE
+    try {
+      await login(username, password);
+      navigate('/profile');
+    } catch (error) {
+      console.error("Login Page - Login failed");
+    }
   };
 
   return (
