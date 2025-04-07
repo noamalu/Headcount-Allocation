@@ -73,7 +73,7 @@ const CreateEmployeeModal: React.FC<{
 
   
     const handleSubmit = async () => {
-        if (!employeeName || !phoneNumber || !timeZone || yearsExperience < 0 ||  jobPercentage < 0 || !password) {
+        if (!employeeName || !phoneNumber|| yearsExperience < 0 ||  jobPercentage < 0 || !password) {
             setError("All fields are required, and required numeric ones nust be greater than 0.");
             return;
         }
@@ -327,7 +327,7 @@ const CreateEmployeeModal: React.FC<{
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
             className="input-field"
-            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
             title="Password must be at least 8 characters long and contain both letters and numbers"
             required
             />
