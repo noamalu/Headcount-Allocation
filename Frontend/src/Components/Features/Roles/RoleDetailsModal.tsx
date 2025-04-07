@@ -4,7 +4,7 @@ import EditRoleModal from './EditRoleModal';
 import { Role } from '../../../Types/RoleType';
 import { Language, formateLanguage } from '../../../Types/LanguageType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { formateSkillToString } from '../../../Types/SkillType';
 import EmployeesService from '../../../Services/EmployeesService';

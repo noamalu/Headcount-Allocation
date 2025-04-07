@@ -50,4 +50,11 @@ static async getEmployeeById(employeeId : number): Promise<Employee> {
 
 }
 
+export const getEmployees = async (): Promise<Employee[]> => {
+    const response = await APIClient('/api/Employee/All', { method: 'GET' });
+    console.log('getEmployees Response:', response); 
+    return fetchResponse(response); 
+  };
+
+
 export default EmployeesService;
