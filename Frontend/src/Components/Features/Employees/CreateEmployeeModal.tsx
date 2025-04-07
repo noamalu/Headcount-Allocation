@@ -111,6 +111,7 @@ const CreateEmployeeModal: React.FC<{
         password
       };
       try {
+        console.log('before API call: ', newEmployee);
         const newEmployeeId = await EmployeesService.sendCreateEmployee(newEmployee); // wont be it - NOA
         newEmployee.employeeId = newEmployeeId;
         console.log('Employee created successfully:', newEmployee);
@@ -327,7 +328,7 @@ const CreateEmployeeModal: React.FC<{
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
             className="input-field"
-            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+            // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
             title="Password must be at least 8 characters long and contain both letters and numbers"
             required
             />

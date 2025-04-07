@@ -29,13 +29,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const userId = await SessionService.login(username, password);
       if (userId) {
         setIsLoggedIn(true);
-        setIsAdmin(false);
         setCurrentUser(username);
         setCurrentId(userId);
         console.log(`User ${currentUser} logged in successfully with ID: ${currentId}`);
+        const checkAdmin = await SessionService.isAdmin(userId);
+        
+        if (checkAdmin != null) {
+          setIsAdmin(checkAdmin);
+          console.log(`User ${currentUser} checked if admin successfully with ID: ${currentId} - ${checkAdmin}`);
+        } else {
+          throw new Error('Invalid isAdminCheck');
+        }
       } else {
         throw new Error('Invalid login credentials');
       }
+      
     } catch (error: any) {
       console.error('Login failed:', error.message);
       throw error;
@@ -51,8 +59,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    console.log(`🔄 State updated: isLoggedIn=${isLoggedIn}, currentUser=${currentUser}, currentId=${currentId}`);
-  }, [isLoggedIn, currentUser, currentId]);
+    console.log(`🔄 State updated: isLoggedIn=${isLoggedIn}, currentUser=${currentUser}, currentId=${currentId}, isAdmin=${isAdmin}`);
+  }, [isLoggedIn, currentUser, currentId, isAdmin]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, isAdmin, currentUser, currentId, login, logout }}>

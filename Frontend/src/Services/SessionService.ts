@@ -23,6 +23,22 @@ class SessionService {
             throw error;
         }
     }
+
+    static async isAdmin(userId: number): Promise<boolean> {
+        console.log("Attempt to check if user is an admin: " + userId);
+        try {
+            const response = await APIClient(`/api/Employee/${userId}/Admin`, { method: 'GET' });
+            console.log('IsAdmin Response:', response); 
+            if (!response.errorOccured) {
+                return  fetchResponse(response); 
+            } else {
+                throw new Error("Failed to GetEmployeeById: " + JSON.stringify(response, null, 2));
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            throw error;
+        }
+    }
 }
 
 export default SessionService;
