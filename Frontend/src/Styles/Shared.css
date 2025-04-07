@@ -220,3 +220,28 @@
 .status-closed {
   background-color: #a72b23; 
 }
+
+.ellipsis-text {
+  max-width: 150px; /* הגבלת רוחב התא */
+  white-space: nowrap; /* מניעת שבירת שורה */
+  overflow: hidden; /* הסתרת תוכן חורג */
+  text-overflow: ellipsis; /* הצגת ... בסוף */
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.ellipsis-text:hover::after {
+  content: attr(data-full-text); /* הצגת הטקסט המלא */
+  position: absolute;
+  background-color: #4F4846; /* צבע כהה לרקע */
+  color: white; /* צבע טקסט */
+  padding: 6px;
+  border-radius: 4px;
+  white-space: pre-wrap; /* שבירת שורות אם ארוך מדי */
+  max-width: 300px; /* רוחב מקסימלי לחלון המלא */
+  z-index: 10;
+  top: 25px; /* מרווח למעלה */
+  left: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* הצללה */
+}
