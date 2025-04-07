@@ -3,7 +3,6 @@ using EcommerceAPI.initialize;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
-using Microsoft.AspNetCore.Diagnostics;
 using WebSocketSharp.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,27 +78,17 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend"); // Enable CORS for all requests
 
-app.UseExceptionHandler(errorApp =>
+app.Use(async (context, next) =>
 {
-    errorApp.Run(async context =>
+    try
     {
-        var feature = context.Features.Get<IExceptionHandlerPathFeature>();
-        var ex = feature?.Error;
-
-        Console.WriteLine("🔥 [EXCEPTION HANDLER TRIGGERED]");
-        if (ex != null)
-        {
-            Console.WriteLine($"🔥 Exception: {ex.Message}");
-            Console.WriteLine(ex.StackTrace);
-        }
-        else
-        {
-            Console.WriteLine("⚠️ No exception found in ExceptionHandlerPathFeature.");
-        }
-
-        context.Response.StatusCode = 500;
-        await context.Response.WriteAsync("Internal Server Error");
-    });
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"🔥 Unhandled Exception: {ex.Message}\n{ex.StackTrace}");
+        throw ex; // Re-throw so the default handler still kicks in
+    }
 });
 
 app.UseAuthorization();
