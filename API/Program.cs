@@ -87,7 +87,7 @@ app.Use(async (context, next) =>
     catch (Exception ex)
     {
         Console.WriteLine($"🔥 Unhandled Exception: {ex.Message}\n{ex.StackTrace}");
-        throw new Exception($"🔥 Unhandled Exception: {ex.Message}\n{ex.StackTrace}"); // Re-throw so the default handler still kicks in
+        throw; // Re-throw so the default handler still kicks in
     }
 });
 
