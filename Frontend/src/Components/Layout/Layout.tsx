@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAuth } from '../../Context/AuthContext';
-import '../../Styles/layout.css';
+import '../../Styles/Layout.css';
 
 interface LayoutProps {
   children: React.ReactNode;
