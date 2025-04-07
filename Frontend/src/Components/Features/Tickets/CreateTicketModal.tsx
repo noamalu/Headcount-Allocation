@@ -4,7 +4,8 @@ import TicketsTable from './TicketsTable';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import { AbsenceReasonEnum } from '../../../Types/EnumType';
-// import {sendCreateTicket} from '../../../Services/TicketsService';
+import TicketsService from '../../../Services/TicketsService';
+import { useAuth } from '../../../Context/AuthContext';
 
 
 const CreateTicketModal: React.FC<{ 
@@ -19,6 +20,7 @@ const CreateTicketModal: React.FC<{
     const [absenceReason, setAbsenceReason] = useState<AbsenceReasonEnum | ''>('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState<string>(""); 
+    const { currentUser, currentId } = useAuth();
 
     const absenceReasons = Object.values(AbsenceReasonEnum);
   
@@ -33,8 +35,8 @@ const CreateTicketModal: React.FC<{
       }
       const newTicket: Ticket = {
         ticketId: -1, 
-        employeeId: -1,
-        employeeName: "",
+        employeeId: currentId,
+        employeeName: currentUser || "",
         startDate,
         endDate,
         absenceReason: absenceReason,
@@ -42,8 +44,8 @@ const CreateTicketModal: React.FC<{
         isOpen: true,
       };
       try {
-        const newTicketId = 1;
-        // const newTicketId = await sendCreateTicket(newTicket);
+        // const newTicketId = 1;
+        const newTicketId = await TicketsService.sendCreateTicket(newTicket);
         newTicket.ticketId = newTicketId;
         console.log('Ticket created successfully:', newTicket);
         onTicketCreated(newTicket);
@@ -64,7 +66,7 @@ const CreateTicketModal: React.FC<{
                 <label>Employee Name: </label>
                 <input
                 type="text"
-                value="temp"
+                value={currentUser || ""}
                 readOnly
                 className="input-field readonly-field"
                 />

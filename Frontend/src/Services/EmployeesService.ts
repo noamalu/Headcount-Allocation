@@ -3,10 +3,10 @@ import { fetchResponse } from './GeneralService';
 import { Role } from '../Types/RoleType';
 import ClientResponse from './Response';
 import { Employee } from '../Types/EmployeeType';
+import { Ticket } from '../Types/TicketType';
 
 class EmployeesService {
 
-   // returns somthing to fix - NOA HELP
    static async sendCreateEmployee(employee: Omit<Employee, "employeeId" | "roles">): Promise<number> {
     console.log("attempt to create employee" + employee.employeeName);
           try {
@@ -26,6 +26,10 @@ class EmployeesService {
           }
       }
 
+
+
+  
+
   static async assignEmployeeToRole(employeeId: number, role: Role): Promise<Response> {
     console.log(`Attempting to assign employee ${employeeId} to role: ${role.roleName}`);
     try {
@@ -34,10 +38,10 @@ class EmployeesService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(role), // המרת האובייקט role ל-JSON
+        body: JSON.stringify(role), 
       });
 
-      console.log('assignEmployeeToRole Response:', response); // לוג לבדיקה
+      console.log('assignEmployeeToRole Response:', response); 
 
       if (!response.errorOccured) {
         return fetchResponse(response);
