@@ -26,12 +26,14 @@ namespace API.Models
         public int YearsExperience { get; set; }
 
         public double JobPercentage { get; set; }
-        
+
+        public bool IsManager { get; set; } = false;
+
         public string? Password { get; set; }
     }
 
-    public class EmployeeOption : Employee  
-    {        
-        public double Score { get; set; }        
+    public class EmployeeOption : Employee
+    {
+        public double Score { get; set; }
     }
 }

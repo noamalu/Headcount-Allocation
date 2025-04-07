@@ -207,24 +207,27 @@ const CreateEmployeeModal: React.FC<{
             </div>
 
             <div className="skills-section">
-                <label>Add Language: </label>
-                <select
-                    id="languageSelect"
-                    value={selectedLanguage}
-                    onChange={(e) => setSelectedLanguage(e.target.value as LanguageEnum)}
-                    className="dropdown"
-                >
-                    <option value="" disabled>Select a language</option>
-                    {Object.values(LanguageEnum).map((language) => (
-                    <option key={language} value={language}>
-                        {language}
-                    </option>
-                    ))}
-                </select>
-                <button className="add-button" onClick={handleAddLanguage}>
-                    <i className="fas fa-plus"></i>
-                </button>
-    
+                <div className="modal-info-row">
+
+                    <label>Add Language: </label>
+                    <select
+                        id="languageSelect"
+                        value={selectedLanguage}
+                        onChange={(e) => setSelectedLanguage(e.target.value as LanguageEnum)}
+                        className="dropdown"
+                    >
+                        <option value="" disabled>Select a language</option>
+                        {Object.values(LanguageEnum).map((language) => (
+                        <option key={language} value={language}>
+                            {language}
+                        </option>
+                        ))}
+                    </select>
+                    <button className="add-button" onClick={handleAddLanguage}>
+                        <i className="fas fa-plus"></i>
+                    </button>
+                </div>
+
                 <table className="languages-input-table">
                     <thead>
                     <tr>
