@@ -21,7 +21,7 @@ namespace API.Controllers
         }
         
         [HttpPost("Employees")]
-        public ActionResult<Response<Tuple<string,string>>> Create([FromBody] Employee employee)
+        public ActionResult<Response<int>> Create([FromBody] Employee employee)
         {
             var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
             (
@@ -36,8 +36,9 @@ namespace API.Controllers
                 skill.Priority
             ));
 
-            var employeeLoginDetails = _headCountService.AddEmployee(
+            var employeeId = _headCountService.AddEmployee(
                 employee.EmployeeName,
+                employee.Password,
                 employee.PhoneNumber,
                 employee.Email,
                 (HeadcountAllocation.Domain.Enums.TimeZones)employee.TimeZone,
@@ -47,7 +48,7 @@ namespace API.Controllers
                 employee.JobPercentage,
                 false
             );
-            return Ok(employeeLoginDetails);
+            return Ok(employeeId);
         }
         
         [HttpDelete("Tickets/{ticketId}")]

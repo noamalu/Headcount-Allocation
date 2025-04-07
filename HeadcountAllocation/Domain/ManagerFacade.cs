@@ -403,6 +403,25 @@ namespace HeadcountAllocation.Domain
             }
         }
 
+        public int CreateEmployee(string name, string password, string phoneNumber, string email,
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages,
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, bool isManager)
+        {
+            try
+            {
+                var mailParsed = ValidateEmail(email);
+                Employee employee = new Employee(name, employeeCount++, phoneNumber, mailParsed, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, password, isManager);
+                Employees.Add(employee.EmployeeId, employee);
+                employeeRepo.Add(employee);
+                return employee.EmployeeId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
         private MailAddress ValidateEmail(string email)
         {
             try

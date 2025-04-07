@@ -27,6 +27,7 @@ namespace API.Models
 
         public double JobPercentage { get; set; }
         
+        public string? Password { get; set; }
     }
 
     public class EmployeeOption : Employee  

@@ -180,6 +180,18 @@ namespace HeadcountAllocation.Services{
             }
         }
 
+        public Response<int> AddEmployee(string name, string password, string phoneNumber, string email, 
+            TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
+            ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, bool isManager)
+        {
+            try{
+                return Response<int>.FromValue(_managerFacade.CreateEmployee(name, password, phoneNumber, email, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, isManager));
+            }
+            catch (Exception e){
+                return Response<int>.FromError(e.Message);
+            }
+        }
+
         public Response DeleteEmployee(int employeeId){
             try{
                 _managerFacade.DeleteEmployee(employeeId);
