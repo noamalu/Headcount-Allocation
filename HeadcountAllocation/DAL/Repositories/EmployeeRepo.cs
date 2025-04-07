@@ -48,7 +48,6 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             DBcontext dbContext = DBcontext.GetInstance();
             Employees.Add(employee.EmployeeId, employee);
-            EmployeesNames.Add(employee.UserName, employee);
             try{
                 lock (Lock)
                 {
