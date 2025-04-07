@@ -5,7 +5,7 @@ import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
 import { getTicketsByLoggedUser } from '../../../Services/TicketsService';
 // @ts-ignore
-import { Tooltip } from 'react-tooltip';
+// import { Tooltip } from 'react-tooltip';
 
 const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -82,13 +82,13 @@ if (error) {
                 </div>
               </td>
               <td>
-                <span 
+                {/* <span 
                   id={`tooltip-${ticket.ticketId}`} 
                   className="tooltip-trigger" 
                   data-tooltip-content={ticket.description}>
                   ...
                 </span>
-                <Tooltip anchorSelect={`#tooltip-${ticket.ticketId}`} place="top" />
+                <Tooltip anchorSelect={`#tooltip-${ticket.ticketId}`} place="top" /> */}
               </td>
               <td>
                 <button className="action-button" onClick={() => handleOpenModal(ticket)}>🔗</button>
