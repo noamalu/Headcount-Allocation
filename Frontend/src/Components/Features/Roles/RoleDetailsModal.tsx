@@ -4,7 +4,7 @@ import EditRoleModal from './EditRoleModal';
 import { Role } from '../../../Types/RoleType';
 import { Language, formateLanguage } from '../../../Types/LanguageType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { formateSkillToString } from '../../../Types/SkillType';
 import EmployeesService from '../../../Services/EmployeesService';
@@ -26,7 +26,9 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
   
 
   useEffect(() => {
-    if (role.employeeId != -1 && selectedEmployee == null) {
+    if (role.employeeId != -1 && role.employeeId != null && selectedEmployee == null) {
+      console.log("Selected employee id:", selectedEmployee);
+      console.log("Role employee id:", role.employeeId);
       handleEmployeeDetails(role.employeeId);
     }
   }, [role]);
@@ -79,15 +81,12 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
   
 
   return (
-    <div className="modal-overlay role-modal">
-      <div className="modal-content role-modal">
-        {/* כפתור סגירה */}
+    <div className="modal-overlay details-modal">
+      <div className="modal-content details-modal">
         <button className="close-button" onClick={onClose}>✖</button>
-        
-        {/* כותרת עם שם התפקיד */}
+      
         <h2 className="role-name">{role.roleName}</h2>
         
-        {/* שם העובד המשויך */}
         <div className="employee-info">
           <span className="employee-avatar">👤</span>
           <p className="employee-name">
@@ -96,7 +95,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
         </div>
 
         {/* פרטי התפקיד */}
-        <div className="role-details">
+        <div className="details-section">
           <div className="detail-banner">
             <i className="fas fa-globe" ></i>
             <span><strong>Time Zone:</strong> {role.timeZone}</span>
@@ -110,7 +109,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
             <span><strong>Job Percentage:</strong> {role.jobPercentage * 100}%</span>
           </div>
         </div>
-        <div className="role-details">
+        <div className="details-section">
           <div className="detail-banner">
             <i className="fas fa-align-left"></i>
             <span><strong>Description:</strong> {role.description}</span>

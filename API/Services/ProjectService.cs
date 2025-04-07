@@ -63,5 +63,32 @@ namespace API.Services
                                             Description = role.Value.Description
                                         })).ToList();
         }
+
+        public List<Role> GetRolesByProject(int projectId)
+        {
+            return _headCountService.GetAllRolesByProject(projectId).Value.Values.Select(role => new Role
+                {
+                    RoleId = role.RoleId,
+                    RoleName = role.RoleName,
+                    ProjectId = role.ProjectId,
+                    EmployeeId = role.EmployeeId,
+                    TimeZone = GetId(role.TimeZone),
+                    ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
+                    {
+                        LanguageId = language.LanguageID,
+                        LanguageTypeId = GetId(language.LanguageType),
+                        Level = language.Level
+                    }).ToList() ?? new(),
+                    Skills = role.Skills.Values?.Select(skill => new Skill
+                    {
+                        SkillTypeId = GetId(skill.SkillType),
+                        Level = skill.Level,
+                        Priority = skill.Priority
+                    }).ToList() ?? new(),
+                    YearsExperience = role.YearsExperience,
+                    JobPercentage = role.JobPercentage,
+                    Description = role.Description
+                }).ToList();
+        }
     }
 }

@@ -48,6 +48,7 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             DBcontext dbContext = DBcontext.GetInstance();
             Employees.Add(employee.EmployeeId, employee);
+            EmployeesNames.Add(employee.UserName, employee);
             try{
                 lock (Lock)
                 {
@@ -119,6 +120,7 @@ namespace HeadcountAllocation.DAL.Repositories
 
         public Employee GetByUserName(string userName)
         {
+            EmployeesNames = Employees.ToDictionary(x => x.Value.UserName, x => x.Value);
             if (EmployeesNames.ContainsKey(userName))
                 return EmployeesNames[userName];
             else

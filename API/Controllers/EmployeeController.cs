@@ -13,11 +13,12 @@ namespace API.Controllers
     {
         private readonly HeadCountService _headCountService;
         private readonly EmployeeService _employeeService;
-
-        public EmployeeController(HeadCountService headCountService, EmployeeService employeeService)
+        private readonly ProjectService _projectService;
+        public EmployeeController(HeadCountService headCountService, EmployeeService employeeService, ProjectService projectService)
         {
             _headCountService = headCountService;
             _employeeService = employeeService;
+            _projectService = projectService;
         }
 
         [HttpPost("Login")]
@@ -74,6 +75,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{employeeId}/Admin")]
+        public ActionResult<Response> IsAdmin([FromRoute] int employeeId)
+        {
+            try
+            {
+                return Ok(Response<bool>.FromValue(_employeeService.IsAdmin(employeeId)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
         [HttpPost("{employeeId}/Ticket")]
         public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {
@@ -85,6 +99,44 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
+        [HttpGet("{employeeId}/Ticket")] //TODO: ****Check if this is correct, it should be a GET request to get the tickets of an employee
+        public ActionResult<Response> GetTickets([FromRoute] int employeeId)
+        {
+            try
+            {
+                var response = _headCountService.GetOpensTickets().Value
+                    .Where(ticket => ticket.EmployeeId == employeeId)
+                    .Select(ticket => new Ticket
+                    {
+                        TicketId = ticket.TicketId,
+                        EmployeeId = ticket.EmployeeId,
+                        EmployeeName = ticket.EmployeeName,
+                        StartDate = ticket.StartDate,
+                        EndDate = ticket.EndDate,
+                        Description = ticket.Description
+                    }).ToList();
+                return Ok(Response<List<Ticket>>.FromValue(response));   
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
+        [HttpGet("{employeeId}/{projectId}/Roles")]//TODO: ****Check if this is correct, it should be a GET request to get the roles of an employee in a project
+        public ActionResult<Response<Role>> GetRoles([FromRoute] int employeeId, [FromRoute] int projectId)
+        {
+            try
+            {
+                var roles = _projectService.GetRolesByProject(projectId)?.Where(role => role?.EmployeeId == employeeId).ToList();
+                return Ok(Response<List<Role>>.FromValue(roles));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
             }
         }
         

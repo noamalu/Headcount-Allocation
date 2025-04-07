@@ -1,3 +1,10 @@
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
 .add-button {
   background-color: #266150;
   margin-left: 5px;
@@ -177,6 +184,10 @@
   margin: 5px auto;
 }
 
+.input-field, .input-field option {
+    font-family: 'Poppins'
+}
+
 .delete-record-button {
   background: none;
   border: none;
@@ -190,4 +201,47 @@
 
 .delete-record-button:hover {
   color: darkred;
+}
+
+.status-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.status-open {
+  background-color: #3b883d; 
+  color: white;
+  justify-content: center;
+}
+
+.status-closed {
+  background-color: #a72b23; 
+}
+
+.ellipsis-text {
+  max-width: 150px; /* הגבלת רוחב התא */
+  white-space: nowrap; /* מניעת שבירת שורה */
+  overflow: hidden; /* הסתרת תוכן חורג */
+  text-overflow: ellipsis; /* הצגת ... בסוף */
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.ellipsis-text:hover::after {
+  content: attr(data-full-text); /* הצגת הטקסט המלא */
+  position: absolute;
+  background-color: #4F4846; /* צבע כהה לרקע */
+  color: white; /* צבע טקסט */
+  padding: 6px;
+  border-radius: 4px;
+  white-space: pre-wrap; /* שבירת שורות אם ארוך מדי */
+  max-width: 300px; /* רוחב מקסימלי לחלון המלא */
+  z-index: 10;
+  top: 25px; /* מרווח למעלה */
+  left: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* הצללה */
 }
