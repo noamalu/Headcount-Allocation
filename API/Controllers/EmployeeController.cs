@@ -75,6 +75,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{employeeId}/Admin")]
+        public ActionResult<Response> IsAdmin([FromRoute] int employeeId)
+        {
+            try
+            {
+                return Ok(Response<bool>.FromValue(_employeeService.IsAdmin(employeeId)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
         [HttpPost("{employeeId}/Ticket")]
         public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {

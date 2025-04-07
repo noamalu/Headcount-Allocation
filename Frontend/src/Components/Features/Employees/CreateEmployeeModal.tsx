@@ -73,7 +73,7 @@ const CreateEmployeeModal: React.FC<{
 
   
     const handleSubmit = async () => {
-        if (!employeeName || !phoneNumber || !timeZone || yearsExperience < 0 ||  jobPercentage < 0 || !password) {
+        if (!employeeName || !phoneNumber|| yearsExperience < 0 ||  jobPercentage < 0 || !password) {
             setError("All fields are required, and required numeric ones nust be greater than 0.");
             return;
         }
