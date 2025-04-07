@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Ticket, formatDate } from '../../../Types/TicketType';
 import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
-import { getTicketsByLoggedUser } from '../../../Services/TicketsService';
+import { getAllTickets, getTicketsByEmployeeId } from '../../../Services/TicketsService';
+import { useAuth } from '../../../Context/AuthContext';
 // @ts-ignore
 // import { Tooltip } from 'react-tooltip';
 
@@ -12,14 +13,20 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+      const { currentUser, currentId, isAdmin } = useAuth();
 
   const fetchTickets = async () => {
     setIsLoading(true); 
     setError(null); 
 
     try {
-      const data = await getTicketsByLoggedUser();
-      setTickets(data);
+      if (isAdmin) {
+        const data = await getAllTickets();
+        setTickets(data);
+      } else {
+        const data = await getTicketsByEmployeeId(currentId);
+        setTickets(data);
+      }
     } catch (err) {
       setError('Failed to fetch Tickets. Please try again later.');
     } finally {

@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        public ActionResult<Response> EmployeeLogin([FromQuery]string userName, [FromBody]string password)
+        public ActionResult<Response> EmployeeLogin([FromQuery] string userName, [FromBody] string password)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-        
+
         [HttpGet("{employeeId}")]
         public ActionResult<Response> GetEmployeeById([FromRoute] int employeeId)
         {
@@ -93,7 +93,8 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, ticket.Description);   
+                string combinedDescription = $"{ticket.AbsenceReason}|{ticket.Description}";
+                var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, combinedDescription);
                 return Ok(Response<int>.FromValue(response.Value));
             }
             catch (Exception ex)
@@ -109,16 +110,25 @@ namespace API.Controllers
             {
                 var response = _headCountService.GetOpensTickets().Value
                     .Where(ticket => ticket.EmployeeId == employeeId)
-                    .Select(ticket => new Ticket
+                    .Select(ticket =>
                     {
-                        TicketId = ticket.TicketId,
-                        EmployeeId = ticket.EmployeeId,
-                        EmployeeName = ticket.EmployeeName,
-                        StartDate = ticket.StartDate,
-                        EndDate = ticket.EndDate,
-                        Description = ticket.Description
+                        //To DEBUG
+                        string[] parts = ticket.Description.Split('|');
+                        string absenceReason = parts.Length > 1 ? parts[0] : "Other"; // If includes "|" -> a reason - take it, otherwise -> "Other"
+                        string description = parts.Length > 1 ? parts[1] : parts[0]; // If includes "|" -> description is second item, otherwise -> there is only one item - the description
+
+                        return new Ticket
+                        {
+                            TicketId = ticket.TicketId,
+                            EmployeeId = ticket.EmployeeId,
+                            EmployeeName = ticket.EmployeeName,
+                            StartDate = ticket.StartDate,
+                            EndDate = ticket.EndDate,
+                            AbsenceReason = absenceReason,
+                            Description = description
+                        };
                     }).ToList();
-                return Ok(Response<List<Ticket>>.FromValue(response));   
+                return Ok(Response<List<Ticket>>.FromValue(response));
             }
             catch (Exception ex)
             {
@@ -136,9 +146,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-        
+
     }
 }
