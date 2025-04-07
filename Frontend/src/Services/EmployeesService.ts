@@ -6,6 +6,26 @@ import { Employee } from '../Types/EmployeeType';
 
 class EmployeesService {
 
+   // returns somthing to fix - NOA HELP
+   static async sendCreateEmployee(employee: Omit<Employee, "employeeId" | "roles">): Promise<number> {
+    console.log("attempt to create employee" + employee.employeeName);
+          try {
+              const response = await APIClient('/api/Manager/Employees', {
+                  method: 'POST',
+                  body: JSON.stringify(employee),
+                  headers: { 'Content-Type': 'application/json' },
+              });
+              if (!response.errorOccured) {
+                return response.value; 
+              } else {
+                  throw new Error("Failed to create employee: " + JSON.stringify(response, null, 2));
+              }
+          } catch (error) {
+              console.error("Error in sendCreateEmployee:", error);
+              throw error; 
+          }
+      }
+
   static async assignEmployeeToRole(employeeId: number, role: Role): Promise<Response> {
     console.log(`Attempting to assign employee ${employeeId} to role: ${role.roleName}`);
     try {
@@ -55,6 +75,8 @@ export const getEmployees = async (): Promise<Employee[]> => {
     console.log('getEmployees Response:', response); 
     return fetchResponse(response); 
   };
+
+  
 
 
 export default EmployeesService;

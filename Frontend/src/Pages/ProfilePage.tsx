@@ -1,27 +1,43 @@
 // src/Pages/ProfilePage.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { Employee } from '../Types/EmployeeType'; 
 import '../Styles/Profile.css';
+import EmployeesService from '../Services/EmployeesService';
 
 const ProfilePage: React.FC = () => {
-  const { currentUser, isAdmin, logout } = useAuth();
+  const { currentId, currentUser, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
+  const [user, setUser] = useState<Employee | null>(null);
 
-  // סימולציה של פרטי משתמש (בעתיד – מ-API או הקשר מורחב)
-  const user = {
-    userName: currentUser,
-    email: `${currentUser?.toLowerCase()}@example.com`,
-    phoneNumber: '050-1234567',
-    yearExp: 5,
-    jobPercentage: 80,
-    timeZone: 'UTC+2',
-  };
+  useEffect(() => {
+    console.log("ProfilePage loaded");
+    console.log("Current ID from AuthContext:", currentId);
+    const fetchUser = async () => {
+      try {
+        console.log("Attempting to fetch user data...");
+        const employeeData = await EmployeesService.getEmployeeById(currentId);
+        console.log("Employee data received:", employeeData);
+        setUser(employeeData);  // שמירה ישירה של הנתונים
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+
+    if (currentId) {
+      fetchUser();
+    }
+  }, [currentId]);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
+
+  if (!user) {
+    return <div>Loading profile...</div>;
+  }
 
   return (
     <div className="profile-page">
@@ -30,15 +46,15 @@ const ProfilePage: React.FC = () => {
       <div className="profile-card">
         <div className="profile-header">
           <i className="fas fa-user-circle avatar-icon" />
-          <h2 className="username">{user.userName}</h2>
+          <h2 className="username">{user.employeeName}</h2>
           <span className="role-badge">{isAdmin ? 'Administrator' : 'Regular User'}</span>
         </div>
 
         <div className="profile-details">
           <div className="detail-row"><span>Email:</span> {user.email}</div>
           <div className="detail-row"><span>Phone:</span> {user.phoneNumber}</div>
-          <div className="detail-row"><span>Experience:</span> {user.yearExp} years</div>
-          <div className="detail-row"><span>Job Percentage:</span> {user.jobPercentage}%</div>
+          <div className="detail-row"><span>Experience:</span> {user.yearsExperience} years</div>
+          <div className="detail-row"><span>Job Percentage:</span> {user.jobPercentage * 100}%</div>
           <div className="detail-row"><span>Time Zone:</span> {user.timeZone}</div>
         </div>
 

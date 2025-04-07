@@ -1,10 +1,12 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import SessionService from '../Services/SessionService';
 
 interface AuthContextType {
   isLoggedIn: boolean;
   isAdmin: boolean;
   currentUser: string | null;
-  login: (username: string, isAdmin: boolean) => void;
+  currentId: number;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -14,21 +16,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [currentId, setCurrentId] = useState<number>(-1);
+  
 
-  const login = (username: string, isAdmin: boolean) => {
-    setIsLoggedIn(true);
-    setIsAdmin(isAdmin);
-    setCurrentUser(username);
+  const login = async (username: string, password: string) => {
+    try {
+      // console.log(`Fake login as ${username}`);
+      // setIsLoggedIn(true);
+      // setIsAdmin(false);
+      // setCurrentUser(username);
+      // setCurrentId(1);
+      const userId = await SessionService.login(username, password);
+      if (userId) {
+        setIsLoggedIn(true);
+        setIsAdmin(false);
+        setCurrentUser(username);
+        setCurrentId(userId);
+        console.log(`User ${currentUser} logged in successfully with ID: ${currentId}`);
+      } else {
+        throw new Error('Invalid login credentials');
+      }
+    } catch (error: any) {
+      console.error('Login failed:', error.message);
+      throw error;
+    }
   };
 
   const logout = () => {
     setIsLoggedIn(false);
     setIsAdmin(false);
     setCurrentUser(null);
+    setCurrentId(-1);
+    console.log('User logged out');
   };
 
+  useEffect(() => {
+    console.log(`🔄 State updated: isLoggedIn=${isLoggedIn}, currentUser=${currentUser}, currentId=${currentId}`);
+  }, [isLoggedIn, currentUser, currentId]);
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isAdmin, currentUser, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isAdmin, currentUser, currentId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

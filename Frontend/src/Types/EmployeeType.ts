@@ -14,4 +14,5 @@ export interface Employee {
     yearsExperience: number;
     jobPercentage: number;
     roles: Role[];
+    password?: string; 
 }

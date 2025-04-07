@@ -34,7 +34,7 @@ useEffect(() => {
     const handleEmployeeCreated = (newEmployee: Employee) => {
         setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
     };
-    onEmployeeCreated(handleEmployeeCreated); // רישום callback לקבלת פרויקט חדש
+    onEmployeeCreated(handleEmployeeCreated); 
 }, [onEmployeeCreated]);
 
 const handleOpenModal = (employee: Employee) => {
