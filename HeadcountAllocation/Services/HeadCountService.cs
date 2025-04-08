@@ -129,6 +129,16 @@ namespace HeadcountAllocation.Services{
             }     
         } 
 
+        public Response<List<Role>> GetAllRolesByEmployee(int employeeId){
+            try{
+                List<Role> roles = _managerFacade.GetAllRolesByEmployee(employeeId);
+                return Response<List<Role>>.FromValue(roles);
+            }
+            catch (Exception e){
+                return Response<List<Role>>.FromError(e.Message);
+            }     
+        }
+
         public Response AssignEmployeeToRole(int employeeId, Role role){
             try{
                 _managerFacade.AssignEmployeeToRole(employeeId, role);
