@@ -21,7 +21,7 @@ namespace HeadcountAllocation.Domain{
 
             if (Alert)
             {
-                _alertManager.SendAlert(title, msg, UserName);
+                _alertManager.SendAlert(title, msg, UserName, Email);
                 message.Seen = true;
             }
             else{
