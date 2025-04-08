@@ -13,14 +13,14 @@ builder.Services.AddSingleton<ManagerFacade>();
 builder.Services.AddSingleton<HeadCountService>(); 
 builder.Services.AddSingleton<ProjectService>(); 
 builder.Services.AddSingleton<EmployeeService>(); 
-// builder.Services.AddSingleton<WebSocketServer>(sp =>
-// {
-//     var configurate = sp.GetRequiredService<Configurate>();
-//     string port = configurate.Parse();
-//     var alertServer = new WebSocketServer("ws://127.0.0.1:" + port);
-//     alertServer.Start();
-//     return alertServer;
-// });
+builder.Services.AddSingleton<WebSocketServer>(sp =>
+{
+    // var configurate = sp.GetRequiredService<Configurate>();
+    // string port = configurate.Parse();
+    var alertServer = new WebSocketServer("ws://127.0.0.1:4562");
+    alertServer.Start();
+    return alertServer;
+});
            
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

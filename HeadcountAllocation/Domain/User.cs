@@ -15,13 +15,13 @@ namespace HeadcountAllocation.Domain{
         public AlertManager _alertManager = AlertManager.GetInstance();
 
 
-        public void Notify(string msg)
+        public void Notify(string title, string msg)
         {
             var message = new Message(msg);
 
             if (Alert)
             {
-                _alertManager.SendAlert(msg, UserName);
+                _alertManager.SendAlert(title, msg, UserName);
                 message.Seen = true;
             }
             else{

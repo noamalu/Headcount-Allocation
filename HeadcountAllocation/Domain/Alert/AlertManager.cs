@@ -40,7 +40,7 @@ namespace HeadcountAllocation.Domain.Alert
             return _alertsManager;
         }
 
-        public void SendAlert(string message, string username)
+        public void SendAlert(string title, string message, string username)
         {
             var relativePath = $"/{username}-alerts";
 

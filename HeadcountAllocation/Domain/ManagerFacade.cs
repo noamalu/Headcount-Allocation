@@ -316,6 +316,11 @@ namespace HeadcountAllocation.Domain
             try
             {
                 ticketRepo.Add(ticket);
+                var managers = Employees.Values.Where(employee => employee.IsManager);
+                foreach (var manager in managers)
+                {
+                    manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                }
                 return ticket.TicketId;
             }
             catch (Exception e)
