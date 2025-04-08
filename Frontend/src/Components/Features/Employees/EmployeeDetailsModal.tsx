@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Employee } from '../../../Types/EmployeeType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
 import { formateLanguage } from '../../../Types/LanguageType';
 import { formateSkillToString } from '../../../Types/SkillType';
+import { Role } from '../../../Types/RoleType';
+import { getEmployeeRolesById } from '../../../Services/EmployeesService';
+
 
 interface EmployeeDetailsModalProps {
     employee: Employee;
@@ -13,7 +16,28 @@ interface EmployeeDetailsModalProps {
   
   const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose }) => {
     const [isEditMode, setIsEditMode] = useState(false);
+   const [roles, setRoles] = useState<Role[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
   
+    useEffect(() => {
+      const fetchEmployeeRoles = async () => {
+        try {
+          const response = await getEmployeeRolesById(employee.employeeId);
+          employee.roles = response;
+          setRoles(response);
+          setLoading(false);
+        } catch (err: any) {
+          console.error('Error fetching employee roles:', err);
+          setError('Failed to fetch roles');
+          setLoading(false);
+        }
+      };
+      fetchEmployeeRoles();
+    }, [employee.employeeId]);
+  
+    if (loading) return <div>Loading employee roles...</div>;
+    if (error) return <div>{error}</div>;
     return (
       <div className="modal-overlay details-modal">
         <div className="modal-content details-modal">
@@ -91,13 +115,37 @@ interface EmployeeDetailsModalProps {
                 </div>
             </div>
   
-          {/* <h3>Roles</h3>
-          <ul>
-            {employee.roles.map((role, index) => (
-              <li key={index}>{role.roleName} (Project ID: {role.projectId})</li>
-            ))}
-          </ul>
-   */}
+            <div className="detail-banner">
+            <h3>Roles:</h3>
+            <table className="roles-table">
+                <thead>
+                    <tr>
+                        <th>Role Name</th>
+                        <th>Project ID</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {employee.roles.length > 0 ? (
+                        employee.roles.map((role, index) => (
+                        <tr key={index}>
+                            <td>{role.roleName}</td>
+                            <td>{role.projectId}</td>
+                            <td>
+                                {/* <button onClick={() => onOpenProject(role.projectId)} className="view-project-button">View Project</button> */}
+                                {/* <button onClick={() => onOpenRole(role.roleId)} className="view-role-button">View Role</button> */}
+                            </td>
+                        </tr>
+                        ))
+                    ) : (
+                        <tr>
+                        <td colSpan={3}>No roles available</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+          </div>
+
           <div className="modal-actions">
             <button className="edit-button" onClick={() => setIsEditMode(true)}>Edit</button>
             <button className="delete-button">Delete</button>

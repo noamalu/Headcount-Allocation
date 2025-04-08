@@ -80,6 +80,21 @@ export const getEmployees = async (): Promise<Employee[]> => {
     return fetchResponse(response); 
   };
 
+
+export const getEmployeeRolesById = async (employeeId: number): Promise<Role[]> => {
+  try {
+    const response = await APIClient(`/api/Employee/${employeeId}/Roles`, { method: 'GET' });
+    console.log('getEmployeeRolesById Response:', response);
+    if (!response.errorOccured) {
+      return  fetchResponse(response); 
+    } else {
+        throw new Error("Failed to getEmployeeRolesById: " + JSON.stringify(response, null, 2));
+    }
+  } catch (error) {
+    console.error(`Error getting employee roles for ${employeeId}:`, error);
+    throw error; 
+  }
+};
   
 
 
