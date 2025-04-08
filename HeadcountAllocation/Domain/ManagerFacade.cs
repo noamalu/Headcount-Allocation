@@ -639,5 +639,13 @@ namespace HeadcountAllocation.Domain
             }
             employee.RemoveLanguage(languageID);
         }
+
+        public List<Role> GetAllRolesByEmployee(int employeeId)
+        {
+            var roles = Projects.Values
+                .SelectMany(p => p.Roles.Values.Where(r => r.EmployeeId == employeeId))
+                .ToList();
+            return roles;
+        }
     }
 }
