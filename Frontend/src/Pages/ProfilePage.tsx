@@ -4,12 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import { Employee } from '../Types/EmployeeType'; 
 import '../Styles/Profile.css';
-import EmployeesService from '../Services/EmployeesService';
+import '../Styles/Shared.css';
+
+import EmployeesService, { getEmployeeRolesById } from '../Services/EmployeesService';
+import { Role } from '../Types/RoleType';
+import RoleDetailsModal from '../Components/Features/Roles/RoleDetailsModal';
 
 const ProfilePage: React.FC = () => {
   const { currentId, currentUser, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<Employee | null>(null);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log("ProfilePage loaded");
@@ -19,16 +27,47 @@ const ProfilePage: React.FC = () => {
         console.log("Attempting to fetch user data...");
         const employeeData = await EmployeesService.getEmployeeById(currentId);
         console.log("Employee data received:", employeeData);
-        setUser(employeeData);  // שמירה ישירה של הנתונים
+        setUser(employeeData);  
       } catch (error) {
         console.error('Error fetching employee data:', error);
       }
     };
-
     if (currentId) {
-      fetchUser();
+      fetchUser()
     }
   }, [currentId]);
+
+  useEffect(() => {
+    console.log("Start fetch user roles");
+    const fetchEmployeeRoles = async () => {
+      try {
+        if (user != null) {
+          const response = await getEmployeeRolesById(user.employeeId);
+          user.roles = response;
+          setRoles(response);
+          setLoading(false);
+        } 
+      } catch (err: any) {
+        console.error('Error fetching employee roles:', err);
+        setError('Failed to fetch roles');
+        setLoading(false);
+      }
+    };
+    if (user) {
+      fetchEmployeeRoles()
+    }
+  }, [currentId]);
+
+  if (error) return <div>{error}</div>;
+   
+  const handleOpenModal = (role: Role) => {
+    console.log("Opening role modal for:", role.roleName, "Role data:", role);
+    setSelectedRole(role);
+  };
+  
+  const handleCloseModal = () => {
+    setSelectedRole(null);
+  }; 
 
   const handleLogout = () => {
     logout();
@@ -39,6 +78,10 @@ const ProfilePage: React.FC = () => {
     return <div>Loading profile...</div>;
   }
 
+  if (selectedRole) {
+    console.log("Selected role being passed to RoleDetailsModal:", selectedRole);
+  }
+
   return (
     <div className="profile-page">
       <h1 className="page-title">👤 My Profile</h1>
@@ -47,7 +90,8 @@ const ProfilePage: React.FC = () => {
         <div className="profile-header">
           <i className="fas fa-user-circle avatar-icon" />
           <h2 className="username">{user.employeeName}</h2>
-          <span className="role-badge">{isAdmin ? 'Administrator' : 'Regular User'}</span>
+          {isAdmin && (
+          <span className="role-badge">Administrator</span>)}
         </div>
 
         <div className="profile-details">
@@ -58,7 +102,44 @@ const ProfilePage: React.FC = () => {
           <div className="detail-row"><span>Time Zone:</span> {user.timeZone}</div>
         </div>
 
+        <div className="profile-details">
+          <table className="roles-table">
+            <thead>
+              <tr>
+                  <th>Role Name</th>
+                  <th>Project ID</th>
+                  <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {user.roles && user.roles.length > 0 ? (
+                  user.roles.map((role, index) => (
+                  <tr key={index}>
+                      <td>{role.roleName}</td>
+                      <td>{role.projectId}</td>
+                      <td>
+                        <button className="action-button" onClick={() => handleOpenModal(role)}>
+                          🔗
+                        </button>
+                      </td>
+                  </tr>
+                  ))
+              ) : (
+                  <tr>
+                    <td colSpan={3} className="no-roles">No roles available for this user.</td>
+                  </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
+        {selectedRole && (
+          <RoleDetailsModal 
+          projectId={selectedRole.projectId} 
+          role={selectedRole} 
+          onClose={handleCloseModal}/>
+        )}
+
       </div>
     </div>
   );

@@ -1,23 +1,27 @@
 import React from 'react';
 import '../../Styles/Layout.css'
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
 
 const Sidebar = () => {
+  const { isAdmin } = useAuth();
   return (
     <div className="sidebar">
       <ul>
-        <li className="active">Dashboard</li>
+        {/* <li className="active">Dashboard</li> */}
         <li>  
           <NavLink to="/projects" className={getActiveClass}>Projects</NavLink>
         </li>
-        <li>  
-          <NavLink to="/employees" className={getActiveClass}>Employees</NavLink>
-        </li>
-        <li>Calendar</li>
+        {isAdmin && (
+          <li>
+            <NavLink to="/employees" className={getActiveClass}>Employees</NavLink>
+          </li>
+        )}
+        {/* <li>Calendar</li> */}
         <li>
           <NavLink to="/tickets" className={getActiveClass}>Tickets</NavLink>
         </li>
-        <li>Notifications</li>
+        {/* <li>Notifications</li> */}
       </ul>
     </div>
   );

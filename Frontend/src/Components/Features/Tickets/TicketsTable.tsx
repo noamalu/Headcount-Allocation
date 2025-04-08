@@ -5,6 +5,7 @@ import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
 import { getAllTickets, getTicketsByEmployeeId } from '../../../Services/TicketsService';
 import { useAuth } from '../../../Context/AuthContext';
+import TicketDetailsModal from './TicketDetailsModal';
 // @ts-ignore
 // import { Tooltip } from 'react-tooltip';
 
@@ -72,7 +73,6 @@ if (error) {
             <th>Start Date</th>
             <th>End Date</th>
             <th>Status</th>
-            <th>Description</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -89,24 +89,15 @@ if (error) {
                 </div>
               </td>
               <td>
-                {/* <span 
-                  id={`tooltip-${ticket.ticketId}`} 
-                  className="tooltip-trigger" 
-                  data-tooltip-content={ticket.description}>
-                  ...
-                </span>
-                <Tooltip anchorSelect={`#tooltip-${ticket.ticketId}`} place="top" /> */}
-              </td>
-              <td>
                 <button className="action-button" onClick={() => handleOpenModal(ticket)}>🔗</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* {selectedTicket && (
+      {selectedTicket && (
         <TicketDetailsModal ticket={selectedTicket} onClose={handleCloseModal} />
-      )} */}
+      )}
     </div>
   );
 };

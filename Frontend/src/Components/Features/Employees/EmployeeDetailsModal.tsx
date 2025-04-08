@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Employee } from '../../../Types/EmployeeType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
 import { formateLanguage } from '../../../Types/LanguageType';
 import { formateSkillToString } from '../../../Types/SkillType';
+import { Role } from '../../../Types/RoleType';
+import { getEmployeeRolesById } from '../../../Services/EmployeesService';
+import RoleDetailsModal from '../Roles/RoleDetailsModal';
+
 
 interface EmployeeDetailsModalProps {
     employee: Employee;
@@ -13,7 +17,56 @@ interface EmployeeDetailsModalProps {
   
   const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose }) => {
     const [isEditMode, setIsEditMode] = useState(false);
+   const [roles, setRoles] = useState<Role[]>([]);
+   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
   
+    useEffect(() => {
+      const fetchEmployeeRoles = async () => {
+        try {
+          const response = await getEmployeeRolesById(employee.employeeId);
+          employee.roles = response;
+          setRoles(response);
+          setLoading(false);
+        } catch (err: any) {
+          console.error('Error fetching employee roles:', err);
+          setError('Failed to fetch roles');
+          setLoading(false);
+        }
+      };
+      fetchEmployeeRoles();
+    }, [employee.employeeId]);
+  
+    if (loading) return <div>Loading employee roles...</div>;
+    if (error) return <div>{error}</div>;
+
+    const handleOpenModal = (role: Role) => {
+        console.log("Opening role modal for:", role.roleName, "Role data:", role);
+        setSelectedRole(role);
+    };
+    
+    const handleCloseModal = () => {
+      setSelectedRole(null);
+    };
+    
+      
+    // const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
+    //   console.log("Assigning employee", employeeId, "to role", roleId);
+    //   setRoles((prevRoles) => {
+    //     const updatedRoles = { ...prevRoles }; // יצירת עותק של roles
+    //     if (updatedRoles[roleId]) {
+    //       updatedRoles[roleId].employeeId = employeeId; // עדכון ה-employeeId עבור התפקיד המתאים
+    //     }
+    //     return updatedRoles; // החזרת המצב המעודכן
+    //   });
+    //   console.log("Updated roles:", roles); // וידוא התוצאה
+    // };
+      
+    if (selectedRole) {
+      console.log("Selected role being passed to RoleDetailsModal:", selectedRole);
+    }
+
     return (
       <div className="modal-overlay details-modal">
         <div className="modal-content details-modal">
@@ -43,7 +96,7 @@ interface EmployeeDetailsModalProps {
             </div>
           </div>
   
-        
+          <div className="details-section">
           {/* Skills Section */}
           <div className="detail-banner">
             <div className="skills-section">
@@ -73,6 +126,7 @@ interface EmployeeDetailsModalProps {
                 </table>
             </div>
           </div>
+          </div>
 
           {/* Languages Section */}
             <div className="detail-banner">
@@ -91,20 +145,60 @@ interface EmployeeDetailsModalProps {
                 </div>
             </div>
   
-          {/* <h3>Roles</h3>
-          <ul>
-            {employee.roles.map((role, index) => (
-              <li key={index}>{role.roleName} (Project ID: {role.projectId})</li>
-            ))}
-          </ul>
-   */}
+            <div className="details-section">
+              {/* Roles Section */}
+            <div className="detail-banner">
+            <div className="skills-section">
+                <i className="fa-solid fa-chalkboard-user"></i>
+                <strong> Roles:</strong>
+                <table className="roles-table">
+                <thead>
+                    <tr>
+                        <th>Role Name</th>
+                        <th>Project ID</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {employee.roles.length > 0 ? (
+                        employee.roles.map((role, index) => (
+                        <tr key={index}>
+                            <td>{role.roleName}</td>
+                            <td>{role.projectId}</td>
+                            <td>
+                              <button className="action-button" onClick={() => handleOpenModal(role)}>
+                                🔗
+                              </button>
+                            </td>
+                        </tr>
+                        ))
+                    ) : (
+                    <tr>
+                      <td colSpan={3} className="no-roles">No roles available for this user.</td>
+                    </tr>
+                    )}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+
           <div className="modal-actions">
             <button className="edit-button" onClick={() => setIsEditMode(true)}>Edit</button>
             <button className="delete-button">Delete</button>
           </div>
+
+          {selectedRole && (
+          <RoleDetailsModal 
+          projectId={selectedRole.projectId} 
+          role={selectedRole} 
+          onClose={handleCloseModal}/>
+        )}
         </div>
       </div>
     );
   };
   
   export default EmployeeDetailsModal;
+
+  // onAssignEmployeeToRole={handleAssignEmployeeToRole}

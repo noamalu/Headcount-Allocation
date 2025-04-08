@@ -27,13 +27,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // setCurrentUser(username);
       // setCurrentId(1);
       const userId = await SessionService.login(username, password);
-      if (userId) {
+      if (userId != null && userId > -1) {
         setIsLoggedIn(true);
         setCurrentUser(username);
         setCurrentId(userId);
         console.log(`User ${currentUser} logged in successfully with ID: ${currentId}`);
         const checkAdmin = await SessionService.isAdmin(userId);
-        
+
         if (checkAdmin != null) {
           setIsAdmin(checkAdmin);
           console.log(`User ${currentUser} checked if admin successfully with ID: ${currentId} - ${checkAdmin}`);

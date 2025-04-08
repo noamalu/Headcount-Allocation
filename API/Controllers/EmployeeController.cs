@@ -166,28 +166,29 @@ namespace API.Controllers
             try
             {
                 var roles = _headCountService.GetAllRolesByEmployee(employeeId).Value
-                    .Select(role => new Role{
-                        RoleId = role.RoleId,
-                        RoleName = role.RoleName,
-                        ProjectId = role.ProjectId,
-                        EmployeeId = role.EmployeeId,
-                        TimeZone = HeadcountAllocation.Domain.Enums.GetId(role.TimeZone),
-                        ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
-                        {
-                            LanguageId = language.LanguageID,
-                            LanguageTypeId = HeadcountAllocation.Domain.Enums.GetId(language.LanguageType),
-                            Level = language.Level
-                        }).ToList() ?? new(),
-                        Skills = role.Skills.Values?.Select(skill => new Skill
-                        {
-                            SkillTypeId = HeadcountAllocation.Domain.Enums.GetId(skill.SkillType),
-                            Level = skill.Level,
-                            Priority = skill.Priority
-                        }).ToList() ?? new(),
-                        YearsExperience = role.YearsExperience,
-                        JobPercentage = role.JobPercentage,
-                        Description = role.Description
-                    }).ToList();
+                      .Select(role => new Role
+                      {
+                          RoleId = role.RoleId,
+                          RoleName = role.RoleName,
+                          ProjectId = role.ProjectId,
+                          EmployeeId = role.EmployeeId,
+                          TimeZone = HeadcountAllocation.Domain.Enums.GetId(role.TimeZone),
+                          ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
+                          {
+                              LanguageId = language.LanguageID,
+                              LanguageTypeId = HeadcountAllocation.Domain.Enums.GetId(language.LanguageType),
+                              Level = language.Level
+                          }).ToList() ?? new(),
+                          Skills = role.Skills.Values?.Select(skill => new Skill
+                          {
+                              SkillTypeId = HeadcountAllocation.Domain.Enums.GetId(skill.SkillType),
+                              Level = skill.Level,
+                              Priority = skill.Priority
+                          }).ToList() ?? new(),
+                          YearsExperience = role.YearsExperience,
+                          JobPercentage = role.JobPercentage,
+                          Description = role.Description
+                      }).ToList();
                 return Ok(Response<List<Role>>.FromValue(roles));
             }
             catch (Exception ex)
