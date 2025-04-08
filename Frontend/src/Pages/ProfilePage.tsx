@@ -90,7 +90,8 @@ const ProfilePage: React.FC = () => {
         <div className="profile-header">
           <i className="fas fa-user-circle avatar-icon" />
           <h2 className="username">{user.employeeName}</h2>
-          <span className="role-badge">{isAdmin ? 'Administrator' : 'Regular User'}</span>
+          {isAdmin && (
+          <span className="role-badge">Administrator</span>)}
         </div>
 
         <div className="profile-details">
