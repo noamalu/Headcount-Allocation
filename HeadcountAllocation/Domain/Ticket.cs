@@ -45,8 +45,8 @@ namespace HeadcountAllocation.Domain
 
         public string TicketMessage()
         {
-            var reason = Description.Split("/").FirstOrDefault();
-            var description = Description.Split("/").LastOrDefault();
+            var reason = Description.Split("|").FirstOrDefault();
+            var description = Description.Split("|").LastOrDefault();
 
             var span = GetReadableDuration(StartDate, EndDate);
             var message =
@@ -60,8 +60,8 @@ namespace HeadcountAllocation.Domain
 
         public string TicketTitle()
         {
-            var reason = Description.Split("/").FirstOrDefault();
-            var description = Description.Split("/").LastOrDefault();
+            var reason = Description.Split("|").FirstOrDefault();
+            var description = Description.Split("|").LastOrDefault();
             var title = $@"Ticket: {EmployeeName} - {reason}";
 
             return title;            

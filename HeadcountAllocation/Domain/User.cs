@@ -10,7 +10,7 @@ namespace HeadcountAllocation.Domain{
         public string Password{get; set;}
 
         public MailAddress Email{get; set;}
-        public bool Alert{get; set;}
+        public bool Alert{get; set;} = true;
         public List<Message> Alerts {get; set;} = new ();
         public AlertManager _alertManager = AlertManager.GetInstance();
 

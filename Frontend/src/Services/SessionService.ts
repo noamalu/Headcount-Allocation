@@ -1,6 +1,7 @@
 import { APIClient } from './APIClient';
 import { fetchResponse } from './GeneralService';
 
+export const storage = window.localStorage;
 class SessionService {
 
     static async login(userName: string, password: string): Promise<number | null> {

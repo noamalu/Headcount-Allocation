@@ -4,6 +4,8 @@ using HeadcountAllocation.Services;
 using HeadcountAllocation.DAL.DTO;
 using API.Models;
 using API.Services;
+using WebSocketSharp.Server;
+using HeadcountAllocation.Domain.Alert;
 
 namespace API.Controllers
 {
@@ -11,19 +13,41 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
+        private readonly WebSocketServer AlertServer;
         private readonly HeadCountService _headCountService;
         private readonly EmployeeService _employeeService;
         private readonly ProjectService _projectService;
-        public EmployeeController(HeadCountService headCountService, EmployeeService employeeService, ProjectService projectService)
+        public EmployeeController(HeadCountService headCountService, EmployeeService employeeService, ProjectService projectService, WebSocketServer alerts)
         {
+            AlertServer = alerts;
             _headCountService = headCountService;
             _employeeService = employeeService;
             _projectService = projectService;
+            AlertManager.GetInstance(AlertServer);
+
+        }
+
+        private class AlertService : WebSocketBehavior
+        {
+
         }
 
         [HttpPost("Login")]
         public ActionResult<Response> EmployeeLogin([FromQuery] string userName, [FromBody] string password)
         {
+            string relativePath = $"/{userName}-alerts";
+            try
+            {
+                if (AlertServer.WebSocketServices[relativePath] == null)
+                {
+                    AlertServer.AddWebSocketService<AlertService>(relativePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("alert server issue");
+            }
+
             try
             {
                 var response = _headCountService.Login(userName, password);

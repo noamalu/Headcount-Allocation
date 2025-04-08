@@ -44,6 +44,7 @@ namespace HeadcountAllocation.Domain.Alert
 
         public void SendAlert(string title, string message, string username, MailAddress email)
         {
+            SendEmail(title, message, email);
             var relativePath = $"/{username}-alerts";
 
             if (_alertsServer is null || _alertsServer.WebSocketServices[relativePath] is null)
@@ -70,20 +71,24 @@ namespace HeadcountAllocation.Domain.Alert
                         throw;
                     }
                 }
-            }
+            }            
 
+        }
+
+        public void SendEmail(string title, string message, MailAddress email)
+        {
             try
             {
-                var smtpClient = new SmtpClient("smtp.example.com") // Replace with your SMTP server
+                var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
-                    Port = 587, // Replace with your SMTP port
-                    Credentials = new NetworkCredential("headcount.allocation@gmail.com", "HeadcountAllocation1"), // Replace with your email credentials
+                    Port = 587,
+                    Credentials = new NetworkCredential("headcount.allocation@gmail.com", "pldebnnskqbstqln"),
                     EnableSsl = true,
                 };
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("headcount.allocation@gmail.com"), // Replace with your email address
+                    From = new MailAddress("headcount.allocation@gmail.com"),
                     Subject = title,
                     Body = message,
                     IsBodyHtml = false,
@@ -91,13 +96,12 @@ namespace HeadcountAllocation.Domain.Alert
                 mailMessage.To.Add(email);
 
                 smtpClient.Send(mailMessage);
+                Console.WriteLine("Email sent successfully!");
             }
             catch (Exception ex)
             {
-                // Handle exceptions related to email sending
                 Console.WriteLine($"Failed to send email: {ex.Message}");
             }
-
         }
     }
 }
