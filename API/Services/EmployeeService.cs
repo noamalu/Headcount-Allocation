@@ -41,5 +41,12 @@ namespace API.Services
 
             return translatedEmployee;                        
         }
+
+        public bool IsAdmin(int employeeId)
+        {
+            var employee = _headCountService.GetEmployeeById(employeeId);
+
+            return employee.Value.IsManager;            
+        }
     }
 }

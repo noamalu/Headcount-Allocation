@@ -3,7 +3,7 @@ import AssignEmployeeModal from './AssignEmployeeModal';
 import { Role } from '../../../Types/RoleType';
 import {Skill} from '../../../Types/SkillType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { Employee } from '../../../Types/EmployeeType';
 

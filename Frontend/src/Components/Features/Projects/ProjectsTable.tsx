@@ -35,7 +35,7 @@ useEffect(() => {
     const handleProjectCreated = (newProject: Project) => {
         setProjects((prevProjects) => [...prevProjects, newProject]);
     };
-    onProjectCreated(handleProjectCreated); // רישום callback לקבלת פרויקט חדש
+    onProjectCreated(handleProjectCreated); 
 }, [onProjectCreated]);
 
 const handleOpenModal = (project: Project) => {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ProjectsTable from '../Components/Features/Projects/ProjectsTable'; // ייבוא הטבלה
+import ProjectsTable from '../Components/Features/Projects/ProjectsTable'; 
 import '../Styles/Projects.css';
 import CreateProjectModal from '../Components/Features/Projects/CreateProjectModal';
 import { Project } from '../Types/ProjectType';
@@ -11,30 +11,30 @@ const ProjectsPage: React.FC = () => {
 
     const handleProjectCreated = (project: Project) => {
         if (tableRef.current) {
-            tableRef.current(project); // שדר לטבלה
+            tableRef.current(project); // Send to table
         }
     };
 
     const handleOpenModal = () => {
-        setIsModalOpen(true); // פתיחת המודאל
+        setIsModalOpen(true); 
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false); // סגירת המודאל
+        setIsModalOpen(false); 
     };
 
 
     return (
         <div className="projects-page">
             <div className="projects-header">
-                <h1 className="page-title">My Projects</h1> {/* כותרת */}
+                <h1 className="page-title">My Projects</h1> 
                 <button className="add-project-button" onClick={handleOpenModal}>+ New Project</button>
             </div>
-            <ProjectsTable onProjectCreated={(callback) => (tableRef.current = callback)} />            {/* הצגת המודאל לפי המצב */}
+            <ProjectsTable onProjectCreated={(callback) => (tableRef.current = callback)} />            
             {isModalOpen && (
                 <CreateProjectModal
-                    onClose={() => setIsModalOpen(false)} // סגירת המודל
-                    onProjectCreated={handleProjectCreated} // עדכון הרשימה
+                    onClose={() => setIsModalOpen(false)} 
+                    onProjectCreated={handleProjectCreated} // Update list
                 />
             )}
         </div>
