@@ -427,6 +427,7 @@ namespace HeadcountAllocation.Domain
             }
             catch (Exception e)
             {
+                Console.WriteLine($"🔥 Unhandled Exception: {e.Message}\n{e.StackTrace}");
                 throw new Exception(e.Message);
             }
         }

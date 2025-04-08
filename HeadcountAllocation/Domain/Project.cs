@@ -22,7 +22,6 @@ namespace HeadcountAllocation.Domain
         public Dictionary<int, Role> Roles { get; set; } = new();
 
         public RoleRepo RoleRepo;
-        // private int RoleCounter = 1;
 
         public Project(string projectName, int projectId, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles)
         {
