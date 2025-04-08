@@ -32,7 +32,7 @@ const ProfilePage: React.FC = () => {
         console.error('Error fetching employee data:', error);
       }
     };
-    if (currentId) {
+    if (currentId != null && currentId >= 0) {
       fetchUser()
     }
   }, [currentId]);
