@@ -316,6 +316,11 @@ namespace HeadcountAllocation.Domain
             try
             {
                 ticketRepo.Add(ticket);
+                var managers = Employees.Values.Where(employee => employee.IsManager);
+                foreach (var manager in managers)
+                {
+                    manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                }
                 return ticket.TicketId;
             }
             catch (Exception e)
@@ -409,6 +414,11 @@ namespace HeadcountAllocation.Domain
         {
             try
             {
+                if(Employees.Values.Select(emp => emp.UserName).Contains(name))
+                {
+                    throw new Exception($"Employee with name {name} already exists.");
+                }
+
                 var mailParsed = ValidateEmail(email);
                 Employee employee = new Employee(name, employeeCount++, phoneNumber, mailParsed, timezone, foreignLanguages, skills, yearsExperience, jobPercentage, password, isManager);
                 Employees.Add(employee.EmployeeId, employee);
@@ -417,6 +427,7 @@ namespace HeadcountAllocation.Domain
             }
             catch (Exception e)
             {
+                Console.WriteLine($"🔥 Unhandled Exception: {e.Message}\n{e.StackTrace}");
                 throw new Exception(e.Message);
             }
         }

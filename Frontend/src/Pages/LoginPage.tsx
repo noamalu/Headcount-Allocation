@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import '../Styles/Login.css';
 import '../Styles/Shared.css';
+import { initWebSocket } from '../Services/NotificationsService';
 
 
 const LoginPage: React.FC = () => {
@@ -31,6 +32,8 @@ const LoginPage: React.FC = () => {
     // const isAdmin = username.toLowerCase() === 'admin'; // TO CHANGE
     try {
       await login(username, password);
+      const address = `ws://127.0.0.1:4562/${username}-alerts`;
+      initWebSocket(address);
       setApiError(null);
       navigate('/profile');
     } catch (error) {

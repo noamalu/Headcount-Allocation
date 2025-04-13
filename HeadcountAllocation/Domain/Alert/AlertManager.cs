@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Net.Mail;
+using System.Text.Json;
 using WebSocketSharp.Server;
 
 namespace HeadcountAllocation.Domain.Alert
@@ -40,8 +42,9 @@ namespace HeadcountAllocation.Domain.Alert
             return _alertsManager;
         }
 
-        public void SendAlert(string message, string username)
+        public void SendAlert(string title, string message, string username, MailAddress email)
         {
+            SendEmail(title, message, email);
             var relativePath = $"/{username}-alerts";
 
             if (_alertsServer is null || _alertsServer.WebSocketServices[relativePath] is null)
@@ -49,25 +52,56 @@ namespace HeadcountAllocation.Domain.Alert
 
             var webSocketService = _alertsServer.WebSocketServices[relativePath];
             if (webSocketService is null || webSocketService.Sessions.Count <= 0)
-                return;                
-            
+                return;
+
             var json = JsonSerializer.Serialize(new { message });
 
-            lock(_lock)
+            lock (_lock)
             {
                 foreach (var session in webSocketService.Sessions.Sessions)
                 {
-                    try{
+                    try
+                    {
                         var webSocket = session.Context.WebSocket;
                         if (webSocket?.IsAlive ?? false)
                             webSocket.Send(json);
-                    }catch(Exception)
+                    }
+                    catch (Exception)
                     {
                         throw;
                     }
-                }                
+                }
+            }            
+
+        }
+
+        public void SendEmail(string title, string message, MailAddress email)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("headcount.allocation@gmail.com", "pldebnnskqbstqln"),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("headcount.allocation@gmail.com"),
+                    Subject = title,
+                    Body = message,
+                    IsBodyHtml = false,
+                };
+                mailMessage.To.Add(email);
+
+                smtpClient.Send(mailMessage);
+                Console.WriteLine("Email sent successfully!");
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send email: {ex.Message}");
+            }
         }
     }
 }

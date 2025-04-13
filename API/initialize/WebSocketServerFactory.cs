@@ -10,10 +10,10 @@ namespace EcommerceAPI.initialize
 {
     public static class WebSocketServerFactory
     {
-        public static WebSocketServer CreateWebSocketServer(Configurate configurate)
+        public static WebSocketServer CreateWebSocketServer()
         {
-            string port = configurate.Parse();
-            WebSocketServer alertServer = new WebSocketServer($"ws://{GetLocalIPAddress()}:{port}");
+            // string port = configurate.Parse();
+            WebSocketServer alertServer = new WebSocketServer($"ws://{GetLocalIPAddress()}:{4562}");
             return alertServer;
         }
 
