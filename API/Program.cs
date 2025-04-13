@@ -9,10 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddSingleton<ManagerFacade>(); 
-builder.Services.AddSingleton<HeadCountService>(); 
-builder.Services.AddSingleton<ProjectService>(); 
-builder.Services.AddSingleton<EmployeeService>(); 
+builder.Services.AddSingleton<ManagerFacade>();
+builder.Services.AddSingleton<HeadCountService>();
+builder.Services.AddSingleton<ProjectService>();
+builder.Services.AddSingleton<EmployeeService>();
 builder.Services.AddSingleton<WebSocketServer>(sp =>
 {
     // var configurate = sp.GetRequiredService<Configurate>();
@@ -21,7 +21,7 @@ builder.Services.AddSingleton<WebSocketServer>(sp =>
     alertServer.Start();
     return alertServer;
 });
-           
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         builder => builder
             .WithOrigins
-                ("http://localhost:5173", "http://132.73.84.247") // Frontend URL
+                ("http://localhost:5173") // Frontend URL
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
