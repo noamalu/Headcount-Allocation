@@ -7,7 +7,7 @@ import ProfilePage from './Pages/ProfilePage';
 import LoginPage from './Pages/LoginPage';
 import Layout from './Components/Layout/Layout';
 import { AuthProvider, useAuth } from './Context/AuthContext';
-import './Styles/Layout.css';
+import './index.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import TicketsPage from './Pages/TicketsPage';
 

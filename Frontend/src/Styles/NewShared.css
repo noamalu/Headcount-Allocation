@@ -1,0 +1,305 @@
+/* === Shared.css - מודרני בסגנון טופס הרשמה מעודכן === */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.add-button {
+  background-color: var(--color-primary);
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-light);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  transition: background-color 0.3s ease;
+  font-family: var(--font-main);
+}
+
+.error {
+  color: var(--color-error);
+  font-weight: bold;
+  margin-top: var(--space-md);
+}
+
+.loading {
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  margin-top: var(--space-md);
+}
+
+.close-button {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  font-size: var(--font-size-xl);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-dark);
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: var(--color-error);
+}
+
+/* כפתורים */
+button,
+.save-button,
+.cancel-button,
+.delete-button,
+.addRole-button,
+.addSkill-button,
+.edit-button,
+.assign-button {
+  font-family: var(--font-main);
+  font-size: var(--font-size-sm);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.save-button {
+  background-color: #3B82F6;
+  color: white;
+  font-weight: 600;
+}
+.save-button:hover {
+  background-color: #2563EB;
+}
+
+.cancel-button {
+  background: none;
+  color: #555;
+  text-decoration: underline;
+}
+.cancel-button:hover {
+  background-color: transparent;
+  color: #000;
+}
+
+.delete-button {
+  background-color: var(--color-error);
+  color: var(--color-light);
+}
+.delete-button:hover {
+  background-color: var(--color-error-dark);
+}
+
+.addRole-button,
+.addSkill-button {
+  background: #9e84a5;
+  color: white;
+}
+.addRole-button:hover,
+.addSkill-button:hover {
+  background: #6a586e;
+}
+
+.edit-button {
+  background: #4B6C8E;
+  color: white;
+}
+.edit-button:hover {
+  background: #3A526B;
+}
+
+.assign-button {
+  background: #a9a5f5;
+  color: white;
+}
+.assign-button:hover {
+  background: #817bf3;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  margin: var(--space-sm) 0;
+}
+
+.slider {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb,
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb:hover,
+.slider::-moz-range-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+.slider-value {
+  font-size: var(--font-size-sm);
+  color: #333;
+  text-align: center;
+}
+
+.dropdown {
+  width: 100%;
+  padding: var(--space-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  background-color: white;
+  font-family: var(--font-main);
+}
+
+.input-field {
+  font-family: var(--font-main);
+  font-size: var(--font-size-sm);
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.delete-record-button {
+  background: none;
+  border: none;
+  color: rgb(173, 3, 3);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+.delete-record-button:hover {
+  color: darkred;
+}
+
+.status-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  margin-right: var(--space-xs);
+}
+
+.status-open {
+  background-color: #3b883d;
+  color: white;
+}
+
+.status-closed {
+  background-color: #a72b23;
+}
+
+.ellipsis-text {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.ellipsis-text:hover::after {
+  content: attr(data-full-text);
+  position: absolute;
+  background-color: var(--color-dark);
+  color: white;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  white-space: pre-wrap;
+  max-width: 300px;
+  z-index: 10;
+  top: 25px;
+  left: 0;
+  box-shadow: var(--shadow-light);
+}
+
+.roles-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-sm);
+  background-color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+}
+
+.roles-table th,
+.roles-table td {
+  padding: var(--space-sm);
+  text-align: left;
+  border-bottom: 1px solid var(--color-accent);
+  color: var(--color-dark);
+}
+
+.roles-table th {
+  background-color: var(--color-accent);
+  font-weight: bold;
+}
+
+.roles-table tbody tr:hover {
+  background-color: #f0e4de;
+}
+
+.roles-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.action-button {
+  background-color: var(--color-dark);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #3e3a38;
+}
+
+.no-roles {
+  text-align: center;
+  padding: var(--space-md);
+  color: var(--color-dark);
+  opacity: 0.8;
+}
+
+.ui-error {
+  background-color: #fce4e4;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+  padding: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  text-align: center;
+}
+
+.list-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  width: fit-content;
+  margin: 0 auto;
+  color: #a94442;
+  border-radius: 0;
+  padding-inline: var(--space-xs);
+  font-weight: bold;
+}
