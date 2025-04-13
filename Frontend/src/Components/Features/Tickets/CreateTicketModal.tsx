@@ -19,40 +19,55 @@ const CreateTicketModal: React.FC<{
     const [endDate, setEndDate] = useState('');
     const [absenceReason, setAbsenceReason] = useState<AbsenceReasonEnum | ''>('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState<string>(""); 
     const { currentUser, currentId } = useAuth();
+    const [uiError, setUiError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
 
     const absenceReasons = Object.values(AbsenceReasonEnum);
+
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
   
     const handleSubmit = async () => {
-      if (!startDate || !endDate || !absenceReason || startDate > endDate) {
-        setError("Start date, End date, and Absence reason are required.");
-        return;
+
+      let errorMessage = '';
+      if (!startDate || !endDate || !absenceReason) {
+        errorMessage += '• Start date, End date, and Absence reason are required.\n';
       }
       if (startDate > endDate) {
-        setError("Start date can't be greater than End date.");
+        errorMessage += '• Start date cannot be after End date.\n';
+      }
+      if (errorMessage) {
+        setUiError(errorMessage.trim());
         return;
       }
+      setUiError(null);
+
       const newTicket: Ticket = {
         ticketId: -1, 
         employeeId: currentId,
         employeeName: currentUser || "",
         startDate,
         endDate,
-        absenceReason: absenceReason,
+        absenceReason: absenceReason as AbsenceReasonEnum,
         description,
         isOpen: true,
       };
+      
       try {
         // const newTicketId = 1;
         const newTicketId = await TicketsService.sendCreateTicket(newTicket);
         newTicket.ticketId = newTicketId;
         console.log('Ticket created successfully:', newTicket);
         onTicketCreated(newTicket);
+        setApiError(null);
         onClose(); 
     } catch (error) {
-        console.error('Error creating Ticket:', error);
-        setError('An error occurred while creating the Ticket.');
+      console.error('Error creating Ticket:', error);
+      setApiError('An error occurred while creating the Ticket.');
     }
   };
   
@@ -61,6 +76,11 @@ const CreateTicketModal: React.FC<{
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
           <h2>Create New Ticket</h2>
+
+          {uiError && (
+            <div className="ui-error" style={{ whiteSpace: 'pre-line' }}>{uiError}</div>
+          )}
+
           <div className="modal-info">
             <div>
                 <label>Employee Name: </label>

@@ -26,7 +26,13 @@ interface EmployeeRolesTableProps {
   const EmployeeRolesTable: React.FC<EmployeeRolesTableProps> = ({ employeeId, onOpenProject, onOpenRole }) => {
     const [roles, setRoles] = useState<Role[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
+    
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
   
     useEffect(() => {
       const fetchRoles = async () => {
@@ -36,7 +42,7 @@ interface EmployeeRolesTableProps {
           setLoading(false);
         } catch (err: any) {
           console.error('Error fetching employee roles:', err);
-          setError('Failed to fetch roles');
+          setApiError('Failed to fetch roles');
           setLoading(false);
         }
       };
@@ -44,7 +50,6 @@ interface EmployeeRolesTableProps {
     }, [employeeId]);
   
     if (loading) return <div>Loading employee roles...</div>;
-    if (error) return <div>{error}</div>;
   
     return (
       <div className="employee-roles-table">

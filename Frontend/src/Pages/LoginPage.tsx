@@ -1,5 +1,5 @@
 // src/Pages/Login.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import '../Styles/Login.css';
@@ -10,21 +10,32 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [uiError, setUiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
+
+
   const handleLogin = async () => {
     if (!username || !password) {
-      setError('Please enter both username and password.');
+      setUiError('Please enter both username and password.');
       return;
     }
-    const isAdmin = username.toLowerCase() === 'admin'; // TO CHANGE
+    setUiError(null);
+    // const isAdmin = username.toLowerCase() === 'admin'; // TO CHANGE
     try {
       await login(username, password);
+      setApiError(null);
       navigate('/profile');
     } catch (error) {
-      console.error("Login Page - Login failed");
+      console.error('Login Page - Login failed');
+      setApiError('Login failed. Please check your credentials and try again.');
     }
   };
 
@@ -32,6 +43,9 @@ const LoginPage: React.FC = () => {
     <div className="login-page">
       <div className="login-box">
         <h2>Welcome to Headcount Allocation</h2>
+
+        {uiError && <div className="ui-error">{uiError}</div>}
+
         <input
           type="text"
           placeholder="Username"
@@ -59,7 +73,6 @@ const LoginPage: React.FC = () => {
             Forgot password?
           </button>
         </div>
-        {error && <div className="login-error">{error}</div>}
         <button className="login-button" onClick={handleLogin}>Login</button>
       </div>
     </div>

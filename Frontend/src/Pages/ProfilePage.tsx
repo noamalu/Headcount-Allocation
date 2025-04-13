@@ -17,7 +17,13 @@ const ProfilePage: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
 
   useEffect(() => {
     console.log("ProfilePage loaded");
@@ -30,6 +36,7 @@ const ProfilePage: React.FC = () => {
         setUser(employeeData);  
       } catch (error) {
         console.error('Error fetching employee data:', error);
+        setApiError('Failed to fetch user profile');
       }
     };
     if (currentId != null && currentId >= 0) {
@@ -49,7 +56,7 @@ const ProfilePage: React.FC = () => {
         } 
       } catch (err: any) {
         console.error('Error fetching employee roles:', err);
-        setError('Failed to fetch roles');
+        setApiError('Failed to fetch roles');
         setLoading(false);
       }
     };
@@ -58,7 +65,10 @@ const ProfilePage: React.FC = () => {
     }
   }, [currentId]);
 
-  if (error) return <div>{error}</div>;
+  if (!user || loading) {
+    return <div>Loading profile...</div>;
+  }
+
    
   const handleOpenModal = (role: Role) => {
     console.log("Opening role modal for:", role.roleName, "Role data:", role);
@@ -74,9 +84,6 @@ const ProfilePage: React.FC = () => {
     navigate('/login');
   };
 
-  if (!user) {
-    return <div>Loading profile...</div>;
-  }
 
   if (selectedRole) {
     console.log("Selected role being passed to RoleDetailsModal:", selectedRole);

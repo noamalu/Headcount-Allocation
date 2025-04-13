@@ -10,16 +10,23 @@ const EmployeesSpan: React.FC<{ onEmployeeCreated: (callback: (employee: Employe
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
+
 
   const fetchEmployees = async () => {
     setIsLoading(true); 
-    setError(null); 
+    setApiError(null); 
     try {
       const data = await getEmployees();
       setEmployees(data);
     } catch (err) {
-      setError('Failed to fetch employees. Please try again later.');
+      setApiError('Failed to fetch employees. Please try again later.');
     } finally {
       setIsLoading(false); 
     }
@@ -48,10 +55,6 @@ const handleCloseModal = () => {
 
 if (isLoading) {
     return <p>Loading employees...</p>;
-}
-
-if (error) {
-    return <p className="error">{error}</p>;
 }
 
   return (
