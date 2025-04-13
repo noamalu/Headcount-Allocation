@@ -20,16 +20,26 @@ const CreateProjectModal: React.FC<{
     const [deadline, setDeadline] = useState('');
     const [requiredHours, setRequiredHoursline] = useState<number>(0);
     const [description, setDescription] = useState('');
-    const [error, setError] = useState<string>(""); 
+    const [uiError, setUiError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
     const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
     // const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
-    // const [roles, setRoles] = useState<Role[]>([]);    
+    // const [roles, setRoles] = useState<Role[]>([]);
+    
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
+  
   
     const handleSubmit = async () => {
       if (!projectName || !description || !deadline || requiredHours <= 0) {
-        setError("All fields are required, and required hours must be greater than 0.");
+        setUiError("All fields are required, and required hours must be greater than 0.");
         return;
       }
+      setUiError(null);
+
       const newProject: Project = {
         projectId: -1, 
         projectName,
@@ -38,15 +48,17 @@ const CreateProjectModal: React.FC<{
         requiredHours,
         roles: []
       };
+
       try {
         const newProjectId = await ProjectsService.sendCreateProject(newProject);
         newProject.projectId = newProjectId;
         console.log('Project created successfully:', newProject);
         onProjectCreated(newProject);
-        onClose(); // סגירת המודל
+        setApiError(null);
+        onClose();
     } catch (error) {
         console.error('Error creating project:', error);
-        setError('An error occurred while creating the project.');
+        setApiError('An error occurred while creating the project');
     }
   };
   
@@ -55,6 +67,13 @@ const CreateProjectModal: React.FC<{
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
           <h2>Create New Project</h2>
+
+          {uiError && (
+          <div className="ui-error">
+            {uiError}
+          </div>
+        )}
+
           <div className="modal-info">
             <div>
               <label>Project Name: </label>

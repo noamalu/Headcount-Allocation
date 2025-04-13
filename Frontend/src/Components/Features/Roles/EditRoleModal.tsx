@@ -12,7 +12,7 @@ interface EditRoleModalProps {
   projectId: number;
   role: Role;
   onClose: () => void;
-  onSave: (newRole: Role) => void; // Add this line
+  onSave: (newRole: Role) => void; 
 }
 
 const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, onSave }) => {

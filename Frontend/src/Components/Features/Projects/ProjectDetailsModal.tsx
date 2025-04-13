@@ -20,15 +20,17 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         console.log('Fetching roles for project:', project.projectId);
-        const roles = await getProjectRoles(project.projectId); // קריאה לפונקציה שמחזירה את התפקידים
-        setRoles(roles || {}); // עדכון ה-state עם התפקידים שחזרו
+        const roles = await getProjectRoles(project.projectId); 
+        setRoles(roles || {}); 
       } catch (error) {
         console.error('Error fetching project roles:', error);
+        setApiError('Failed to fetch project roles');
       }
     };
   
@@ -36,6 +38,12 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
       fetchRoles(); // קריאה לפונקציה בכניסה לפרויקט
     }
   }, [project]);
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
 
 
   const handleRoleCreated = (newRole: Role) => {
@@ -74,7 +82,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
 //   }, [selectedRole]);
       
   const handleOpenModal = (role: Role) => {
-    console.log("Opening role modal for:", role.roleName, "Role data:", role); // בדוק את הערך
+    console.log("Opening role modal for:", role.roleName, "Role data:", role); 
     setSelectedRole(role);
   };
 
@@ -90,11 +98,11 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
     console.log("Assigning employee", employeeId, "to role", roleId);
     setRoles((prevRoles) => {
-      const updatedRoles = { ...prevRoles }; // יצירת עותק של roles
+      const updatedRoles = { ...prevRoles }; 
       if (updatedRoles[roleId]) {
-        updatedRoles[roleId].employeeId = employeeId; // עדכון ה-employeeId עבור התפקיד המתאים
+        updatedRoles[roleId].employeeId = employeeId; 
       }
-      return updatedRoles; // החזרת המצב המעודכן
+      return updatedRoles; 
     });
     console.log("Updated roles:", roles); // וידוא התוצאה
   };
