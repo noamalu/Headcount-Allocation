@@ -29,73 +29,114 @@ const CreateEmployeeModal: React.FC<{
     const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState<string>(""); 
+    const [uiError, setUiError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
+    const [skillError, setSkillError] = useState<string>("");
+    const [languageError, setLanguageError] = useState<string>("");
+
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
+
+
+    // Skills:
 
     const handleAddSkill = () => {
-        if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-            alert("Skill already added or not selected.");
-            return;
-        }
-        setSkills([...skills, { skill: selectedSkill, level: 1 }]);
-        setSelectedSkill(""); // איפוס הבחירה
+      if (!selectedSkill) {
+        setSkillError("Please select a skill.");
+        return;
+      }
+      if (skills.some((s) => s.skill === selectedSkill)) {
+        setSkillError("Skill already added.");
+        return;
+      }
+      setSkills([...skills, { skill: selectedSkill, level: 1 }]);
+      setSelectedSkill("");
+      setSkillError("");
     };
 
     const handleSkillLevelChange = (index: number, level: number) => {
-        const updatedSkills = [...skills];
-        updatedSkills[index].level = level;
-        setSkills(updatedSkills);
+      const updatedSkills = [...skills];
+      updatedSkills[index].level = level;
+      setSkills(updatedSkills);
+      setSkillError("");
     };
   
     const handleDeleteSkill = (index: number) => {
-      const updatedSkills = skills.filter((_, i) => i !== index); // מסנן את השורה
+      const updatedSkills = skills.filter((_, i) => i !== index);
       setSkills(updatedSkills);
-    }; 
+      setSkillError("");
+    };
+
+
+    // Languages:
     
     const handleAddLanguage = () => {
-      if (!selectedLanguage || languages.some((l) => l.language === selectedLanguage)) {
-        alert("Language already added or not selected.");
+      if (!selectedLanguage) {
+        setLanguageError("Please select a language.");
+        return;
+      }
+      if (languages.some((l) => l.language === selectedLanguage)) {
+        setLanguageError("Language already added.");
         return;
       }
       setLanguages([...languages, { language: selectedLanguage, level: 1 }]);
-      setSelectedLanguage(""); 
+      setSelectedLanguage("");
+      setLanguageError("");
     };
+
+      const handleLanguageLevelChange = (index: number, level: number) => {
+        const updatedLanguages = [...languages];
+        updatedLanguages[index].level = level;
+        setLanguages(updatedLanguages);
+        setLanguageError("");
+      };
   
-    const handleLanguageLevelChange = (index: number, level: number) => {
-      const updatedLanguages = [...languages];
-      updatedLanguages[index].level = level;
-      setLanguages(updatedLanguages);
-    };
-  
-    const handleDeleteLanguage = (index: number) => {
-      const updatedLanguages = languages.filter((_, i) => i !== index);
-      setLanguages(updatedLanguages);
-    };
+      const handleDeleteLanguage = (index: number) => {
+        const updatedLanguages = languages.filter((_, i) => i !== index);
+        setLanguages(updatedLanguages);
+        setLanguageError("");
+      };
 
   
     const handleSubmit = async () => {
-        if (!employeeName || !phoneNumber|| yearsExperience < 0 ||  jobPercentage < 0 || !password) {
-            setError("All fields are required, and required numeric ones nust be greater than 0.");
-            return;
-        }
+      let errorMessage = '';
+      if (!employeeName.trim()) errorMessage += '• Employee name is required.\n';
+      if (!phoneNumber.trim()) errorMessage += '• Phone number is required.\n';
+      if (!email.trim()) errorMessage += '• Email is required.\n';
+      if (!password.trim()) errorMessage += '• Password is required.\n';
+      if (yearsExperience < 0) errorMessage += '• Years of experience cannot be negative.\n';
+      if (jobPercentage <= 0) errorMessage += '• Job percentage must be greater than 0%.\n';
+      if (skills.length === 0) errorMessage += '• Please add at least one skill.\n';
+      if (languages.length === 0) errorMessage += '• Please add at least one language.\n';
+  
+      if (errorMessage) {
+        setUiError(errorMessage.trim());
+        return;
+      }
+      setUiError(null);
+  
 
-        // Create skills array
-        const employeeSkills: Skill[] = skills.map((skill, index) => ({
-            skillId: index, 
-            skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
-            level: skill.level,
-            priority: 0, 
-        }));
+      // Create skills array
+      const employeeSkills: Skill[] = skills.map((skill, index) => ({
+          skillId: index, 
+          skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
+          level: skill.level,
+          priority: 0, 
+      }));
       
-        console.log("in CreateEmployeeModal, skillTypeId: " + employeeSkills[0].skillTypeId);
+      console.log("in CreateEmployeeModal, skillTypeId: " + employeeSkills[0].skillTypeId);
        
-        // Create Languages array
-        const employeeLanguages: Language[] = languages.map((lang, index) => ({
-            languageId: index, 
-            languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
-            level: lang.level,
-        }));
+      // Create Languages array
+      const employeeLanguages: Language[] = languages.map((lang, index) => ({
+          languageId: index, 
+          languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
+          level: lang.level,
+      }));
 
-        console.log("in CreateEmployeeModal, languageId: " + employeeLanguages[0].languageId);
+      console.log("in CreateEmployeeModal, languageId: " + employeeLanguages[0].languageId);
 
       const newEmployee: Employee = {
         employeeId: -1, 
@@ -110,16 +151,18 @@ const CreateEmployeeModal: React.FC<{
         roles: [],
         password
       };
+
       try {
         console.log('before API call: ', newEmployee);
         const newEmployeeId = await EmployeesService.sendCreateEmployee(newEmployee); // wont be it - NOA
         newEmployee.employeeId = newEmployeeId;
         console.log('Employee created successfully:', newEmployee);
         onEmployeeCreated(newEmployee);
+        setApiError(null);
         onClose(); 
     } catch (error) {
         console.error('Error creating Employee:', error);
-        setError('An error occurred while creating the Employee.');
+        setApiError('An error occurred while creating the Employee.');
     }
   };
   
@@ -128,6 +171,11 @@ const CreateEmployeeModal: React.FC<{
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
           <h2>Create New Employee</h2>
+
+          {uiError && (
+            <div className="ui-error" style={{ whiteSpace: 'pre-line' }}>{uiError}</div>
+          )}
+
           <div className="modal-info">
             <div>
               <label>Employee Name: </label>
@@ -208,12 +256,14 @@ const CreateEmployeeModal: React.FC<{
 
             <div className="skills-section">
                 <div className="modal-info-row">
-
                     <label>Add Language: </label>
                     <select
                         id="languageSelect"
                         value={selectedLanguage}
-                        onChange={(e) => setSelectedLanguage(e.target.value as LanguageEnum)}
+                        onChange={(e) => {
+                          setSelectedLanguage(e.target.value as LanguageEnum);
+                          setLanguageError("");}
+                        }
                         className="dropdown"
                     >
                         <option value="" disabled>Select a language</option>
@@ -227,6 +277,8 @@ const CreateEmployeeModal: React.FC<{
                         <i className="fas fa-plus"></i>
                     </button>
                 </div>
+
+                 {languageError && <div className="list-error">{languageError}</div>}
 
                 <table className="languages-input-table">
                     <thead>
@@ -268,23 +320,30 @@ const CreateEmployeeModal: React.FC<{
           </div>
 
           <div className="skills-section">
-            <label>Add Skill: </label>
-            <select
-            id="skillSelect"
-            value={selectedSkill}
-            onChange={(e) => setSelectedSkill(e.target.value as SkillEnum)}
-            className="dropdown"
-            >
-            <option value="" disabled>Select a skill</option>
-            {Object.values(SkillEnum).map((skill) => (
-                <option key={skill} value={skill}>
-                    {skill}
-                </option>
-            ))}
-            </select>
-            <button className="add-button" onClick={handleAddSkill}>
-            <i className="fas fa-plus"></i>
-            </button>
+            <div className="modal-info-row">
+              <label>Add Skill: </label>
+              <select
+              id="skillSelect"
+              value={selectedSkill}
+              onChange={(e) => {
+                setSelectedSkill(e.target.value as SkillEnum);
+                setSkillError("");}
+              }
+              className="dropdown"
+              >
+              <option value="" disabled>Select a skill</option>
+              {Object.values(SkillEnum).map((skill) => (
+                  <option key={skill} value={skill}>
+                      {skill}
+                  </option>
+              ))}
+              </select>
+              <button className="add-button" onClick={handleAddSkill}>
+              <i className="fas fa-plus"></i>
+              </button>
+            </div>
+
+            {skillError && <div className="list-error">{skillError}</div>}
 
             <table className="skills-input-table">
             <thead>
@@ -323,25 +382,27 @@ const CreateEmployeeModal: React.FC<{
             </tbody>
             </table>
           </div>
-          <div>
-            <label>Password: </label>
-            <input
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            className="input-field"
-            // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-            title="Password must be at least 8 characters long and contain both letters and numbers"
-            required
-            />
-            <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="toggle-password"
-            >
-            {showPassword ? "Hide" : "Show"}
-            </button>
+          <div className='modal-info'>
+            <div className="modal-info-row">
+              <label>Default Password: </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="input-field"
+                // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                title="Password must be at least 8 characters long and contain both letters and numbers"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password"
+              >
+              {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
 
           <div className="modal-actions">

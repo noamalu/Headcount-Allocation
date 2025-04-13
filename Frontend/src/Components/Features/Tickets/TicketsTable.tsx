@@ -13,12 +13,19 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-      const { currentUser, currentId, isAdmin } = useAuth();
+  const [apiError, setApiError] = useState<string | null>(null);
+  const { currentUser, currentId, isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
+
 
   const fetchTickets = async () => {
     setIsLoading(true); 
-    setError(null); 
+    setApiError(null); 
 
     try {
       if (isAdmin) {
@@ -29,7 +36,7 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
         setTickets(data);
       }
     } catch (err) {
-      setError('Failed to fetch Tickets. Please try again later.');
+      setApiError('Failed to fetch Tickets. Please try again later.');
     } finally {
       setIsLoading(false); 
     }
@@ -59,9 +66,6 @@ if (isLoading) {
     return <p>Loading tickets...</p>;
 }
 
-if (error) {
-    return <p className="error">{error}</p>;
-}
 
   return (
     <div>

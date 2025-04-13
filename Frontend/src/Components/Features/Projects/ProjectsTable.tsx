@@ -9,18 +9,17 @@ const ProjectsTable: React.FC<{ onProjectCreated: (callback: (project: Project) 
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // פונקציה לקריאה ל-API
   const fetchProjects = async () => {
     setIsLoading(true); 
-    setError(null); 
+     setApiError(null); 
 
     try {
       const data = await getProjects();
       setProjects(data);
     } catch (err) {
-      setError('Failed to fetch projects. Please try again later.');
+      setApiError('Failed to fetch projects. Please try again later.');
     } finally {
       setIsLoading(false); 
     }
@@ -38,6 +37,12 @@ useEffect(() => {
     onProjectCreated(handleProjectCreated); 
 }, [onProjectCreated]);
 
+useEffect(() => {
+  if (apiError) {
+    alert(apiError);
+  }
+}, [apiError]);
+
 const handleOpenModal = (project: Project) => {
   setSelectedProject(project);
 };
@@ -50,9 +55,6 @@ if (isLoading) {
     return <p>Loading projects...</p>;
 }
 
-if (error) {
-    return <p className="error">{error}</p>;
-}
 
   return (
     <div>

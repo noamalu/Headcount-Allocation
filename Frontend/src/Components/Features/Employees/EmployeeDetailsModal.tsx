@@ -17,10 +17,17 @@ interface EmployeeDetailsModalProps {
   
   const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose }) => {
     const [isEditMode, setIsEditMode] = useState(false);
-   const [roles, setRoles] = useState<Role[]>([]);
-   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+    const [roles, setRoles] = useState<Role[]>([]);
+    const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
+  
   
     useEffect(() => {
       const fetchEmployeeRoles = async () => {
@@ -31,7 +38,7 @@ interface EmployeeDetailsModalProps {
           setLoading(false);
         } catch (err: any) {
           console.error('Error fetching employee roles:', err);
-          setError('Failed to fetch roles');
+          setApiError('Failed to fetch roles');
           setLoading(false);
         }
       };
@@ -39,7 +46,6 @@ interface EmployeeDetailsModalProps {
     }, [employee.employeeId]);
   
     if (loading) return <div>Loading employee roles...</div>;
-    if (error) return <div>{error}</div>;
 
     const handleOpenModal = (role: Role) => {
         console.log("Opening role modal for:", role.roleName, "Role data:", role);

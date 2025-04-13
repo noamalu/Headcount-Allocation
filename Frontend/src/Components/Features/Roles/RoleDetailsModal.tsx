@@ -22,7 +22,13 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [error, setError] = useState<string>(""); 
+  const [apiError, setApiError] = useState<string | null>(null);
+
+useEffect(() => {
+  if (apiError) {
+    alert(apiError);
+  }
+}, [apiError]);
   
 
   useEffect(() => {
@@ -50,8 +56,8 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
       onAssignEmployeeToRole?.(role.roleId, employee.employeeId);
       console.log('employee assigned successfully:', employee.employeeId);
     } catch (error) {
-        console.error('Error assigning employee:', error);
-      setError('An error occurred while assigning the employee');
+      console.error('Error assigning employee:', error);
+      setApiError('An error occurred while assigning the employee');
     }
   };
 
@@ -60,13 +66,10 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
     try {
       const employee =  await EmployeesService.getEmployeeById(employeeId);
       console.log("selectedEmployeeName before change: " + selectedEmployee);
-      console.log("selectedEmployeeName should be: " + employee);
       setSelectedEmployee({ ...employee });
-      console.log("selectedEmployeeName should be after: " + employee);
-      console.log("selectedEmployeeName after change: " + selectedEmployee);
     } catch (error) {
-        console.error('Error assigning employee:', error);
-      setError('An error occurred while assigning the employee');
+      console.error('Error fetching employee details:', error);
+      setApiError('An error occurred while fetching employee details');
     }
   };
 
@@ -94,7 +97,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
           </p>
         </div>
 
-        {/* פרטי התפקיד */}
+        
         <div className="details-section">
           <div className="detail-banner">
             <i className="fas fa-globe" ></i>
@@ -173,7 +176,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
           </div>
           </div>
 
-        {/* כפתורי פעולה */}
+        
         <div className="modal-actions">
           <button className="delete-button">🗑 Delete</button>
           <button onClick={() => setIsAssignModalOpen(true)} className="assign-button">👤 Assign Employee</button>
@@ -182,7 +185,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, on
           </button>        </div>
       </div>
 
-      {/* חלון שיוך עובד */}
+
       {isAssignModalOpen && (
         <AssignEmployeeModal
           projectId={projectId}

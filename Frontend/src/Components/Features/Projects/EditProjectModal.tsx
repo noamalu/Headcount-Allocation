@@ -14,7 +14,14 @@ interface EditProjectModalProps {
 const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, onSave }) => {
     const [editedProject, setEditedProject] = useState<Project>({ ...project });
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+    const [uiError, setUiError] = useState<string | null>(null);
+    const [apiError, setApiError] = useState<string | null>(null);
   
+    useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,8 +33,19 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
   }, [selectedRole]);
 
   const handleSave = () => {
-    onSave(editedProject);
-    onClose();
+    if (!editedProject.projectName || !editedProject.description || !editedProject.deadline || editedProject.requiredHours <= 0) {
+      setUiError("All fields are required, and required hours must be greater than 0.");
+      return;
+    }
+    setUiError(null);
+    try {
+      onSave(editedProject);
+      setApiError(null);
+      onClose();
+    } catch (error) {
+      console.error('Error updating project:', error);
+      setApiError('An error occurred while updating the project');
+    }
   };
 
   const handleOpenModal = (role: Role) => {
@@ -51,6 +69,14 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
                 onChange={handleInputChange}
                 className="input-as-h2-field"
               />
+
+              {uiError && (
+                <div className="ui-error">
+                  {uiError}
+                </div>
+              )}
+
+
         <div className="modal-info">
           <div className="modal-info-row">
             <div className="edit">
