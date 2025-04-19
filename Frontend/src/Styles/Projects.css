@@ -93,3 +93,7 @@
 .action-button:hover {
   background-color: #1E4E40; /* Darker green */
 }
+
+.action-button:disabled {
+  background-color: #a5a7a5; /* Darker green */
+}

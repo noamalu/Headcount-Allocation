@@ -65,7 +65,7 @@ const ProfilePage: React.FC = () => {
     }
   }, [currentId]);
 
-  if (!user || loading) {
+  if (!user) {
     return <div>Loading profile...</div>;
   }
 

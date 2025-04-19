@@ -58,7 +58,7 @@ namespace API.Controllers
         //     return Ok(project);
         // }
 
-        [HttpPut("/{projectId}/Edit")]
+        [HttpPut("{projectId}/Edit")]
         public async Task<ActionResult<Response>> EditProject([Required][FromRoute] int projectId, [Required][FromBody] Project project)
         {
             var tasks = new Task[]
@@ -83,7 +83,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
@@ -97,7 +97,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
@@ -111,7 +111,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
@@ -124,15 +124,15 @@ namespace API.Controllers
                 roles.Value.TryGetValue(roleId, out HeadcountAllocation.Domain.Role role);
                 var employees = _headCountService.EmployeesToAssign(role).Value
                     .OrderByDescending(kvp => kvp.Value)
-                    .Select(kvp => {var emp = (EmployeeOption)_employeeService.TranslateEmployee(kvp.Key); emp.Score = kvp.Value; return emp;})
+                    .Select(kvp => { var emp = (EmployeeOption)_employeeService.TranslateEmployee(kvp.Key); emp.Score = kvp.Value; return emp; })
                     .ToList();
                 return Ok(Response<List<EmployeeOption>>.FromValue(employees));
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
-        }        
+        }
 
     }
 }

@@ -8,25 +8,26 @@ import { Employee } from '../Types/EmployeeType';
 class ProjectsService {
 
 
-  // returns the new project's ID
- static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<number> {
-  console.log("attempt to create project" + project.projectName);
-        try {
-            const response = await APIClient('/api/Project/Create', {
-                method: 'POST',
-                body: JSON.stringify(project),
-                headers: { 'Content-Type': 'application/json' },
-            });
-            if (!response.errorOccured) {
-              return response.value; 
-            } else {
-                throw new Error("Failed to create project: " + JSON.stringify(response, null, 2));
-            }
-        } catch (error) {
-            console.error("Error in sendCreateProject:", error);
-            throw error; 
-        }
-    }
+    // returns the new project's ID
+  static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<number> {
+    console.log("attempt to create project" + project.projectName);
+          try {
+              const response = await APIClient('/api/Project/Create', {
+                  method: 'POST',
+                  body: JSON.stringify(project),
+                  headers: { 'Content-Type': 'application/json' },
+              });
+              if (!response.errorOccured) {
+                return response.value; 
+              } else {
+                  throw new Error("Failed to create project: " + JSON.stringify(response, null, 2));
+              }
+          } catch (error) {
+              console.error("Error in sendCreateProject:", error);
+              throw error; 
+          }
+      }
+
 
     static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
       console.log("attempt to add role " + roles[0].roleName + " to project id: " + projectId);
@@ -51,6 +52,49 @@ class ProjectsService {
         return newRoles;
     } catch (error) {
         console.error("Error in addRolesToProject:", error);
+        throw error;
+    }
+  }
+
+
+  static async editProject(project: Project): Promise<void> {
+    console.log("attempt to edit project" + project.projectName);
+    try {
+        const response = await APIClient(`/api/Project/${project.projectId}/Edit`, {
+          method: 'PUT',
+          body: JSON.stringify(project),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.errorOccured) {
+          throw new Error("Failed to edit project: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
+
+    } catch (error) {
+        console.error("Error in editProject:", error);
+        throw error;
+    }
+  }
+
+  static async deleteProject(projectId: number): Promise<void> {
+    console.log("attempt to delete project" + projectId);
+    try {
+        const response = await APIClient(`/api/Project/Delete/${projectId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.errorOccured) {
+          throw new Error("Failed to delete project: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
+        
+    } catch (error) {
+        console.error("Error in deleteProject:", error);
         throw error;
     }
   }

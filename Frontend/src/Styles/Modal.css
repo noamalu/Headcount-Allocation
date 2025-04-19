@@ -99,7 +99,7 @@
   overflow-y: auto; /* הוספת גלילה */
 }
 
-.roles-table {
+/* .roles-table {
   width: 70%;
   border-collapse: separate;
   border-radius: 10px;
@@ -121,7 +121,7 @@
 
 .roles-table td {
   border-top: 1px solid #E8CEBF;
-}
+} */
 
 .modal-actions {
   display: flex;
