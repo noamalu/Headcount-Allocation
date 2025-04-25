@@ -13,7 +13,43 @@ const CalendarPage: React.FC = () => {
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
             height="auto"
-            events={[]} 
+            events={[
+              {
+                title: "📌 Project deadline: Alpha",
+                date: "2025-05-05",
+                backgroundColor: "#E8CEBF",
+                borderColor: "#E8CEBF",
+                textColor: "#4F4846",
+              },
+              {
+                title: "👤 Assignment: Dana → Role X",
+                date: "2025-05-07",
+                backgroundColor: "#A9C9A4",
+                borderColor: "#A9C9A4",
+                textColor: "#4F4846",
+              },
+              {
+                title: "⚠️ Alert: Overload",
+                date: "2025-05-13",
+                backgroundColor: "#D96666",
+                borderColor: "#D96666",
+                textColor: "white",
+              },
+              {
+                title: "📌 Project deadline: Beta",
+                date: "2025-05-22",
+                backgroundColor: "#E8CEBF",
+                borderColor: "#E8CEBF",
+                textColor: "#4F4846",
+              },
+              {
+                title: "👤 Assignment: Noa → Role Z",
+                date: "2025-05-28",
+                backgroundColor: "#A9C9A4",
+                borderColor: "#A9C9A4",
+                textColor: "#4F4846",
+              },
+            ]}
         />
     </div>
   );

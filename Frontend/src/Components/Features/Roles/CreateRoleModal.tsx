@@ -220,10 +220,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                 min={0}
                 max={100}
                 value={jobPercentage * 100} 
-                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} // מחלקים ב-100 כדי לשמור כחלקי 1
+                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} 
                 className="slider"
               />
-              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> {/* מציג את הערך */}
+              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> 
             </div>
             <div>
               <label>Time Zone: </label>

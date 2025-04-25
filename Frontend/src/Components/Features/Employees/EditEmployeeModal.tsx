@@ -38,9 +38,15 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
   }, [apiError]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setEditedEmployee((prev) => ({ ...prev, [name]: value }));
-  };
+      const { name, value } = e.target;
+      if (name == 'jobPercentage') {
+        const jobPercentageNewValue = Number(value) / 100;
+        setEditedEmployee((prev) => ({ ...prev, [name]: jobPercentageNewValue }));
+      } else {
+        setEditedEmployee((prev) => ({ ...prev, [name]: value }));
+      }  
+    };
+  
 
   const handleSave = async () => {
     try {
@@ -157,7 +163,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
                         <input
                             type="number"
                             name="jobPercentage"
-                            value={editedEmployee.jobPercentage}
+                            value={(editedEmployee.jobPercentage * 100).toFixed(0)}
                             onChange={handleInputChange}
                             className="input-field input-small"
                             min={0}
@@ -318,7 +324,6 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               <div className="skills-section">
                 <i className="fa-solid fa-chalkboard-user"></i>
                 <strong>  Roles:</strong>
-                <div className='table-wrapper'>
                 <table className="roles-table">
             <thead>
               <tr>
@@ -341,7 +346,6 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               ))}
             </tbody>
           </table>
-        </div>
         </div>
         </div>
         </div>

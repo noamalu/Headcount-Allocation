@@ -86,7 +86,7 @@ const AssignEmployeeModal = ({
         </td>
         <td>{employee.employeeName}</td>
         <td>{employee.yearsExperience} years</td>
-        <td>{employee.jobPercentage * 100}%</td>
+        <td>{(employee.jobPercentage * 100).toFixed(0)}%</td>
         <td>{employee.phoneNumber}</td>
         <td>
           <button className="show-details-button" onClick={() => handleExpand(employee.employeeId)}>

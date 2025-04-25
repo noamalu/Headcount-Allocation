@@ -264,6 +264,10 @@ width: 150px;
   gap: 10px;
 }
 
+.row {
+  margin-bottom: 15px;
+}
+
  .detail-banner i {
   font-size: 36px;
   color: #266150;
@@ -290,7 +294,7 @@ width: 150px;
 
 
 
-/* טבלת מיומנויות */
+/* skills table*/
 .skills-table {
   width: 100%;
   border-collapse: collapse;
@@ -315,6 +319,7 @@ width: 150px;
   border-top: 1px solid #E8CEBF;
 }
 
+/* Edit banners for edit modals */
 .edit-banner {
   display: flex;
   align-items: center; 
@@ -331,6 +336,26 @@ width: 150px;
 
 .wide {
   width: 90%; 
+}
+
+.edit-banner textarea {
+  font-size: 12px;
+  color: #4F4846;
+  text-align:start;
+  background: white;
+  border: 1px dashed #E8CEBF;
+  padding: 3px 5px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;      /* כמו input-large */
+  min-height: 60px;
+}
+
+.edit-banner .field-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
 }
 
 .edit-banner input{
@@ -369,6 +394,9 @@ width: 150px;
   white-space: nowrap;
       overflow: hidden;
   text-overflow: ellipsis;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
 }
 
 .delete-record-button i,
@@ -459,4 +487,27 @@ margin-bottom: 20px;
 
 .input-as-h2-field:focus {
 outline: none; 
+}
+
+.field-display {
+  margin-bottom: 15px;
+}
+
+.field-display label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #4F4846;
+}
+
+.field-display span,
+.field-display .textarea-style {
+  background-color: #FDF8F5;
+  border: 1px dashed #E8CEBF;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  color: #4F4846;
 }

@@ -111,7 +111,7 @@ useEffect(() => {
           </div>
           <div className="detail-banner">
             <i className="fas fa-percentage"></i>
-            <span><strong>Job Percentage:</strong> {role.jobPercentage * 100}%</span>
+            <span><strong>Job Percentage:</strong> {(role.jobPercentage * 100).toFixed(0)}%</span>
           </div>
         </div>
         <div className="details-section">
@@ -211,6 +211,7 @@ useEffect(() => {
           <EditRoleModal
             projectId={projectId}
             role={role}
+            employeeName={selectedEmployee != null ? selectedEmployee.employeeName : ""}
             onClose={() => setIsEditModalOpen(false)}
             onSave={handleEditSave} />
           )}

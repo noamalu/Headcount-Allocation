@@ -70,6 +70,50 @@ class EmployeesService {
       // }
     }
 
+    static async editTicket(employeeId: number, ticket: Ticket): Promise<void> {
+      console.log("attempt to edit Ticket " + ticket.absenceReason + " of Employee " + employeeId);
+      return;
+      // try {
+      //     const response = await APIClient(`/api/Project/${project.projectId}/Edit`, {
+      //       method: 'PUT',
+      //       body: JSON.stringify(project),
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     });
+  
+      //     if (response.errorOccured) {
+      //       throw new Error("Failed to edit Employee: " + JSON.stringify(response, null, 2));
+      //     } else {
+      //       return; 
+      //     }
+  
+      // } catch (error) {
+      //     console.error("Error in editEmployee:", error);
+      //     throw error;
+      // }
+    }
+  
+    static async deleteTicket(employeeId: number, ticketId: number): Promise<void> {
+      console.log("attempt to delete ticket" + ticketId);
+      return;
+      // try {
+      //     const response = await APIClient(`/api/Project/Delete/${projectId}`, {
+      //       method: 'DELETE',
+      //     });
+  
+      //     if (response.errorOccured) {
+      //       throw new Error("Failed to delete Employee: " + JSON.stringify(response, null, 2));
+      //     } else {
+      //       return; 
+      //     }
+          
+      // } catch (error) {
+      //     console.error("Error in deleteEmployee:", error);
+      //     throw error;
+      // }
+    }
+
 
 
   

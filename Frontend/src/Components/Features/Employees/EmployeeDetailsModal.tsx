@@ -121,7 +121,7 @@ interface EmployeeDetailsModalProps {
             </div>
             <div className="detail-banner">
                 <i className="fas fa-percentage"></i>
-                <span><strong>Job Percentage:</strong> {currentEmployee.jobPercentage * 100}%</span>
+                <span><strong>Job Percentage:</strong> {(currentEmployee.jobPercentage * 100).toFixed(0)}%</span>
             </div>
             <div className="detail-banner">
                 <i className="fas fa-globe" ></i>

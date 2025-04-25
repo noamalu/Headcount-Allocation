@@ -3,7 +3,7 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/AssignModal.css';
 import { Employee } from '../../../Types/EmployeeType'
 import { getTimeZoneStringByIndex, getLanguageStringByIndex, getSkillStringByIndex } from '../../../Types/EnumType';
-import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
+import { getAssignOptionsToRole, getManualAssignOptionsToRole } from '../../../Services/ProjectsService';
 import { getEmployees } from '../../../Services/EmployeesService';
 
 
@@ -25,7 +25,7 @@ const ManualAssignEmployeeModal = ({
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const data: Employee[] = await getEmployees();
+        const data: Employee[] = await getManualAssignOptionsToRole(projectId, roleId);
         setEmployees(data);
         if (data.length > 0) {
           setSelectedEmployee(data[0]);
@@ -83,7 +83,7 @@ const ManualAssignEmployeeModal = ({
         </td>
         <td>{employee.employeeName}</td>
         <td>{employee.yearsExperience} years</td>
-        <td>{employee.jobPercentage}%</td>
+        <td>{(employee.jobPercentage * 100).toFixed(0)}%</td>
         <td>{employee.phoneNumber}</td>
         <td>
           <button className="show-details-button" onClick={() => handleExpand(employee.employeeId)}>

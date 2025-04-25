@@ -248,10 +248,10 @@ const CreateEmployeeModal: React.FC<{
                 min={0}
                 max={100}
                 value={jobPercentage * 100} 
-                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} // מחלקים ב-100 כדי לשמור כחלקי 1
+                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} // divide by 100 to save as a praction 
                 className="slider"
               />
-              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> {/* מציג את הערך */}
+              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> 
             </div>
 
             <div className="skills-section">
