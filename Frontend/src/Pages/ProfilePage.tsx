@@ -110,7 +110,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <div className="profile-details">
-          <table className="roles-table">
+          <table className="roles-table ">
             <thead>
               <tr>
                   <th>Role Name</th>

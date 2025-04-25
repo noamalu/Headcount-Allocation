@@ -17,7 +17,9 @@ const Sidebar = () => {
             <NavLink to="/employees" className={getActiveClass}>Employees</NavLink>
           </li>
         )}
-        {/* <li>Calendar</li> */}
+        <li>
+          <NavLink to="/calendar" className={getActiveClass}>Calendar</NavLink>
+        </li>
         <li>
           <NavLink to="/tickets" className={getActiveClass}>Tickets</NavLink>
         </li>

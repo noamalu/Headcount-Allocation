@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from './Context/AuthContext';
 import './Styles/Layout.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import TicketsPage from './Pages/TicketsPage';
+import CalendarPage from './Pages/CalendarPage';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Route path="/projects" element={<PrivateRoute><ProjectsPage /></PrivateRoute>} />
             <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
             <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
+            <Route path="/calendar" element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Layout>

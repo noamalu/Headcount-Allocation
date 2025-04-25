@@ -1,0 +1,100 @@
+
+  .calendar-page {
+    padding: 20px 30px;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .page-title {
+    font-weight: bold;
+    color: #4F4846;
+    margin-bottom: 20px;
+  }
+
+
+.fc {
+  background-color: #e9d7cd;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  overflow: hidden;
+}
+
+.fc-view-harness {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fc-daygrid-day-number {
+  font-weight: 500;
+  color: #4F4846;
+}
+
+.fc-event {
+  background-color: #E8CEBF;
+  border: none;
+  color: #4F4846;
+  font-size: 13px;
+  border-radius: 6px;
+  padding: 2px 6px;
+  text-align: center;
+}
+
+/* .fc-toolbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #4F4846;
+} */
+
+/* .fc-button {
+  background: #266150;
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: 'Poppins';
+  transition: background-color 0.3s ease;
+} */
+
+/* .fc-button:hover {
+  background: #1E4E40;
+} */
+
+/* .fc-button-primary:not(:disabled).fc-button-active,
+.fc-button-primary:not(:disabled):active {
+  background: #1E4E40;
+} */
+
+.fc-col-header-cell-cushion {
+    color: #1E4E40 !important;
+    font-weight: 600;
+    font-family: 'Poppins';
+    font-size: 14px;
+  }
+  
+  .fc-button {
+    background: #266150 !important;
+    color: white !important;
+    border: none;
+    font-family: 'Poppins';
+    border-radius: 8px;
+  }
+  
+  .fc-button:hover {
+    background: #1E4E40 !important;
+  }
+  
+  .fc-button:disabled {
+    background-color: #1E4E40 !important;
+    color: white !important;
+  }
+
+  .fc-day-today {
+    background-color: #FDF8F5 !important; /* או כל צבע אחר שתרצי */
+    border: 2px dashed #E8CEBF;
+  }

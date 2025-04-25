@@ -252,7 +252,7 @@
     align-items: center;
     width: 70%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin: 10px auto;
     background-color: #FDF8F5;
     border-radius: 8px;
     overflow: hidden;
