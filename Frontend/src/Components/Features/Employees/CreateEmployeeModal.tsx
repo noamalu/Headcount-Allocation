@@ -345,7 +345,7 @@ const CreateEmployeeModal: React.FC<{
 
             {skillError && <div className="list-error">{skillError}</div>}
 
-            <table className="skills-input-table">
+            <table className="languages-input-table">
             <thead>
                 <tr>
                 <th>Skill</th>

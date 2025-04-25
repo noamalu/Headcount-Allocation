@@ -248,6 +248,8 @@
 
   /* Roles Table Styling */
   .roles-table {
+    justify-content: center;
+    align-items: center;
     width: 70%;
     border-collapse: collapse;
     margin-top: 15px;
@@ -296,6 +298,11 @@
     padding: 20px;
     color: #4F4846;
     opacity: 0.8;
+  }
+
+  .table-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
     /* errors Styling */

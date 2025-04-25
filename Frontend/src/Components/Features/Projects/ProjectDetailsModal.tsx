@@ -7,8 +7,7 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import CreateRoleModal from '../Roles/CreateRoleModal';
 import ProjectsService, { getProjectRoles } from '../../../Services/ProjectsService';
-
-
+import { useAuth } from '../../../Context/AuthContext'
 
 interface ProjectDetailsModalProps {
   project: Project; // Specify that the prop is of type Project
@@ -18,6 +17,7 @@ interface ProjectDetailsModalProps {
 }
 
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
+  const {isAdmin} = useAuth();
   const [currentProject, setCurrentProject] = useState<Project>(project);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
@@ -173,17 +173,25 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
             )}
           </tbody>
         </table>
+
         <div className="modal-actions">
-        <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
+        {isAdmin && (
+          <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
             <i className="fas fa-pen"></i> Edit
-          </button>
+          </button> 
+        )}
+        {isAdmin && (
           <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
             <i className="fas fa-plus"></i> Add Role
           </button>
+        )}
+         {isAdmin && (
           <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
             <i className="fas fa-trash"></i> Delete
           </button>
+        )}
         </div>
+
         {selectedRole && (
           <RoleDetailsModal 
           projectId={currentProject.projectId} 

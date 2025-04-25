@@ -4,29 +4,28 @@ import '../../../Styles/AssignModal.css';
 import { Employee } from '../../../Types/EmployeeType'
 import { getTimeZoneStringByIndex, getLanguageStringByIndex, getSkillStringByIndex } from '../../../Types/EnumType';
 import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
+import { getEmployees } from '../../../Services/EmployeesService';
 
-const AssignEmployeeModal = ({
+
+const ManualAssignEmployeeModal = ({
   projectId,
   roleId,
   onClose,
   onAssign,
-  openManualAssignModal,
 }: {
   projectId: number;
   roleId: number;
   onClose: () => void;
   onAssign: (employee: Employee) => void;
-  openManualAssignModal: () => void;
 }) => {
   const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
-  const [showManualButton, setShowManualButton] = useState(false);
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const data: Employee[] = await getAssignOptionsToRole(projectId, roleId);
+        const data: Employee[] = await getEmployees();
         setEmployees(data);
         if (data.length > 0) {
           setSelectedEmployee(data[0]);
@@ -44,7 +43,7 @@ const AssignEmployeeModal = ({
   };
 
   const handleAssign = () => {
-    console.log("handleAssign in AssignEmployeeModal");
+    console.log("handleManualAssign in ManualAssignEmployeeModal");
     if (selectedEmployee) {
       onAssign(selectedEmployee);
       onClose();
@@ -55,8 +54,8 @@ const AssignEmployeeModal = ({
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>Assign Employee to Role</h2>
-        <p>Select the best candidate for the role based on their qualifications.</p>
+        <h2>Assign Employee Manually</h2>
+        <p>Select the Employee to assign.</p>
 
         <table className="employees-table">
           <thead>
@@ -70,9 +69,7 @@ const AssignEmployeeModal = ({
             </tr>
           </thead>
           <tbody>
-          {employees
-  .filter((employee) => employee.employeeId !== 0) 
-  .map((employee) => (
+  {employees.map((employee) => (
     <React.Fragment key={employee.employeeId}>
       <tr>
         <td>
@@ -86,7 +83,7 @@ const AssignEmployeeModal = ({
         </td>
         <td>{employee.employeeName}</td>
         <td>{employee.yearsExperience} years</td>
-        <td>{employee.jobPercentage * 100}%</td>
+        <td>{employee.jobPercentage}%</td>
         <td>{employee.phoneNumber}</td>
         <td>
           <button className="show-details-button" onClick={() => handleExpand(employee.employeeId)}>
@@ -138,8 +135,6 @@ const AssignEmployeeModal = ({
   ))}
 </tbody>
         </table>
-
-
         <div className="modal-actions">
           <button
             className="assign-button"
@@ -148,28 +143,9 @@ const AssignEmployeeModal = ({
             Assign
           </button>
         </div>
-
-        <div className="manual-assign-row">
-          <span className="hint-question" onClick={() => setShowManualButton(true)}>
-            🥲 Can't find a good match?
-          </span>
-
-          {showManualButton && (
-            <button
-            className="manual-icon-button"
-            onClick={() => {
-              onClose();
-              openManualAssignModal();
-            }}
-          >
-              <i className="fa-solid fa-repeat"></i>
-              <span className="manual-tooltip">Manual Assignment</span>
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );
 };
 
-export default AssignEmployeeModal;
+export default ManualAssignEmployeeModal;

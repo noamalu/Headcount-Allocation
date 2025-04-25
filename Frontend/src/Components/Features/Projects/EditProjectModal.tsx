@@ -91,7 +91,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
                 className="input-field"
               />
               </div>
-              <div className="field-with-icon">
+              <div className="field-with-icon-project">
               <i className="fas fa-clock"></i>
               <input
                 type="number"

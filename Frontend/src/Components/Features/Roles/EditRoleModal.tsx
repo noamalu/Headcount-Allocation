@@ -158,6 +158,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({projectId, role, onClose, 
           roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
           onAssign={handleAssign}
+          openManualAssignModal={() =>{}}
         />
       )}
     </div>

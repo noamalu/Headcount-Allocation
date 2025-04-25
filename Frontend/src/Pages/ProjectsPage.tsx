@@ -3,9 +3,12 @@ import ProjectsTable from '../Components/Features/Projects/ProjectsTable';
 import '../Styles/Projects.css';
 import CreateProjectModal from '../Components/Features/Projects/CreateProjectModal';
 import { Project } from '../Types/ProjectType';
- 
+import { useAuth } from '../Context/AuthContext'
+
+
 
 const ProjectsPage: React.FC = () => {
+    const {isAdmin} = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const tableRef = useRef<(project: Project) => void>();
     const updateRef = useRef<(project: Project) => void>();
@@ -35,7 +38,8 @@ const ProjectsPage: React.FC = () => {
         <div className="projects-page">
             <div className="projects-header">
                 <h1 className="page-title">My Projects</h1> 
-                <button className="add-project-button" onClick={handleOpenModal}>+ New Project</button>
+                {isAdmin &&
+                 <button className="add-project-button" onClick={handleOpenModal}>+ New Project</button>}
             </div>
             <ProjectsTable
                 onProjectCreated={(callback) => (tableRef.current = callback)}

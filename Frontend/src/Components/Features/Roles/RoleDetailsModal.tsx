@@ -9,6 +9,7 @@ import '../../../Styles/Shared.css';
 import { formateSkillToString } from '../../../Types/SkillType';
 import EmployeesService from '../../../Services/EmployeesService';
 import { Employee } from '../../../Types/EmployeeType';
+import ManualAssignEmployeeModal from './ManualAssignEmployeeModal';
 
 
 interface RoleDetailsModalProps {
@@ -20,6 +21,7 @@ interface RoleDetailsModalProps {
 
 const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose, onSave, onAssignEmployeeToRole}) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [isManualAssignModalOpen, setIsManualAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -182,7 +184,8 @@ useEffect(() => {
           <button onClick={() => setIsAssignModalOpen(true)} className="assign-button">👤 Assign Employee</button>
           <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
             <i className="fas fa-pen"></i> Edit
-          </button>        </div>
+          </button>
+        </div>
       </div>
 
 
@@ -191,6 +194,16 @@ useEffect(() => {
           projectId={projectId}
           roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
+          onAssign={handleAssign}
+          openManualAssignModal={() => setIsManualAssignModalOpen(true)}
+        />
+      )}
+
+      {isManualAssignModalOpen && (
+        <ManualAssignEmployeeModal
+          projectId={projectId}
+          roleId={role.roleId}
+          onClose={() => setIsManualAssignModalOpen(false)}
           onAssign={handleAssign}
         />
       )}

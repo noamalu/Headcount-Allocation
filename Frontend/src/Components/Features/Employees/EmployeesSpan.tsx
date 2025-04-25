@@ -44,6 +44,18 @@ useEffect(() => {
     onEmployeeCreated(handleEmployeeCreated); 
 }, [onEmployeeCreated]);
 
+const handleEmployeeDeleted = (employeeId: number) => {
+  setEmployees((prev) => prev.filter(e => e.employeeId !== employeeId));
+};
+
+const handleEmployeeUpdated = (updatedEmployee: Employee) => {
+  setEmployees((prev) =>
+    prev.map(e =>
+      e.employeeId === updatedEmployee.employeeId ? updatedEmployee : e
+    )
+  );
+};
+
 const handleOpenModal = (employee: Employee) => {
   console.log(`Edit ${employee.employeeName}`);
   setSelectedEmployee(employee);
@@ -69,7 +81,12 @@ if (isLoading) {
         ))}
       </div>
       {selectedEmployee && (
-        <EmployeeDetailsModal employee={selectedEmployee} onClose={handleCloseModal} />
+        <EmployeeDetailsModal
+          employee={selectedEmployee} 
+          onClose={handleCloseModal}
+          onEmployeeDeleted={handleEmployeeDeleted}
+          onEmployeeUpdated={handleEmployeeUpdated}
+        />
       )}
     </div>
   );

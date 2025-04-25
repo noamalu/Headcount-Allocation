@@ -315,6 +315,68 @@ width: 150px;
   border-top: 1px solid #E8CEBF;
 }
 
+.edit-banner {
+  display: flex;
+  align-items: center; 
+  text-align: center; 
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #FDF8F5;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 90%; 
+  gap: 10px;
+}
+
+
+.wide {
+  width: 90%; 
+}
+
+.edit-banner input{
+  font-size: 14px;
+  color: #4F4846;
+  margin-bottom: 0px;
+  text-align: center;
+  background: white;
+  border: 1px dashed #E8CEBF;
+  padding: 3px 5px;
+  border-radius: 8px;
+}
+
+.input-small {
+  width: 50px;
+}
+
+.input-medium {
+  width: 100px;
+}
+
+.input-large {
+  width: 200px;
+}
+
+.edit-banner i {
+  font-size: 36px;
+  color: #266150;
+  max-width: 90%; 
+}
+
+.edit-banner span {
+  font-size: 14px;
+  color: #333;
+  max-width: 90%; 
+  white-space: nowrap;
+      overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete-record-button i,
+.add-button i {
+  font-size: 14px;
+  color: inherit;
+}
+
 .modal-info .edit {
   display: flex;
   flex-direction: column; 
@@ -337,7 +399,8 @@ width: 150px;
 }
 
 
-.field-with-icon {
+
+.field-with-icon-project {
   display: flex;
   align-items: center;
   align-content: center;
@@ -355,7 +418,7 @@ width: 150px;
   width: 150px;
 }
 
-.field-with-icon input {
+.field-with-icon-project input {
   border-style: dashed;
   align-content: center;
   padding: 0px 2px;
