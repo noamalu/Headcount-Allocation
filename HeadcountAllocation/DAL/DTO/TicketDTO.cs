@@ -22,6 +22,7 @@ namespace HeadcountAllocation.DAL.DTO
         public string Description {get;set;}
         public bool Open {get;set;}
 
+        public TicketDTO(){}
         public TicketDTO (int ticketId, int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description, bool open){
             TicketId = ticketId;
             EmployeeId = employeeId;
