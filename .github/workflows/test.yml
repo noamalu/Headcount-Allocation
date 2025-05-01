@@ -19,11 +19,17 @@ jobs:
       with:
         dotnet-version: '8.0.x' # your project's version
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore backend
+      run: dotnet restore HeadcountAllocation/HeadcountAllocation.csproj
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Restore tests
+      run: dotnet restore Tests.Tests/Tests.Tests.csproj
+
+    - name: Build backend
+      run: dotnet build HeadcountAllocation/HeadcountAllocation.csproj --no-restore
+
+    - name: Build tests
+      run: dotnet build Tests.Tests/Tests.Tests.csproj --no-restore
 
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Tests.Tests/Tests.Tests.csproj --no-build --verbosity normal
