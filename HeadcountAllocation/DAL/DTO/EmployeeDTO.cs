@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using HeadcountAllocation.DAL.DTO.Alert;
 using HeadcountAllocation.Domain;
 using static HeadcountAllocation.Domain.Enums;
 
@@ -34,6 +36,11 @@ namespace HeadcountAllocation.DAL.DTO
         public string Password {get; set;}
 
         public bool IsManager {get; set;}
+        public List<MessageDTO> Alerts {get; set;} = new ();
+
+        public bool Alert{get; set;} = true;
+
+
 
         public EmployeeDTO() { }
         public EmployeeDTO(int employeeId, string name, string phoneNum, string email, int timeZone,

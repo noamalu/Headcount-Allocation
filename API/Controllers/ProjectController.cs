@@ -74,6 +74,13 @@ namespace API.Controllers
             return Ok(new());
         }
 
+        [HttpPut("{projectId}/{roleId}/Edit")]
+        public async Task<ActionResult<Response>> EditRole([Required][FromRoute] int projectId, [Required][FromRoute] int roleId, [Required][FromBody] Role role)
+        {
+            _headCountService.UpdateRole(projectId, roleId, (HeadcountAllocation.Domain.Role)role);
+            return Ok(new());
+        }
+
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute] int projectId)
         {
@@ -86,6 +93,20 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
+
+        [HttpDelete("Delete/{projectId}/Roles/{roleId}")]
+        public ActionResult<Response> DeleteRole([Required][FromRoute] int projectId, [Required][FromRoute] int roleId)
+        {
+            try
+            {
+                return Ok(_headCountService.DeleteRole(projectId, roleId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+       
 
         [HttpPost("{projectId}/Roles")]
         public async Task<ActionResult> AddRole([Required][FromRoute] int projectId,

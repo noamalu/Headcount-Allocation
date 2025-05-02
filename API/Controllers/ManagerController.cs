@@ -51,6 +51,13 @@ namespace API.Controllers
             return Ok(employeeId);
         }
 
+        [HttpDelete("Employees")]
+        public ActionResult<Response<int>> Delete([FromQuery] int employeeId)
+        {
+            var response = _headCountService.DeleteEmployee(employeeId);
+            return Ok(Response<bool>.FromValue(!response.ErrorOccured));
+        }
+        
         [HttpPost("Employees/Admin")]
         public ActionResult<Response<int>> CreateAdmin([FromBody] Employee employee)
         {

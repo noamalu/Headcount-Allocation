@@ -48,5 +48,11 @@ namespace API.Services
 
             return employee.Value.IsManager;            
         }
+
+        public Response EditEmployee(HeadcountAllocation.Domain.Employee employee)
+        {
+            return _headCountService.UpdateEmployee(employee);
+            
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace API.Models
                 ticket.EmployeeName,
                 ticket.StartDate,
                 ticket.EndDate,
-                ticket.Description
+                ticket.AbsenceReason+"|"+ticket.Description
                 );
         }
 

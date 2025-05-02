@@ -658,5 +658,87 @@ namespace HeadcountAllocation.Domain
                 .ToList();
             return roles;
         }
+
+        public void UpdateEmployee(Employee employee)
+        {
+            if (!Employees.ContainsKey(employee.EmployeeId))
+            {
+                throw new Exception($"No such employee {employee.EmployeeId}");
+            }
+            
+            Employees[employee.EmployeeId] = employee;
+            try
+            {
+                employeeRepo.Update(employee);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void UpdateRole(int projectId, int roleId, Role role)
+        {
+            if (!Projects.ContainsKey(projectId))
+            {
+                throw new Exception($"No such project {projectId}");
+            }
+            if (!Projects[projectId].Roles.ContainsKey(roleId))
+            {
+                throw new Exception($"No such role {roleId} in project {projectId}");
+            }
+            Projects[projectId].Roles[roleId] = role;
+            try
+            {
+                projectRepo.Update(Projects[projectId]);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void DeleteRole(int projectId, int roleId)
+        {
+            if (!Projects.ContainsKey(projectId))
+            {
+                throw new Exception($"No such project {projectId}");
+            }
+            if (!Projects[projectId].Roles.ContainsKey(roleId))
+            {
+                throw new Exception($"No such role {roleId} in project {projectId}");
+            }
+            Projects[projectId].RemoveRole(roleId);
+            try
+            {
+                projectRepo.Update(Projects[projectId]);
+                RoleRepo.GetInstance().Delete(RoleRepo.GetInstance().GetById(roleId));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void EditTicket(int employeeId, Ticket ticket)
+        {
+            if (!Tickets.ContainsKey(ticket.TicketId))
+            {
+                throw new Exception($"No such ticket {ticket.TicketId}");
+            }
+            if (Tickets[ticket.TicketId].EmployeeId != employeeId)
+            {
+                throw new Exception($"No such employee {employeeId} for ticket {ticket.TicketId}");
+            }
+            Tickets[ticket.TicketId] = ticket;
+            try
+            {
+                ticketRepo.Update(ticket);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
