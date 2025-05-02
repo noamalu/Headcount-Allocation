@@ -385,10 +385,10 @@ namespace HeadcountAllocation.Domain{
                 if (!employee.VerifyPassword(password, employee.Password)){
                     throw new Exception("Wrong password");
                 }
-                if(employee.Login())
-                    return employee.EmployeeId;
-                else 
-                    return null;
+                // if(employee.Login())//fix here ...
+                //     return employee.EmployeeId;
+
+                return employee.EmployeeId;
             }
             catch(Exception){
                 throw;
