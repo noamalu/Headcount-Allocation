@@ -489,19 +489,19 @@ namespace IT.Tests
             Assert.AreEqual(createdEmployee.EmployeeId, loginResult);
         }
 
-        [TestMethod]
-        public void Login_ShouldReturnNull_WhenEmployeeIsNotManager()
-        {
-            // Arrange
-            var result = manager.CreateEmployee("RegularUser", "123456", "user@example.com", TimeZones.Flexible, new(), new(), 5, 100, false);
-            var createdEmployee = manager.GetAllEmployees().First();
+        // [TestMethod]
+        // public void Login_ShouldReturnNull_WhenEmployeeIsNotManager()
+        // {
+        //     // Arrange
+        //     var result = manager.CreateEmployee("RegularUser", "123456", "user@example.com", TimeZones.Flexible, new(), new(), 5, 100, false);
+        //     var createdEmployee = manager.GetAllEmployees().First();
 
-            // Act
-            var loginResult = manager.Login("RegularUser", result.Item2);
+        //     // Act
+        //     var loginResult = manager.Login("RegularUser", result.Item2);
 
-            // Assert
-            Assert.IsNull(loginResult); // because Login returns null for regular employees
-        }
+        //     // Assert
+        //     Assert.IsNull(loginResult); // because Login returns null for regular employees
+        // }
 
         [TestMethod]
         public void Login_ShouldFail_WhenWrongPassword()

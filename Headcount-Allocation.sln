@@ -1,3 +1,4 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
@@ -6,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignmentComparison", "AssignmentComparison\AssignmentComparison.csproj", "{2473DA58-67A6-4884-F98D-CB5F98691A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesToAssign.Tests", "EmployeesToAssign.Tests\EmployeesToAssign.Tests.csproj", "{E4D33CD3-EC8F-66C4-86A1-63E5554C80C6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeadcountAllocation", "HeadcountAllocation\HeadcountAllocation.csproj", "{DC106036-A1AA-2763-F342-648AFC4DB75B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Tests", "Tests.Tests\Tests.Tests.csproj", "{121F21BC-CEED-4BB1-B6B1-9A75C23C6742}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +25,14 @@ Global
 		{2473DA58-67A6-4884-F98D-CB5F98691A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2473DA58-67A6-4884-F98D-CB5F98691A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2473DA58-67A6-4884-F98D-CB5F98691A69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4D33CD3-EC8F-66C4-86A1-63E5554C80C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4D33CD3-EC8F-66C4-86A1-63E5554C80C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4D33CD3-EC8F-66C4-86A1-63E5554C80C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4D33CD3-EC8F-66C4-86A1-63E5554C80C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DC106036-A1AA-2763-F342-648AFC4DB75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DC106036-A1AA-2763-F342-648AFC4DB75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC106036-A1AA-2763-F342-648AFC4DB75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC106036-A1AA-2763-F342-648AFC4DB75B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{121F21BC-CEED-4BB1-B6B1-9A75C23C6742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{121F21BC-CEED-4BB1-B6B1-9A75C23C6742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{121F21BC-CEED-4BB1-B6B1-9A75C23C6742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{121F21BC-CEED-4BB1-B6B1-9A75C23C6742}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
