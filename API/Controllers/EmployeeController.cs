@@ -113,11 +113,12 @@ namespace API.Controllers
         }
 
         [HttpPut("{employeeId}")]
-        public ActionResult<Response> EditEmployee([FromRoute] int employeeId)
+        public ActionResult<Response> EditEmployee([FromRoute] int employeeId, [FromBody] Employee employee)
         {
             try
             {
-                return Ok(_employeeService.EditEmployee(_headCountService.GetEmployeeById(employeeId).Value));
+                var doomainEmployee = _headCountService.GetEmployeeById(employeeId).Value;
+                return Ok(_employeeService.EditEmployee((HeadcountAllocation.Domain.Employee)employee));
             }
             catch (Exception ex)
             {
