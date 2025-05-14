@@ -23,6 +23,7 @@ namespace HeadcountAllocation.DAL.Repositories
         private EmployeeRepo()
         {
             Employees = new Dictionary<int, Employee>();
+            EmployeesNames = new Dictionary<string, Employee>();
             Lock = new object();
         }
         public static EmployeeRepo GetInstance()
@@ -50,6 +51,7 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             DBcontext dbContext = DBcontext.GetInstance();
             Employees.Add(employee.EmployeeId, employee);
+            EmployeesNames.Add(employee.UserName, employee);
             try{
                 lock (Lock)
                 {

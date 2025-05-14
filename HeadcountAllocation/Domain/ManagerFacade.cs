@@ -28,6 +28,7 @@ namespace HeadcountAllocation.Domain
 
         public int ticketCount = 0;
         public int roleCounter = 0;
+        private static readonly object _ticketLock = new object();
 
         public ManagerFacade()
         {
@@ -80,6 +81,9 @@ namespace HeadcountAllocation.Domain
 
         public int CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles)
         {
+            if (projectName == null){
+                throw new Exception("Null projectName");
+            }
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
             Projects.Add(project.ProjectId, project);
             try
@@ -298,12 +302,12 @@ namespace HeadcountAllocation.Domain
             return Projects.TryGetValue(projectId, out Project project) ? project : null;
         }
 
-        internal List<Employee> GetAllEmployees()
+        public List<Employee> GetAllEmployees()
         {
             return Employees.Values.ToList();
         }
 
-        internal Employee GetEmployeeById(int employeeId)
+        public Employee GetEmployeeById(int employeeId)
         {
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
@@ -311,21 +315,24 @@ namespace HeadcountAllocation.Domain
         public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description)
         {
             Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
-            Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description);
-            Tickets.Add(ticket.TicketId, ticket);
-            try
+            lock (_ticketLock)
             {
-                ticketRepo.Add(ticket);
-                var managers = Employees.Values.Where(employee => employee.IsManager);
-                foreach (var manager in managers)
+                Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description);
+                Tickets.Add(ticket.TicketId, ticket);
+                try
                 {
-                    manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                    ticketRepo.Add(ticket);
+                    var managers = Employees.Values.Where(employee => employee.IsManager);
+                    foreach (var manager in managers)
+                    {
+                        manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                    }
+                    return ticket.TicketId;
                 }
-                return ticket.TicketId;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
             }
         }
 

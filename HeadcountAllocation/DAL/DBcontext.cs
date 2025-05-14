@@ -1,5 +1,6 @@
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.DAL.DTO.Alert;
+using HeadcountAllocation.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -27,11 +28,18 @@ namespace HeadcountAllocation.DAL
         public virtual DbSet<EventDTO> Events {get; set;}
         public virtual DbSet<MessageDTO> Messages {get; set;}
 
-
+        public static void SetTestDatabase()
+        {
+            _instance = null;
+            DbPath = "Server=localhost,1433;Database=HeadCountDBTest;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;";
+        }
 
         public void ClearDatabase()
         {
             // Delete from most dependent tables first
+            Tickets.ExecuteDelete();
+            Messages.ExecuteDelete();
+            Events.ExecuteDelete();
             EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
             EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
             RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
@@ -41,9 +49,9 @@ namespace HeadcountAllocation.DAL
             Employees.ExecuteDelete();           // FK to TimeZones
             Projects.ExecuteDelete();            // no FKs to Projects
 
-            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
-            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
-            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+            // SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            // LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            // TimeZones.ExecuteDelete();         // referenced by Employees / Roles
 
             SaveChanges();
             _instance = new DBcontext();
@@ -70,6 +78,44 @@ namespace HeadcountAllocation.DAL
             SaveChanges();
             _instance = new DBcontext();
         }
+
+        public void SeedStaticTables()
+        {
+            if (!TimeZones.Any())
+            {
+                TimeZones.AddRange(new List<TimeZonesDTO>
+                {
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Morning, TimeZoneName = "Morning" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Noon, TimeZoneName = "Noon" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Evening, TimeZoneName = "Evening" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Flexible, TimeZoneName = "Flexible" }
+                });
+            }
+
+            if (!SkillTypes.Any())
+            {
+                SkillTypes.AddRange(new List<SkillTypesDTO>
+                {
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.Python, SkillTypeName = "Python" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.SQL, SkillTypeName = "SQL" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.API, SkillTypeName = "API" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.Java, SkillTypeName = "Java" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.UI, SkillTypeName = "UI" }
+                });
+            }
+
+            if (!LanguageTypes.Any())
+            {
+                LanguageTypes.AddRange(new List<LanguageTypesDTO>
+                {
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.English, LanguageTypeName = "English" },
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" }
+                });
+            }
+
+            SaveChanges();
+        }
+
 
         private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
         {
