@@ -57,7 +57,8 @@ namespace UT.Tests
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(7),
                 Description = "Sick leave",
-                Open = true
+                Open = true,
+                Reason = new TicketReasonsDTO(new Reason(Enums.Reasons.LongVacation))
             };
 
             // Act
