@@ -7,24 +7,28 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import ProjectsService from '../../../Services/ProjectsService';
 // import AddRoleModal from '../Roles/NewRoleModal';
+import { useDataContext } from '../../../Context/DataContext';
 
 
-const CreateProjectModal: React.FC<{ 
-  onClose: () => void;
-   onProjectCreated: (project: Project) => void }>
-    = ({
-      onClose,
-      onProjectCreated,
-    }) => {
+
+// const CreateProjectModal: React.FC<{ 
+//   onClose: () => void;
+//    onProjectCreated: (project: Project) => void }>
+//     = ({
+//       onClose,
+//       onProjectCreated,
+//     }) => {
+  const CreateProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [projectName, setProjectName] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [requiredHours, setRequiredHoursline] = useState<number>(0);
+    const [requiredHours, setRequiredHours] = useState<number>(0);
     const [description, setDescription] = useState('');
     const [uiError, setUiError] = useState<string | null>(null);
     const [apiError, setApiError] = useState<string | null>(null);
     const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
     // const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
     // const [roles, setRoles] = useState<Role[]>([]);
+    const { addProject } = useDataContext();
     
     useEffect(() => {
       if (apiError) {
@@ -53,7 +57,8 @@ const CreateProjectModal: React.FC<{
         const newProjectId = await ProjectsService.sendCreateProject(newProject);
         newProject.projectId = newProjectId;
         console.log('Project created successfully:', newProject);
-        onProjectCreated(newProject);
+        // onProjectCreated(newProject);
+        addProject(newProject);
         setApiError(null);
         onClose();
     } catch (error) {
@@ -99,7 +104,7 @@ const CreateProjectModal: React.FC<{
               <input
                 type="number"
                 value={requiredHours}
-                onChange={(e) => setRequiredHoursline(Number(e.target.value))}
+                onChange={(e) => setRequiredHours(Number(e.target.value))}
                 className="input-field"
               />
             </div>

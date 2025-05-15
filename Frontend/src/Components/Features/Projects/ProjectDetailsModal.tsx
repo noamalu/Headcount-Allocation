@@ -8,61 +8,51 @@ import '../../../Styles/Shared.css';
 import CreateRoleModal from '../Roles/CreateRoleModal';
 import ProjectsService, { getProjectRoles } from '../../../Services/ProjectsService';
 import { useAuth } from '../../../Context/AuthContext'
+import { useDataContext } from '../../../Context/DataContext';
+
 
 interface ProjectDetailsModalProps {
-  project: Project; // Specify that the prop is of type Project
-  onClose: () => void; // Callback for closing the modal
-  onProjectUpdated: (project: Project) => void;
-  onProjectDeleted: (projectId: number) => void;
+  project: Project; 
+  onClose: () => void; 
+  // onProjectUpdated: (project: Project) => void;
+  // onProjectDeleted: (projectId: number) => void;
 }
 
-const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
+// const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
+const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {  
   const {isAdmin} = useAuth();
-  const [currentProject, setCurrentProject] = useState<Project>(project);
-  const [roles, setRoles] = useState<Role[]>([]);
+  const { roles, addRole, updateRole } = useDataContext();
+  const { updateProject, deleteProject } = useDataContext();
+  const projectRoles = roles.filter((r) => r.projectId === project.projectId);
+
+  // const [project, setproject] = useState<Project>(project);
+  // const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-
-  const handleEditSave = (updatedProject: Project) => {
-    setCurrentProject(updatedProject);
-    onProjectUpdated(updatedProject);
-    console.log('Project updated:', updatedProject);
-  };
-
-  const handleDelete = async () => {
-    try {
-      await ProjectsService.deleteProject(currentProject.projectId);
-      onProjectDeleted(currentProject.projectId); 
-      onClose(); 
-    } catch (error) {
-      alert("Failed to delete the project.");
-      console.error(error);
-    }
-  };
+ 
+  // useEffect(() => {
+  //   const fetchRoles = async () => {
+  //     try {
+  //       console.log('Fetching roles for project:', project.projectId);
+  //       const roles = await getProjectRoles(project.projectId); 
+  //       setRoles(roles || {}); 
+  //       setproject((prev) => ({
+  //         ...prev,
+  //         roles: roles || []
+  //       }));
+  //     } catch (error) {
+  //       console.error('Error fetching project roles:', error);
+  //       setApiError('Failed to fetch project roles');
+  //     }
+  //   };
   
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        console.log('Fetching roles for project:', project.projectId);
-        const roles = await getProjectRoles(project.projectId); 
-        setRoles(roles || {}); 
-        setCurrentProject((prev) => ({
-          ...prev,
-          roles: roles || []
-        }));
-      } catch (error) {
-        console.error('Error fetching project roles:', error);
-        setApiError('Failed to fetch project roles');
-      }
-    };
-  
-    if (project) {
-      fetchRoles(); 
-    }
-  }, [project]);
+  //   if (project) {
+  //     fetchRoles(); 
+  //   }
+  // }, [project]);
 
   useEffect(() => {
     if (apiError) {
@@ -70,32 +60,59 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     }
   }, [apiError]);
 
+  const handleEditSave = (updatedProject: Project) => {
+    // setproject(updatedProject);
+    // onProjectUpdated(updatedProject);
+    updateProject(updatedProject);
+    console.log('Project updated:', updatedProject);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await ProjectsService.deleteProject(project.projectId);
+      // onProjectDeleted(project.projectId); 
+      deleteProject(project.projectId);
+      onClose(); 
+    } catch (error) {
+      alert("Failed to delete the project.");
+      console.error(error);
+    }
+  };
+
 
   const handleRoleCreated = (newRole: Role) => {
     console.log('handleRoleCreated new role:', newRole.roleName);
-    setRoles((prevRoles) => {
-      const updatedRoles = {
-        ...prevRoles,
-        [newRole.roleId]: newRole,
-      };
-      console.log("Updated roles:", updatedRoles);
-      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
-      return updatedRoles;
-    });
+    // setRoles((prevRoles) => {
+    //   const updatedRoles = {
+    //     ...prevRoles,
+    //     [newRole.roleId]: newRole,
+    //   };
+    //   console.log("Updated roles:", updatedRoles);
+    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
+    //   return updatedRoles;
+    // });
+    // const updatedRoles = {
+    //   ...roles,
+    //   [newRole.roleId]: newRole,
+    // };
+    // setRoles(updatedRoles);
+    // setproject((prev) => ({ ...prev, roles: updatedRoles }));
+    addRole(newRole);
   };
 
   const handleRoleEdited = (updatedRole: Role) => {
-    setRoles((prevRoles) => {
-      const updatedRoles = {
-        ...prevRoles,
-        [updatedRole.roleId]: { 
-          ...prevRoles[updatedRole.roleId], 
-          ...updatedRole, 
-        },
-      };
-      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
-      return updatedRoles;
-    });
+    // setRoles((prevRoles) => {
+    //   const updatedRoles = {
+    //     ...prevRoles,
+    //     [updatedRole.roleId]: { 
+    //       ...prevRoles[updatedRole.roleId], 
+    //       ...updatedRole, 
+    //     },
+    //   };
+    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
+    //   return updatedRoles;
+    // });
+    updateRole(updatedRole);
   };
       
   const handleOpenModal = (role: Role) => {
@@ -110,15 +127,18 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
 
   const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
     console.log("Assigning employee", employeeId, "to role", roleId);
-    setRoles((prevRoles) => {
-      const updatedRoles = { ...prevRoles }; 
-      if (updatedRoles[roleId]) {
-        updatedRoles[roleId].employeeId = employeeId; 
-      }
-      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
-      return updatedRoles; 
-    });
-    console.log("Updated roles:", roles); 
+    // setRoles((prevRoles) => {
+    //   const updatedRoles = { ...prevRoles }; 
+    //   if (updatedRoles[roleId]) {
+    //     updatedRoles[roleId].employeeId = employeeId; 
+    //   }
+    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
+    //   return updatedRoles; 
+    // });
+    const roleToUpdate = roles.find((r) => r.roleId === roleId);
+    if (roleToUpdate) {
+      updateRole({ ...roleToUpdate, employeeId });
+    }
   };
 
 
@@ -130,17 +150,17 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>{currentProject.projectName}</h2>
+        <h2>{project.projectName}</h2>
         <div className="modal-info">
           <div className="modal-info-row">
             <div className="deadline">
-              <i className="fas fa-calendar-alt"></i> {formatDate(currentProject.deadline)}
+              <i className="fas fa-calendar-alt"></i> {formatDate(project.deadline)}
             </div>
             <div className="required-hours">
-              <i className="fas fa-clock"></i> {currentProject.requiredHours} hours
+              <i className="fas fa-clock"></i> {project.requiredHours} hours
             </div>
           </div>
-          <div className="description">{currentProject.description}</div>
+          <div className="description">{project.description}</div>
         </div>
         <table className="roles-table">
           <thead>
@@ -151,21 +171,32 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
             </tr>
           </thead>
           <tbody>
-            {Object.keys(roles).length > 0 ? (
-              Object.entries(roles).map(([roleId, role]) => {
-                console.log("Rendering role:", role); // בדקי מה מוצג בטבלה
-                return (
-                  <tr key={roleId}>
-                    <td>{role.roleName}</td>
-                    <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
-                    <td>
-                      <button className="action-button" onClick={() => handleOpenModal(role)}>
-                        🔗
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
+            {projectRoles.length > 0 ? (
+              // Object.entries(roles).map(([roleId, role]) => {
+              //   console.log("Rendering role:", role); // בדקי מה מוצג בטבלה
+              //   return (
+              //     <tr key={roleId}>
+              //       <td>{role.roleName}</td>
+              //       <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
+              //       <td>
+              //         <button className="action-button" onClick={() => handleOpenModal(role)}>
+              //           🔗
+              //         </button>
+              //       </td>
+              //     </tr>
+              //   );
+              // })
+              projectRoles.map((role) => (
+                <tr key={role.roleId}>
+                  <td>{role.roleName}</td>
+                  <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
+                  <td>
+                    <button className="action-button" onClick={() => handleOpenModal(role)}>
+                      🔗
+                    </button>
+                  </td>
+                </tr>
+              ))
             ) : (
               <tr>
                 <td colSpan={3}>No roles available</td>
@@ -194,22 +225,21 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
 
         {selectedRole && (
           <RoleDetailsModal 
-          projectId={currentProject.projectId} 
+          projectId={project.projectId} 
           role={selectedRole} 
           onClose={handleCloseModal}
           onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}
         {isCreateRoleModalOpen && (
           <CreateRoleModal 
-          projectId={currentProject.projectId}
+          projectId={project.projectId}
           onClose={() => setIsCreateRoleModalOpen(false)}
           onRoleCreated={handleRoleCreated} />
         )}
          {isEditModalOpen && (
           <EditProjectModal
-          project={currentProject}
-          onClose={() => setIsEditModalOpen(false)}
-          onSave={handleEditSave} />
+          project={project}
+          onClose={() => setIsEditModalOpen(false)} />
         )}
         {showConfirmDelete && (
           <div className="confirm-overlay">

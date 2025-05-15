@@ -5,19 +5,26 @@ import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import ProjectsService from '../../../Services/ProjectsService';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
+import { useDataContext } from '../../../Context/DataContext';
+
 
 interface EditProjectModalProps {
   project: Project;
   onClose: () => void;
-  onSave: (updatedProject: Project) => void;
+  // onSave: (updatedProject: Project) => void;
 }
 
-const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, onSave }) => {
+// const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, onSave }) => {
+  const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose }) => {
     const [editedProject, setEditedProject] = useState<Project>({ ...project });
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [uiError, setUiError] = useState<string | null>(null);
     const [apiError, setApiError] = useState<string | null>(null);
   
+    const { updateProject , roles } = useDataContext();
+    const projectRoles = roles.filter(r => r.projectId === project.projectId);
+
+
     useEffect(() => {
       if (apiError) {
         alert(apiError);
@@ -43,7 +50,8 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
       console.log("Sending edit project for: ", editedProject.projectName," with details:", editedProject.description, editedProject.requiredHours, editedProject.deadline);
       await ProjectsService.editProject(editedProject);
       setApiError(null);
-      onSave(editedProject); 
+      // onSave(editedProject); 
+      updateProject(editedProject);
       onClose(); 
     } catch (error) {
       console.error('Error updating project:', error);
@@ -123,7 +131,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {Object.keys(editedProject.roles).length > 0 ? (
               Object.entries(editedProject.roles).map(([roleId, role]) => {
                 console.log("Rendering role:", role); 
@@ -138,7 +146,20 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
                     </td>
                   </tr>
                 );
-              })
+              }) */}
+              <tbody>
+                {projectRoles.length > 0 ? (
+                   projectRoles.map((role) => (
+                    <tr key={role.roleId}>
+                      <td>{role.roleName}</td>
+                      <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
+                      <td>
+                        <button className="action-button" onClick={() => handleOpenModal(role)} disabled>
+                          🔗
+                        </button>
+                      </td>
+                    </tr>
+                  ))
             ) : (
               <tr>
                 <td colSpan={3}>No roles available</td>
@@ -148,10 +169,11 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
         </table>
 
         <div className="modal-actions">
-          <button className="save-button" onClick={() => {
+          {/* <button className="save-button" onClick={() => {
              console.log('Saving edited Project');
              handleSave();
-             }}>
+             }}> */}
+          <button className="save-button" onClick={handleSave}>
             <i className="fa-solid fa-square-check"></i> save
           </button> 
         </div>
