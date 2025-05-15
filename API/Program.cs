@@ -1,5 +1,6 @@
 using API.Services;
 using EcommerceAPI.initialize;
+using Hangfire;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
@@ -66,7 +67,13 @@ context.SkillTypes.Add(java);
 context.SkillTypes.Add(ui);
 context.SaveChanges();
 
+builder.Services.AddHangfire(configuration => 
+    configuration.UseSqlServerStorage("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HeadCountDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;Application Intent=ReadWrite;MultiSubnetFailover=False")); // TODO: replace this
+builder.Services.AddHangfireServer();
+
 var app = builder.Build();
+app.UseHangfireDashboard("/jobs"); // http://localhost:port/jobs
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
