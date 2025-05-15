@@ -35,7 +35,11 @@ builder.Services.AddCors(options =>
 });
 
 var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
-context.Dispose();
+
+var managerFacade = HeadcountAllocation.Domain.ManagerFacade.GetInstance();
+if(!managerFacade.GetAllEmployees().Select(employee => employee.UserName).Contains("admin"))
+    managerFacade.CreateEmployee("admin", "string", "0000000000", 
+        "headcount.allocation@gmail.com", 0, new(), new(), 10, 1, true);
 context.SeedStaticTables();
 
 var app = builder.Build();
