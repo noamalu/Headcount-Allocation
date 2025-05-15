@@ -37,7 +37,7 @@ namespace IT.Tests
                 },
                 new ConcurrentDictionary<int, Skill>(),
                 1,
-                100,
+                1,
                 "UI development",
                 DateTime.Now
             );
@@ -54,7 +54,8 @@ namespace IT.Tests
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.English), Level = 3 },
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.Hebrew), Level = 3 }
                 },
-                Roles = new()
+                Roles = new(),
+                JobPercentage = 1
             });
 
             var nonMatchingEmployee = new Employee(new EmployeeDTO
@@ -68,7 +69,8 @@ namespace IT.Tests
                 {
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.English), Level = 2 }
                 },
-                Roles = new()
+                Roles = new(),
+                JobPercentage = 1
             });
 
             managerFacade.Employees.Add(matchingEmployee.EmployeeId, matchingEmployee);
@@ -101,7 +103,7 @@ namespace IT.Tests
                     [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 2)
                 },
                 0,
-                50,
+                0.5,
                 "Develop APIs",
                 DateTime.Now
             );
@@ -122,7 +124,8 @@ namespace IT.Tests
                 {
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.English), Level = 3 }
                 },
-                Roles = new()
+                Roles = new(),
+                JobPercentage = 0.5
             });
 
             var nonMatchingEmployee = new Employee(new EmployeeDTO
@@ -139,7 +142,8 @@ namespace IT.Tests
                 {
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.English), Level = 2 }
                 },
-                Roles = new()
+                Roles = new(),
+                JobPercentage = 0.5
             });
 
             managerFacade.Employees = new()
@@ -174,7 +178,7 @@ namespace IT.Tests
                     [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 1)
                 },
                 3,
-                100,
+                1,
                 "Develop Python applications",
                 DateTime.Now
             );
@@ -193,7 +197,8 @@ namespace IT.Tests
                 {
                     new EmployeeLanguagesDTO { LanguageTypeId = Enums.GetId(Languages.English), Level = 3 }
                 },
-                Roles = new()
+                Roles = new(),
+                JobPercentage = 1
             });
 
             managerFacade.Employees.Add(nonMatchingEmployee.EmployeeId, nonMatchingEmployee);
@@ -219,7 +224,7 @@ namespace IT.Tests
                     [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 3, 1)
                 },
                 0,
-                100,
+                1,
                 "General tasks",
                 DateTime.Now
             );
@@ -235,7 +240,8 @@ namespace IT.Tests
                     new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 3, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>(),
-                Roles = new()
+                Roles = new(), 
+                JobPercentage = 1
             });
 
             var employee2 = new Employee(new EmployeeDTO
@@ -249,7 +255,8 @@ namespace IT.Tests
                     new EmployeeSkillsDTO { SkillTypeId = Enums.GetId(Skills.Java), Level = 1, Priority = 1 }
                 },
                 ForeignLanguages = new List<EmployeeLanguagesDTO>(),
-                Roles = new()
+                Roles = new(), 
+                JobPercentage = 1
             });
 
             managerFacade.Employees = new()
@@ -276,7 +283,7 @@ namespace IT.Tests
                     [Enums.GetId(Languages.English)] = new Language(Languages.English, 3),
                     [Enums.GetId(Languages.Hebrew)] = new Language(Languages.Hebrew, 3)
                 },
-                new ConcurrentDictionary<int, Skill>(), 1, 100, "UI development", DateTime.Now
+                new ConcurrentDictionary<int, Skill>(), 1, 1, "UI development", DateTime.Now
             );
 
             var apiRole = new Role(
@@ -291,7 +298,7 @@ namespace IT.Tests
                     [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 3),
                     [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 2)
                 },
-                0, 50, "Develop APIs", DateTime.Now
+                0, 0.5, "Develop APIs", DateTime.Now
             );
 
             var pythonRole = new Role(
@@ -304,18 +311,18 @@ namespace IT.Tests
                 {
                     [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 1)
                 },
-                3, 100, "Develop Python applications", DateTime.Now
+                3, 1, "Develop Python applications", DateTime.Now
             );
 
             var employees = new List<Employee>
             {
-                new Employee(new EmployeeDTO { EmployeeId = 1, UserName = "Alice", YearExp = 2, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 }, new EmployeeLanguagesDTO { LanguageTypeId = 1, Level = 3 } }, Skills = new(), Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 2, UserName = "Bob", YearExp = 1, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 }, new EmployeeLanguagesDTO { LanguageTypeId = 1, Level = 3 } }, Skills = new(), Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 3, UserName = "Charlie", YearExp = 0, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new(), Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 4, UserName = "David", YearExp = 3, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 3, Priority = 1 } }, Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 5, UserName = "Eve", YearExp = 4, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 3, Priority = 1 } }, Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 6, UserName = "Frank", YearExp = 2, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 2, Priority = 1 } }, Roles = new() }),
-                new Employee(new EmployeeDTO { EmployeeId = 7, UserName = "Grace", YearExp = 5, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 2, Level = 3, Priority = 1 }, new EmployeeSkillsDTO { SkillTypeId = 3, Level = 1, Priority = 3 }, new EmployeeSkillsDTO { SkillTypeId = 1, Level = 2, Priority = 2 } }, Roles = new() })
+                new Employee(new EmployeeDTO { EmployeeId = 1, UserName = "Alice", YearExp = 2, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 }, new EmployeeLanguagesDTO { LanguageTypeId = 1, Level = 3 } }, Skills = new(), Roles = new(), JobPercentage = 1 }),
+                new Employee(new EmployeeDTO { EmployeeId = 2, UserName = "Bob", YearExp = 1, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 }, new EmployeeLanguagesDTO { LanguageTypeId = 1, Level = 3 } }, Skills = new(), Roles = new(), JobPercentage = 1 }),
+                new Employee(new EmployeeDTO { EmployeeId = 3, UserName = "Charlie", YearExp = 0, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new(), Roles = new() , JobPercentage = 1}),
+                new Employee(new EmployeeDTO { EmployeeId = 4, UserName = "David", YearExp = 3, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 3, Priority = 1 } }, Roles = new(), JobPercentage = 1 }),
+                new Employee(new EmployeeDTO { EmployeeId = 5, UserName = "Eve", YearExp = 4, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 3, Priority = 1 } }, Roles = new(), JobPercentage = 1 }),
+                new Employee(new EmployeeDTO { EmployeeId = 6, UserName = "Frank", YearExp = 2, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 0, Level = 2, Priority = 1 } }, Roles = new(), JobPercentage = 1 }),
+                new Employee(new EmployeeDTO { EmployeeId = 7, UserName = "Grace", YearExp = 5, Email = "jane.doe@example.com", ForeignLanguages = new() { new EmployeeLanguagesDTO { LanguageTypeId = 0, Level = 3 } }, Skills = new() { new EmployeeSkillsDTO { SkillTypeId = 2, Level = 3, Priority = 1 }, new EmployeeSkillsDTO { SkillTypeId = 3, Level = 1, Priority = 3 }, new EmployeeSkillsDTO { SkillTypeId = 1, Level = 2, Priority = 2 } }, Roles = new(), JobPercentage = 1 })
             };
 
             managerFacade.Employees = new();
