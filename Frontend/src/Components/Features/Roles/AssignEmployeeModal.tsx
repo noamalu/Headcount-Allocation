@@ -10,15 +10,18 @@ const AssignEmployeeModal = ({
   roleId,
   onClose,
   onAssign,
+  openManualAssignModal,
 }: {
   projectId: number;
   roleId: number;
   onClose: () => void;
   onAssign: (employee: Employee) => void;
+  openManualAssignModal: () => void;
 }) => {
   const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
+  const [showManualButton, setShowManualButton] = useState(false);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -67,7 +70,9 @@ const AssignEmployeeModal = ({
             </tr>
           </thead>
           <tbody>
-  {employees.map((employee) => (
+          {employees
+  .filter((employee) => employee.employeeId !== 0) 
+  .map((employee) => (
     <React.Fragment key={employee.employeeId}>
       <tr>
         <td>
@@ -81,7 +86,7 @@ const AssignEmployeeModal = ({
         </td>
         <td>{employee.employeeName}</td>
         <td>{employee.yearsExperience} years</td>
-        <td>{employee.jobPercentage}%</td>
+        <td>{(employee.jobPercentage * 100).toFixed(0)}%</td>
         <td>{employee.phoneNumber}</td>
         <td>
           <button className="show-details-button" onClick={() => handleExpand(employee.employeeId)}>
@@ -134,14 +139,33 @@ const AssignEmployeeModal = ({
 </tbody>
         </table>
 
+
         <div className="modal-actions">
           <button
             className="assign-button"
             onClick={handleAssign}
-            disabled={!selectedEmployee}
-          >
+            disabled={!selectedEmployee}>
             Assign
           </button>
+        </div>
+
+        <div className="manual-assign-row">
+          <span className="hint-question" onClick={() => setShowManualButton(true)}>
+            🥲 Can't find a good match?
+          </span>
+
+          {showManualButton && (
+            <button
+            className="manual-icon-button"
+            onClick={() => {
+              onClose();
+              openManualAssignModal();
+            }}
+          >
+              <i className="fa-solid fa-repeat"></i>
+              <span className="manual-tooltip">Manual Assignment</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

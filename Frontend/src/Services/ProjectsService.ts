@@ -8,25 +8,26 @@ import { Employee } from '../Types/EmployeeType';
 class ProjectsService {
 
 
-  // returns the new project's ID
- static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<number> {
-  console.log("attempt to create project" + project.projectName);
-        try {
-            const response = await APIClient('/api/Project/Create', {
-                method: 'POST',
-                body: JSON.stringify(project),
-                headers: { 'Content-Type': 'application/json' },
-            });
-            if (!response.errorOccured) {
-              return response.value; 
-            } else {
-                throw new Error("Failed to create project: " + JSON.stringify(response, null, 2));
-            }
-        } catch (error) {
-            console.error("Error in sendCreateProject:", error);
-            throw error; 
-        }
-    }
+    // returns the new project's ID
+  static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<number> {
+    console.log("attempt to create project" + project.projectName);
+          try {
+              const response = await APIClient('/api/Project/Create', {
+                  method: 'POST',
+                  body: JSON.stringify(project),
+                  headers: { 'Content-Type': 'application/json' },
+              });
+              if (!response.errorOccured) {
+                return response.value; 
+              } else {
+                  throw new Error("Failed to create project: " + JSON.stringify(response, null, 2));
+              }
+          } catch (error) {
+              console.error("Error in sendCreateProject:", error);
+              throw error; 
+          }
+      }
+
 
     static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
       console.log("attempt to add role " + roles[0].roleName + " to project id: " + projectId);
@@ -53,6 +54,93 @@ class ProjectsService {
         console.error("Error in addRolesToProject:", error);
         throw error;
     }
+  }
+
+
+  static async editProject(project: Project): Promise<void> {
+    console.log("attempt to edit project" + project.projectName);
+    try {
+        const response = await APIClient(`/api/Project/${project.projectId}/Edit`, {
+          method: 'PUT',
+          body: JSON.stringify(project),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.errorOccured) {
+          throw new Error("Failed to edit project: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
+
+    } catch (error) {
+        console.error("Error in editProject:", error);
+        throw error;
+    }
+  }
+
+  static async deleteProject(projectId: number): Promise<void> {
+    console.log("attempt to delete project" + projectId);
+    try {
+        const response = await APIClient(`/api/Project/Delete/${projectId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.errorOccured) {
+          throw new Error("Failed to delete project: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
+        
+    } catch (error) {
+        console.error("Error in deleteProject:", error);
+        throw error;
+    }
+  }
+
+  static async editRole(role: Role, projectId: number): Promise<void> {
+    console.log("attempt to edit role " + role.roleName + " in project " + projectId);
+    return;
+    // try {
+    //     const response = await APIClient(`/api/Project/${projectId}/Roles/Edit`, {
+    //       method: 'PUT',
+    //       body: JSON.stringify(role),
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
+
+    //     if (response.errorOccured) {
+    //       throw new Error("Failed to edit Role: " + JSON.stringify(response, null, 2));
+    //     } else {
+    //       return; 
+    //     }
+
+    // } catch (error) {
+    //     console.error("Error in editRole:", error);
+    //     throw error;
+    // }
+  }
+
+  static async deleteRole(roleId: number, projectId: number): Promise<void> {
+    console.log("attempt to delete Role " + roleId + " from project " + projectId);
+    return;
+    // try {
+    //     const response = await APIClient(`/api/Project/${projectId}/Roles/Delete/${roleId}`, {
+    //       method: 'DELETE',
+    //     });
+
+    //     if (response.errorOccured) {
+    //       throw new Error("Failed to delete role: " + JSON.stringify(response, null, 2));
+    //     } else {
+    //       return; 
+    //     }
+        
+    // } catch (error) {
+    //     console.error("Error in deleteRole:", error);
+    //     throw error;
+    // }
   }
   
 
@@ -91,6 +179,25 @@ export const getProjects = async (): Promise<Project[]> => {
       throw error; // משליכים את השגיאה לטיפול חיצוני
     }
   };
+
+  export const getManualAssignOptionsToRole = async (projectId: number, roleId: number): Promise<Employee[]> => {
+    console.log("attempt to getManualAssignOptionsToRole " + roleId + " from project " + projectId);
+    // try {
+    //   const response = await APIClient(`/api/Project/${projectId}/Roles/${roleId}/ManualAssign`, { method: 'GET' });
+    //   console.log('getManualAssignOptionsToRole Response:', response); // לוג לבדיקה
+    //   if (!response.errorOccured) {
+    //     return  fetchResponse(response); 
+    //   } else {
+    //       throw new Error("Failed to getManualAssignOptionsToRole: " + JSON.stringify(response, null, 2));
+    //   }
+    //    // שימוש בפונקציה fetchResponse לעיבוד התגובה
+    // } catch (error) {
+    //   console.error(`Error fetching manual assign options for project ID ${projectId} and role ID ${roleId}:`, error);
+    //   throw error; 
+    // }
+    return Promise.resolve([]);
+  };
+  
 
 
 

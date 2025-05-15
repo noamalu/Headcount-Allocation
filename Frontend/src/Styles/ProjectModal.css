@@ -39,8 +39,8 @@
     overflow-y: auto; /* הוספת גלילה */
 }
 
-.roles-table {
-    width: 70%;
+/* .roles-table {
+    width: 100%;
     border-collapse: separate;
     border-radius: 10px;
     margin-top: 20px;
@@ -61,7 +61,7 @@
 
 .roles-table td {
     border-top: 1px solid #E8CEBF;
-}
+} */
 
 .roles-input-table {
     width: 70%;

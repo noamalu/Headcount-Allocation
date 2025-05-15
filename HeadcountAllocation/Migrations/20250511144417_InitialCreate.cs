@@ -23,7 +23,8 @@ namespace HeadcountAllocation.Migrations
                     JobPercentage = table.Column<double>(type: "float", nullable: false),
                     YearExp = table.Column<int>(type: "int", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsManager = table.Column<bool>(type: "bit", nullable: false)
+                    IsManager = table.Column<bool>(type: "bit", nullable: false),
+                    Alert = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,20 +41,6 @@ namespace HeadcountAllocation.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LanguageTypes", x => x.LanguageTypeId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MessageContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Seen = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -149,6 +136,26 @@ namespace HeadcountAllocation.Migrations
                     table.ForeignKey(
                         name: "FK_Events_Employees_ListenerEmployeeId",
                         column: x => x.ListenerEmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MessageContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Seen = table.Column<bool>(type: "bit", nullable: false),
+                    EmployeeDTOEmployeeId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Employees_EmployeeDTOEmployeeId",
+                        column: x => x.EmployeeDTOEmployeeId,
                         principalTable: "Employees",
                         principalColumn: "EmployeeId");
                 });
@@ -257,6 +264,11 @@ namespace HeadcountAllocation.Migrations
                 name: "IX_Events_ListenerEmployeeId",
                 table: "Events",
                 column: "ListenerEmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_EmployeeDTOEmployeeId",
+                table: "Messages",
+                column: "EmployeeDTOEmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleLanguages_RoleId",

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeadcountAllocation.Migrations
 {
     [DbContext(typeof(DBcontext))]
-    [Migration("20250404084324_InitialCreate")]
+    [Migration("20250511144417_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -55,6 +55,9 @@ namespace HeadcountAllocation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("EmployeeDTOEmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MessageContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -64,6 +67,8 @@ namespace HeadcountAllocation.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeDTOEmployeeId");
+
                     b.ToTable("Messages");
                 });
 
@@ -71,6 +76,9 @@ namespace HeadcountAllocation.Migrations
                 {
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Alert")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -327,6 +335,13 @@ namespace HeadcountAllocation.Migrations
                     b.Navigation("Listener");
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.Alert.MessageDTO", b =>
+                {
+                    b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
+                        .WithMany("Alerts")
+                        .HasForeignKey("EmployeeDTOEmployeeId");
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeLanguagesDTO", b =>
                 {
                     b.HasOne("HeadcountAllocation.DAL.DTO.EmployeeDTO", null)
@@ -388,6 +403,8 @@ namespace HeadcountAllocation.Migrations
 
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeDTO", b =>
                 {
+                    b.Navigation("Alerts");
+
                     b.Navigation("ForeignLanguages");
 
                     b.Navigation("Roles");

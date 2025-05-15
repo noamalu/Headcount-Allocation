@@ -5,38 +5,61 @@ import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
 import { getProjects } from '../../../Services/ProjectsService';
 
-const ProjectsTable: React.FC<{ onProjectCreated: (callback: (project: Project) => void) => void }> = ({ onProjectCreated }) => {
+const ProjectsTable: React.FC<{ 
+      onProjectCreated: (callback: (project: Project) => void) => void 
+      onProjectUpdated: (callback: (project: Project) => void) => void;
+    }> = ({ onProjectCreated, onProjectUpdated }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // פונקציה לקריאה ל-API
   const fetchProjects = async () => {
     setIsLoading(true); 
-    setError(null); 
-
+     setApiError(null); 
     try {
       const data = await getProjects();
       setProjects(data);
     } catch (err) {
-      setError('Failed to fetch projects. Please try again later.');
+      setApiError('Failed to fetch projects. Please try again later.');
     } finally {
       setIsLoading(false); 
     }
   };
-
   useEffect(() => {
     fetchProjects();
 }, []);
+
+const handleProjectUpdated = (updatedProject: Project) => {
+  setProjects((prevProjects) =>
+    prevProjects.map((p) =>
+      p.projectId === updatedProject.projectId ? updatedProject : p
+    )
+  );
+};
+
+useEffect(() => {
+  onProjectUpdated(handleProjectUpdated);
+}, [onProjectUpdated]);
 
 
 useEffect(() => {
     const handleProjectCreated = (newProject: Project) => {
         setProjects((prevProjects) => [...prevProjects, newProject]);
     };
-    onProjectCreated(handleProjectCreated); // רישום callback לקבלת פרויקט חדש
+    onProjectCreated(handleProjectCreated); 
 }, [onProjectCreated]);
+
+const handleProjectDeleted = (projectId: number) => {
+  setProjects((prev) => prev.filter((p) => p.projectId !== projectId));
+};
+
+
+useEffect(() => {
+  if (apiError) {
+    alert(apiError);
+  }
+}, [apiError]);
 
 const handleOpenModal = (project: Project) => {
   setSelectedProject(project);
@@ -50,9 +73,6 @@ if (isLoading) {
     return <p>Loading projects...</p>;
 }
 
-if (error) {
-    return <p className="error">{error}</p>;
-}
 
   return (
     <div>
@@ -79,7 +99,12 @@ if (error) {
         </tbody>
       </table>
       {selectedProject && (
-        <ProjectDetailsModal project={selectedProject} onClose={handleCloseModal} />
+        <ProjectDetailsModal
+          project={selectedProject} 
+          onClose={handleCloseModal}
+          onProjectUpdated={handleProjectUpdated}
+          onProjectDeleted={handleProjectDeleted}
+        />
       )}
     </div>
   );

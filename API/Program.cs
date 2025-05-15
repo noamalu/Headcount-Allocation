@@ -13,14 +13,14 @@ builder.Services.AddSingleton<ManagerFacade>();
 builder.Services.AddSingleton<HeadCountService>(); 
 builder.Services.AddSingleton<ProjectService>(); 
 builder.Services.AddSingleton<EmployeeService>(); 
-// builder.Services.AddSingleton<WebSocketServer>(sp =>
-// {
-//     var configurate = sp.GetRequiredService<Configurate>();
-//     string port = configurate.Parse();
-//     var alertServer = new WebSocketServer("ws://127.0.0.1:" + port);
-//     alertServer.Start();
-//     return alertServer;
-// });
+builder.Services.AddSingleton<WebSocketServer>(sp =>
+{
+    // var configurate = sp.GetRequiredService<Configurate>();
+    // string port = configurate.Parse();
+    var alertServer = new WebSocketServer("ws://127.0.0.1:4562");
+    alertServer.Start();
+    return alertServer;
+});
            
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,10 +28,43 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         builder => builder
-            .WithOrigins("http://localhost:5173") // Frontend URL
+            .WithOrigins
+                ("http://localhost:5173", "http://132.73.84.247") // Frontend URL
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+
+var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
+context.Dispose();
+// context.ClearDatabase();
+
+TimeZonesDTO morning = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Morning);
+TimeZonesDTO noon = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Noon);
+TimeZonesDTO evening = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Evening);
+TimeZonesDTO flexible = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Flexible);
+context.TimeZones.Add(morning);
+context.TimeZones.Add(noon);
+context.TimeZones.Add(evening);
+context.TimeZones.Add(flexible);
+context.SaveChanges();
+
+LanguageTypesDTO english = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.English);
+LanguageTypesDTO hebrew = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.Hebrew);
+context.LanguageTypes.Add(english);
+context.LanguageTypes.Add(hebrew);
+context.SaveChanges();
+
+SkillTypesDTO python = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Python);
+SkillTypesDTO sql = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.SQL);
+SkillTypesDTO api = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.API);
+SkillTypesDTO java = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Java);
+SkillTypesDTO ui = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.UI);
+context.SkillTypes.Add(python);
+context.SkillTypes.Add(sql);
+context.SkillTypes.Add(api);
+context.SkillTypes.Add(java);
+context.SkillTypes.Add(ui);
+context.SaveChanges();
 
 var app = builder.Build();
 
@@ -43,7 +76,20 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowFrontend"); // Add this line to apply the CORS policy
+app.UseCors("AllowFrontend"); // Enable CORS for all requests
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"🔥 Unhandled Exception: {ex.Message}\n{ex.StackTrace}");
+        throw; // Re-throw so the default handler still kicks in
+    }
+});
 
 app.UseAuthorization();
 app.MapControllers();

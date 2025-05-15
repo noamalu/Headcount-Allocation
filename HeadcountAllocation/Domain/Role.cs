@@ -56,6 +56,7 @@ namespace HeadcountAllocation.Domain{
           foreach (RoleSkillsDTO skillDTO in roleDTO.Skills){
                 Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
           }
+          JobPercentage = roleDTO.JobPercentage;
           Description = roleDTO.Description;
           
 

@@ -58,7 +58,7 @@ namespace API.Controllers
         //     return Ok(project);
         // }
 
-        [HttpPut("/{projectId}/Edit")]
+        [HttpPut("{projectId}/Edit")]
         public async Task<ActionResult<Response>> EditProject([Required][FromRoute] int projectId, [Required][FromBody] Project project)
         {
             var tasks = new Task[]
@@ -74,6 +74,13 @@ namespace API.Controllers
             return Ok(new());
         }
 
+        [HttpPut("{projectId}/{roleId}/Edit")]
+        public async Task<ActionResult<Response>> EditRole([Required][FromRoute] int projectId, [Required][FromRoute] int roleId, [Required][FromBody] Role role)
+        {
+            _headCountService.UpdateRole(projectId, roleId, (HeadcountAllocation.Domain.Role)role);
+            return Ok(new());
+        }
+
         [HttpDelete("Delete/{projectId}")]
         public ActionResult<Response> Delete([Required][FromRoute] int projectId)
         {
@@ -83,9 +90,23 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
+
+        [HttpDelete("Delete/{projectId}/Roles/{roleId}")]
+        public ActionResult<Response> DeleteRole([Required][FromRoute] int projectId, [Required][FromRoute] int roleId)
+        {
+            try
+            {
+                return Ok(_headCountService.DeleteRole(projectId, roleId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+       
 
         [HttpPost("{projectId}/Roles")]
         public async Task<ActionResult> AddRole([Required][FromRoute] int projectId,
@@ -97,43 +118,21 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
-        [HttpGet("{projectId}/Roles")]
+        [HttpGet("{projectId}/Roles")]//TODO: ****Check if this is correct, it should be a GET request to get the roles in a project
         public ActionResult<Response<Role>> GetRoles([Required][FromRoute] int projectId)
         {
             try
             {
-                var roles = _headCountService.GetAllRolesByProject(projectId).Value.Values.Select(role => new Role
-                {
-                    RoleId = role.RoleId,
-                    RoleName = role.RoleName,
-                    ProjectId = role.ProjectId,
-                    EmployeeId = role.EmployeeId,
-                    TimeZone = GetId(role.TimeZone),
-                    ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
-                    {
-                        LanguageId = language.LanguageID,
-                        LanguageTypeId = GetId(language.LanguageType),
-                        Level = language.Level
-                    }).ToList() ?? new(),
-                    Skills = role.Skills.Values?.Select(skill => new Skill
-                    {
-                        SkillTypeId = GetId(skill.SkillType),
-                        Level = skill.Level,
-                        Priority = skill.Priority
-                    }).ToList() ?? new(),
-                    YearsExperience = role.YearsExperience,
-                    JobPercentage = role.JobPercentage,
-                    Description = role.Description
-                }).ToList();
+                var roles = _projectService.GetRolesByProject(projectId);
                 return Ok(Response<List<Role>>.FromValue(roles));
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 
@@ -146,15 +145,15 @@ namespace API.Controllers
                 roles.Value.TryGetValue(roleId, out HeadcountAllocation.Domain.Role role);
                 var employees = _headCountService.EmployeesToAssign(role).Value
                     .OrderByDescending(kvp => kvp.Value)
-                    .Select(kvp => {var emp = (EmployeeOption)_employeeService.TranslateEmployee(kvp.Key); emp.Score = kvp.Value; return emp;})
+                    .Select(kvp => { var emp = (EmployeeOption)_employeeService.TranslateEmployee(kvp.Key); emp.Score = kvp.Value; return emp; })
                     .ToList();
                 return Ok(Response<List<EmployeeOption>>.FromValue(employees));
             }
             catch (Exception ex)
             {
-                return BadRequest(new {error = ex.Message, stackTrace = ex.StackTrace});
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
-        }        
+        }
 
     }
 }

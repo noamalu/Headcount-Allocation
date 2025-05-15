@@ -102,3 +102,62 @@
   border-top: 1px solid #ddd; /* קו הפרדה */
   padding: 10px;
 }
+
+
+/*manual assignmet section*/
+
+.manual-assign-row {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hint-question {
+  font-size: 0.9rem;
+  color: #7a7572;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hint-question:hover {
+  color: #4F4846;
+  text-decoration: underline;
+}
+
+.manual-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-size: 1.2rem;
+  color: #4F4846;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.manual-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #ffffff;
+  color: #4F4846;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  top: -30px; /* במקום למטה */
+  left: 120%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.8rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.manual-icon-button:hover .manual-tooltip {
+  visibility: visible;
+  opacity: 1;
+}

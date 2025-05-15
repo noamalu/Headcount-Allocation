@@ -6,36 +6,69 @@ import EditProjectModal from './EditProjectModal';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import CreateRoleModal from '../Roles/CreateRoleModal';
-import { getProjectRoles } from '../../../Services/ProjectsService';
-
-
+import ProjectsService, { getProjectRoles } from '../../../Services/ProjectsService';
+import { useAuth } from '../../../Context/AuthContext'
 
 interface ProjectDetailsModalProps {
   project: Project; // Specify that the prop is of type Project
   onClose: () => void; // Callback for closing the modal
+  onProjectUpdated: (project: Project) => void;
+  onProjectDeleted: (projectId: number) => void;
 }
 
-const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {
+const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
+  const {isAdmin} = useAuth();
+  const [currentProject, setCurrentProject] = useState<Project>(project);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const handleEditSave = (updatedProject: Project) => {
+    setCurrentProject(updatedProject);
+    onProjectUpdated(updatedProject);
+    console.log('Project updated:', updatedProject);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await ProjectsService.deleteProject(currentProject.projectId);
+      onProjectDeleted(currentProject.projectId); 
+      onClose(); 
+    } catch (error) {
+      alert("Failed to delete the project.");
+      console.error(error);
+    }
+  };
   
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         console.log('Fetching roles for project:', project.projectId);
-        const roles = await getProjectRoles(project.projectId); // קריאה לפונקציה שמחזירה את התפקידים
-        setRoles(roles || {}); // עדכון ה-state עם התפקידים שחזרו
+        const roles = await getProjectRoles(project.projectId); 
+        setRoles(roles || {}); 
+        setCurrentProject((prev) => ({
+          ...prev,
+          roles: roles || []
+        }));
       } catch (error) {
         console.error('Error fetching project roles:', error);
+        setApiError('Failed to fetch project roles');
       }
     };
   
     if (project) {
-      fetchRoles(); // קריאה לפונקציה בכניסה לפרויקט
+      fetchRoles(); 
     }
   }, [project]);
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
 
 
   const handleRoleCreated = (newRole: Role) => {
@@ -46,6 +79,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
         [newRole.roleId]: newRole,
       };
       console.log("Updated roles:", updatedRoles);
+      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
       return updatedRoles;
     });
   };
@@ -59,22 +93,13 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           ...updatedRole, 
         },
       };
+      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
       return updatedRoles;
     });
   };
-
-//   useEffect(() => {
-//   const handleRoleCreated = (newRole: Role) => {
-//           setRoles((prevRoles) => [...prevRoles, newRole]);
-//       };
-//       onRoleCreated(handleRoleCreated); // רישום callback לקבלת פרויקט חדש
-// }, [onRoleCreated]);
-
-// console.log('SelectedRole changed:', selectedRole);
-//   }, [selectedRole]);
       
   const handleOpenModal = (role: Role) => {
-    console.log("Opening role modal for:", role.roleName, "Role data:", role); // בדוק את הערך
+    console.log("Opening role modal for:", role.roleName, "Role data:", role); 
     setSelectedRole(role);
   };
 
@@ -82,22 +107,20 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     setSelectedRole(null);
   };
 
-  const handleEditSave = (updatedProject: Project) => {
-    console.log('Project updated:', updatedProject);
-    // Update the project details here (e.g., send to API or update state)
-  };
 
   const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
     console.log("Assigning employee", employeeId, "to role", roleId);
     setRoles((prevRoles) => {
-      const updatedRoles = { ...prevRoles }; // יצירת עותק של roles
+      const updatedRoles = { ...prevRoles }; 
       if (updatedRoles[roleId]) {
-        updatedRoles[roleId].employeeId = employeeId; // עדכון ה-employeeId עבור התפקיד המתאים
+        updatedRoles[roleId].employeeId = employeeId; 
       }
-      return updatedRoles; // החזרת המצב המעודכן
+      setCurrentProject(prev => ({ ...prev, roles: updatedRoles }));
+      return updatedRoles; 
     });
-    console.log("Updated roles:", roles); // וידוא התוצאה
+    console.log("Updated roles:", roles); 
   };
+
 
   if (selectedRole) {
     console.log("Selected role being passed to RoleDetailsModal:", selectedRole);
@@ -107,17 +130,17 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>{project.projectName}</h2>
+        <h2>{currentProject.projectName}</h2>
         <div className="modal-info">
           <div className="modal-info-row">
             <div className="deadline">
-              <i className="fas fa-calendar-alt"></i> {formatDate(project.deadline)}
+              <i className="fas fa-calendar-alt"></i> {formatDate(currentProject.deadline)}
             </div>
             <div className="required-hours">
-              <i className="fas fa-clock"></i> {project.requiredHours} hours
+              <i className="fas fa-clock"></i> {currentProject.requiredHours} hours
             </div>
           </div>
-          <div className="description">{project.description}</div>
+          <div className="description">{currentProject.description}</div>
         </div>
         <table className="roles-table">
           <thead>
@@ -150,36 +173,59 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
             )}
           </tbody>
         </table>
+
         <div className="modal-actions">
-        <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
+        {isAdmin && (
+          <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
             <i className="fas fa-pen"></i> Edit
-          </button>
+          </button> 
+        )}
+        {isAdmin && (
           <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
             <i className="fas fa-plus"></i> Add Role
           </button>
-          <button className="delete-button">
+        )}
+         {isAdmin && (
+          <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
             <i className="fas fa-trash"></i> Delete
           </button>
+        )}
         </div>
+
         {selectedRole && (
           <RoleDetailsModal 
-          projectId={project.projectId} 
+          projectId={currentProject.projectId} 
           role={selectedRole} 
           onClose={handleCloseModal}
           onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}
         {isCreateRoleModalOpen && (
           <CreateRoleModal 
-          projectId={project.projectId}
+          projectId={currentProject.projectId}
           onClose={() => setIsCreateRoleModalOpen(false)}
           onRoleCreated={handleRoleCreated} />
         )}
          {isEditModalOpen && (
           <EditProjectModal
-            project={project}
-            onClose={() => setIsEditModalOpen(false)}
-            onSave={handleEditSave} />
-          )}
+          project={currentProject}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={handleEditSave} />
+        )}
+        {showConfirmDelete && (
+          <div className="confirm-overlay">
+            <div className="confirm-dialog">
+              <p>Are you sure you want to delete this project?</p>
+              <div className="confirm-buttons">
+                <button className="confirm-button" onClick={handleDelete}>
+                  <i className="fas fa-trash"></i> Delete
+                </button>
+                <button className="cancel-button" onClick={() => setShowConfirmDelete(false)}>
+                <i className="fas fa-close"></i> Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -11,19 +11,19 @@ namespace API.Models
         public int RoleId { get; set; }
 
         public string RoleName { get; set; }
-        
+
         public int ProjectId { get; set; }
-        
+
         public int? EmployeeId { get; set; }
-        public int TimeZone{get;set;}
-        
-        public List<Language> ForeignLanguages {get; set;}
+        public int TimeZone { get; set; }
 
-        public List<Skill> Skills {get; set;}
+        public List<Language> ForeignLanguages { get; set; }
 
-        public int YearsExperience{get;set;}
+        public List<Skill> Skills { get; set; }
 
-        public double JobPercentage{get;set;}
+        public int YearsExperience { get; set; }
+
+        public double JobPercentage { get; set; }
 
         public string Description { get; set; }
 
@@ -35,13 +35,13 @@ namespace API.Models
                 role.ProjectId,
                 HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.TimeZones>(role.TimeZone),
                 new ConcurrentDictionary<int, HeadcountAllocation.Domain.Language>(
-                    role.ForeignLanguages.Select(language => 
+                    role.ForeignLanguages.Select(language =>
                         new KeyValuePair<int, HeadcountAllocation.Domain.Language>(
                             language.LanguageTypeId, (HeadcountAllocation.Domain.Language)language)
                     )
                 ),
                 new ConcurrentDictionary<int, HeadcountAllocation.Domain.Skill>(
-                    role.Skills.Select(skill => 
+                    role.Skills.Select(skill =>
                         new KeyValuePair<int, HeadcountAllocation.Domain.Skill>(
                             skill.SkillTypeId, (HeadcountAllocation.Domain.Skill)skill)
                     )

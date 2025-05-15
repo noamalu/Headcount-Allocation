@@ -1,373 +1,513 @@
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-    background: #FFFFFF;
-    padding: 30px;
-    border-radius: 20px;
-    width: 700px;
-    max-width: 90%;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    overflow-y: auto;
-    align-items: center;
-    max-height: 90vh; /* למנוע גלישה מעבר למסך */
+  background: #FFFFFF;
+  padding: 30px;
+  border-radius: 20px;
+  width: 700px;
+  max-width: 90%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow-y: auto;
+  align-items: center;
+  max-height: 90vh; /* למנוע גלישה מעבר למסך */
 }
 
 .modal-content h2 {
-    font-size: 28px;
-    font-weight: bold;
-    color: #4F4846;
-    margin-bottom: 20px;
-    text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #4F4846;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .modal-info {
-    display: flex;
-    flex-direction: column; /* שנה את הכיוון מאופקי לאנכי */
-    align-items: center; /* יישור אופקי למרכז */
-    text-align: left;
-    width: 100%; /* התאמת רוחב מלא */
+  display: flex;
+  flex-direction: column; /* שנה את הכיוון מאופקי לאנכי */
+  align-items: center; /* יישור אופקי למרכז */
+  text-align: left;
+  margin-bottom: 12px;
+  width: 100%; /* התאמת רוחב מלא */
 }
 
 .modal-info-row {
-    display: flex;
-    justify-content: center; /* מרכז את האלמנטים */
-    align-items: center; /* מיושר במרכז האנכי */
-    gap: 20px; /* רווח בין התאריך לשעות */
-    margin-bottom: 15px; /* מרווח תחתון */
-  }
+  display: flex;
+  justify-content: center;     
+  align-items: center;         
+  gap: 20px;                   
+  width: fit-content;         
+  margin: 0 auto;              
+}
+
+.modal-info-row label {
+  display: inline-block;
+  white-space: nowrap;
+}
 
 .modal-info .deadline {
-    font-size: 16px;
-    font-weight: 500;
-    color: #4F4846;
-    margin-bottom: 10px;
-    text-align: center;
-    gap: 10px;
-    background: #FDF8F5;
-    border: 1px solid #E8CEBF;
-    padding: 10px 15px;
-    border-radius: 8px;
-    width: 150px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #4F4846;
+  margin-bottom: 10px;
+  text-align: center;
+  gap: 10px;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 150px;
 }
 .modal-info .required-hours {
-    font-size: 16px;
-    font-weight: 500;
-    color: #4F4846;
-    margin-bottom: 10px;
-    text-align: center;
-    gap: 10px;
-    background: #FDF8F5;
-    border: 1px solid #E8CEBF;
-    padding: 10px 15px;
-    border-radius: 8px;
-    width: 150px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #4F4846;
+  margin-bottom: 10px;
+  text-align: center;
+  gap: 10px;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 150px;
 }
 
 .modal-info .description {
-    background: #FDF8F5;
-    border: 1px solid #E8CEBF;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #4F4846;
-    max-height: 150px;
-    text-align: left;
-    width: 90%; 
-    overflow-y: auto; /* הוספת גלילה */
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4F4846;
+  max-height: 150px;
+  text-align: left;
+  width: 90%; 
+  overflow-y: auto; /* הוספת גלילה */
 }
 
-.roles-table {
-    width: 70%;
-    border-collapse: separate;
-    border-radius: 10px;
-    margin-top: 20px;
+/* .roles-table {
+  width: 70%;
+  border-collapse: separate;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 .roles-table th, .roles-table td {
-    padding: 6px;
-    text-align: center;
-    font-size: 12px;
-    color: #4F4846;
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #4F4846;
 }
 
 .roles-table th {
-    background: #E8CEBF;
-    font-weight: bold;
-    font-size: 14px;
+  background: #E8CEBF;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .roles-table td {
-    border-top: 1px solid #E8CEBF;
-}
+  border-top: 1px solid #E8CEBF;
+} */
 
 .modal-actions {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 30px;
-    gap: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+  gap: 10px;
 }
 
 .modal-info textarea {
-    width: 80%; /* תופס את כל הרוחב של הקונטיינר */
-    height: 100px; /* גובה מותאם */
-    padding: 10px; /* ריווח פנימי */
-    font-size: 12px; /* גודל טקסט נוח לקריאה */
-    border: 1px solid #E8CEBF; /* גבול בצבע עדין */
-    border-radius: 8px; /* פינות מעוגלות */
-    resize: vertical;
-    box-sizing: border-box; 
-    font-family: 'Poppins';
+  width: 80%; /* תופס את כל הרוחב של הקונטיינר */
+  height: 100px; /* גובה מותאם */
+  padding: 10px; /* ריווח פנימי */
+  font-size: 12px; /* גודל טקסט נוח לקריאה */
+  border: 1px solid #E8CEBF; /* גבול בצבע עדין */
+  border-radius: 8px; /* פינות מעוגלות */
+  resize: vertical;
+  box-sizing: border-box; 
+  font-family: 'Poppins';
 }
 
 .modal-info input {
-    font-size: 12px;
-    border-radius: 8px;
-    border: 1px solid #E8CEBF;
-    font-family: 'Poppins';
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid #E8CEBF;
+  font-family: 'Poppins';
+}
+
+
+.readonly-field {
+background-color: #F5F5F5; /* צבע רקע שונה לשדה לקריאה בלבד */
+color: #4F4846;
+cursor: not-allowed; /* סמן שמעיד על קריאה בלבד */
 }
 
 .modal-info .number-field {
-    width: 60px;
-    font-size: 12px;
-    border-radius: 8px;
-    border: 1px solid #E8CEBF;
-    font-family: 'Poppins';
-}
-
-
-.modal-content.role-modal {
-    text-align: center;
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 700px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* כותרת תפקיד */
-  .role-name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4F4846;
-    margin-bottom: 20px;
-  }
-  
-  /* פרטי עובד */
-  .employee-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .employee-avatar {
-    font-size: 24px;
-    color: #6C63FF;
-  }
-  
-  .employee-name {
-    font-size: 16px;
-    color: #4F4846;
-  }
-  
-  /* תיאור תפקיד */
-  .role-description {
-    align-items: center; 
-    width: 100%;
-    max-height: 150px;
-    text-align: left;
-    overflow-y: auto; /* הוספת גלילה */
-  }
-
-  .role-description h3 {
-    font-size: 18px;
-    color: #4F4846;
-    margin-bottom: 10px;
-  }
-  
-  .role-description p {
-    font-size: 14px;
-    color: #4F4846;
-    max-height: 150px;
-    text-align: left;
-    overflow-y: auto; /* הוספת גלילה */
-  }
-
-  .role-details {
-    display: flex;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
-    justify-content: center;
-    padding: 20px;
-    /* background: #f7e7de;
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
-    gap: 15px;
-    max-width: 90%; 
-  }
-  
-  .detail-banner {
-    display: flex;
-    align-items: center; 
-    text-align: center; 
-    flex-wrap: wrap;
-    padding: 15px;
-    background: #FDF8F5;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    max-width: 90%; 
-    gap: 10px;
-  }
-  
-   .detail-banner i {
-    font-size: 36px;
-    color: #266150;
-    max-width: 90%; 
-
-  }
-  
-  .detail-banner span {
-    font-size: 14px;
-    color: #333;
-    white-space: nowrap;
-    max-width: 90%; 
-    white-space: normal;
-        overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .wide-banner {
-    flex: 1 1 100%; 
-    justify-content: center; 
-    text-align: center; 
-    max-width: 90%; 
-  }
-  
-  
-  
-  /* טבלת מיומנויות */
-  .skills-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-  }
-  
-  .skills-table th {
-    background: #E8CEBF;
-    color: #4F4846;
-    font-size: 14px;
-    padding: 10px;
-  }
-  
-  .skills-table td {
-    background: #FDF8F5;
-    color: #4F4846;
-    font-size: 14px;
-    padding: 10px;
-    border-top: 1px solid #E8CEBF;
-  }
-
-  .modal-info .edit {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    width: 100%; 
-}
-
-.modal-info .edit input {
-    font-size: 16px;
-    font-weight: 500;
-    color: #4F4846;
-    margin-bottom: 10px;
-    text-align: center;
-    gap: 10px;
-    background: #FDF8F5;
-    border: 1px dashed #E8CEBF;
-    padding: 5px 10px;
-    border-radius: 8px;
-    width: 150px;
-}
-
-
-.field-with-icon {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 500;
-    color: #4F4846;
-    margin-bottom: 10px;
-    text-align: center;
-    gap: 10px;
-    background: #FDF8F5;
-    border: 1px dashed #E8CEBF;
-    padding: 5px 10px;
-    border-radius: 8px;
-    width: 150px;
-  }
-  
-  .field-with-icon input {
-    border-style: dashed;
-    align-content: center;
-    padding: 0px 2px;
-    font-size: 14px;
-    width: 60px; 
-    text-align: center;
-    border-radius: 8px;
-    margin-bottom: 0px;
-  }
-
-  .modal-info .edit textarea {
-    background: #FDF8F5;
-    border: 1px dashed #E8CEBF;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #4F4846;
-    max-height: 150px;
-    text-align: left;
-    width: 95%; 
-    overflow-y: auto; 
-    font-family: 'Poppins';
-}
-  
-.input-as-h2-field {
-  all: unset; 
-  font-size: 2em; 
-  font-weight: bold; 
-  line-height: 1.2; 
-  color: #333; 
-  display: block; 
-  border: 1px dashed #E8CEBF;
-  padding: 5px 10px;
+  width: 60px;
+  font-size: 12px;
   border-radius: 8px;
+  border: 1px solid #E8CEBF;
+  font-family: 'Poppins';
+}
+
+.modal-info .date-field {
+font-size: 16px;
+font-weight: 500;
+color: #4F4846;
+margin-bottom: 10px;
+text-align: center;
+gap: 10px;
+background: #FDF8F5;
+border: 1px solid #E8CEBF;
+padding: 10px 15px;
+border-radius: 8px;
+width: 150px;
+}
+
+
+.modal-content.details-modal {
+  text-align: center;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 700px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* כותרת תפקיד */
+.role-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4F4846;
   margin-bottom: 20px;
 }
 
-.input-as-h2-field:focus {
-  outline: none; 
+/* פרטי עובד */
+.employee-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.employee-avatar {
+  font-size: 24px;
+  color: #6C63FF;
+}
+
+.employee-name {
+  font-size: 16px;
+  color: #4F4846;
+}
+
+/* תיאור תפקיד */
+.role-description {
+  align-items: center; 
+  width: 100%;
+  max-height: 150px;
+  text-align: left;
+  overflow-y: auto; /* הוספת גלילה */
+}
+
+.role-description h3 {
+  font-size: 18px;
+  color: #4F4846;
+  margin-bottom: 10px;
+}
+
+.role-description p {
+  font-size: 14px;
+  color: #4F4846;
+  max-height: 150px;
+  text-align: left;
+  overflow-y: auto; /* הוספת גלילה */
+}
+
+.details-section {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  justify-content: center;
+  padding: 20px;
+  /* background: #f7e7de;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  gap: 15px;
+  max-width: 90%; 
+}
+
+.detail-banner {
+  display: flex;
+  align-items: center; 
+  text-align: center; 
+  flex-wrap: wrap;
+  padding: 15px;
+  background: #FDF8F5;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 90%; 
+  gap: 10px;
+}
+
+.row {
+  margin-bottom: 15px;
+}
+
+ .detail-banner i {
+  font-size: 36px;
+  color: #266150;
+  max-width: 90%; 
+
+}
+
+.detail-banner span {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  max-width: 90%; 
+  white-space: normal;
+      overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wide-banner {
+  flex: 1 1 100%; 
+  justify-content: center; 
+  text-align: center; 
+  max-width: 90%; 
 }
 
 
+
+/* skills table*/
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.skills-table th {
+  background: #E8CEBF;
+  color: #4F4846;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.skills-table td {
+  background: #FDF8F5;
+  color: #4F4846;
+  font-size: 14px;
+  padding: 10px;
+  border-top: 1px solid #E8CEBF;
+}
+
+/* Edit banners for edit modals */
+.edit-banner {
+  display: flex;
+  align-items: center; 
+  text-align: center; 
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #FDF8F5;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 90%; 
+  gap: 10px;
+}
+
+
+.wide {
+  width: 90%; 
+}
+
+.edit-banner textarea {
+  font-size: 12px;
+  color: #4F4846;
+  text-align:start;
+  background: white;
+  border: 1px dashed #E8CEBF;
+  padding: 3px 5px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;      /* כמו input-large */
+  min-height: 60px;
+}
+
+.edit-banner .field-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.edit-banner input{
+  font-size: 14px;
+  color: #4F4846;
+  margin-bottom: 0px;
+  text-align: center;
+  background: white;
+  border: 1px dashed #E8CEBF;
+  padding: 3px 5px;
+  border-radius: 8px;
+}
+
+.input-small {
+  width: 50px;
+}
+
+.input-medium {
+  width: 100px;
+}
+
+.input-large {
+  width: 200px;
+}
+
+.edit-banner i {
+  font-size: 36px;
+  color: #266150;
+  max-width: 90%; 
+}
+
+.edit-banner span {
+  font-size: 14px;
+  color: #333;
+  max-width: 90%; 
+  white-space: nowrap;
+      overflow: hidden;
+  text-overflow: ellipsis;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.delete-record-button i,
+.add-button i {
+  font-size: 14px;
+  color: inherit;
+}
+
+.modal-info .edit {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%; 
+}
+
+.modal-info .edit input {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4F4846;
+  margin-bottom: 10px;
+  text-align: center;
+  gap: 10px;
+  background: #FDF8F5;
+  border: 1px dashed #E8CEBF;
+  padding: 5px 10px;
+  border-radius: 8px;
+  width: 150px;
+}
+
+
+
+.field-with-icon-project {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #4F4846;
+  margin-bottom: 10px;
+  text-align: center;
+  gap: 10px;
+  background: #FDF8F5;
+  border: 1px dashed #E8CEBF;
+  padding: 5px 10px;
+  border-radius: 8px;
+  width: 150px;
+}
+
+.field-with-icon-project input {
+  border-style: dashed;
+  align-content: center;
+  padding: 0px 2px;
+  font-size: 14px;
+  width: 60px; 
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 0px;
+}
+
+.modal-info .edit textarea {
+  background: #FDF8F5;
+  border: 1px dashed #E8CEBF;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4F4846;
+  max-height: 150px;
+  text-align: left;
+  width: 95%; 
+  overflow-y: auto; 
+  font-family: 'Poppins';
+}
+
+.input-as-h2-field {
+all: unset; 
+font-size: 2em; 
+font-weight: bold; 
+line-height: 1.2; 
+color: #333; 
+display: block; 
+border: 1px dashed #E8CEBF;
+padding: 5px 10px;
+border-radius: 8px;
+margin-bottom: 20px;
+}
+
+.input-as-h2-field:focus {
+outline: none; 
+}
+
+.field-display {
+  margin-bottom: 15px;
+}
+
+.field-display label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #4F4846;
+}
+
+.field-display span,
+.field-display .textarea-style {
+  background-color: #FDF8F5;
+  border: 1px dashed #E8CEBF;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  color: #4F4846;
+}

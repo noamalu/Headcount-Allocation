@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using HeadcountAllocation.DAL.DTO;
+using HeadcountAllocation.DAL.DTO.Alert;
 using HeadcountAllocation.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +23,7 @@ namespace HeadcountAllocation.DAL.Repositories
         private EmployeeRepo()
         {
             Employees = new Dictionary<int, Employee>();
+            EmployeesNames = new Dictionary<string, Employee>();
             Lock = new object();
         }
         public static EmployeeRepo GetInstance()
@@ -48,6 +51,7 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             DBcontext dbContext = DBcontext.GetInstance();
             Employees.Add(employee.EmployeeId, employee);
+            EmployeesNames.Add(employee.UserName, employee);
             try{
                 lock (Lock)
                 {
@@ -119,6 +123,7 @@ namespace HeadcountAllocation.DAL.Repositories
 
         public Employee GetByUserName(string userName)
         {
+            EmployeesNames = Employees.ToDictionary(x => x.Value.UserName, x => x.Value);
             if (EmployeesNames.ContainsKey(userName))
                 return EmployeesNames[userName];
             else
@@ -145,47 +150,50 @@ namespace HeadcountAllocation.DAL.Repositories
             }
         }
 
-        // public void Update(Employee employee)
-        // {
-        //     if (ContainsValue(employee))
-        //     {
-        //         Employees[employee.EmployeeId] = employee;
+        public void Update(Employee employee)
+        {
+            if (ContainsValue(employee))
+            {
+                Employees[employee.EmployeeId] = employee;
                 
-        //         try{
-        //             lock (Lock)
-        //             {
-        //                 EmployeeDTO p = DBcontext.GetInstance().Employees.Find(employee.EmployeeId);
-        //                 if (p != null){
-        //                     p.Password = employee.Password;
-        //                     if (employee.alerts != null) {
-        //                         List<MessageDTO> Alerts = new List<MessageDTO>();
-        //                         foreach (Message message in item.alerts)
-        //                         {
-        //                             Alerts.Add(new MessageDTO(message));
-        //                         }
-        //                         p.Alerts = Alerts;
-        //                     }
-        //                     p.IsNotification = item.IsNotification;
-        //                     if (item.OrderHistory != null){
-        //                         List<ShoppingCartHistoryDTO> OrderHistory = new ();
-        //                         foreach (var order in item.OrderHistory.Values.ToList())
-        //                         OrderHistory.Add(new ShoppingCartHistoryDTO(order));
-        //                         p.OrderHistory = OrderHistory;
-        //                     }
-        //                     p.IsSystemAdmin = item.IsSystemAdmin;
-        //                     DBcontext.GetInstance().SaveChanges();
-        //                 }
-        //             }
-        //         }
-        //         catch(Exception){
-        //         throw new Exception("There was a problem in Database use- Update Member");
-        //         }
+                try{
+                    lock (Lock)
+                    {
+                        EmployeeDTO p = DBcontext.GetInstance().Employees.Find(employee.EmployeeId);
+                        if (p != null){
+                            p.Email = employee.Email.Address;
+                            p.Password = employee.Password;
+                            if (employee.Alerts != null) {
+                                List<MessageDTO> Alerts = new List<MessageDTO>();
+                                foreach (var message in employee.Alerts)
+                                {
+                                    Alerts.Add(new MessageDTO(message));
+                                }
+                                p.Alerts = Alerts;
+                            }
+                            p.Alert = employee.Alert;
+                            if(employee.ForeignLanguages != null){
+                                p.ForeignLanguages = new List<EmployeeLanguagesDTO>();
+                                foreach (var language in employee.ForeignLanguages)
+                                {
+                                    var employeeLanguage = Enums.GetValueById<Enums.Languages>(language.Value.LanguageID);
+                                    p.ForeignLanguages.Add(new(language.Value));
+                                }
+                            }
+                            p.IsManager = employee.IsManager;
+                            DBcontext.GetInstance().SaveChanges();
+                        }
+                    }
+                }
+                catch(Exception){
+                throw new Exception("There was a problem in Database use- Update employee");
+                }
                 
-        //     }
-        //     else{
-        //         throw new KeyNotFoundException($"Client with ID {item.Id} not found.");
-        //     }
-        // }
+            }
+            else{
+                throw new KeyNotFoundException($"employee with ID {employee.EmployeeId} not found.");
+            }
+        }
      
 
        

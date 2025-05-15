@@ -19,8 +19,77 @@ namespace API.Controllers
             _headCountService = headCountService;
             _employeeService = employeeService;
         }
+        
+        [HttpPost("Employees")]
+        public ActionResult<Response<int>> Create([FromBody] Employee employee)
+        {
+            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
+            (
+                HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Languages>(lang.LanguageTypeId),
+                lang.Level
+            ));
 
-        [HttpDelete("Ticket/{ticketId}")]
+            var skills = employee.Skills.ToDictionary(skill => skill.SkillId, skill => new HeadcountAllocation.Domain.Skill
+            (
+                HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Skills>(skill.SkillTypeId),
+                skill.Level,
+                skill.Priority
+            ));
+
+            var employeeId = _headCountService.AddEmployee(
+                employee.EmployeeName,
+                employee.Password,
+                employee.PhoneNumber,
+                employee.Email,
+                (HeadcountAllocation.Domain.Enums.TimeZones)employee.TimeZone,
+                new System.Collections.Concurrent.ConcurrentDictionary<int, HeadcountAllocation.Domain.Language>(foreignLanguages),
+                new System.Collections.Concurrent.ConcurrentDictionary<int, HeadcountAllocation.Domain.Skill>(skills),
+                employee.YearsExperience,
+                employee.JobPercentage,
+                false
+            );
+            return Ok(employeeId);
+        }
+
+        [HttpDelete("Employees")]
+        public ActionResult<Response<int>> Delete([FromQuery] int employeeId)
+        {
+            var response = _headCountService.DeleteEmployee(employeeId);
+            return Ok(Response<bool>.FromValue(!response.ErrorOccured));
+        }
+        
+        [HttpPost("Employees/Admin")]
+        public ActionResult<Response<int>> CreateAdmin([FromBody] Employee employee)
+        {
+            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
+            (
+                HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Languages>(lang.LanguageTypeId),
+                lang.Level
+            ));
+
+            var skills = employee.Skills.ToDictionary(skill => skill.SkillId, skill => new HeadcountAllocation.Domain.Skill
+            (
+                HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Skills>(skill.SkillTypeId),
+                skill.Level,
+                skill.Priority
+            ));
+
+            var employeeId = _headCountService.AddEmployee(
+                employee.EmployeeName,
+                employee.Password,
+                employee.PhoneNumber,
+                employee.Email,
+                (HeadcountAllocation.Domain.Enums.TimeZones)employee.TimeZone,
+                new System.Collections.Concurrent.ConcurrentDictionary<int, HeadcountAllocation.Domain.Language>(foreignLanguages),
+                new System.Collections.Concurrent.ConcurrentDictionary<int, HeadcountAllocation.Domain.Skill>(skills),
+                employee.YearsExperience,
+                employee.JobPercentage,
+                true
+            );
+            return Ok(employeeId);
+        }
+        
+        [HttpDelete("Tickets/{ticketId}")]
         public ActionResult<Response> CloseTicket([FromRoute] int ticketId)
         {
             try
