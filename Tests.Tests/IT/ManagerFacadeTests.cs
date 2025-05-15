@@ -5,6 +5,7 @@ using HeadcountAllocation.DAL;
 using HeadcountAllocation.DAL.DTO;
 using static HeadcountAllocation.Domain.Enums;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using HeadcountAllocation.Domain.Alert;
 namespace IT.Tests
 {
     [TestClass]

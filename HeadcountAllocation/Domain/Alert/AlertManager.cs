@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Text.Json;
+using Hangfire;
+using HeadcountAllocation.DAL.Repositories;
 using WebSocketSharp.Server;
 
 namespace HeadcountAllocation.Domain.Alert
@@ -42,9 +44,23 @@ namespace HeadcountAllocation.Domain.Alert
             return _alertsManager;
         }
 
-        public void SendAlert(string title, string message, string username, MailAddress email)
+        public void SendAlert(Ticket ticket, string username, MailAddress email, bool reminder = true)
         {
-            SendEmail(title, message, email);
+            SendEmail(ticket.TicketTitle(), ticket.TicketMessage(), email);
+            
+            // 1. Get ticket reminder date
+            var reminderDate = ticket.StartDate.AddDays(-5);
+
+            // 2. Pick closest Monday *before* the reminder
+            var scheduledDate = GetClosestMonday(reminderDate);
+
+            if(reminder)
+                // 3. Schedule the job to run at that time
+                BackgroundJob.Schedule(
+                    () => AlertManager.CheckAndSendEmail(ticket.TicketId, email.Address),
+                    scheduledDate - DateTime.Now
+                );
+            
             var relativePath = $"/{username}-alerts";
 
             if (_alertsServer is null || _alertsServer.WebSocketServices[relativePath] is null)
@@ -53,7 +69,7 @@ namespace HeadcountAllocation.Domain.Alert
             var webSocketService = _alertsServer.WebSocketServices[relativePath];
             if (webSocketService is null || webSocketService.Sessions.Count <= 0)
                 return;
-
+            var message = ticket.TicketMessage();
             var json = JsonSerializer.Serialize(new { message });
 
             lock (_lock)
@@ -73,9 +89,9 @@ namespace HeadcountAllocation.Domain.Alert
                 }
             }            
 
-        }
+        }        
 
-        public void SendEmail(string title, string message, MailAddress email)
+        public static void SendEmail(string title, string message, MailAddress email)
         {
             try
             {
@@ -103,5 +119,30 @@ namespace HeadcountAllocation.Domain.Alert
                 Console.WriteLine($"Failed to send email: {ex.Message}");
             }
         }
+
+        public static void CheckAndSendEmail(int ticketId, string email)
+        {
+            var ticket = TicketRepo.GetInstance().GetById(ticketId);
+            if (ticket.Open )//&& ticket.StartDate.AddDays(5) <= DateTime.Now
+            {
+                SendEmail(
+                    "Reminder: Employee Out Soon",
+                    $"Reminder: {ticket.EmployeeName} will be out starting {ticket.StartDate}",
+                    new MailAddress(email)
+                );
+            }            
+        }
+
+        public static DateTime GetClosestMonday(DateTime target)
+        {
+            // If it's already Monday, return as-is
+            if (target.DayOfWeek == DayOfWeek.Monday)
+                return target;
+
+            // Choose the Monday BEFORE the target
+            int diff = (7 + (target.DayOfWeek - DayOfWeek.Monday)) % 7;
+            return target.AddDays(-diff);
+        }
+
     }
 }

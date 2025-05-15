@@ -37,6 +37,7 @@ namespace HeadcountAllocation.Domain
             Description = ticketDTO.Description;
             Open = ticketDTO.Open;
         }
+        public Ticket() { }
 
         public void CloseTicket()
         {
