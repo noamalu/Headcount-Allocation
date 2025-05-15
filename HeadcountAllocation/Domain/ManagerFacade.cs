@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Net.Mail;
 using System.Text;
 using HeadcountAllocation.DAL.Repositories;
+using Microsoft.AspNetCore.Routing;
 using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain{
@@ -197,10 +198,12 @@ namespace HeadcountAllocation.Domain{
         {
             return Projects.Values.ToList();
         }
-        public Dictionary <Employee, double> EmployeesToAssign(Role role){
+       public Dictionary <Employee, double> EmployeesToAssign(Role role){
             Console.WriteLine("intoFacade");
-            Dictionary<Employee, double> employees = new Dictionary<Employee, double>();
+            Dictionary<Employee, double> employees_score = new Dictionary<Employee, double>();
+            Dictionary<Employee, double> employees_job_per = new Dictionary<Employee, double>();
             foreach (Employee employee in Employees.Values){
+            int sum = 0;
             double score = 0;
             bool disqualified = false; 
                 if(employee.YearsExperience < role.YearsExperience)
@@ -222,21 +225,32 @@ namespace HeadcountAllocation.Domain{
                 foreach (Skill skill in role.Skills.Values){
                     if (employee.Skills.ContainsKey(skill.SkillId)){
                         Skill employeeSkill = employee.Skills[skill.SkillId];
-                        if (employeeSkill.Level == skill.Level)
+                        if (employeeSkill.Level == skill.Level){
                             score = score +3 * (double)(role.Skills.Count -skill.Priority + 1)/10;
-                        else if (employeeSkill.Level > skill.Level)
+                            sum = sum+1;
+                        }
+                        else if (employeeSkill.Level > skill.Level){
                             score = score +2 * (double)(role.Skills.Count -skill.Priority + 1)/10;
+                            sum = sum+1;
+                        }
                         else if (employeeSkill.Level+1 == skill.Level)
                             score = score +1 * (double)(role.Skills.Count -skill.Priority + 1)/10;
                     }
                 }
-
-                employees[employee] = score;
+                if (sum == role.Skills.Count){
+                    if (employee.CalculateJobPercentage() + role.JobPercentage < 100)
+                    employees_job_per[employee] = employee.CalculateJobPercentage();
+                }
+                else{
+                    employees_score[employee] = score;
+                }
            }
-
-           Dictionary<Employee, double> sortedEmployees= employees.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
-           return sortedEmployees;
+           Dictionary<Employee, double> sortedEmployeesScore= employees_score.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
+           Dictionary<Employee, double> sortedEmployeesJobPer= employees_job_per.OrderBy(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
+           var combinedDictionary = sortedEmployeesJobPer.Concat(sortedEmployeesScore).ToDictionary(kv => kv.Key, kv => kv.Value); 
+           return combinedDictionary;
         }
+
 
 
         public Project GetProjectById(int projectId)
@@ -303,6 +317,69 @@ namespace HeadcountAllocation.Domain{
 
             return OpensTickets;
         }
+
+
+        public Dictionary<string, List<Employee>> GetEmployeesJobPre (){
+            Dictionary<string, List<Employee>> JobPerEmployees = new Dictionary<string, List<Employee>>();
+            foreach (Employee employee in Employees.Values){
+                if (employee.CalculateJobPercentage()*100 > 100){
+                    JobPerEmployees["above 100%"].Add(employee);
+                }
+                else if (employee.CalculateJobPercentage()*100 > 80){
+                    JobPerEmployees["between 80% and 100%"].Add(employee);
+                }
+                else if (employee.CalculateJobPercentage()*100 >= 50){
+                    JobPerEmployees["between 50% and 80%"].Add(employee);
+                }
+                 else if (employee.CalculateJobPercentage()*100 < 50){
+                    JobPerEmployees["under 50%"].Add(employee);
+                }
+
+            }
+            return JobPerEmployees;
+
+        }
+
+        public List<Project> GetProjectsThatEndThisMonth (){
+            List<Project> projects = new List<Project>();
+            foreach (Project project in Projects.Values)
+            {
+                if ((project.Date - DateTime.Now).TotalDays <= 30){
+                    projects.Add(project);
+                }
+            }
+            return projects;
+        }
+
+        public Dictionary<Project, int> GetNumEmployeesInProject(){
+            Dictionary<Project, int> EmployeesInProject = new Dictionary<Project, int>();
+            foreach (Project project in Projects.Values){
+                EmployeesInProject[project]= project.Roles.Count();
+            }
+            return EmployeesInProject;
+        }
+
+        public List<Employee> GetEmployeesThatInVacationThisMonth(){
+            List<Employee> EmployeesInVacation = new List<Employee>();
+            foreach (Ticket ticket in Tickets.Values){
+                if ((ticket.StartDate-DateTime.Now).TotalDays<= 30){
+                    EmployeesInVacation.Add(Employees[ticket.EmployeeId]);
+                }
+            }
+            return EmployeesInVacation;
+        }
+
+        // public Dictionary<Project, Double> GetProjectHourRatio(){
+        //     Dictionary<Project, Double> ProjectHourRatio = new Dictionary<Project, Double>();
+        //     foreach (Project project in Projects.Values){
+        //         Double sum = 0;
+        //         foreach (Role role in project.Roles.Values){
+        //             sum = sum + (role.JobPercentage * 100 * 180);
+        //         }
+        //     }
+        // }
+
+
 
 
 
