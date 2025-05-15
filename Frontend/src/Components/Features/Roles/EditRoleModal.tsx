@@ -7,16 +7,17 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
 import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { useDataContext } from '../../../Context/DataContext';
 
 interface EditRoleModalProps {
   projectId: number;
   role: Role;
   employeeName: string;
   onClose: () => void;
-  onSave: (updatedRole: Role) => void;
+  // onSave: (updatedRole: Role) => void;
 }
 
-const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employeeName, onClose, onSave }) => {
+const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employeeName, onClose }) => {
   const [editedRole, setEditedRole] = useState<Role>({ ...role });
   const [uiError, setUiError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -31,6 +32,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
   const [languageError, setLanguageError] = useState('');
   const [skillError, setSkillError] = useState('');
+  const { updateRole } = useDataContext();
 
 
   useEffect(() => {
@@ -165,7 +167,8 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
 
     try {
       await ProjectsService.editRole(editedRole, projectId);
-      onSave(editedRole);
+      // onSave(editedRole);
+      updateRole(updatedRole);
       onClose();
     } catch (error) {
       console.error('Error updating role:', error);

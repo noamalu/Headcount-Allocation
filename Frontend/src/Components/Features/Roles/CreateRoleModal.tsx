@@ -7,14 +7,16 @@ import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType'
 import ProjectsService from '../../../Services/ProjectsService';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
+import { useDataContext } from '../../../Context/DataContext';
+
 
 interface CreateRoleModalProps {
   projectId: number;
-  onRoleCreated: (newRole: Role) => void;
+  // onRoleCreated: (newRole: Role) => void;
   onClose: () => void;
 }
 
-const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , onRoleCreated }) => {
+const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
   const [timeZone, setTimeZone] = useState(0);
@@ -29,6 +31,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   const [apiError, setApiError] = useState<string | null>(null);
   const [skillError, setSkillError] = useState<string>("");
   const [languageError, setLanguageError] = useState<string>("");
+  const { addRole } = useDataContext();
 
   useEffect(() => {
     if (apiError) {
@@ -171,7 +174,8 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       console.log("Response keys:", Object.keys(addedRoles));
       newRole.roleId = addedRoles[0].roleId;
       console.log('Role created successfully:', newRole);
-      onRoleCreated(newRole); 
+      // onRoleCreated(newRole); 
+      addRole(newRole);
       setApiError(null);
       onClose();
     } catch (error) {

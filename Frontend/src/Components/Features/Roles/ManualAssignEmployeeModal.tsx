@@ -5,23 +5,26 @@ import { Employee } from '../../../Types/EmployeeType'
 import { getTimeZoneStringByIndex, getLanguageStringByIndex, getSkillStringByIndex } from '../../../Types/EnumType';
 import { getAssignOptionsToRole, getManualAssignOptionsToRole } from '../../../Services/ProjectsService';
 import { getEmployees } from '../../../Services/EmployeesService';
+import { useDataContext } from '../../../Context/DataContext';
 
 
 const ManualAssignEmployeeModal = ({
   projectId,
   roleId,
   onClose,
-  onAssign,
+  // onAssign,
 }: {
   projectId: number;
   roleId: number;
   onClose: () => void;
-  onAssign: (employee: Employee) => void;
+  // onAssign: (employee: Employee) => void;
 }) => {
   const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
-
+  const { roles, updateRole } = useDataContext();
+  const currentRole = roles.find((r) => r.roleId === roleId);
+  
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -44,8 +47,13 @@ const ManualAssignEmployeeModal = ({
 
   const handleAssign = () => {
     console.log("handleManualAssign in ManualAssignEmployeeModal");
-    if (selectedEmployee) {
-      onAssign(selectedEmployee);
+    // if (selectedEmployee) {
+    //   onAssign(selectedEmployee);
+    //   onClose();
+    // }
+    if (selectedEmployee && currentRole) {
+      const updatedRole = { ...currentRole, employeeId: selectedEmployee.employeeId };
+      updateRole(updatedRole);
       onClose();
     }
   };

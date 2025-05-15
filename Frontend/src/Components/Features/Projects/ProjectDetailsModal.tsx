@@ -227,8 +227,8 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           <RoleDetailsModal 
           projectId={project.projectId} 
           role={selectedRole} 
-          onClose={handleCloseModal}
-          onAssignEmployeeToRole={handleAssignEmployeeToRole} />
+          onClose={handleCloseModal} />
+          // onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}
         {isCreateRoleModalOpen && (
           <CreateRoleModal 

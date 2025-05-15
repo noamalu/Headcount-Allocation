@@ -10,6 +10,7 @@ import { formateSkillToString } from '../../../Types/SkillType';
 import EmployeesService from '../../../Services/EmployeesService';
 import { Employee } from '../../../Types/EmployeeType';
 import ManualAssignEmployeeModal from './ManualAssignEmployeeModal';
+import { useDataContext } from '../../../Context/DataContext';
 
 
 interface RoleDetailsModalProps {
@@ -17,14 +18,18 @@ interface RoleDetailsModalProps {
   role: Role;
   onClose: () => void;
   onSave?: (newRole: Role) => void; // Add this line
-  onAssignEmployeeToRole?: (roleId: number, employeeId: number) => void}
+  // onAssignEmployeeToRole?: (roleId: number, employeeId: number) => void
+}
 
-const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({projectId,  role, onClose, onSave, onAssignEmployeeToRole}) => {
+const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ projectId, role, onClose, onSave }) => {
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isManualAssignModalOpen, setIsManualAssignModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  // const [assignedEmployee, setassignedEmployee] = useState<Employee | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
+  const { updateRole, employees } = useDataContext();
+  const assignedEmployee = employees.find(e => e.employeeId === role.employeeId);
+
 
 useEffect(() => {
   if (apiError) {
@@ -33,47 +38,58 @@ useEffect(() => {
 }, [apiError]);
   
 
-  useEffect(() => {
-    if (role.employeeId != -1 && role.employeeId != null && selectedEmployee == null) {
-      console.log("Selected employee id:", selectedEmployee);
-      console.log("Role employee id:", role.employeeId);
-      handleEmployeeDetails(role.employeeId);
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.employeeId != -1 && role.employeeId != null && assignedEmployee == null) {
+  //     console.log("Selected employee id:", assignedEmployee);
+  //     console.log("Role employee id:", role.employeeId);
+  //     handleEmployeeDetails(role.employeeId);
+  //   }
+  // }, [role]);
 
-  useEffect(() => {
-    if (selectedEmployee) {
-      console.log("Selected employee updated:", selectedEmployee);
-    }
-  }, [selectedEmployee]);
+  // useEffect(() => {
+  //   if (assignedEmployee) {
+  //     console.log("Selected employee updated:", assignedEmployee);
+  //   }
+  // }, [assignedEmployee]);
+
+  // const handleAssign = async (employee: Employee) => {
+  //   console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
+  //   try {
+  //     role.employeeId = employee.employeeId;
+  //     console.log("assignedEmployeeName before change: " + assignedEmployee?.employeeName + ", will be changed to: " + employee.employeeName);
+  //     setassignedEmployee({ ...employee });
+  //     console.log("assignedEmployeeName after change: " + assignedEmployee?.employeeName);
+  //     const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
+  //     onAssignEmployeeToRole?.(role.roleId, employee.employeeId);
+  //     console.log('employee assigned successfully:', employee.employeeId);
+  //   } catch (error) {
+  //     console.error('Error assigning employee:', error);
+  //     setApiError('An error occurred while assigning the employee');
+  //   }
+  // };
 
   const handleAssign = async (employee: Employee) => {
-    console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
     try {
-      role.employeeId = employee.employeeId;
-      console.log("selectedEmployeeName before change: " + selectedEmployee?.employeeName + ", will be changed to: " + employee.employeeName);
-      setSelectedEmployee({ ...employee });
-      console.log("selectedEmployeeName after change: " + selectedEmployee?.employeeName);
-      const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
-      onAssignEmployeeToRole?.(role.roleId, employee.employeeId);
-      console.log('employee assigned successfully:', employee.employeeId);
+      const updatedRole = { ...role, employeeId: employee.employeeId };
+      await EmployeesService.assignEmployeeToRole(employee.employeeId, updatedRole);
+      updateRole(updatedRole); // גלובלי
     } catch (error) {
       console.error('Error assigning employee:', error);
       setApiError('An error occurred while assigning the employee');
     }
   };
 
-  const handleEmployeeDetails = async (employeeId: number) => {
-    console.log(`handleEmployeeDetails: ${employeeId}`);
-    try {
-      const employee =  await EmployeesService.getEmployeeById(employeeId);
-      console.log("selectedEmployeeName before change: " + selectedEmployee);
-      setSelectedEmployee({ ...employee });
-    } catch (error) {
-      console.error('Error fetching employee details:', error);
-      setApiError('An error occurred while fetching employee details');
-    }
-  };
+  // const handleEmployeeDetails = async (employeeId: number) => {
+  //   console.log(`handleEmployeeDetails: ${employeeId}`);
+  //   try {
+  //     const employee =  await EmployeesService.getEmployeeById(employeeId);
+  //     console.log("assignedEmployeeName before change: " + assignedEmployee);
+  //     setassignedEmployee({ ...employee });
+  //   } catch (error) {
+  //     console.error('Error fetching employee details:', error);
+  //     setApiError('An error occurred while fetching employee details');
+  //   }
+  // };
 
   const handleCloseModal = () => {
   };
@@ -95,7 +111,7 @@ useEffect(() => {
         <div className="employee-info">
           <span className="employee-avatar">👤</span>
           <p className="employee-name">
-            {selectedEmployee != null ? selectedEmployee.employeeName : role.employeeId != -1 ? role.employeeId : "No employee assigned"}
+            {assignedEmployee ? assignedEmployee.employeeName : role.employeeId !== -1 ? role.employeeId : "No employee assigned"}
           </p>
         </div>
 
@@ -159,9 +175,9 @@ useEffect(() => {
                         <td>{skill.level}</td>
                         <td>{skill.priority}</td>
                         <td>
-                          {selectedEmployee?
-                             selectedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)
-                              ? selectedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)!.level
+                          {assignedEmployee?
+                             assignedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)
+                              ? assignedEmployee.skills.find((empSkill) => empSkill.skillTypeId === skill.skillTypeId)!.level
                               : "-" 
                             : "-"} 
                         </td>
@@ -211,7 +227,7 @@ useEffect(() => {
           <EditRoleModal
             projectId={projectId}
             role={role}
-            employeeName={selectedEmployee != null ? selectedEmployee.employeeName : ""}
+            employeeName={assignedEmployee != null ? assignedEmployee.employeeName : ""}
             onClose={() => setIsEditModalOpen(false)}
             onSave={handleEditSave} />
           )}
