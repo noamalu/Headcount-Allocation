@@ -22,7 +22,6 @@ namespace HeadcountAllocation.Domain
 
         private readonly ProjectRepo projectRepo;
         private readonly TicketRepo ticketRepo;
-
         public int projectCount = 0;
 
         public int employeeCount = 0;
@@ -77,6 +76,7 @@ namespace HeadcountAllocation.Domain
             RoleLanguagesRepo.Dispose();
             RoleSkillsRepo.Dispose();
             TicketRepo.Dispose();
+            TicketReasonsRepo.Dispose();
             managerFacade = null;
         }
 
@@ -188,13 +188,13 @@ namespace HeadcountAllocation.Domain
 
 
         public Role AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description)
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description, DateTime startDate)
         {
             if (!Projects.ContainsKey(projectId))
             {
                 throw new Exception($"No such project {projectId}");
             }
-            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, roleCounter++);
+            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, roleCounter++, startDate);
         }
 
         public void RemoveRole(int projectId, int roleId)
@@ -326,12 +326,12 @@ namespace HeadcountAllocation.Domain
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
 
-        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description)
+        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason)
         {
             Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
             lock (_ticketLock)
             {
-                Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description);
+                Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description, reason);
                 Tickets.Add(ticket.TicketId, ticket);
                 try
                 {

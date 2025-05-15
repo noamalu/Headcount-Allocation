@@ -29,6 +29,19 @@ namespace HeadcountAllocation.Domain{
             Spanish
         }
 
+        public enum Reasons
+        {
+            ReserveDuty,
+            MaterPaterLeave,
+            StudyLeave,
+            SickLeave,
+            MourningLeave,
+            LongVacation,
+            PersonalLeave,
+            MissionAbroad,
+            Other            
+        }
+
         public static int GetId<TEnum>(TEnum enumValue) where TEnum : Enum
         {
             return Convert.ToInt32(enumValue);

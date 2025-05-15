@@ -15,8 +15,9 @@ namespace HeadcountAllocation.Domain
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
         public bool Open { get; set; }
+        public Reason Reason {get; set;}
 
-        public Ticket(int ticketId, int employeeId, string employeeName, DateTime startDate, DateTime endDate, string description)
+        public Ticket(int ticketId, int employeeId, string employeeName, DateTime startDate, DateTime endDate, string description, Reason reason)
         {
             TicketId = ticketId;
             EmployeeId = employeeId;
@@ -25,6 +26,7 @@ namespace HeadcountAllocation.Domain
             EndDate = endDate;
             Description = description;
             Open = true;
+            Reason = reason;
         }
 
         public Ticket(TicketDTO ticketDTO)
@@ -36,6 +38,7 @@ namespace HeadcountAllocation.Domain
             EndDate = ticketDTO.EndDate;
             Description = ticketDTO.Description;
             Open = ticketDTO.Open;
+            Reason = new Reason(ticketDTO.Reason);
         }
 
         public void CloseTicket()
@@ -45,24 +48,21 @@ namespace HeadcountAllocation.Domain
 
         public string TicketMessage()
         {
-            var reason = Description.Split("|").FirstOrDefault();
-            var description = Description.Split("|").LastOrDefault();
+            var description = Description;
 
             var span = GetReadableDuration(StartDate, EndDate);
             var message =
             $@"{EmployeeName} Opened a ticket, 
             And will be out for: {span}. 
             Starting on {StartDate}, to {EndDate}
-            Reason - {reason}
+            Reason - {Reason}
             Description - {description}";
             return message;
         }
 
         public string TicketTitle()
         {
-            var reason = Description.Split("|").FirstOrDefault();
-            var description = Description.Split("|").LastOrDefault();
-            var title = $@"Ticket: {EmployeeName} - {reason}";
+            var title = $@"Ticket: {EmployeeName} - {Reason}";
 
             return title;            
         }

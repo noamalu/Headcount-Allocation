@@ -92,7 +92,7 @@ namespace UT.Tests
         {
             // Arrange
             var employee = CreateTestEmployee();
-            var role = new Role("Test Role", 1, 1, TimeZones.Morning, new ConcurrentDictionary<int, Language>(), new ConcurrentDictionary<int, Skill>(), 2, 100, "Test");
+            var role = new Role("Test Role", 1, 1, TimeZones.Morning, new ConcurrentDictionary<int, Language>(), new ConcurrentDictionary<int, Skill>(), 2, 100, "Test", DateTime.Now);
 
             // Act
             employee.AssignEmployeeToRole(role);
