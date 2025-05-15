@@ -66,7 +66,8 @@ namespace UT.Tests
                 skills,
                 2,
                 100,
-                "Coding tasks"
+                "Coding tasks",
+                0
             );
 
             // Assert
@@ -92,7 +93,8 @@ namespace UT.Tests
                 skills,
                 1,
                 50,
-                "Testing tasks"
+                "Testing tasks",
+                0
             );
 
             // Act
@@ -151,7 +153,8 @@ namespace UT.Tests
                 skills,
                 3,
                 100,
-                "Analysis tasks"
+                "Analysis tasks",
+                0
             );
 
             // Act

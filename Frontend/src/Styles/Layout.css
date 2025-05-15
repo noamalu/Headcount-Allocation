@@ -1,17 +1,75 @@
-.sidebar {
-  grid-area: sidebar; /* מיקום ה-sidebar */
-  background: linear-gradient(180deg, #FDF8F5, #E8CEBF); 
-  position: fixed;
-  /* background: linear-gradient(180deg, #518478, #405955); גוון רך מפלטת הצבעים */
-  color: #4F4846; 
-  margin-top: 70px; 
-  padding: 20px;
-  height: 100vh; 
+/* ======================== */
+/*    General Defenitions   */
+/* ======================== */
+
+
+body, input, button, select, textarea, label {
+  font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ======================== */
+/*      Layout Structure    */
+/* ======================== */
+
+body {
+  background: linear-gradient(180deg, #FDF8F5 0%, #FAEDEB 100%);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #4F4846;
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: auto;
+  grid-template-areas: "sidebar main";
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container.login-layout {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* עמוד תוכן */
+main {
+  grid-area: main;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  margin: 100px auto;
+  width: 80%;
+  max-width: 1000px;
+  margin-left: 180px;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ======================== */
+/*         Sidebar          */
+/* ======================== */
+
+.sidebar {
+  grid-area: sidebar;
+  background: linear-gradient(180deg, #FDF8F5, #E8CEBF);
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  height: 100vh;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
 }
 
 .sidebar ul {
@@ -23,7 +81,7 @@
 
 .sidebar li {
   font-family: 'Poppins';
-  font-size: 18px; 
+  font-size: 18px;
   font-weight: 500;
   margin: 15px 0;
   padding: 10px 15px;
@@ -33,15 +91,30 @@
 }
 
 .sidebar li:hover {
-  background-color: #DDAF94; /* רקע קליל בעת ריחוף */
-  color: #FFFFFF; /* טקסט לבן */
+  background-color: #DDAF94;
+  color: #FFFFFF;
 }
 
-/* Header */
+.sidebar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar a.active {
+  font-weight:bold; 
+}
+
+
+
+/* ======================== */
+/*         Header           */
+/* ======================== */
+
 .header {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 200px;
+  width: calc(100% - 200px);
   background: linear-gradient(to right, #FDF8F5, #E8CEBF);
   color: #4F4846;
   display: flex;
@@ -49,11 +122,11 @@
   align-items: center;
   padding: 15px 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 101;
   box-sizing: border-box;
+  height: 70px;
 }
 
-/* Navigation container */
 .header nav {
   display: flex;
   justify-content: space-between;
@@ -70,8 +143,8 @@
 
 .icon-container {
   display: flex;
-  gap: 20px; /* רווח בין האייקונים */
-  justify-content: flex-end; /* מוודא שהאייקונים נצמדים לימין */
+  gap: 20px;
+  justify-content: flex-end;
 }
 
 .icon-container i {
@@ -83,4 +156,65 @@
 
 .icon-container i:hover {
   color: #1E4E40;
+}
+
+/* ======================== */
+/*     User Dropdown        */
+/* ======================== */
+
+.user-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 160px;
+  font-family: 'Poppins';
+  z-index: 10;
+}
+
+.user-dropdown p {
+  margin: 0 0 10px;
+  font-weight: bold;
+}
+
+.user-dropdown button {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  color: #4F4846;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.user-dropdown button:hover {
+  background-color: #E8CEBF;
+  color: white;
+}
+
+.username-label {
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4F4846;
+  background: #FDF8F5;
+  border: 1px solid #E8CEBF;
+  padding: 5px 10px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  font-family: 'Poppins';
 }

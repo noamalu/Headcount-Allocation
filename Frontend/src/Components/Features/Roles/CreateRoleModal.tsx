@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
-import '../../../Styles/RoleModal.css';
+import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
 import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';
@@ -20,24 +20,54 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   const [timeZone, setTimeZone] = useState(0);
   const [yearsExperience, setYearsExperience] = useState(0);
   const [jobPercentage, setJobPercentage] = useState(0);
-  const [error, setError] = useState<string>(""); 
   const [skills, setSkills] = useState<{ skill: SkillEnum; level: number }[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<SkillEnum | "">("");
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
   const [languages, setLanguages] = useState<{ language: LanguageEnum; level: number }[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
+  const [uiError, setUiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [skillError, setSkillError] = useState<string>("");
+  const [languageError, setLanguageError] = useState<string>("");
+
+  useEffect(() => {
+    if (apiError) {
+      alert(apiError);
+    }
+  }, [apiError]);
+
+  const addUiError = (message: string) => {
+    setUiError((prev) => (prev ? prev + "\n• " + message : "• " + message));
+  };
+
+
+  // Skills Edit:
 
   const handleAddSkill = () => {
       if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-          alert("Skill already added or not selected.");
-          return;
+        setSkillError("Skill already added or no skill was selected.");
+        return;
       }
       setSkills([...skills, { skill: selectedSkill, level: 1 }]);
-      setSelectedSkill(""); // איפוס הבחירה
+      setSelectedSkill(""); 
   };
+
+  const handleLevelChange = (index: number, level: number) => {
+    const updatedSkills = [...skills];
+    updatedSkills[index].level = level;
+    setSkills(updatedSkills);
+    setSkillError("");
+  };
+
+  const handleDeleteSkill = (index: number) => {
+    const updatedSkills = skills.filter((_, i) => i !== index); // מסנן את השורה
+    setSkills(updatedSkills);
+    setSkillError("");
+  }; 
 
   const handleDragStart = (index: number) => {
       setDraggedSkillIndex(index);
+      setSkillError("");
   };
 
   const handleDrop = (index: number) => {
@@ -48,23 +78,15 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       reorderedSkills.splice(index, 0, draggedSkill);
 
       setSkills(reorderedSkills);
-      setDraggedSkillIndex(null); // איפוס ה-dragging
+      setDraggedSkillIndex(null); 
   };
 
-  const handleLevelChange = (index: number, level: number) => {
-      const updatedSkills = [...skills];
-      updatedSkills[index].level = level;
-      setSkills(updatedSkills);
-  };
-
-  const handleDeleteSkill = (index: number) => {
-    const updatedSkills = skills.filter((_, i) => i !== index); // מסנן את השורה
-    setSkills(updatedSkills);
-  }; 
+  
+  // Languages Edit:
   
   const handleAddLanguage = () => {
     if (!selectedLanguage || languages.some((l) => l.language === selectedLanguage)) {
-      alert("Language already added or not selected.");
+      setLanguageError("Language already added or no language was selected.");
       return;
     }
     setLanguages([...languages, { language: selectedLanguage, level: 1 }]);
@@ -75,21 +97,45 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
     const updatedLanguages = [...languages];
     updatedLanguages[index].level = level;
     setLanguages(updatedLanguages);
+    setLanguageError("");
   };
 
   const handleDeleteLanguage = (index: number) => {
     const updatedLanguages = languages.filter((_, i) => i !== index);
     setLanguages(updatedLanguages);
+    setLanguageError("");
   };
 
   const handleSubmit = async () => {
-    if (!roleName.trim() || !description.trim()) {
-      setError("All fields are required, and required hours must be greater than 0.");
-      alert('Please fill in all fields.');
+    let errorMessage = "";
+    if (!roleName.trim()) {
+      errorMessage += "• Role name is required.\n";
+    }
+    if (yearsExperience < 0) {
+      errorMessage += "• Years of experience cannot be negative.\n";
+    }
+    if (jobPercentage === 0) {
+      errorMessage += "• Job percentage must be greater than 0%.\n";
+    }
+    if (!description.trim()) {
+      errorMessage += "• Role description is required.\n";
+    }
+    if (skills.length === 0) {
+      errorMessage += "• Please add at least one skill.\n";
+    }
+    if (languages.length === 0) {
+      errorMessage += "• Please add at least one language.\n";
+    }
+
+    if (errorMessage) {
+      setUiError(errorMessage.trim());
       return;
     }
+
+    setUiError(null);
+
   
-    // יצירת מערך של RoleSkill מהנתונים
+    // create "roleSkill" array
     const roleSkills: Skill[] = skills.map((skill, index) => ({
       skillId: index, // ערך זמני, יתעדכן בשרת
       skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
@@ -99,7 +145,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
 
     console.log("in CreateRoleModal, skillTypeId: " + roleSkills[0].skillTypeId);
  
-    // יצירת מערך של Language מהנתונים
+    // create "language" array
     const roleLanguages: Language[] = languages.map((lang, index) => ({
       languageId: index, // ערך זמני, יתעדכן בשרת
       languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
@@ -108,29 +154,29 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   
     const newRole: Role = {
       roleName,
-      roleId: -1, // ערך זמני, יתעדכן בשרת
+      roleId: -1, 
       projectId: projectId,
       employeeId: -1,
       description,
       timeZone,
-      foreignLanguages: roleLanguages, // הוספת השפות כנתון
-      skills: roleSkills, // הוספת הכישורים כנתון
+      foreignLanguages: roleLanguages,
+      skills: roleSkills, 
       yearsExperience,
       jobPercentage,
     };
   
     try {
-      // שליחת הנתונים לשרת
       const addedRoles = await ProjectsService.addRolesToProject(projectId, [newRole]);
       console.log("Type of response:", typeof addedRoles);
       console.log("Response keys:", Object.keys(addedRoles));
       newRole.roleId = addedRoles[0].roleId;
       console.log('Role created successfully:', newRole);
-      onRoleCreated(newRole); // עדכון ברכיב האב
-      onClose(); // סגירת המודל
+      onRoleCreated(newRole); 
+      setApiError(null);
+      onClose();
     } catch (error) {
       console.error('Error creating role:', error);
-      setError('An error occurred while creating the role.');
+      setApiError('An error occurred while creating the role');
     }
   };
 
@@ -139,6 +185,13 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
           <h2>Create New Role</h2>
+
+          {uiError && (
+          <div className="ui-error" style={{ whiteSpace: 'pre-line' }}>
+            {uiError}
+          </div>
+        )}
+
           <div className="modal-info">
             <div>
               <label>Role Name: </label>
@@ -167,10 +220,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                 min={0}
                 max={100}
                 value={jobPercentage * 100} 
-                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} // מחלקים ב-100 כדי לשמור כחלקי 1
+                onChange={(e) => setJobPercentage(Number(e.target.value) / 100)} 
                 className="slider"
               />
-              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> {/* מציג את הערך */}
+              <span className="slider-value">{Math.round(jobPercentage * 100)}%</span> 
             </div>
             <div>
               <label>Time Zone: </label>
@@ -202,23 +255,31 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
           
           {/* Try skills */}
           <div className="skills-section">
-            <label>Add Skill: </label>
-            <select
-                id="skillSelect"
-                value={selectedSkill}
-                onChange={(e) => setSelectedSkill(e.target.value as SkillEnum)}
-                className="dropdown"
-            >
-              <option value="" disabled>Select a skill</option>
-              {Object.values(SkillEnum).map((skill) => (
-                  <option key={skill} value={skill}>
-                      {skill}
-                  </option>
-              ))}
-            </select>
-            <button className="add-button" onClick={handleAddSkill}>
-              <i className="fas fa-plus"></i>
-            </button>
+            <div className="modal-info-row">
+              <label>Add Skill: </label>
+              <select
+                  id="skillSelect"
+                  value={selectedSkill}
+                  onChange={(e) => {
+                    setSelectedSkill(e.target.value as SkillEnum);
+                    setSkillError("");}
+                  }
+                  className="dropdown"
+              >
+                <option value="" disabled>Select a skill</option>
+                {Object.values(SkillEnum).map((skill) => (
+                    <option key={skill} value={skill}>
+                        {skill}
+                    </option>
+                ))}
+              </select>
+              <button className="add-button" onClick={handleAddSkill}>
+                <i className="fas fa-plus"></i>
+              </button>
+            </div>
+
+            {skillError && <div className="list-error">{skillError}</div>}
+
             <table className="skills-input-table">
                 <thead>
                     <tr>
@@ -266,23 +327,30 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
           </div>
 
           <div className="skills-section">
-            <label>Add Language: </label>
-            <select
-              id="languageSelect"
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value as LanguageEnum)}
-              className="dropdown"
-            >
-              <option value="" disabled>Select a language</option>
-              {Object.values(LanguageEnum).map((language) => (
-                <option key={language} value={language}>
-                  {language}
-                </option>
-              ))}
-            </select>
-            <button className="add-button" onClick={handleAddLanguage}>
-              <i className="fas fa-plus"></i>
-            </button>
+            <div className="modal-info-row">
+              <label>Add Language: </label>
+              <select
+                id="languageSelect"
+                value={selectedLanguage}
+                onChange={(e) => {
+                  setSelectedLanguage(e.target.value as LanguageEnum)
+                  setLanguageError("");}
+                }
+                className="dropdown"
+              >
+                <option value="" disabled>Select a language</option>
+                {Object.values(LanguageEnum).map((language) => (
+                  <option key={language} value={language}>
+                    {language}
+                  </option>
+                ))}
+              </select>
+              <button className="add-button" onClick={handleAddLanguage}>
+                <i className="fas fa-plus"></i>
+              </button>
+            </div>
+
+            {languageError && <div className="list-error">{languageError}</div>}
 
             <table className="languages-input-table">
               <thead>

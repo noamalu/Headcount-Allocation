@@ -8,15 +8,16 @@ namespace HeadcountAllocation.Domain
 {
     public class Ticket
     {
-        public int TicketId {get;set;}
-        public int EmployeeId {get;set;}
-        public string EmployeeName {get;set;}
-        public DateTime StartDate {get;set;}
-        public DateTime EndDate {get;set;}
-        public string Description {get;set;}
-        public bool Open {get;set;}
+        public int TicketId { get; set; }
+        public int EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Description { get; set; }
+        public bool Open { get; set; }
 
-        public Ticket (int ticketId, int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description){
+        public Ticket(int ticketId, int employeeId, string employeeName, DateTime startDate, DateTime endDate, string description)
+        {
             TicketId = ticketId;
             EmployeeId = employeeId;
             EmployeeName = employeeName;
@@ -26,7 +27,8 @@ namespace HeadcountAllocation.Domain
             Open = true;
         }
 
-        public Ticket (TicketDTO ticketDTO){
+        public Ticket(TicketDTO ticketDTO)
+        {
             TicketId = ticketDTO.TicketId;
             EmployeeId = ticketDTO.EmployeeId;
             EmployeeName = ticketDTO.EmployeeName;
@@ -36,9 +38,59 @@ namespace HeadcountAllocation.Domain
             Open = ticketDTO.Open;
         }
 
-        public void CloseTicket(){
+        public void CloseTicket()
+        {
             Open = false;
         }
+
+        public string TicketMessage()
+        {
+            var reason = Description.Split("|").FirstOrDefault();
+            var description = Description.Split("|").LastOrDefault();
+
+            var span = GetReadableDuration(StartDate, EndDate);
+            var message =
+            $@"{EmployeeName} Opened a ticket, 
+            And will be out for: {span}. 
+            Starting on {StartDate}, to {EndDate}
+            Reason - {reason}
+            Description - {description}";
+            return message;
+        }
+
+        public string TicketTitle()
+        {
+            var reason = Description.Split("|").FirstOrDefault();
+            var description = Description.Split("|").LastOrDefault();
+            var title = $@"Ticket: {EmployeeName} - {reason}";
+
+            return title;            
+        }
+
+        public static string GetReadableDuration(DateTime startDate, DateTime endDate)
+        {
+            TimeSpan duration = endDate - startDate;
+
+            if (duration.TotalDays < 7)
+                return $"{(int)duration.TotalDays} day{(duration.TotalDays >= 2 ? "s" : "")}";
+
+            if (duration.TotalDays < 30)
+            {
+                int weeks = (int)Math.Round(duration.TotalDays / 7.0);
+                return $"{weeks} week{(weeks > 1 ? "s" : "")}";
+            }
+
+            int totalMonths = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month;
+            if (endDate.Day < startDate.Day)
+                totalMonths--;
+
+            if (totalMonths < 12)
+                return $"{totalMonths + 1} month{(totalMonths >= 1 ? "s" : "")}";
+
+            int years = totalMonths / 12;
+            return $"{years} year{(years > 1 ? "s" : "")}";
+        }
+
 
     }
 }
