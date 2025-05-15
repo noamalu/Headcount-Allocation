@@ -59,6 +59,18 @@ namespace HeadcountAllocation.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReasonTypes",
+                columns: table => new
+                {
+                    ReasonTypeId = table.Column<int>(type: "int", nullable: false),
+                    ReasonTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReasonTypes", x => x.ReasonTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SkillTypes",
                 columns: table => new
                 {
@@ -193,7 +205,8 @@ namespace HeadcountAllocation.Migrations
                     TimeZoneId = table.Column<int>(type: "int", nullable: false),
                     YearsExperience = table.Column<int>(type: "int", nullable: false),
                     JobPercentage = table.Column<double>(type: "float", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -208,6 +221,30 @@ namespace HeadcountAllocation.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketReasons",
+                columns: table => new
+                {
+                    TicketId = table.Column<int>(type: "int", nullable: false),
+                    ReasonTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketReasons", x => x.TicketId);
+                    table.ForeignKey(
+                        name: "FK_TicketReasons_ReasonTypes_ReasonTypeId",
+                        column: x => x.ReasonTypeId,
+                        principalTable: "ReasonTypes",
+                        principalColumn: "ReasonTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketReasons_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "TicketId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -291,6 +328,11 @@ namespace HeadcountAllocation.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TicketReasons_ReasonTypeId",
+                table: "TicketReasons",
+                column: "ReasonTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_EmployeeId",
                 table: "Tickets",
                 column: "EmployeeId");
@@ -324,7 +366,7 @@ namespace HeadcountAllocation.Migrations
                 name: "SkillTypes");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "TicketReasons");
 
             migrationBuilder.DropTable(
                 name: "TimeZones");
@@ -333,10 +375,16 @@ namespace HeadcountAllocation.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "ReasonTypes");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
         }
     }
 }

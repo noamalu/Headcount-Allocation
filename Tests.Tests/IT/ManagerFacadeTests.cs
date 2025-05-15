@@ -149,7 +149,7 @@ namespace IT.Tests
             var skills = new ConcurrentDictionary<int, Skill>();
 
             // Act
-            var role = manager.AddRoleToProject("Developer", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Description");
+            var role = manager.AddRoleToProject("Developer", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Description", DateTime.Now);
 
             // Assert
             Assert.IsNotNull(role);
@@ -165,7 +165,7 @@ namespace IT.Tests
 
             // Act & Assert
             Assert.ThrowsException<Exception>(() => 
-                manager.AddRoleToProject("Dev", 999, TimeZones.Morning, languages, skills, 1, 100, "Role Desc")
+                manager.AddRoleToProject("Dev", 999, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now)
             );
         }
 
@@ -176,7 +176,7 @@ namespace IT.Tests
             var languages = new ConcurrentDictionary<int, Language>();
             var skills = new ConcurrentDictionary<int, Skill>();
 
-            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc");
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
 
             // Act
             manager.RemoveRole(projectId, role.RoleId);
@@ -215,7 +215,7 @@ namespace IT.Tests
             var languages = new ConcurrentDictionary<int, Language>();
             var skills = new ConcurrentDictionary<int, Skill>();
 
-            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc");
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
 
             var empResult = manager.CreateEmployee("John", "123", "john@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().FirstOrDefault();
@@ -234,7 +234,7 @@ namespace IT.Tests
             var languages = new ConcurrentDictionary<int, Language>();
             var skills = new ConcurrentDictionary<int, Skill>();
 
-            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc");
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
 
             Assert.ThrowsException<Exception>(() => manager.AssignEmployeeToRole(999, role));
         }
@@ -245,7 +245,7 @@ namespace IT.Tests
             var empResult = manager.CreateEmployee("Jane", "321", "jane@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().FirstOrDefault();
 
-            var fakeRole = new Role("FakeRole", 999, 0, TimeZones.Morning, new(), new(), 0, 100, "Desc");
+            var fakeRole = new Role("FakeRole", 999, 0, TimeZones.Morning, new(), new(), 0, 100, "Desc", DateTime.Now);
 
             Assert.ThrowsException<Exception>(() => manager.AssignEmployeeToRole(employee.EmployeeId, fakeRole));
         }
@@ -258,7 +258,7 @@ namespace IT.Tests
             var employee = manager.GetAllEmployees().First();
 
             // Act
-            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave");
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave", new Reason(Reasons.ReserveDuty));
 
             // Assert
             Assert.IsTrue(manager.Tickets.ContainsKey(ticketId));
@@ -268,7 +268,7 @@ namespace IT.Tests
         public void AddTicket_ShouldFail_WhenEmployeeDoesNotExist()
         {
             // Act & Assert
-            Assert.ThrowsException<KeyNotFoundException>(() => manager.AddTicket(999, DateTime.Now, DateTime.Now.AddDays(1), "Desc"));
+            Assert.ThrowsException<KeyNotFoundException>(() => manager.AddTicket(999, DateTime.Now, DateTime.Now.AddDays(1), "Desc", new Reason(Reasons.ReserveDuty)));
         }
 
         [TestMethod]
@@ -278,7 +278,7 @@ namespace IT.Tests
             var createEmp = manager.CreateEmployee("Jane", "123", "jane@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
 
-            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Vacation");
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Vacation", new Reason(Reasons.LongVacation));
 
             // Act
             manager.CloseTicket(ticketId);
@@ -301,8 +301,8 @@ namespace IT.Tests
             var createEmp = manager.CreateEmployee("Mike", "123", "mike@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
 
-            var ticketId1 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Ticket1");
-            var ticketId2 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(4), "Ticket2");
+            var ticketId1 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Ticket1", new Reason(Reasons.Other));
+            var ticketId2 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(4), "Ticket2", new Reason(Reasons.Other));
 
             manager.CloseTicket(ticketId1);
 
@@ -321,8 +321,8 @@ namespace IT.Tests
             var createEmp = manager.CreateEmployee("Sara", "123", "sara@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
 
-            var soonTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), "Soon Ticket");
-            var farTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(12), "Far Ticket");
+            var soonTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), "Soon Ticket", new Reason(Reasons.Other));
+            var farTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(12), "Far Ticket", new Reason(Reasons.Other));
 
             // Act
             var soonTickets = manager.GetOpensTickets5days();
@@ -532,7 +532,7 @@ namespace IT.Tests
             DateTime endDate = startDate.AddDays(3);
 
             // Act
-            int ticketId = manager.AddTicket(employee.EmployeeId, startDate, endDate, "Vacation Request");
+            int ticketId = manager.AddTicket(employee.EmployeeId, startDate, endDate, "Vacation Request", new Reason(Reasons.Other));
 
             // Assert
             var openTickets = manager.GetOpensTickets();
@@ -547,7 +547,7 @@ namespace IT.Tests
             // Arrange
             var result = manager.CreateEmployee("CloseTicketUser", "123456", "closeticket@example.com", TimeZones.Flexible, new(), new(), 2, 100, false);
             var employee = manager.GetAllEmployees().First();
-            int ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave");
+            int ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave", new Reason(Reasons.Other));
 
             // Act
             manager.CloseTicket(ticketId);
@@ -561,7 +561,7 @@ namespace IT.Tests
         public void AddTicket_ShouldFail_WhenEmployeeNotExist()
         {
             // Act & Assert
-            Assert.ThrowsException<KeyNotFoundException>(() => manager.AddTicket(9999, DateTime.Now, DateTime.Now.AddDays(1), "Invalid Employee Ticket"));
+            Assert.ThrowsException<KeyNotFoundException>(() => manager.AddTicket(9999, DateTime.Now, DateTime.Now.AddDays(1), "Invalid Employee Ticket", new Reason(Reasons.Other)));
         }
 
         [TestMethod]
@@ -578,8 +578,8 @@ namespace IT.Tests
             var result = manager.CreateEmployee("FiveDaysUser", "123456", "5days@example.com", TimeZones.Flexible, new(), new(), 2, 100, false);
             var employee = manager.GetAllEmployees().First();
 
-            manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(3), "Soon Ticket");
-            manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(11), "Far Ticket");
+            manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(3), "Soon Ticket", new Reason(Reasons.Other));
+            manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(11), "Far Ticket", new Reason(Reasons.Other));
 
             // Act
             var openTickets5days = manager.GetOpensTickets5days();

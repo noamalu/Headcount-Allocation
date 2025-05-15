@@ -117,7 +117,7 @@ namespace IT.Tests
                         employeeId,
                         DateTime.Now.AddDays(1),
                         DateTime.Now.AddDays(5),
-                        $"Ticket {i}");
+                        $"Ticket {i}", new Reason(Reasons.Other));
                 }));
             }
 
@@ -147,7 +147,8 @@ namespace IT.Tests
                     new(),
                     1,
                     100,
-                    "Developer");
+                    "Developer",
+                    DateTime.Now);
                 roles.Add(role);
             }
 

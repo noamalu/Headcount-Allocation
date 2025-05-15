@@ -30,9 +30,10 @@ namespace UT.Tests
             DateTime startDate = DateTime.Today;
             DateTime endDate = DateTime.Today.AddDays(5);
             string description = "Vacation request";
+            Reason reason = new Reason(Reasons.LongVacation);
 
             // Act
-            var ticket = new Ticket(ticketId, employeeId, employeeName, startDate, endDate, description);
+            var ticket = new Ticket(ticketId, employeeId, employeeName, startDate, endDate, description, reason);
 
             // Assert
             Assert.AreEqual(ticketId, ticket.TicketId);
@@ -76,7 +77,7 @@ namespace UT.Tests
         public void Ticket_CloseTicket_ShouldSetOpenToFalse()
         {
             // Arrange
-            var ticket = new Ticket(3, 30, "Charlie", DateTime.Today, DateTime.Today.AddDays(3), "Business trip");
+            var ticket = new Ticket(3, 30, "Charlie", DateTime.Today, DateTime.Today.AddDays(3), "Business trip", new Reason(Reasons.MissionAbroad));
 
             // Act
             ticket.CloseTicket();

@@ -38,7 +38,8 @@ namespace IT.Tests
                 new ConcurrentDictionary<int, Skill>(),
                 1,
                 100,
-                "UI development"
+                "UI development",
+                DateTime.Now
             );
 
             var matchingEmployee = new Employee(new EmployeeDTO
@@ -101,7 +102,8 @@ namespace IT.Tests
                 },
                 0,
                 50,
-                "Develop APIs"
+                "Develop APIs",
+                DateTime.Now
             );
 
             var matchingEmployee = new Employee(new EmployeeDTO
@@ -173,7 +175,8 @@ namespace IT.Tests
                 },
                 3,
                 100,
-                "Develop Python applications"
+                "Develop Python applications",
+                DateTime.Now
             );
 
             var nonMatchingEmployee = new Employee(new EmployeeDTO
@@ -217,7 +220,8 @@ namespace IT.Tests
                 },
                 0,
                 100,
-                "General tasks"
+                "General tasks",
+                DateTime.Now
             );
 
             var employee1 = new Employee(new EmployeeDTO
@@ -272,7 +276,7 @@ namespace IT.Tests
                     [Enums.GetId(Languages.English)] = new Language(Languages.English, 3),
                     [Enums.GetId(Languages.Hebrew)] = new Language(Languages.Hebrew, 3)
                 },
-                new ConcurrentDictionary<int, Skill>(), 1, 100, "UI development"
+                new ConcurrentDictionary<int, Skill>(), 1, 100, "UI development", DateTime.Now
             );
 
             var apiRole = new Role(
@@ -287,7 +291,7 @@ namespace IT.Tests
                     [Enums.GetId(Skills.Java)] = new Skill(Skills.Java, 1, 3),
                     [Enums.GetId(Skills.SQL)] = new Skill(Skills.SQL, 2, 2)
                 },
-                0, 50, "Develop APIs"
+                0, 50, "Develop APIs", DateTime.Now
             );
 
             var pythonRole = new Role(
@@ -300,7 +304,7 @@ namespace IT.Tests
                 {
                     [Enums.GetId(Skills.Python)] = new Skill(Skills.Python, 3, 1)
                 },
-                3, 100, "Develop Python applications"
+                3, 100, "Develop Python applications", DateTime.Now
             );
 
             var employees = new List<Employee>

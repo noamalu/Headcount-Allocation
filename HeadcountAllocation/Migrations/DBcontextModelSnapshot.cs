@@ -185,6 +185,20 @@ namespace HeadcountAllocation.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.ReasonTypesDTO", b =>
+                {
+                    b.Property<int>("ReasonTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReasonTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReasonTypeId");
+
+                    b.ToTable("ReasonTypes");
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.RoleDTO", b =>
                 {
                     b.Property<int>("RoleId")
@@ -206,6 +220,9 @@ namespace HeadcountAllocation.Migrations
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TimeZoneId")
                         .HasColumnType("int");
@@ -307,6 +324,21 @@ namespace HeadcountAllocation.Migrations
                     b.ToTable("Tickets");
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TicketReasonsDTO", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReasonTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("ReasonTypeId");
+
+                    b.ToTable("TicketReasons");
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TimeZonesDTO", b =>
                 {
                     b.Property<int>("TimeZoneId")
@@ -398,6 +430,21 @@ namespace HeadcountAllocation.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TicketReasonsDTO", b =>
+                {
+                    b.HasOne("HeadcountAllocation.DAL.DTO.ReasonTypesDTO", null)
+                        .WithMany()
+                        .HasForeignKey("ReasonTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeadcountAllocation.DAL.DTO.TicketDTO", null)
+                        .WithOne("Reason")
+                        .HasForeignKey("HeadcountAllocation.DAL.DTO.TicketReasonsDTO", "TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HeadcountAllocation.DAL.DTO.EmployeeDTO", b =>
                 {
                     b.Navigation("Alerts");
@@ -419,6 +466,12 @@ namespace HeadcountAllocation.Migrations
                     b.Navigation("ForeignLanguages");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("HeadcountAllocation.DAL.DTO.TicketDTO", b =>
+                {
+                    b.Navigation("Reason")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
