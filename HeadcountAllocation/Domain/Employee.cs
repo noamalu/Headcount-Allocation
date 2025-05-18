@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Net.Mail;
 using HeadcountAllocation.DAL.DTO;
+using HeadcountAllocation.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using static HeadcountAllocation.Domain.Enums;
@@ -92,8 +93,13 @@ namespace HeadcountAllocation.Domain{
             return sum;
         }
 
+        public void AssignEmployeeToRole_Demo(Role role){
+            Roles.Add(role.RoleId, role);
+        }
+
         public void AssignEmployeeToRole(Role role){
             Roles.Add(role.RoleId, role);
+            RoleRepo.GetInstance().Update(role);
         }
 
         public bool Login(){
@@ -144,5 +150,9 @@ namespace HeadcountAllocation.Domain{
             ForeignLanguages.Remove(languageID, out _);
         }
 
+        public void CancelAssignEmployeeToRole_Demo(Role role)
+        {
+            Roles.Remove(role.RoleId);
+        }
     }
 }

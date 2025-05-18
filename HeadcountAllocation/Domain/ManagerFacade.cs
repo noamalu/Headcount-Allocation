@@ -245,6 +245,53 @@ namespace HeadcountAllocation.Domain
 
         }
 
+        public void AssignEmployeeToRole_Demo(int employeeId, Role role)
+        {
+            if (!Employees.ContainsKey(employeeId))
+            {
+                throw new Exception($"No such employee {employeeId}");
+            }
+            bool RoleExists = false;
+            foreach (Project project in Projects.Values)
+            {
+                if (project.Roles.ContainsKey(role.RoleId))
+                {
+                    RoleExists = true;
+                }
+            }
+            if (!RoleExists)
+            {
+                throw new Exception($"No such role {role.RoleId}");
+            }
+            role.EmployeeId = employeeId;
+            Employees[employeeId].AssignEmployeeToRole_Demo(role);
+            Projects[role.ProjectId].Roles[role.RoleId] = role;
+
+        }
+
+        public void CancelAssignEmployeeToRole_Demo(int employeeId, Role role)
+        {
+            if (!Employees.ContainsKey(employeeId))
+            {
+                throw new Exception($"No such employee {employeeId}");
+            }
+            bool RoleExists = false;
+            foreach (Project project in Projects.Values)
+            {
+                if (project.Roles.ContainsKey(role.RoleId))
+                {
+                    RoleExists = true;
+                }
+            }
+            if (!RoleExists)
+            {
+                throw new Exception($"No such role {role.RoleId}");
+            }
+            role.EmployeeId = null;
+            Employees[employeeId].CancelAssignEmployeeToRole_Demo(role);
+            Projects[role.ProjectId].Roles[role.RoleId] = role;
+        }
+
         public List<Project> GetAllProjects()
         {
             return Projects.Values.ToList();
