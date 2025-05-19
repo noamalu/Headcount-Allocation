@@ -599,6 +599,7 @@ namespace HeadcountAllocation.Domain
             {
                 var emailAddress = ValidateEmail(newEmail);
                 employee.EditEmail(emailAddress);
+                employeeRepo.Update(employee);
             }
             catch (Exception e)
             {
@@ -619,6 +620,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditPhoneNumber(newPhoneNumber);
+            employeeRepo.Update(employee);
         }
 
         public void EditTimeZone(int userId, TimeZones newTimeZone)
@@ -633,6 +635,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditTimeZone(newTimeZone);
+            employeeRepo.Update(employee);
         }
 
         public void EditYearOfExpr(int userId, int newyearOfExpr)
@@ -647,6 +650,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditYearOfExpr(newyearOfExpr);
+            employeeRepo.Update(employee);
         }
 
         public void EditJobPercentage(int userId, double newJobPercentage)
@@ -661,6 +665,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditJobPercentage(newJobPercentage);
+            employeeRepo.Update(employee);
         }
 
         public void AddSkill(int userId, Skill newSkill)
