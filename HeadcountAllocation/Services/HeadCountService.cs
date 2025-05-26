@@ -446,9 +446,57 @@ namespace HeadcountAllocation.Services
             }
         }
 
+        public Response UpdateEmployee(Employee employee)
+        {
+            try
+            {
+                _managerFacade.UpdateEmployee(employee);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
 
+        public Response UpdateRole(int projectId, int roleId, Role role)
+        {
+            try
+            {
+                _managerFacade.UpdateRole(projectId, roleId, role);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
 
+        public Response DeleteRole(int projectId, int roleId)
+        {
+            try
+            {
+                _managerFacade.DeleteRole(projectId, roleId);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
 
+        public Response EditTicket(int employeeId, Ticket ticket)
+        {
+            try
+            {
+                _managerFacade.EditTicket(employeeId, ticket);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
 
     }
 }

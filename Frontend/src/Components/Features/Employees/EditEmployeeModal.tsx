@@ -8,14 +8,16 @@ import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
 import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { useDataContext } from '../../../Context/DataContext';
 
 interface EditEmployeeModalProps {
   employee: Employee;
   onClose: () => void;
-  onSave: (updatedEmployee: Employee) => void;
+  // onSave: (updatedEmployee: Employee) => void;
 }
 
-const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose, onSave }) => {
+// const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose, onSave }) => {
+const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose }) => {  
   const [editedEmployee, setEditedEmployee] = useState<Employee>({ ...employee });
   const [uiError, setUiError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -29,6 +31,8 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
   const [selectedSkill, setSelectedSkill] = useState('');
   const [languageError, setLanguageError] = useState('');
   const [skillError, setSkillError] = useState('');
+  const { updateEmployee, roles } = useDataContext();
+  const employeeRoles = roles.filter(r => r.employeeId === employee.employeeId);
 
 
   useEffect(() => {
@@ -48,16 +52,45 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     };
   
 
+  // const handleSave = async () => {
+  //   try {
+  //     // await EmployeesService.editEmployee(editedEmployee);
+  //     // onSave(editedEmployee);
+  //     // onClose();
+  //     await EmployeesService.editEmployee(editedEmployee);
+  //     updateEmployee(editedEmployee);
+  //     onClose();
+  //   } catch (error) {
+  //     console.error('Error updating employee:', error);
+  //     setApiError('Failed to update employee.');
+  //   }
+  // };
   const handleSave = async () => {
+    let updatedEmployee: Employee = {
+      ...editedEmployee,
+      skills: skills.map((s, index) => ({
+        skillId: index, // או null
+        skillTypeId: s.skillTypeId,
+        level: s.level,
+        priority: 0 // את יכולה לעדכן אם רלוונטי
+      })),
+      foreignLanguages: languages.map((l, index) => ({
+        languageId: index, // או null
+        languageTypeId: l.languageTypeId,
+        level: l.level
+      }))
+    };
+  
     try {
-      await EmployeesService.editEmployee(editedEmployee);
-      onSave(editedEmployee);
+      await EmployeesService.editEmployee(updatedEmployee);
+      updateEmployee(updatedEmployee);
       onClose();
     } catch (error) {
       console.error('Error updating employee:', error);
       setApiError('Failed to update employee.');
     }
   };
+
   
   const handleLanguageLevelChange = (index: number, level: number) => {
     const updated = [...languages];
@@ -333,7 +366,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               </tr>
             </thead>
             <tbody>
-              {editedEmployee.roles.map((role, index) => (
+              {employeeRoles.map((role, index) => (
                 <tr key={index}>
                   <td>{role.roleName}</td>
                   <td>{role.projectId}</td>

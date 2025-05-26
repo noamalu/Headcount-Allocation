@@ -19,7 +19,7 @@ namespace API.Controllers
             _headCountService = headCountService;
             _employeeService = employeeService;
         }
-        
+
         [HttpPost("Employees")]
         public ActionResult<Response<int>> Create([FromBody] Employee employee)
         {
@@ -49,6 +49,13 @@ namespace API.Controllers
                 false
             );
             return Ok(employeeId);
+        }
+
+        [HttpDelete("Employees")]
+        public ActionResult<Response<int>> Delete([FromQuery] int employeeId)
+        {
+            var response = _headCountService.DeleteEmployee(employeeId);
+            return Ok(Response<bool>.FromValue(!response.ErrorOccured));
         }
 
         [HttpPost("Employees/Admin")]
@@ -81,13 +88,13 @@ namespace API.Controllers
             );
             return Ok(employeeId);
         }
-        
+
         [HttpDelete("Tickets/{ticketId}")]
         public ActionResult<Response> CloseTicket([FromRoute] int ticketId)
         {
             try
             {
-                var response = _headCountService.CloseTicket(ticketId);   
+                var response = _headCountService.CloseTicket(ticketId);
                 return Ok(Response<bool>.FromValue(!response.ErrorOccured));
             }
             catch (Exception ex)
@@ -101,7 +108,7 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.GetOpensTickets();   
+                var response = _headCountService.GetOpensTickets();
                 var tickets = response.Value.Select(ticket => new Ticket
                 {
                     TicketId = ticket.TicketId,
@@ -117,7 +124,7 @@ namespace API.Controllers
             {
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
-        }        
-        
+        }
+
     }
 }

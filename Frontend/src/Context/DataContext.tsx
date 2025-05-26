@@ -20,6 +20,7 @@ interface DataContextType {
   deleteProject: (projectId: number) => void;
 
   addRole: (role: Role) => void;
+  addRolesIfNotExist: (newRoles: Role[]) => void;
   updateRole: (role: Role) => void;
   deleteRole: (roleId: number) => void;
 
@@ -58,15 +59,24 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRoles((prev) => [...prev, role]);
   };
 
+  const addRolesIfNotExist = (newRoles: Role[]) => {
+    setRoles((prevRoles) => {
+      const existingIds = new Set(prevRoles.map(r => r.roleId));
+      const filteredNew = newRoles.filter(r => !existingIds.has(r.roleId));
+      return [...prevRoles, ...filteredNew];
+    });
+  };
+
   const updateRole = (updated: Role) => {
     setRoles((prev) =>
       prev.map((r) => (r.roleId === updated.roleId ? updated : r))
     );
 
+
     setProjects((prev) =>
       prev.map((p) => ({
         ...p,
-        roles: p.roles.map((r) =>
+        roles: (p.roles ?? []).map((r) =>
           r.roleId === updated.roleId ? updated : r
         ),
       }))
@@ -147,6 +157,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateProject,
         deleteProject,
         addRole,
+        addRolesIfNotExist,
         updateRole,
         deleteRole,
         addEmployee,

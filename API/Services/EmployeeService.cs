@@ -39,14 +39,20 @@ namespace API.Services
                 }).ToList() ?? new()
             };
 
-            return translatedEmployee;                        
+            return translatedEmployee;
         }
 
         public bool IsAdmin(int employeeId)
         {
             var employee = _headCountService.GetEmployeeById(employeeId);
 
-            return employee.Value.IsManager;            
+            return employee.Value.IsManager;
+        }
+
+        public Response EditEmployee(HeadcountAllocation.Domain.Employee employee)
+        {
+            return _headCountService.UpdateEmployee(employee);
+
         }
     }
 }

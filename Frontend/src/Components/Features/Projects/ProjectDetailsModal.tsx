@@ -21,7 +21,7 @@ interface ProjectDetailsModalProps {
 // const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {  
   const {isAdmin} = useAuth();
-  const { roles, addRole, updateRole } = useDataContext();
+  const { roles, addRole, addRolesIfNotExist, updateRole } = useDataContext();
   const { updateProject, deleteProject } = useDataContext();
   const projectRoles = roles.filter((r) => r.projectId === project.projectId);
 
@@ -53,6 +53,19 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   //     fetchRoles(); 
   //   }
   // }, [project]);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const fetchedRoles = await getProjectRoles(project.projectId);
+        addRolesIfNotExist(fetchedRoles);
+      } catch (error) {
+        console.error('Failed to fetch roles for project:', error);
+        setApiError('Failed to load roles');
+      }
+    };
+    fetchRoles();
+  }, [project.projectId]);
 
   useEffect(() => {
     if (apiError) {
@@ -234,7 +247,8 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           <CreateRoleModal 
           projectId={project.projectId}
           onClose={() => setIsCreateRoleModalOpen(false)}
-          onRoleCreated={handleRoleCreated} />
+          // onRoleCreated={handleRoleCreated} 
+          />
         )}
          {isEditModalOpen && (
           <EditProjectModal

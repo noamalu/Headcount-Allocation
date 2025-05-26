@@ -86,12 +86,39 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("All/Assign")]
+        public ActionResult<Response> GetEmployeesToAssign()
+        {
+            try
+            {
+                return Ok(Response<List<Employee>>.FromValue(_headCountService.GetAllEmployees().Value.Select(emp => (Employee)_employeeService.TranslateEmployee(emp)).Where(emp => !emp.IsManager).ToList()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
         [HttpGet("{employeeId}")]
         public ActionResult<Response> GetEmployeeById([FromRoute] int employeeId)
         {
             try
             {
                 return Ok(Response<Employee>.FromValue(_employeeService.TranslateEmployee(_headCountService.GetEmployeeById(employeeId).Value)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
+        [HttpPut("{employeeId}")]
+        public ActionResult<Response> EditEmployee([FromRoute] int employeeId, [FromBody] Employee employee)
+        {
+            try
+            {
+                var domainEmployee = _headCountService.GetEmployeeById(employeeId).Value;
+                return Ok(_employeeService.EditEmployee(domainEmployee));
             }
             catch (Exception ex)
             {
@@ -120,6 +147,34 @@ namespace API.Controllers
                 string combinedDescription = $"{ticket.AbsenceReason}|{ticket.Description}";
                 var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, combinedDescription);
                 return Ok(Response<int>.FromValue(response.Value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
+        [HttpPut("{employeeId}/Ticket")]
+        public ActionResult<Response> EditTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
+        {
+            try
+            {
+                var response = _headCountService.EditTicket(employeeId, (HeadcountAllocation.Domain.Ticket)ticket);
+                return Ok(new Response());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
+        [HttpDelete("{employeeId}/Ticket")]
+        public ActionResult<Response> CloseTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
+        {
+            try
+            {
+                _headCountService.CloseTicket(ticket.TicketId);
+                return Ok(new Response());
             }
             catch (Exception ex)
             {

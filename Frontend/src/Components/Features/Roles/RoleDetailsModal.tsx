@@ -210,7 +210,7 @@ useEffect(() => {
           projectId={projectId}
           roleId={role.roleId}
           onClose={() => setIsAssignModalOpen(false)}
-          onAssign={handleAssign}
+          // onAssign={handleAssign}
           openManualAssignModal={() => setIsManualAssignModalOpen(true)}
         />
       )}
@@ -220,7 +220,7 @@ useEffect(() => {
           projectId={projectId}
           roleId={role.roleId}
           onClose={() => setIsManualAssignModalOpen(false)}
-          onAssign={handleAssign}
+          // onAssign={handleAssign}
         />
       )}
       {isEditModalOpen && ( 
@@ -228,8 +228,8 @@ useEffect(() => {
             projectId={projectId}
             role={role}
             employeeName={assignedEmployee != null ? assignedEmployee.employeeName : ""}
-            onClose={() => setIsEditModalOpen(false)}
-            onSave={handleEditSave} />
+            onClose={() => setIsEditModalOpen(false)} />
+            // onSave={handleEditSave} />
           )}
     </div>
   );

@@ -5,12 +5,15 @@ import { Employee } from '../../../Types/EmployeeType';
 import '../../../Styles/Employees.css';
 import '../../../Styles/Shared.css';
 import {getEmployees} from '../../../Services/EmployeesService';
+import { useDataContext } from '../../../Context/DataContext';
 
-const EmployeesSpan: React.FC<{ onEmployeeCreated: (callback: (employee: Employee) => void) => void }> = ({ onEmployeeCreated }) => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+// const EmployeesSpan: React.FC<{ onEmployeeCreated: (callback: (employee: Employee) => void) => void }> = ({ onEmployeeCreated }) => {
+  // const [employees, setEmployees] = useState<Employee[]>([]);
+const EmployeesSpan: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const { employees, setEmployees, addEmployee, updateEmployee, deleteEmployee } = useDataContext();
 
   useEffect(() => {
     if (apiError) {
@@ -31,30 +34,38 @@ const EmployeesSpan: React.FC<{ onEmployeeCreated: (callback: (employee: Employe
       setIsLoading(false); 
     }
   };
-
   useEffect(() => {
     fetchEmployees();
 }, []);
 
 
-useEffect(() => {
-    const handleEmployeeCreated = (newEmployee: Employee) => {
-        setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
-    };
-    onEmployeeCreated(handleEmployeeCreated); 
-}, [onEmployeeCreated]);
+// useEffect(() => {
+//     const handleEmployeeCreated = (newEmployee: Employee) => {
+//         setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
+//     };
+//     onEmployeeCreated(handleEmployeeCreated); 
+// }, [onEmployeeCreated]);
+
+// const handleEmployeeDeleted = (employeeId: number) => {
+//   setEmployees((prev) => prev.filter(e => e.employeeId !== employeeId));
+// };
+
+// const handleEmployeeUpdated = (updatedEmployee: Employee) => {
+//   setEmployees((prev) =>
+//     prev.map(e =>
+//       e.employeeId === updatedEmployee.employeeId ? updatedEmployee : e
+//     )
+//   );
+// };
 
 const handleEmployeeDeleted = (employeeId: number) => {
-  setEmployees((prev) => prev.filter(e => e.employeeId !== employeeId));
+  deleteEmployee(employeeId);
 };
 
 const handleEmployeeUpdated = (updatedEmployee: Employee) => {
-  setEmployees((prev) =>
-    prev.map(e =>
-      e.employeeId === updatedEmployee.employeeId ? updatedEmployee : e
-    )
-  );
+  updateEmployee(updatedEmployee);
 };
+
 
 const handleOpenModal = (employee: Employee) => {
   console.log(`Edit ${employee.employeeName}`);
@@ -82,10 +93,10 @@ if (isLoading) {
       </div>
       {selectedEmployee && (
         <EmployeeDetailsModal
-          employee={selectedEmployee} 
+          employeeId={selectedEmployee.employeeId} 
           onClose={handleCloseModal}
-          onEmployeeDeleted={handleEmployeeDeleted}
-          onEmployeeUpdated={handleEmployeeUpdated}
+          // onEmployeeDeleted={handleEmployeeDeleted}
+          // onEmployeeUpdated={handleEmployeeUpdated}
         />
       )}
     </div>

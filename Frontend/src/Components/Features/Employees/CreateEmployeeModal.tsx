@@ -7,15 +7,17 @@ import EmployeesService from '../../../Services/EmployeesService';
 import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
+import { useDataContext } from '../../../Context/DataContext';
 // import AddRoleModal from '../Roles/NewRoleModal';
 
 
 const CreateEmployeeModal: React.FC<{ 
   onClose: () => void;
-   onEmployeeCreated: (employee: Employee) => void }>
+  //  onEmployeeCreated: (employee: Employee) => void 
+  }>
     = ({
       onClose,
-      onEmployeeCreated,
+      // onEmployeeCreated,
     }) => {
     const [employeeName, setEmployeeName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -33,6 +35,7 @@ const CreateEmployeeModal: React.FC<{
     const [apiError, setApiError] = useState<string | null>(null);
     const [skillError, setSkillError] = useState<string>("");
     const [languageError, setLanguageError] = useState<string>("");
+    const { addEmployee } = useDataContext();
 
     useEffect(() => {
       if (apiError) {
@@ -157,7 +160,7 @@ const CreateEmployeeModal: React.FC<{
         const newEmployeeId = await EmployeesService.sendCreateEmployee(newEmployee); // wont be it - NOA
         newEmployee.employeeId = newEmployeeId;
         console.log('Employee created successfully:', newEmployee);
-        onEmployeeCreated(newEmployee);
+        addEmployee(newEmployee);
         setApiError(null);
         onClose(); 
     } catch (error) {

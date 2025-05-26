@@ -9,23 +9,30 @@ import { Role } from '../../../Types/RoleType';
 import EmployeesService, { getEmployeeRolesById } from '../../../Services/EmployeesService';
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import EditEmployeeModal from './EditEmployeeModal';
+import { useDataContext } from '../../../Context/DataContext';
 
 
 interface EmployeeDetailsModalProps {
-    employee: Employee;
+    employeeId: number;
     onClose: () => void;
-    onEmployeeUpdated: (employee: Employee) => void;
-    onEmployeeDeleted: (employeeId: number) => void;
+    // onEmployeeUpdated: (employee: Employee) => void;
+    // onEmployeeDeleted: (employeeId: number) => void;
   }
   
-  const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose, onEmployeeUpdated, onEmployeeDeleted }) => {
+  // const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose, onEmployeeUpdated, onEmployeeDeleted }) => {
+  // const [currentEmployee, setCurrentEmployee] = useState<Employee>(employee);
+  const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employeeId, onClose }) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [currentEmployee, setCurrentEmployee] = useState<Employee>(employee);
-    const [roles, setRoles] = useState<Role[]>([]);
+    // const [roles, setRoles] = useState<Role[]>([]);
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [apiError, setApiError] = useState<string | null>(null);
+    const { employees, updateEmployee, deleteEmployee, roles } = useDataContext();
+    // const currentEmployee = employees.find(e => e.employeeId === employee.employeeId);
+    const currentEmployee = employees.find(e => e.employeeId === employeeId);
+    const employeeRoles = roles.filter((r) => r.employeeId === employeeId);
+
 
     useEffect(() => {
       if (apiError) {
@@ -34,15 +41,15 @@ interface EmployeeDetailsModalProps {
     }, [apiError]);
 
     const handleEditSave = (updatedEmployee: Employee) => {
-        setCurrentEmployee(updatedEmployee);
-        onEmployeeUpdated(updatedEmployee);
+        updateEmployee(updatedEmployee);
         console.log('Employee updated:', updatedEmployee);
       };
 
     const handleDelete = async () => {
       try {
-        await EmployeesService.deleteEmployee(employee.employeeId);
-        onEmployeeDeleted(employee.employeeId);
+        await EmployeesService.deleteEmployee(employeeId);
+        // onEmployeeDeleted(employee.employeeId);
+        deleteEmployee(employeeId);
         onClose();
       } catch (error) {
         alert("Failed to delete employee.");
@@ -51,26 +58,26 @@ interface EmployeeDetailsModalProps {
     };
   
   
-    useEffect(() => {
-      const fetchEmployeeRoles = async () => {
-        try {
-          const response = await getEmployeeRolesById(employee.employeeId);
-          setRoles(response);
-          setCurrentEmployee((prev) => ({
-            ...prev,
-            roles: roles || []
-          }));
-          setLoading(false);
-        } catch (err: any) {
-          console.error('Error fetching employee roles:', err);
-          setApiError('Failed to fetch roles');
-          setLoading(false);
-        }
-      };
-      fetchEmployeeRoles();
-    }, [employee.employeeId]);
+    // useEffect(() => {
+    //   const fetchEmployeeRoles = async () => {
+    //     try {
+    //       const response = await getEmployeeRolesById(employee.employeeId);
+    //       setRoles(response);
+    //       setCurrentEmployee((prev) => ({
+    //         ...prev,
+    //         roles: roles || []
+    //       }));
+    //       setLoading(false);
+    //     } catch (err: any) {
+    //       console.error('Error fetching employee roles:', err);
+    //       setApiError('Failed to fetch roles');
+    //       setLoading(false);
+    //     }
+    //   };
+    //   fetchEmployeeRoles();
+    // }, [employee.employeeId]);
   
-    if (loading) return <div>Loading employee roles...</div>;
+    // if (loading) return <div>Loading employee roles...</div>;
 
     const handleOpenModal = (role: Role) => {
         console.log("Opening role modal for:", role.roleName, "Role data:", role);
@@ -104,28 +111,30 @@ interface EmployeeDetailsModalProps {
           <button className="close-button" onClick={onClose}>✖</button>
 
           <span className="employee-avatar">👤</span>
-          <h2 className="employee-name">{employee.employeeName}</h2>
+          <h2 className="employee-name">{currentEmployee?.employeeName}</h2>
           
           <div className="details-section">
             <div className="detail-banner">
                 <i className="fas fa-phone"></i>
-                <span><strong>Phone:</strong> {currentEmployee.phoneNumber}</span>
+                <span><strong>Phone:</strong> {currentEmployee?.phoneNumber}</span>
             </div>
             <div className="detail-banner">
                 <i className="fa-solid fa-envelope"></i>
-                <span><strong>Email:</strong> {currentEmployee.email || '-'}</span>
+                <span><strong>Email:</strong> {currentEmployee?.email || '-'}</span>
             </div>
             <div className="detail-banner">
                 <i className="fas fa-briefcase"></i>
-                <span><strong>Years of Experience:</strong> {currentEmployee.yearsExperience}</span>
+                <span><strong>Years of Experience:</strong> {currentEmployee?.yearsExperience}</span>
             </div>
             <div className="detail-banner">
                 <i className="fas fa-percentage"></i>
-                <span><strong>Job Percentage:</strong> {(currentEmployee.jobPercentage * 100).toFixed(0)}%</span>
+                <span><strong>Job Percentage:</strong> 
+                    {currentEmployee ? `${(currentEmployee.jobPercentage * 100).toFixed(0)}%` : '-'}
+                </span>
             </div>
             <div className="detail-banner">
                 <i className="fas fa-globe" ></i>
-                <span><strong>Time Zone:</strong> {currentEmployee.timeZone}</span>
+                <span><strong>Time Zone:</strong> {currentEmployee?.timeZone}</span>
             </div>
           </div>
   
@@ -143,8 +152,8 @@ interface EmployeeDetailsModalProps {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentEmployee.skills.length > 0 ? (
-                            currentEmployee.skills.map((skill, index) => (
+                        {currentEmployee && currentEmployee.skills.length > 0 ? (
+                            currentEmployee?.skills.map((skill, index) => (
                             <tr key={index}>
                                 <td>{formateSkillToString(skill.skillTypeId)}</td>
                                 <td>{skill.level}</td>
@@ -166,8 +175,8 @@ interface EmployeeDetailsModalProps {
                 <i className="fas fa-language"></i>
                 <strong>Foreign Languages:</strong>
                 <div className="languages-list">
-                {currentEmployee.foreignLanguages && Object.keys(currentEmployee.foreignLanguages).length > 0 ? (
-                    Object.entries(currentEmployee.foreignLanguages).map(([key, lang]) => (
+                {currentEmployee?.foreignLanguages && Object.keys(currentEmployee?.foreignLanguages).length > 0 ? (
+                    Object.entries(currentEmployee?.foreignLanguages).map(([key, lang]) => (
                     <div key={key} className="language-item">
                         <strong>{formateLanguage(lang.languageTypeId)}</strong>: Level {lang.level}
                     </div>
@@ -193,8 +202,8 @@ interface EmployeeDetailsModalProps {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentEmployee.roles.length > 0 ? (
-                        currentEmployee.roles.map((role, index) => (
+                    {employeeRoles.length > 0 ? (
+                        employeeRoles.map((role, index) => (
                         <tr key={index}>
                             <td>{role.roleName}</td>
                             <td>{role.projectId}</td>
@@ -231,11 +240,12 @@ interface EmployeeDetailsModalProps {
           role={selectedRole} 
           onClose={handleCloseModal}/>
         )}
-        {isEditModalOpen && (
+        {isEditModalOpen && currentEmployee  && (
           <EditEmployeeModal
           employee={currentEmployee}
           onClose={() => setIsEditModalOpen(false)}
-          onSave={handleEditSave} />
+          // onSave={handleEditSave} 
+          />
         )}
         {showConfirmDelete && (
           <div className="confirm-overlay">
