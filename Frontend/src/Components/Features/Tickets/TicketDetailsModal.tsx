@@ -21,7 +21,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const [loading, setLoading] = useState<boolean>(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const { tickets, deleteTicket } = useDataContext();
+  const { tickets, deleteTicket, updateTicket } = useDataContext();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const ticket = tickets.find((t) => t.ticketId === ticketId);
 
@@ -50,6 +50,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
     fetchEmployeeRoles();
   }, [ticket.employeeId]);
 
+
   if (loading) return <div>Loading ticket details...</div>;
 
   const handleOpenModal = (role: Role) => {
@@ -58,6 +59,21 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
 
   const handleCloseModal = () => {
     setSelectedRole(null);
+  };
+
+  const handleToggleStatus = async () => {
+    const updatedTicket = {
+      ...ticket,
+      isOpen: !ticket.isOpen,
+    };
+    try {
+      await TicketsService.editTicket(ticket.employeeId, updatedTicket); // שליחת עדכון לשרת
+      updateTicket(updatedTicket); // עדכון ב־DataContext
+      onClose();
+    } catch (error) {
+      console.error("Failed to toggle ticket status:", error);
+      alert("Could not update ticket status.");
+    }
   };
 
   const handleDelete = async () => {
@@ -241,9 +257,13 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
               <i className="fas fa-trash"></i> Delete
             </button>
             {ticket.isOpen ? (
-              <button className="save-button">✔ Close Ticket</button>
+              <button className="save-button" onClick={handleToggleStatus}>
+                ✔ Close Ticket
+              </button>
             ) : (
-              <button className="assign-button">↻ Re-open Ticket</button>
+              <button className="assign-button" onClick={handleToggleStatus}>
+                ↻ Re-open Ticket
+              </button>
             )}
             <button className="edit-button" onClick={() => setIsEditModalOpen(true)}>
               <i className="fas fa-pen"></i> Edit

@@ -209,16 +209,16 @@
   height: 20px;
   border-radius: 4px;
   margin-right: 8px;
-}
-
-.status-open {
-  background-color: #3b883d; 
   color: white;
   justify-content: center;
 }
 
-.status-closed {
+.status-open {
   background-color: #a72b23; 
+}
+
+.status-closed {
+  background-color: #3b883d; 
 }
 
 .ellipsis-text {

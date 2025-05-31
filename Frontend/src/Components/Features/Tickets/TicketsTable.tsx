@@ -33,9 +33,11 @@ const TicketsTable: React.FC = () => {
     try {
       if (isAdmin) {
         const data = await getAllTickets();
+        console.log("getAllTickets ", data);
         setTickets(data);
       } else {
         const data = await getTicketsByEmployeeId(currentId);
+        console.log("getTicketsByEmployeeId ", data);
         setTickets(data);
       }
     } catch (err) {
@@ -92,7 +94,7 @@ if (isLoading) {
               <td>{formatDate(ticket.endDate)}</td>
               <td>
                 <div className={`status-icon ${ticket.isOpen ? 'status-open' : 'status-closed'}`}>
-                    {ticket.isOpen ? '✔' : ''}
+                    {ticket.isOpen ? '' : '✔'}
                 </div>
               </td>
               <td>
