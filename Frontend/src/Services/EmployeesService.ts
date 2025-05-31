@@ -51,7 +51,7 @@ class EmployeesService {
       static async deleteEmployee(employeeId: number): Promise<void> {
         console.log("attempt to delete Employee " + employeeId);
         try {
-          const response = await APIClient(`/api/Employee/Employees?employeeId=${employeeId}`, {
+          const response = await APIClient(`/api/Manager/Employees?employeeId=${employeeId}`, {
             method: 'DELETE',
           });
       
