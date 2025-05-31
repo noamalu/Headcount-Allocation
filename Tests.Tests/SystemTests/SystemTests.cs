@@ -6,7 +6,7 @@ using HeadcountAllocation.DAL.DTO;
 using static HeadcountAllocation.Domain.Enums;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using System.Net.Mail;
-namespace UT.Tests
+namespace Service.Tests
 {
     [TestClass]
     public class SystemTests
@@ -364,7 +364,7 @@ namespace UT.Tests
             Assert.IsFalse(soonTickets.Any(t => t.TicketId == farTicketId));
         }
 
-        
+
         
 
 
