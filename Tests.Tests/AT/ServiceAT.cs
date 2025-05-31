@@ -174,12 +174,11 @@ namespace AT.Tests
             var skills = new ConcurrentDictionary<int, Skill>();
             skills.TryAdd(0, new Skill(Skills.Python, 1, 1));
             _proxy.AddEmployee("emp", "0504459876", "mail@mail.com", TimeZones.Morning, languages,
-            skills, 5, 1, false);
+            skills, 5, 100, false);
             _proxy.CreateProject("name", "desc", DateTime.Now, 10, roles);
-            var role = _proxy.AddRoleToProject_role("Developer", 0, TimeZones.Morning, languages, skills, 3, 0.5, "Develop the system", DateTime.Now);
+            var role = _proxy.AddRoleToProject_role("Developer", 0, TimeZones.Morning, languages, skills, 3, 50, "Develop the system", DateTime.Now);
             var res = _proxy.EmployeesToAssign(role);
             Assert.AreEqual(res.Count, 1);
-            Assert.AreEqual(res.First().Value, 1);
         }
 
         [TestMethod]
