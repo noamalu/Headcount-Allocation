@@ -166,10 +166,10 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
         <h2>{project.projectName}</h2>
         <div className="modal-info">
           <div className="modal-info-row">
-            <div className="deadline">
+            <div className="detail-small">
               <i className="fas fa-calendar-alt"></i> {formatDate(project.deadline)}
             </div>
-            <div className="required-hours">
+            <div className="detail-small">
               <i className="fas fa-clock"></i> {project.requiredHours} hours
             </div>
           </div>

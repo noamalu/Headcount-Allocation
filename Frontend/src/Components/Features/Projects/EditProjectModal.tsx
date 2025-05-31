@@ -99,16 +99,16 @@ interface EditProjectModalProps {
                 className="input-field"
               />
               </div>
-              <div className="field-with-icon-project">
+              <div className="field-with-icon">
               <i className="fas fa-clock"></i>
-              <input
-                type="number"
-                id="requiredHours"
-                name="requiredHours"
-                value={editedProject.requiredHours}
-                onChange={handleInputChange}
-                className="input-field"
-              />
+                <input
+                  type="number"
+                  id="requiredHours"
+                  name="requiredHours"
+                  value={editedProject.requiredHours}
+                  onChange={handleInputChange}
+                  className="input-field"
+                />
               <span>hours</span>
             </div>
           </div>

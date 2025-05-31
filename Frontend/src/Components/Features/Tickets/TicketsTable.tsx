@@ -6,11 +6,14 @@ import '../../../Styles/Shared.css';
 import { getAllTickets, getTicketsByEmployeeId } from '../../../Services/TicketsService';
 import { useAuth } from '../../../Context/AuthContext';
 import TicketDetailsModal from './TicketDetailsModal';
+import { useDataContext } from '../../../Context/DataContext';
 // @ts-ignore
 // import { Tooltip } from 'react-tooltip';
 
-const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+// const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
+  // const [tickets, setTickets] = useState<Ticket[]>([]);
+const TicketsTable: React.FC = () => {
+  const { tickets, setTickets } = useDataContext();
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -47,12 +50,12 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
 }, []);
 
 
-useEffect(() => {
-    const handleTicketCreated = (newTicket: Ticket) => {
-        setTickets((prevTickets) => [...prevTickets, newTicket]);
-    };
-    onTicketCreated(handleTicketCreated); 
-}, [onTicketCreated]);
+// useEffect(() => {
+//     const handleTicketCreated = (newTicket: Ticket) => {
+//         setTickets((prevTickets) => [...prevTickets, newTicket]);
+//     };
+//     onTicketCreated(handleTicketCreated); 
+// }, [onTicketCreated]);
 
 const handleOpenModal = (ticket: Ticket) => {
   setSelectedTicket(ticket);
@@ -100,7 +103,7 @@ if (isLoading) {
         </tbody>
       </table>
       {selectedTicket && (
-        <TicketDetailsModal ticket={selectedTicket} onClose={handleCloseModal} />
+        <TicketDetailsModal ticketId={selectedTicket.ticketId} onClose={handleCloseModal} />
       )}
     </div>
   );

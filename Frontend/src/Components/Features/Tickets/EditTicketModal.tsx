@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { Ticket } from "../../../Types/TicketType";
 import { AbsenceReasonEnum } from "../../../Types/EnumType";
+import { useDataContext } from "../../../Context/DataContext";
+import TicketsService from "../../../Services/TicketsService";
+// import '../../../Styles/Modal.css';
+// import '../../../Styles/Shared.css'; 
+
 
 const EditTicketModal: React.FC<{
     ticket: Ticket;
     onClose: () => void;
-    onSave: (updatedTicket: Ticket) => void;
-  }> = ({ ticket, onClose, onSave }) => {
+    // onSave: (updatedTicket: Ticket) => void;
+  }> = ({ ticket, onClose }) => {
     const [editedTicket, setEditedTicket] = useState<Ticket>({ ...ticket });
     const [uiError, setUiError] = useState<string | null>(null);
-
+    const [apiError, setApiError] = useState<string | null>(null);
+    const { updateTicket } = useDataContext();
     const absenceReasons = Object.values(AbsenceReasonEnum);
     
   
@@ -18,75 +24,79 @@ const EditTicketModal: React.FC<{
       setEditedTicket((prev) => ({ ...prev, [name]: value }));
     };
   
-    const handleSave = () => {
+    const handleSave = async () => {
       if (!editedTicket.absenceReason.trim() || !editedTicket.description.trim()) {
         setUiError("All fields must be filled.");
         return;
       }
-  
       setUiError(null);
-      onSave(editedTicket);
-      onClose();
+      try {
+        console.log("Sending edit ticket for: ", editedTicket.ticketId," with details:", editedTicket.absenceReason, editedTicket.description);
+        await TicketsService.editTicket(editedTicket.employeeId, ticket);
+        setApiError(null);
+        // onSave(editedProject); 
+        updateTicket(editedTicket);
+        onClose(); 
+      } catch (error) {
+        console.error('Error updating ticket:', error);
+        setApiError('An error occurred while updating the ticket');
+      }
     };
   
     return (
-      <div className="modal-overlay details-modal">
-        <div className="modal-content details-modal">
+      <div className="modal-overlay">
+        <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
           <h2>Edit Ticket</h2>
-  
+
           {uiError && <div className="ui-error">{uiError}</div>}
 
-          <div className="details-section">
-
-          <div className="detail-banner row">
-            <i className="fa-solid fa-user" ></i>
-            <span><strong>Employee Name:</strong> {ticket.employeeName}</span>
-          </div>
+          <div className="modal-info">
+            <div className="detail-small">
+              <i className="fa-solid fa-user" ></i>
+              {ticket.employeeName}
+            </div>
   
-          <div className="edit-banner row">
+          <div className="field-with-icon flexible">
             <i className="fas fa-calendar-week"></i>
-            <span>
-              <strong>Start Date:</strong>
+              Start Date:
               <input
                 type="date"
                 name="startDate"
                 value={editedTicket.startDate.toString().split('T')[0]}
                 onChange={handleInputChange}
+                className="input-date"
               />
-            </span>
-            <span>
-              <strong>End Date:</strong>
+              End Date:
               <input
                 type="date"
                 name="endDate"
                 value={editedTicket.endDate.toString().split('T')[0]}
                 onChange={handleInputChange}
+                className="input-date"
               />
-            </span>
           </div>
   
-          <div className="edit-banner">
-            <i className="fas fa-circle-question"></i>
+          <div className="field-with-icon flexible">
             <span>
-              <strong>Absence Reason:</strong>
-              <select
-                value={editedTicket.absenceReason}
-                onChange={handleInputChange}
-                className="dropdown"
-                >
-                <option value="" disabled>Select Reason</option>
+              <i className="fas fa-circle-question"></i>
+              Absence Reason:
+            </span>
+            <select
+              name="absenceReason"
+              value={editedTicket.absenceReason}
+              onChange={handleInputChange}
+              className="dropdown">
+              <option value="" disabled>Select Reason</option>
                 {absenceReasons.map((reason) => (
                     <option key={reason} value={reason}>{reason}</option>
                 ))}
-              </select>
-            </span>
+            </select>
           </div>
   
-          <div className="edit-banner wide">
+          <div className="field-with-icon wide">
             <i className="fas fa-align-left"></i>
-            <div className="field-container">
-                <label><strong>Description:</strong></label>
+            Description:
                   <textarea
                       id="description"
                       name="description"
@@ -95,7 +105,6 @@ const EditTicketModal: React.FC<{
                       className="textarea-field"
                     />
                 </div>
-          </div>
           </div>
   
           <div className="modal-actions">
