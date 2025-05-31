@@ -90,6 +90,16 @@ namespace HeadcountAllocation.Domain
             return result == PasswordVerificationResult.Success;
         }
 
+        public double CalculateJobPercentage()
+        {
+            double sum = 0;
+            foreach (var role in Roles.Values)
+            {
+                sum = sum + role.JobPercentage;
+            }
+            return sum;
+        }
+
         public void AssignEmployeeToRole(Role role)
         {
             Roles.Add(role.RoleId, role);

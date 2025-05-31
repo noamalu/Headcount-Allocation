@@ -183,9 +183,9 @@ namespace HeadcountAllocation.DAL.Repositories
                                 {
                                     Alerts.Add(new MessageDTO(message));
                                 }
-                                // p.Alerts = Alerts;
+                                p.Alerts = Alerts;
                             }
-                            // p.Alert = employee.Alert;
+                            p.Alert = employee.Alert;
                             if (employee.ForeignLanguages != null)
                             {
                                 p.ForeignLanguages = new List<EmployeeLanguagesDTO>();

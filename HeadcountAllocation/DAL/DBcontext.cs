@@ -1,5 +1,6 @@
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.DAL.DTO.Alert;
+using HeadcountAllocation.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -26,24 +27,36 @@ namespace HeadcountAllocation.DAL
         public virtual DbSet<TicketDTO> Tickets {get; set;}
         public virtual DbSet<EventDTO> Events {get; set;}
         public virtual DbSet<MessageDTO> Messages {get; set;}
+        public virtual DbSet<ReasonTypesDTO> ReasonTypes {get; set;}
+        public virtual DbSet<TicketReasonsDTO> TicketReasons {get; set;}
 
-
+        public static void SetTestDatabase()
+        {
+            _instance = null;
+            DbPath = "Server=localhost,1433;Database=HeadCountDBTest;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;";
+        }
 
         public void ClearDatabase()
         {
             // Delete from most dependent tables first
+            Messages.ExecuteDelete();
+            Events.ExecuteDelete();
             EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
             EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
             RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
             RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
+            TicketReasons.ExecuteDelete();       // FK to Tickets, ReasonsTypes
+
 
             Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            Tickets.ExecuteDelete();
             Employees.ExecuteDelete();           // FK to TimeZones
             Projects.ExecuteDelete();            // no FKs to Projects
+            
 
-            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
-            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
-            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+            // SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            // LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            // TimeZones.ExecuteDelete();         // referenced by Employees / Roles
 
             SaveChanges();
             _instance = new DBcontext();
@@ -51,25 +64,82 @@ namespace HeadcountAllocation.DAL
 
         public override void Dispose()
         {
-            Tickets.ExecuteDelete();
             Messages.ExecuteDelete();
             Events.ExecuteDelete();
             EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
             EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
             RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
             RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
+            TicketReasons.ExecuteDelete();
 
             Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            Tickets.ExecuteDelete();
             Employees.ExecuteDelete();           // FK to TimeZones
             Projects.ExecuteDelete();            // no FKs to Projects
+            
 
             SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
             LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
             TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+            ReasonTypes.ExecuteDelete();
 
             SaveChanges();
             _instance = new DBcontext();
         }
+
+        public void SeedStaticTables()
+        {
+            if (!TimeZones.Any())
+            {
+                TimeZones.AddRange(new List<TimeZonesDTO>
+                {
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Morning, TimeZoneName = "Morning" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Noon, TimeZoneName = "Noon" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Evening, TimeZoneName = "Evening" },
+                    new TimeZonesDTO { TimeZoneId = (int)Enums.TimeZones.Flexible, TimeZoneName = "Flexible" }
+                });
+            }
+
+            if (!SkillTypes.Any())
+            {
+                SkillTypes.AddRange(new List<SkillTypesDTO>
+                {
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.Python, SkillTypeName = "Python" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.SQL, SkillTypeName = "SQL" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.API, SkillTypeName = "API" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.Java, SkillTypeName = "Java" },
+                    new SkillTypesDTO { SkillTypeId = (int)Enums.Skills.UI, SkillTypeName = "UI" }
+                });
+            }
+
+            if (!LanguageTypes.Any())
+            {
+                LanguageTypes.AddRange(new List<LanguageTypesDTO>
+                {
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.English, LanguageTypeName = "English" },
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" }
+                });
+            }
+
+            if (!ReasonTypes.Any())
+            {
+                ReasonTypes.AddRange(new List<ReasonTypesDTO>
+                {
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.LongVacation, ReasonTypeName = "LongVacation" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MaterPaterLeave, ReasonTypeName = "MaterPaterLeave" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MissionAbroad, ReasonTypeName = "MissionAbroad" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MourningLeave, ReasonTypeName = "MourningLeave" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.Other, ReasonTypeName = "Other" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.PersonalLeave, ReasonTypeName = "PersonalLeave" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.ReserveDuty, ReasonTypeName = "ReserveDuty" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.SickLeave, ReasonTypeName = "SickLeave" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.StudyLeave, ReasonTypeName = "StudyLeave" }
+                });
+            }
+
+            SaveChanges();
+        }
+
 
         private void RemoveRangeIfExists<TEntity>(DbSet<TEntity> dbSet) where TEntity : class
         {
@@ -224,6 +294,29 @@ namespace HeadcountAllocation.DAL
 
             modelBuilder.Entity<MessageDTO>()
                 .HasKey(m => m.Id);
+
+            // TicketReason One-to-One with Ticket
+            modelBuilder.Entity<TicketReasonsDTO>()
+                .HasKey(tr => tr.TicketId); // TicketId is both PK and FK
+
+            modelBuilder.Entity<TicketReasonsDTO>()
+                .HasOne<TicketDTO>()
+                .WithOne(t => t.Reason)
+                .HasForeignKey<TicketReasonsDTO>(tr => tr.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketReasonsDTO>()
+                .HasOne<ReasonTypesDTO>()
+                .WithMany()
+                .HasForeignKey(tr => tr.ReasonTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<TicketDTO>()
+                .HasOne(t => t.Reason)
+                .WithOne()
+                .HasForeignKey<TicketReasonsDTO>(tr => tr.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

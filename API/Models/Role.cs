@@ -27,6 +27,8 @@ namespace API.Models
 
         public string Description { get; set; }
 
+        public DateTime StartDate { get; set; }
+
         public static explicit operator HeadcountAllocation.Domain.Role(Role role)
         {
             return new HeadcountAllocation.Domain.Role(
@@ -48,7 +50,8 @@ namespace API.Models
                 ),
                 role.YearsExperience,
                 role.JobPercentage,
-                role.Description
+                role.Description,
+                role.StartDate
             );
         }
 

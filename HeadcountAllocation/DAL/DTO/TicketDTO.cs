@@ -21,8 +21,10 @@ namespace HeadcountAllocation.DAL.DTO
         public DateTime EndDate {get;set;}
         public string Description {get;set;}
         public bool Open {get;set;}
+        public TicketReasonsDTO Reason {get;set;}
 
-        public TicketDTO (int ticketId, int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description, bool open){
+        public TicketDTO(){}
+        public TicketDTO (int ticketId, int employeeId, string employeeName, DateTime startDate ,DateTime endDate, string description, bool open, TicketReasonsDTO reason){
             TicketId = ticketId;
             EmployeeId = employeeId;
             EmployeeName = employeeName;
@@ -30,6 +32,7 @@ namespace HeadcountAllocation.DAL.DTO
             EndDate = endDate;
             Description = description;
             Open = open;
+            Reason = reason;
         }
 
         public TicketDTO (Ticket ticket){
@@ -40,6 +43,8 @@ namespace HeadcountAllocation.DAL.DTO
             EndDate = ticket.EndDate;
             Description = ticket.Description;
             Open = ticket.Open;
+            TicketReasonsDTO ticketReasonsDTO = new TicketReasonsDTO(ticket.Reason);
+            Reason = ticketReasonsDTO;
         }
     }
 }

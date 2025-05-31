@@ -27,8 +27,10 @@ namespace HeadcountAllocation.Domain{
 
         public string Description{get;set;}
 
+        public DateTime StartDate{get;set;}
+
         public Role(string roleName, int roleId, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description)
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description, DateTime startDate)
         {
           RoleName = roleName;
           RoleId = roleId;
@@ -39,6 +41,7 @@ namespace HeadcountAllocation.Domain{
           YearsExperience = yearsExperience;
           JobPercentage = jobPercentage;
           Description = description;
+          StartDate = startDate;
         }
 
          public Role(RoleDTO roleDTO)
@@ -56,9 +59,9 @@ namespace HeadcountAllocation.Domain{
           foreach (RoleSkillsDTO skillDTO in roleDTO.Skills){
                 Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
           }
+          JobPercentage = roleDTO.JobPercentage;
           Description = roleDTO.Description;
-          
-
+          StartDate = roleDTO.StartDate;
         }
 
         public void RemoveEmployeeAssign(){
