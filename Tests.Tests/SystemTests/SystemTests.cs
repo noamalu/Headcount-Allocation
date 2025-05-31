@@ -167,7 +167,7 @@ namespace UT.Tests
             Assert.ThrowsException<Exception>(() => manager.EditYearOfExpr(999, 3));
             Assert.ThrowsException<Exception>(() => manager.EditJobPercentage(999, 50));
         }
-        
+
         [TestMethod]
         public void EditProjectName_ShouldSucceed()
         {
@@ -228,6 +228,145 @@ namespace UT.Tests
         {
             Assert.ThrowsException<Exception>(() => manager.EditProjectRequierdHours(999, 300));
         }
+
+        [TestMethod]
+        public void DeleteEmployee_ShouldSucceed()
+        {
+            var createEmp = manager.CreateEmployee("Olivia", "999", "olivia@example.com", TimeZones.Noon, new(), new(), 5, 100, false);
+            var employee = manager.GetAllEmployees().First();
+            manager.DeleteEmployee(employee.EmployeeId);
+            Assert.IsNull(manager.GetEmployeeById(employee.EmployeeId));
+        }
+
+        [TestMethod]
+        public void DeleteEmployee_ShouldFail_EmployeeNotExist()
+        {
+            Assert.ThrowsException<Exception>(() => manager.DeleteEmployee(999));
+        }
+
+        [TestMethod]
+        public void DeleteProject_ShouldSucceed()
+        {
+            var projectId = manager.CreateProject("Proj", "Desc", DateTime.Now, 100, new());
+            manager.DeleteProject(projectId);
+            Assert.IsNull(manager.GetProjectById(projectId));
+        }
+
+        [TestMethod]
+        public void DeleteProject_ShouldFailProjectDoesNotExist()
+        {
+            Assert.ThrowsException<Exception>(() => manager.DeleteProject(999));
+        }
+
+        [TestMethod]
+        public void RemoveRole_ShouldSucceed()
+        {
+            var projectId = manager.CreateProject("Project", "Desc", DateTime.Now, 100, new());
+            var languages = new ConcurrentDictionary<int, Language>();
+            var skills = new ConcurrentDictionary<int, Skill>();
+
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
+            manager.RemoveRole(projectId, role.RoleId);
+            Assert.IsFalse(manager.GetAllRolesByProject(projectId).ContainsKey(role.RoleId));
+        }
+
+        [TestMethod]
+        public void RemoveRole_ShouldFail_ProjectDoesNotExist()
+        {
+            Assert.ThrowsException<Exception>(() => manager.RemoveRole(999, 1));
+        }
+
+        [TestMethod]
+        public void AssignEmployeeToRole_ShouldSucceed()
+        {
+            var projectId = manager.CreateProject("Project", "Desc", DateTime.Now, 100, new());
+            var languages = new ConcurrentDictionary<int, Language>();
+            var skills = new ConcurrentDictionary<int, Skill>();
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
+            var empResult = manager.CreateEmployee("John", "123", "john@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().FirstOrDefault();
+            manager.AssignEmployeeToRole(employee.EmployeeId, role);
+            Assert.AreEqual(employee.EmployeeId, role.EmployeeId);
+        }
+
+        [TestMethod]
+        public void AssignEmployeeToRole_ShouldFail_EmployeeDoesNotExist()
+        {
+            var projectId = manager.CreateProject("Project", "Desc", DateTime.Now, 100, new());
+            var languages = new ConcurrentDictionary<int, Language>();
+            var skills = new ConcurrentDictionary<int, Skill>();
+            var role = manager.AddRoleToProject("Dev", projectId, TimeZones.Morning, languages, skills, 1, 100, "Role Desc", DateTime.Now);
+            Assert.ThrowsException<Exception>(() => manager.AssignEmployeeToRole(999, role));
+        }
+
+        [TestMethod]
+        public void AssignEmployeeToRole_ShouldFail_RoleDoesNotExist()
+        {
+            var empResult = manager.CreateEmployee("Jane", "321", "jane@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().FirstOrDefault();
+            var fakeRole = new Role("FakeRole", 999, 0, TimeZones.Morning, new(), new(), 0, 100, "Desc", DateTime.Now);
+            Assert.ThrowsException<Exception>(() => manager.AssignEmployeeToRole(employee.EmployeeId, fakeRole));
+        }
+
+        [TestMethod]
+        public void AddTicket_ShouldSucceed()
+        {
+            var createEmp = manager.CreateEmployee("John", "123", "john@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().First();
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave", new Reason(Reasons.ReserveDuty));
+            Assert.IsTrue(manager.Tickets.ContainsKey(ticketId));
+        }
+
+        [TestMethod]
+        public void AddTicket_ShouldFail_EmployeeDoesNotExist()
+        {
+            Assert.ThrowsException<KeyNotFoundException>(() => manager.AddTicket(999, DateTime.Now, DateTime.Now.AddDays(1), "Desc", new Reason(Reasons.ReserveDuty)));
+        }
+
+        [TestMethod]
+        public void CloseTicket_ShouldSucceed_TicketExists()
+        {
+            var createEmp = manager.CreateEmployee("Jane", "123", "jane@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().First();
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Vacation", new Reason(Reasons.LongVacation));
+            manager.CloseTicket(ticketId);
+            Assert.IsFalse(manager.Tickets[ticketId].Open);
+        }
+
+        [TestMethod]
+        public void CloseTicket_ShouldFail_TicketDoesNotExist()
+        {
+            Assert.ThrowsException<Exception>(() => manager.CloseTicket(999));
+        }
+
+        [TestMethod]
+        public void GetOpensTickets_ShouldReturnOnlyOpenTickets()
+        {
+            var createEmp = manager.CreateEmployee("Mike", "123", "mike@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().First();
+            var ticketId1 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Ticket1", new Reason(Reasons.Other));
+            var ticketId2 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(4), "Ticket2", new Reason(Reasons.Other));
+            manager.CloseTicket(ticketId1);
+            var openTickets = manager.GetOpensTickets();
+            Assert.AreEqual(1, openTickets.Count);
+            Assert.AreEqual(ticketId2, openTickets.First().TicketId);
+        }
+
+        [TestMethod]
+        public void GetOpensTickets5Days_ShouldReturnTicketsStartingSoon()
+        {
+            var createEmp = manager.CreateEmployee("Sara", "123", "sara@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
+            var employee = manager.GetAllEmployees().First();
+            var soonTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), "Soon Ticket", new Reason(Reasons.Other));
+            var farTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(12), "Far Ticket", new Reason(Reasons.Other));
+            var soonTickets = manager.GetOpensTickets5days();
+            Assert.IsTrue(soonTickets.Any(t => t.TicketId == soonTicketId));
+            Assert.IsFalse(soonTickets.Any(t => t.TicketId == farTicketId));
+        }
+
+        
+        
+
 
 
         
