@@ -444,18 +444,49 @@ namespace HeadcountAllocation.Domain
             return EmployeesInVacation;
         }
 
-        // public Dictionary<Project, Double> GetProjectHourRatio(){
-        //     Dictionary<Project, Double> ProjectHourRatio = new Dictionary<Project, Double>();
-        //     foreach (Project project in Projects.Values){
-        //         Double sum = 0;
-        //         foreach (Role role in project.Roles.Values){
-        //             sum = sum + (role.JobPercentage * 100 * 180);
-        //         }
-        //     }
-        // }
+        public Dictionary<Project, Double> GetProjectHourRatio()
+        {
+            Dictionary<Project, Double> ProjectHourRatio = new Dictionary<Project, Double>();
+            foreach (Project project in Projects.Values)
+            {
+                Double sum = 0;
+                foreach (Role role in project.Roles.Values)
+                {
+                    double numOfMonths = (DateTime.Now - role.StartDate).TotalDays / 30;
+                    sum = sum + (role.JobPercentage * 100 * 180) * numOfMonths;
+                }
+                ProjectHourRatio[project] = sum / project.RequiredHours;
+            }
+            return ProjectHourRatio;
+        }
 
-
-
+        public Dictionary<Enums.Reasons, List<Employee>> GetEmployeesThatInVacationThisMonthAndReason(){
+            Dictionary<Enums.Reasons, List<Employee>> EmployeesInVacation = new Dictionary<Enums.Reasons, List<Employee>>();
+            foreach (Ticket ticket in Tickets.Values){
+                if (((ticket.StartDate - DateTime.Now).TotalDays <= 30) || (ticket.StartDate <= DateTime.Now && ticket.EndDate >= DateTime.Now))
+                {
+                    if (ticket.Reason.ReasonType == Enums.Reasons.ReserveDuty)
+                        EmployeesInVacation[Enums.Reasons.ReserveDuty].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MaterPaterLeave)
+                        EmployeesInVacation[Enums.Reasons.MaterPaterLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.StudyLeave)
+                        EmployeesInVacation[Enums.Reasons.StudyLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.SickLeave)
+                        EmployeesInVacation[Enums.Reasons.SickLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MourningLeave)
+                        EmployeesInVacation[Enums.Reasons.MourningLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.LongVacation)
+                        EmployeesInVacation[Enums.Reasons.LongVacation].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.PersonalLeave)
+                        EmployeesInVacation[Enums.Reasons.PersonalLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MissionAbroad)
+                        EmployeesInVacation[Enums.Reasons.MissionAbroad].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.Other)
+                        EmployeesInVacation[Enums.Reasons.Other].Add(Employees[ticket.EmployeeId]);
+                }
+            }
+            return EmployeesInVacation;
+        }
 
 
         public static string GeneratePassword()
