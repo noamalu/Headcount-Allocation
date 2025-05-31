@@ -40,10 +40,10 @@ interface EmployeeDetailsModalProps {
       }
     }, [apiError]);
 
-    const handleEditSave = (updatedEmployee: Employee) => {
-        updateEmployee(updatedEmployee);
-        console.log('Employee updated:', updatedEmployee);
-      };
+    // const handleEditSave = (updatedEmployee: Employee) => {
+    //     updateEmployee(updatedEmployee);
+    //     console.log('Employee updated:', updatedEmployee);
+    //   };
 
     const handleDelete = async () => {
       try {
@@ -237,7 +237,7 @@ interface EmployeeDetailsModalProps {
           {selectedRole && (
           <RoleDetailsModal 
           projectId={selectedRole.projectId} 
-          role={selectedRole} 
+          roleId={selectedRole.roleId} 
           onClose={handleCloseModal}/>
         )}
         {isEditModalOpen && currentEmployee  && (

@@ -239,7 +239,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
         {selectedRole && (
           <RoleDetailsModal 
           projectId={project.projectId} 
-          role={selectedRole} 
+          roleId={selectedRole.roleId} 
           onClose={handleCloseModal} />
           // onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}

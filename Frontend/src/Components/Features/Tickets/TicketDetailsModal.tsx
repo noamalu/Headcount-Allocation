@@ -228,7 +228,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticket, onClose
           {selectedRole && (
             <RoleDetailsModal 
               projectId={selectedRole.projectId} 
-              role={selectedRole} 
+              roleId={selectedRole.roleId} 
               onClose={handleCloseModal} 
             />
           )}

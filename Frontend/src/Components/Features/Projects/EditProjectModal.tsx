@@ -178,7 +178,7 @@ interface EditProjectModalProps {
           </button> 
         </div>
         {selectedRole && (
-          <RoleDetailsModal projectId = {project.projectId} role={selectedRole} onClose={handleCloseModal} />
+          <RoleDetailsModal projectId = {project.projectId} roleId={selectedRole.roleId} onClose={handleCloseModal} />
         )}
       </div>
     </div>
