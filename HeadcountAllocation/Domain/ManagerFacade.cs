@@ -326,7 +326,7 @@ namespace HeadcountAllocation.Domain
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
 
-        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason)
+        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason, bool reminder = true)
         {
             Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
             lock (_ticketLock)
@@ -339,7 +339,7 @@ namespace HeadcountAllocation.Domain
                     var managers = Employees.Values.Where(employee => employee.IsManager);
                     foreach (var manager in managers)
                     {
-                        manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                        manager.Notify(ticket, reminder);
                     }
                     return ticket.TicketId;
                 }

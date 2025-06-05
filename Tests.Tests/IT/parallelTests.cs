@@ -117,7 +117,7 @@ namespace IT.Tests
                         employeeId,
                         DateTime.Now.AddDays(1),
                         DateTime.Now.AddDays(5),
-                        $"Ticket {i}", new Reason(Reasons.Other));
+                        $"Ticket {i}", new Reason(Reasons.Other), false);
                 }));
             }
 

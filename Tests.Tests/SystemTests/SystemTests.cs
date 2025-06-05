@@ -313,7 +313,7 @@ namespace Service.Tests
         {
             var createEmp = manager.CreateEmployee("John", "123", "john@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
-            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave", new Reason(Reasons.ReserveDuty));
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), "Sick Leave", new Reason(Reasons.ReserveDuty), false);
             Assert.IsTrue(manager.Tickets.ContainsKey(ticketId));
         }
 
@@ -328,7 +328,7 @@ namespace Service.Tests
         {
             var createEmp = manager.CreateEmployee("Jane", "123", "jane@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
-            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Vacation", new Reason(Reasons.LongVacation));
+            var ticketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Vacation", new Reason(Reasons.LongVacation), false);
             manager.CloseTicket(ticketId);
             Assert.IsFalse(manager.Tickets[ticketId].Open);
         }
@@ -344,8 +344,8 @@ namespace Service.Tests
         {
             var createEmp = manager.CreateEmployee("Mike", "123", "mike@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
-            var ticketId1 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Ticket1", new Reason(Reasons.Other));
-            var ticketId2 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(4), "Ticket2", new Reason(Reasons.Other));
+            var ticketId1 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(1), DateTime.Now.AddDays(3), "Ticket1", new Reason(Reasons.Other), false);
+            var ticketId2 = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(2), DateTime.Now.AddDays(4), "Ticket2", new Reason(Reasons.Other), false);
             manager.CloseTicket(ticketId1);
             var openTickets = manager.GetOpensTickets();
             Assert.AreEqual(1, openTickets.Count);
@@ -357,8 +357,8 @@ namespace Service.Tests
         {
             var createEmp = manager.CreateEmployee("Sara", "123", "sara@example.com", TimeZones.Morning, new(), new(), 2, 100, true);
             var employee = manager.GetAllEmployees().First();
-            var soonTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), "Soon Ticket", new Reason(Reasons.Other));
-            var farTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(12), "Far Ticket", new Reason(Reasons.Other));
+            var soonTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), "Soon Ticket", new Reason(Reasons.Other), false);
+            var farTicketId = manager.AddTicket(employee.EmployeeId, DateTime.Now.AddDays(10), DateTime.Now.AddDays(12), "Far Ticket", new Reason(Reasons.Other), false);
             var soonTickets = manager.GetOpensTickets5days();
             Assert.IsTrue(soonTickets.Any(t => t.TicketId == soonTicketId));
             Assert.IsFalse(soonTickets.Any(t => t.TicketId == farTicketId));

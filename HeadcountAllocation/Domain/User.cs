@@ -15,13 +15,13 @@ namespace HeadcountAllocation.Domain{
         public AlertManager _alertManager = AlertManager.GetInstance();
 
 
-        public void Notify(string title, string msg)
+        public void Notify(Ticket ticket, bool reminder = true)
         {
-            var message = new Message(msg);
+            var message = new Message(ticket.TicketMessage());
 
             if (Alert)
             {
-                _alertManager.SendAlert(title, msg, UserName, Email);
+                _alertManager.SendAlert(ticket, UserName, Email, reminder);
                 message.Seen = true;
             }
             else{
