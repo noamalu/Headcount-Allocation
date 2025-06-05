@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.IO.Pipelines;
 using HeadcountAllocation.Domain;
 using static HeadcountAllocation.Domain.Enums;
 
@@ -123,12 +124,12 @@ namespace HeadcountAllocation.Services
 
 
         public Response<Role> AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description)
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description, DateTime startDate)
         {
             try
             {
                 Console.WriteLine("got to manager facade");
-                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description);
+                var role = _managerFacade.AddRoleToProject(roleName, projectId, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, startDate);
                 return Response<Role>.FromValue(role);
             }
             catch (Exception e)
@@ -397,11 +398,11 @@ namespace HeadcountAllocation.Services
             }
         }
 
-        public Response<int> AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description)
+        public Response<int> AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason)
         {
             try
             {
-                return Response<int>.FromValue(_managerFacade.AddTicket(employeeId, startDate, endDate, description));
+                return Response<int>.FromValue(_managerFacade.AddTicket(employeeId, startDate, endDate, description, reason));
             }
             catch (Exception e)
             {

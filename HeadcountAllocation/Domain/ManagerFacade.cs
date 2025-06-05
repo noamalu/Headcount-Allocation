@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Net.Mail;
 using System.Text;
 using HeadcountAllocation.DAL.Repositories;
+using Microsoft.AspNetCore.Routing;
 using static HeadcountAllocation.Domain.Enums;
 
 namespace HeadcountAllocation.Domain
@@ -21,7 +22,6 @@ namespace HeadcountAllocation.Domain
 
         private readonly ProjectRepo projectRepo;
         private readonly TicketRepo ticketRepo;
-
         public int projectCount = 0;
 
         public int employeeCount = 0;
@@ -76,6 +76,7 @@ namespace HeadcountAllocation.Domain
             RoleLanguagesRepo.Dispose();
             RoleSkillsRepo.Dispose();
             TicketRepo.Dispose();
+            TicketReasonsRepo.Dispose();
             managerFacade = null;
         }
 
@@ -187,13 +188,13 @@ namespace HeadcountAllocation.Domain
 
 
         public Role AddRoleToProject(string roleName, int projectId, TimeZones timeZone, ConcurrentDictionary<int, Language> foreignLanguages,
-                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description)
+                    ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string description, DateTime startDate)
         {
             if (!Projects.ContainsKey(projectId))
             {
                 throw new Exception($"No such project {projectId}");
             }
-            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, roleCounter++);
+            return Projects[projectId].AddRoleToProject(roleName, timeZone, foreignLanguages, skills, yearsExperience, jobPercentage, description, roleCounter++, startDate);
         }
 
         public void RemoveRole(int projectId, int roleId)
@@ -251,12 +252,13 @@ namespace HeadcountAllocation.Domain
         public Dictionary<Employee, double> EmployeesToAssign(Role role)
         {
             Console.WriteLine("intoFacade");
-            Dictionary<Employee, double> employees = new Dictionary<Employee, double>();
-            foreach (Employee employee in Employees.Values)
-            {
-                double score = 0;
-                bool disqualified = false;
-                if (employee.YearsExperience < role.YearsExperience)
+            Dictionary<Employee, double> employees_score = new Dictionary<Employee, double>();
+            Dictionary<Employee, double> employees_job_per = new Dictionary<Employee, double>();
+            foreach (Employee employee in Employees.Values){
+            int sum = 0;
+            double score = 0;
+            bool disqualified = false; 
+                if(employee.YearsExperience < role.YearsExperience)
                     disqualified = true;
 
                 foreach (Language language in role.ForeignLanguages.Values)
@@ -280,21 +282,33 @@ namespace HeadcountAllocation.Domain
                     if (employee.Skills.ContainsKey(skill.SkillId))
                     {
                         Skill employeeSkill = employee.Skills[skill.SkillId];
-                        if (employeeSkill.Level == skill.Level)
-                            score = score + 3 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
-                        else if (employeeSkill.Level > skill.Level)
-                            score = score + 2 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
-                        else if (employeeSkill.Level + 1 == skill.Level)
-                            score = score + 1 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
+                        if (employeeSkill.Level == skill.Level){
+                            score = score +3 * (double)(role.Skills.Count -skill.Priority + 1)/10;
+                            sum = sum+1;
+                        }
+                        else if (employeeSkill.Level > skill.Level){
+                            score = score +2 * (double)(role.Skills.Count -skill.Priority + 1)/10;
+                            sum = sum+1;
+                        }
+                        else if (employeeSkill.Level+1 == skill.Level)
+                            score = score +1 * (double)(role.Skills.Count -skill.Priority + 1)/10;
                     }
                 }
-
-                employees[employee] = score;
-            }
-
-            Dictionary<Employee, double> sortedEmployees = employees.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value); ;
-            return sortedEmployees;
+                if (sum == role.Skills.Count){
+                    if (employee.CalculateJobPercentage() + role.JobPercentage < 100)
+                    employees_job_per[employee] = employee.CalculateJobPercentage();
+                }
+                else{
+                    employees_score[employee] = score;
+                }
+           }
+           Dictionary<Employee, double> sortedEmployeesScore= employees_score.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
+           Dictionary<Employee, double> sortedEmployeesJobPer= employees_job_per.OrderBy(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
+           var combinedDictionary = sortedEmployeesJobPer.Concat(sortedEmployeesScore).ToDictionary(kv => kv.Key, kv => kv.Value); 
+           return combinedDictionary;
         }
+
+
 
 
         public Project GetProjectById(int projectId)
@@ -312,12 +326,12 @@ namespace HeadcountAllocation.Domain
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
 
-        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, bool reminder = true)
+        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason, bool reminder = true)
         {
             Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
             lock (_ticketLock)
             {
-                Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description);
+                Ticket ticket = new Ticket(ticketCount++, employeeId, employee.UserName, startDate, endDate, description, reason);
                 Tickets.Add(ticket.TicketId, ticket);
                 try
                 {
@@ -379,6 +393,100 @@ namespace HeadcountAllocation.Domain
             return OpensTickets;
         }
 
+
+        public Dictionary<string, List<Employee>> GetEmployeesJobPre (){
+            Dictionary<string, List<Employee>> JobPerEmployees = new Dictionary<string, List<Employee>>();
+            foreach (Employee employee in Employees.Values){
+                if (employee.CalculateJobPercentage()*100 > 100){
+                    JobPerEmployees["above 100%"].Add(employee);
+                }
+                else if (employee.CalculateJobPercentage()*100 > 80){
+                    JobPerEmployees["between 80% and 100%"].Add(employee);
+                }
+                else if (employee.CalculateJobPercentage()*100 >= 50){
+                    JobPerEmployees["between 50% and 80%"].Add(employee);
+                }
+                 else if (employee.CalculateJobPercentage()*100 < 50){
+                    JobPerEmployees["under 50%"].Add(employee);
+                }
+
+            }
+            return JobPerEmployees;
+
+        }
+
+        public List<Project> GetProjectsThatEndThisMonth (){
+            List<Project> projects = new List<Project>();
+            foreach (Project project in Projects.Values)
+            {
+                if ((project.Date - DateTime.Now).TotalDays <= 30){
+                    projects.Add(project);
+                }
+            }
+            return projects;
+        }
+
+        public Dictionary<Project, int> GetNumEmployeesInProject(){
+            Dictionary<Project, int> EmployeesInProject = new Dictionary<Project, int>();
+            foreach (Project project in Projects.Values){
+                EmployeesInProject[project]= project.Roles.Count();
+            }
+            return EmployeesInProject;
+        }
+
+        public List<Employee> GetEmployeesThatInVacationThisMonth(){
+            List<Employee> EmployeesInVacation = new List<Employee>();
+            foreach (Ticket ticket in Tickets.Values){
+                if ((ticket.StartDate-DateTime.Now).TotalDays<= 30){
+                    EmployeesInVacation.Add(Employees[ticket.EmployeeId]);
+                }
+            }
+            return EmployeesInVacation;
+        }
+
+        public Dictionary<Project, Double> GetProjectHourRatio()
+        {
+            Dictionary<Project, Double> ProjectHourRatio = new Dictionary<Project, Double>();
+            foreach (Project project in Projects.Values)
+            {
+                Double sum = 0;
+                foreach (Role role in project.Roles.Values)
+                {
+                    double numOfMonths = (DateTime.Now - role.StartDate).TotalDays / 30;
+                    sum = sum + (role.JobPercentage * 100 * 180) * numOfMonths;
+                }
+                ProjectHourRatio[project] = sum / project.RequiredHours;
+            }
+            return ProjectHourRatio;
+        }
+
+        public Dictionary<Enums.Reasons, List<Employee>> GetEmployeesThatInVacationThisMonthAndReason(){
+            Dictionary<Enums.Reasons, List<Employee>> EmployeesInVacation = new Dictionary<Enums.Reasons, List<Employee>>();
+            foreach (Ticket ticket in Tickets.Values){
+                if (((ticket.StartDate - DateTime.Now).TotalDays <= 30) || (ticket.StartDate <= DateTime.Now && ticket.EndDate >= DateTime.Now))
+                {
+                    if (ticket.Reason.ReasonType == Enums.Reasons.ReserveDuty)
+                        EmployeesInVacation[Enums.Reasons.ReserveDuty].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MaterPaterLeave)
+                        EmployeesInVacation[Enums.Reasons.MaterPaterLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.StudyLeave)
+                        EmployeesInVacation[Enums.Reasons.StudyLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.SickLeave)
+                        EmployeesInVacation[Enums.Reasons.SickLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MourningLeave)
+                        EmployeesInVacation[Enums.Reasons.MourningLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.LongVacation)
+                        EmployeesInVacation[Enums.Reasons.LongVacation].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.PersonalLeave)
+                        EmployeesInVacation[Enums.Reasons.PersonalLeave].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.MissionAbroad)
+                        EmployeesInVacation[Enums.Reasons.MissionAbroad].Add(Employees[ticket.EmployeeId]);
+                    else if (ticket.Reason.ReasonType == Enums.Reasons.Other)
+                        EmployeesInVacation[Enums.Reasons.Other].Add(Employees[ticket.EmployeeId]);
+                }
+            }
+            return EmployeesInVacation;
+        }
 
 
         public static string GeneratePassword()
@@ -522,6 +630,7 @@ namespace HeadcountAllocation.Domain
             {
                 var emailAddress = ValidateEmail(newEmail);
                 employee.EditEmail(emailAddress);
+                employeeRepo.Update(employee);
             }
             catch (Exception e)
             {
@@ -542,6 +651,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditPhoneNumber(newPhoneNumber);
+            employeeRepo.Update(employee);
         }
 
         public void EditTimeZone(int userId, TimeZones newTimeZone)
@@ -556,6 +666,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditTimeZone(newTimeZone);
+            employeeRepo.Update(employee);
         }
 
         public void EditYearOfExpr(int userId, int newyearOfExpr)
@@ -570,6 +681,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditYearOfExpr(newyearOfExpr);
+            employeeRepo.Update(employee);
         }
 
         public void EditJobPercentage(int userId, double newJobPercentage)
@@ -584,6 +696,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditJobPercentage(newJobPercentage);
+            employeeRepo.Update(employee);
         }
 
         public void AddSkill(int userId, Skill newSkill)

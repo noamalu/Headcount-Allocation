@@ -63,7 +63,7 @@ namespace UT.Tests
                 TimeZones.Flexible, languages, skills, 2, 100, false);
 
             var employeeId = manager.GetAllEmployees()[0].EmployeeId;
-            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Vacation", false);
+            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Vacation", new Reason(Reasons.LongVacation), false);
 
             Assert.IsTrue(ticketId >= 0);
             var openTickets = manager.GetOpensTickets();
@@ -121,7 +121,7 @@ namespace UT.Tests
             var foreignLanguages = new ConcurrentDictionary<int, Language>();
             var skills = new ConcurrentDictionary<int, Skill>();
 
-            Role role = manager.AddRoleToProject("Developer", projectId, TimeZones.Flexible, foreignLanguages, skills, 1, 100, "Dev role");
+            Role role = manager.AddRoleToProject("Developer", projectId, TimeZones.Flexible, foreignLanguages, skills, 1, 100, "Dev role", DateTime.Now);
             Assert.IsNotNull(role);
         }
 
@@ -134,7 +134,7 @@ namespace UT.Tests
             int employeeId = manager.GetAllEmployees()[0].EmployeeId;
 
             int projectId = manager.CreateProject("Proj", "desc", DateTime.Now, 40, new());
-            Role role = manager.AddRoleToProject("Developer", projectId, TimeZones.Flexible, new(), new(), 1, 100, "Dev role");
+            Role role = manager.AddRoleToProject("Developer", projectId, TimeZones.Flexible, new(), new(), 1, 100, "Dev role", DateTime.Now);
 
             manager.AssignEmployeeToRole(employeeId, role);
 
@@ -178,7 +178,7 @@ namespace UT.Tests
             manager.CreateEmployee("TicketCloser", "050", "closer@test.com", TimeZones.Flexible, languages, skills, 2, 100, false);
 
             int employeeId = manager.GetAllEmployees()[0].EmployeeId;
-            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Closure", false);
+            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Closure", new Reason(Reasons.Other), false);
 
             manager.CloseTicket(ticketId);
 
@@ -193,7 +193,7 @@ namespace UT.Tests
         public void AssignEmployeeToRole_NonExistingEmployee_ShouldThrow()
         {
             int projectId = manager.CreateProject("Proj", "desc", DateTime.Now, 40, new());
-            Role role = manager.AddRoleToProject("Dev", projectId, TimeZones.Flexible, new(), new(), 1, 100, "Dev");
+            Role role = manager.AddRoleToProject("Dev", projectId, TimeZones.Flexible, new(), new(), 1, 100, "Dev", DateTime.Now);
 
             manager.AssignEmployeeToRole(9999, role); // Employee doesn't exist
         }
@@ -202,7 +202,7 @@ namespace UT.Tests
         [ExpectedException(typeof(Exception))]
         public void AddRoleToNonExistingProject_ShouldThrow()
         {
-            manager.AddRoleToProject("Invalid Role", 9999, TimeZones.Flexible, new(), new(), 1, 100, "desc");
+            manager.AddRoleToProject("Invalid Role", 9999, TimeZones.Flexible, new(), new(), 1, 100, "desc", DateTime.Now);
         }
 
         [TestMethod]

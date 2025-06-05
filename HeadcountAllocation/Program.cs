@@ -42,33 +42,35 @@ DBcontext.GetInstance().Dispose();
 var context = DBcontext.GetInstance();
 // context.ClearDatabase();
 
-TimeZonesDTO morning = new TimeZonesDTO(TimeZones.Morning);
-TimeZonesDTO noon = new TimeZonesDTO(TimeZones.Noon);
-TimeZonesDTO evening = new TimeZonesDTO(TimeZones.Evening);
-TimeZonesDTO flexible = new TimeZonesDTO(TimeZones.Flexible);
-context.TimeZones.Add(morning);
-context.TimeZones.Add(noon);
-context.TimeZones.Add(evening);
-context.TimeZones.Add(flexible);
-context.SaveChanges();
+// TimeZonesDTO morning = new TimeZonesDTO(TimeZones.Morning);
+// TimeZonesDTO noon = new TimeZonesDTO(TimeZones.Noon);
+// TimeZonesDTO evening = new TimeZonesDTO(TimeZones.Evening);
+// TimeZonesDTO flexible = new TimeZonesDTO(TimeZones.Flexible);
+// context.TimeZones.Add(morning);
+// context.TimeZones.Add(noon);
+// context.TimeZones.Add(evening);
+// context.TimeZones.Add(flexible);
+// context.SaveChanges();
 
-LanguageTypesDTO english = new LanguageTypesDTO(Languages.English);
-LanguageTypesDTO hebrew = new LanguageTypesDTO(Languages.Hebrew);
-context.LanguageTypes.Add(english);
-context.LanguageTypes.Add(hebrew);
-context.SaveChanges();
+// LanguageTypesDTO english = new LanguageTypesDTO(Languages.English);
+// LanguageTypesDTO hebrew = new LanguageTypesDTO(Languages.Hebrew);
+// context.LanguageTypes.Add(english);
+// context.LanguageTypes.Add(hebrew);
+// context.SaveChanges();
 
-SkillTypesDTO python = new SkillTypesDTO(Skills.Python);
-SkillTypesDTO sql = new SkillTypesDTO(Skills.SQL);
-SkillTypesDTO api = new SkillTypesDTO(Skills.API);
-SkillTypesDTO java = new SkillTypesDTO(Skills.Java);
-SkillTypesDTO ui = new SkillTypesDTO(Skills.UI);
-context.SkillTypes.Add(python);
-context.SkillTypes.Add(sql);
-context.SkillTypes.Add(api);
-context.SkillTypes.Add(java);
-context.SkillTypes.Add(ui);
-context.SaveChanges();
+// SkillTypesDTO python = new SkillTypesDTO(Skills.Python);
+// SkillTypesDTO sql = new SkillTypesDTO(Skills.SQL);
+// SkillTypesDTO api = new SkillTypesDTO(Skills.API);
+// SkillTypesDTO java = new SkillTypesDTO(Skills.Java);
+// SkillTypesDTO ui = new SkillTypesDTO(Skills.UI);
+// context.SkillTypes.Add(python);
+// context.SkillTypes.Add(sql);
+// context.SkillTypes.Add(api);
+// context.SkillTypes.Add(java);
+// context.SkillTypes.Add(ui);
+// context.SaveChanges();
+
+context.SeedStaticTables();
 
 // perfect employee
 List<EmployeeLanguagesDTO> emp_languages = new List<EmployeeLanguagesDTO>();
@@ -155,9 +157,9 @@ skills.TryAdd(Enums.GetId(Skills.Java), new Skill(Skills.Java, 2, 1));
 HeadCountService headCountService = HeadCountService.GetInstance();
 headCountService.CreateProject("testProject", "desc", DateTime.Now, 12, new Dictionary<int, Role>());
 
-Role role = headCountService.AddRoleToProject("testRole1", 0, TimeZones.Morning, languages, skills, 5, 0.5, "role").Value;
+Role role = headCountService.AddRoleToProject("testRole1", 0, TimeZones.Morning, languages, skills, 5, 0.5, "role", DateTime.Now).Value;
 
-headCountService.AddRoleToProject("test2", 0, TimeZones.Flexible, languages, skills, 2, 0.5, "role");
+headCountService.AddRoleToProject("test2", 0, TimeZones.Flexible, languages, skills, 2, 0.5, "role", DateTime.Now);
 Console.WriteLine("added service");
 
 
@@ -172,14 +174,14 @@ foreach (var entry in employees)
 }
 
 
-headCountService.AddTicket(0, DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla");
+headCountService.AddTicket(0, DateTime.Now.AddDays(2), DateTime.Now.AddDays(6), "bla", new Reason(Reasons.LongVacation));
 Console.WriteLine("add ticket");
 List<Ticket> tickets = headCountService.GetOpensTickets().Value;
 foreach (var ticket in tickets){
     Console.WriteLine(ticket.Description);
 }
 Console.WriteLine("got ticket");
-headCountService.AddTicket(0, DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days");
+headCountService.AddTicket(0, DateTime.Now.AddDays(10), DateTime.Now.AddDays(20), "10 days", new Reason(Reasons.ReserveDuty));
 Console.WriteLine("add ticket 10 days");
 List<Ticket> tickets5days = headCountService.GetOpensTickets5days().Value;
 foreach (var ticket in tickets5days){

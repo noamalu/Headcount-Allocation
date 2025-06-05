@@ -135,6 +135,8 @@ namespace HeadcountAllocation.DAL.Repositories
                         roleDTO.Skills = newRole.Skills;
                         roleDTO.YearsExperience = newRole.YearsExperience;
                         roleDTO.JobPercentage = newRole.JobPercentage;
+                        roleDTO.Description = newRole.Description;
+                        roleDTO.StartDate = newRole.StartDate;
                     }
                     else DBcontext.GetInstance().Roles.Add(newRole);
                     DBcontext.GetInstance().SaveChanges();

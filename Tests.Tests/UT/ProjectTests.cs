@@ -67,7 +67,8 @@ namespace UT.Tests
                 2,
                 100,
                 "Coding tasks",
-                0
+                0,
+                DateTime.Now
             );
 
             // Assert
@@ -94,7 +95,8 @@ namespace UT.Tests
                 1,
                 50,
                 "Testing tasks",
-                0
+                0,
+                DateTime.Now
             );
 
             // Act
@@ -154,7 +156,8 @@ namespace UT.Tests
                 3,
                 100,
                 "Analysis tasks",
-                0
+                0,
+                DateTime.Now
             );
 
             // Act

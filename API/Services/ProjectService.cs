@@ -177,7 +177,8 @@ namespace API.Services
                 skills,
                 role.YearsExperience,
                 role.JobPercentage,
-                role.Description
+                role.Description,
+                role.StartDate
             );
         }
 

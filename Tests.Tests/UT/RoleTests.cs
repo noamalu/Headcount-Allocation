@@ -48,7 +48,7 @@ namespace UT.Tests
             var skills = CreateSkills();
 
             // Act
-            var role = new Role("Developer", 1, 10, TimeZones.Flexible, languages, skills, 3, 100, "Develop stuff");
+            var role = new Role("Developer", 1, 10, TimeZones.Flexible, languages, skills, 3, 100, "Develop stuff", DateTime.Now);
 
             // Assert
             Assert.AreEqual("Developer", role.RoleName);
@@ -104,7 +104,7 @@ namespace UT.Tests
         public void RemoveEmployeeAssign_ShouldSetEmployeeIdToNull()
         {
             // Arrange
-            var role = new Role("Developer", 1, 10, TimeZones.Flexible, new(), new(), 2, 80, "Develop stuff");
+            var role = new Role("Developer", 1, 10, TimeZones.Flexible, new(), new(), 2, 80, "Develop stuff", DateTime.Now);
             role.EmployeeId = 123; // assigned employee
 
             // Act

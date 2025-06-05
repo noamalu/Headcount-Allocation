@@ -142,10 +142,12 @@ namespace API.Controllers
         [HttpPost("{employeeId}/Ticket")]
         public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {
+            var reason = Enum.TryParse(ticket.AbsenceReason, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
+                ? parsedReason
+                : HeadcountAllocation.Domain.Enums.Reasons.Other;
             try
             {
-                string combinedDescription = $"{ticket.AbsenceReason}|{ticket.Description}";
-                var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, combinedDescription);
+                var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, ticket.Description, new(reason));
                 return Ok(Response<int>.FromValue(response.Value));
             }
             catch (Exception ex)

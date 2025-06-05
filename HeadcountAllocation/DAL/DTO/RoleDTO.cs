@@ -36,10 +36,12 @@ namespace HeadcountAllocation.DAL.DTO
 
         public string Description{get;set;}
 
+        public DateTime StartDate {get;set;}
+
 
          public RoleDTO() { }
         public RoleDTO(int roleId, string roleName, int projectId, int employeeId, int timeZoneId,
-         List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp, string description)
+         List<RoleLanguagesDTO> foreignLanguages, List<RoleSkillsDTO> skills, double jobPercentage, int yearExp, string description, DateTime startDate)
         {
             RoleId = roleId;
             RoleName = string.IsNullOrWhiteSpace(roleName) ? throw new ArgumentNullException("it is hereeeeeee") : roleName;
@@ -51,6 +53,7 @@ namespace HeadcountAllocation.DAL.DTO
             Skills = skills;
             YearsExperience = yearExp;
             Description = description;
+            StartDate = startDate;
         }
 
          public RoleDTO(Role role)
@@ -75,6 +78,7 @@ namespace HeadcountAllocation.DAL.DTO
             Skills = roleSkills;
             YearsExperience = role.YearsExperience;
             Description = role.Description;
+            StartDate = role.StartDate;
         }
 
     }
