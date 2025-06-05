@@ -63,7 +63,7 @@ namespace UT.Tests
                 TimeZones.Flexible, languages, skills, 2, 100, false);
 
             var employeeId = manager.GetAllEmployees()[0].EmployeeId;
-            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Vacation");
+            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Vacation", false);
 
             Assert.IsTrue(ticketId >= 0);
             var openTickets = manager.GetOpensTickets();
@@ -178,7 +178,7 @@ namespace UT.Tests
             manager.CreateEmployee("TicketCloser", "050", "closer@test.com", TimeZones.Flexible, languages, skills, 2, 100, false);
 
             int employeeId = manager.GetAllEmployees()[0].EmployeeId;
-            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Closure");
+            int ticketId = manager.AddTicket(employeeId, DateTime.Today, DateTime.Today.AddDays(5), "Closure", false);
 
             manager.CloseTicket(ticketId);
 
