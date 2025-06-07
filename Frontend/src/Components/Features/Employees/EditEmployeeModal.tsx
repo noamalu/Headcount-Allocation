@@ -7,7 +7,7 @@ import EmployeesService from '../../../Services/EmployeesService';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
-import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { getLanguageStringByIndex, LanguageEnum, SkillEnum } from '../../../Types/EnumType';
 import { useDataContext } from '../../../Context/DataContext';
 
 interface EditEmployeeModalProps {
@@ -22,12 +22,16 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
   const [uiError, setUiError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [languages, setLanguages] = useState(
-    employee.foreignLanguages.map(l => ({ language: formateLanguage(l.languageTypeId), languageTypeId: l.languageTypeId, level: l.level }))
+    employee.foreignLanguages.map(l => ({
+      language: getLanguageStringByIndex(l.languageTypeId) as LanguageEnum,
+      languageTypeId: l.languageTypeId,
+      level: l.level
+    }))
   );
   const [skills, setSkills] = useState(
     employee.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level }))
   );
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
   const [selectedSkill, setSelectedSkill] = useState('');
   const [languageError, setLanguageError] = useState('');
   const [skillError, setSkillError] = useState('');
@@ -66,21 +70,23 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
   //   }
   // };
   const handleSave = async () => {
+    console.log('Languages about to send:', languages);
     let updatedEmployee: Employee = {
       ...editedEmployee,
       skills: skills.map((s, index) => ({
-        skillId: index, // או null
+        skillId: index, 
         skillTypeId: s.skillTypeId,
         level: s.level,
-        priority: 0 // את יכולה לעדכן אם רלוונטי
+        priority: 0 
       })),
       foreignLanguages: languages.map((l, index) => ({
-        languageId: index, // או null
+        languageId: index,
         languageTypeId: l.languageTypeId,
         level: l.level
       }))
+      
     };
-  
+    console.log('foreignLanguages about to send:', updatedEmployee.foreignLanguages);
     try {
       await EmployeesService.editEmployee(updatedEmployee);
       updateEmployee(updatedEmployee);
@@ -91,6 +97,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     }
   };
 
+  // Languages:
   
   const handleLanguageLevelChange = (index: number, level: number) => {
     const updated = [...languages];
@@ -103,6 +110,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     updated.splice(index, 1);
     setLanguages(updated);
   };
+  
 
   const handleAddLanguage = () => {
     if (!selectedLanguage) return;
@@ -110,7 +118,11 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
       setLanguageError('Language already exists');
       return;
     }
-    setLanguages([...languages, { language: selectedLanguage, languageTypeId: selectedLanguage as any, level: 1 }]);
+    setLanguages([...languages, {
+      language: selectedLanguage,
+      languageTypeId: Object.values(LanguageEnum).indexOf(selectedLanguage),
+      level: 1
+    }]);
     setSelectedLanguage('');
   };
 
@@ -234,7 +246,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               id="languageSelect"
               value={selectedLanguage}
               onChange={(e) => {
-                setSelectedLanguage(e.target.value);
+                setSelectedLanguage(e.target.value as LanguageEnum);
                 setLanguageError('');
               }}
               className="dropdown"

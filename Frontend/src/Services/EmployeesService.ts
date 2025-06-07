@@ -26,7 +26,7 @@ class EmployeesService {
           }
       }
   
-      static async editEmployee(employee: Employee): Promise<void> {
+      static async editEmployee(employee: Omit<Employee, "roles">): Promise<void> {
         console.log("attempt to edit employee " + employee.employeeName);
         try {
           const response = await APIClient(`/api/Employee/${employee.employeeId}`, {
