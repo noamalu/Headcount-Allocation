@@ -1,5 +1,6 @@
 using API.Services;
 using EcommerceAPI.initialize;
+using Hangfire;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
@@ -35,38 +36,17 @@ builder.Services.AddCors(options =>
 });
 
 var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
-context.Dispose();
+// context.Dispose();
 // context.ClearDatabase();
+context.SeedStaticTables(); // Uncomment if you need to seed static tables
 
-TimeZonesDTO morning = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Morning);
-TimeZonesDTO noon = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Noon);
-TimeZonesDTO evening = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Evening);
-TimeZonesDTO flexible = new TimeZonesDTO(HeadcountAllocation.Domain.Enums.TimeZones.Flexible);
-context.TimeZones.Add(morning);
-context.TimeZones.Add(noon);
-context.TimeZones.Add(evening);
-context.TimeZones.Add(flexible);
-context.SaveChanges();
-
-LanguageTypesDTO english = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.English);
-LanguageTypesDTO hebrew = new LanguageTypesDTO(HeadcountAllocation.Domain.Enums.Languages.Hebrew);
-context.LanguageTypes.Add(english);
-context.LanguageTypes.Add(hebrew);
-context.SaveChanges();
-
-SkillTypesDTO python = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Python);
-SkillTypesDTO sql = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.SQL);
-SkillTypesDTO api = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.API);
-SkillTypesDTO java = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.Java);
-SkillTypesDTO ui = new SkillTypesDTO(HeadcountAllocation.Domain.Enums.Skills.UI);
-context.SkillTypes.Add(python);
-context.SkillTypes.Add(sql);
-context.SkillTypes.Add(api);
-context.SkillTypes.Add(java);
-context.SkillTypes.Add(ui);
-context.SaveChanges();
+builder.Services.AddHangfire(configuration => 
+    configuration.UseSqlServerStorage("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HeadCountDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;Application Intent=ReadWrite;MultiSubnetFailover=False")); // TODO: replace this
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
+app.UseHangfireDashboard("/jobs"); // http://localhost:port/jobs
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())

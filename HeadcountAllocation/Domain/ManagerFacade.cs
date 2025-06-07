@@ -34,6 +34,7 @@ namespace HeadcountAllocation.Domain
         {
             projectRepo = ProjectRepo.GetInstance();
             employeeRepo = EmployeeRepo.GetInstance();
+            TicketReasonsRepo.GetInstance().GetAll();
             ticketRepo = TicketRepo.GetInstance();
             List<Ticket> TicketsList = ticketRepo.getAll();
             foreach (var ticket in TicketsList)
@@ -332,7 +333,7 @@ namespace HeadcountAllocation.Domain
             return Employees.TryGetValue(employeeId, out Employee employee) ? employee : null;
         }
 
-        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason)
+        public int AddTicket(int employeeId, DateTime startDate, DateTime endDate, string description, Reason reason, bool reminder = true)
         {
             Employee employee = Employees[employeeId] ?? throw new Exception($"No such employee {employeeId}");
             lock (_ticketLock)
@@ -345,7 +346,7 @@ namespace HeadcountAllocation.Domain
                     var managers = Employees.Values.Where(employee => employee.IsManager);
                     foreach (var manager in managers)
                     {
-                        manager.Notify(ticket.TicketTitle(), ticket.TicketMessage());
+                        manager.Notify(ticket, reminder);
                     }
                     return ticket.TicketId;
                 }
@@ -405,26 +406,25 @@ namespace HeadcountAllocation.Domain
             Dictionary<string, List<Employee>> JobPerEmployees = new Dictionary<string, List<Employee>>();
             foreach (Employee employee in Employees.Values)
             {
-                if (employee.CalculateJobPercentage() * 100 > 100)
-                {
-                    JobPerEmployees["above 100%"].Add(employee);
-                }
-                else if (employee.CalculateJobPercentage() * 100 > 80)
-                {
-                    JobPerEmployees["between 80% and 100%"].Add(employee);
-                }
-                else if (employee.CalculateJobPercentage() * 100 >= 50)
-                {
-                    JobPerEmployees["between 50% and 80%"].Add(employee);
-                }
-                else if (employee.CalculateJobPercentage() * 100 < 50)
-                {
-                    JobPerEmployees["under 50%"].Add(employee);
-                }
+                double percent = employee.CalculateJobPercentage() * 100;
+                string key = null;
+                if (percent > 100)
+                    key = "above 100%";
+                else if (percent > 80)
+                    key = "between 80% and 100%";
+                else if (percent >= 50)
+                    key = "between 50% and 80%";
+                else if (percent < 50)
+                    key = "under 50%";
 
+                if (key != null)
+                {
+                    if (!JobPerEmployees.ContainsKey(key))
+                        JobPerEmployees[key] = new List<Employee>();
+                    JobPerEmployees[key].Add(employee);
+                }
             }
             return JobPerEmployees;
-
         }
 
         public List<Project> GetProjectsThatEndThisMonth()
@@ -486,24 +486,11 @@ namespace HeadcountAllocation.Domain
             {
                 if (((ticket.StartDate - DateTime.Now).TotalDays <= 30) || (ticket.StartDate <= DateTime.Now && ticket.EndDate >= DateTime.Now))
                 {
-                    if (ticket.Reason.ReasonType == Enums.Reasons.ReserveDuty)
-                        EmployeesInVacation[Enums.Reasons.ReserveDuty].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.MaterPaterLeave)
-                        EmployeesInVacation[Enums.Reasons.MaterPaterLeave].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.StudyLeave)
-                        EmployeesInVacation[Enums.Reasons.StudyLeave].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.SickLeave)
-                        EmployeesInVacation[Enums.Reasons.SickLeave].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.MourningLeave)
-                        EmployeesInVacation[Enums.Reasons.MourningLeave].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.LongVacation)
-                        EmployeesInVacation[Enums.Reasons.LongVacation].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.PersonalLeave)
-                        EmployeesInVacation[Enums.Reasons.PersonalLeave].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.MissionAbroad)
-                        EmployeesInVacation[Enums.Reasons.MissionAbroad].Add(Employees[ticket.EmployeeId]);
-                    else if (ticket.Reason.ReasonType == Enums.Reasons.Other)
-                        EmployeesInVacation[Enums.Reasons.Other].Add(Employees[ticket.EmployeeId]);
+                    var reason = ticket.Reason.ReasonType;
+                    if (!EmployeesInVacation.ContainsKey(reason))
+                        EmployeesInVacation[reason] = new List<Employee>();
+                    EmployeesInVacation[reason].Add(Employees[ticket.EmployeeId]);
+                    EmployeesInVacation[reason] = EmployeesInVacation[reason].Distinct().ToList(); // Ensure no duplicates
                 }
             }
             return EmployeesInVacation;
@@ -651,6 +638,7 @@ namespace HeadcountAllocation.Domain
             {
                 var emailAddress = ValidateEmail(newEmail);
                 employee.EditEmail(emailAddress);
+                employeeRepo.Update(employee);
             }
             catch (Exception e)
             {
@@ -671,6 +659,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditPhoneNumber(newPhoneNumber);
+            employeeRepo.Update(employee);
         }
 
         public void EditTimeZone(int userId, TimeZones newTimeZone)
@@ -685,6 +674,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditTimeZone(newTimeZone);
+            employeeRepo.Update(employee);
         }
 
         public void EditYearOfExpr(int userId, int newyearOfExpr)
@@ -699,6 +689,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditYearOfExpr(newyearOfExpr);
+            employeeRepo.Update(employee);
         }
 
         public void EditJobPercentage(int userId, double newJobPercentage)
@@ -713,6 +704,7 @@ namespace HeadcountAllocation.Domain
                 throw new Exception($"No such employee {userId}");
             }
             employee.EditJobPercentage(newJobPercentage);
+            employeeRepo.Update(employee);
         }
 
         public void AddSkill(int userId, Skill newSkill)

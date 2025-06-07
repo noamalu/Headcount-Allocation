@@ -498,6 +498,79 @@ namespace HeadcountAllocation.Services
                 return new Response(e.Message);
             }
         }
+
+
+        public Response<Dictionary<string, List<Employee>>> GetEmployeesJobPre()
+        {
+            try
+            {
+                return Response<Dictionary<string, List<Employee>>>.FromValue(_managerFacade.GetEmployeesJobPre());
+            }
+            catch (Exception e)
+            {
+                return Response<Dictionary<string, List<Employee>>>.FromError(e.Message);
+            }
+        }
+
+        public Response<List<Project>> GetProjectsThatEndThisMonth()
+        {
+            try
+            {
+                return Response<List<Project>>.FromValue(_managerFacade.GetProjectsThatEndThisMonth());
+            }
+            catch (Exception e)
+            {
+                return Response<List<Project>>.FromError(e.Message);
+            }
+        }
+
+        public Response<Dictionary<Project, int>> GetNumEmployeesInProject()
+        {
+            try
+            {
+                return Response<Dictionary<Project, int>>.FromValue(_managerFacade.GetNumEmployeesInProject());
+            }
+            catch (Exception e)
+            {
+                return Response<Dictionary<Project, int>>.FromError(e.Message);
+            }
+        }
+
+        public Response<List<Employee>> GetEmployeesThatInVacationThisMonth()
+        {
+            try
+            {
+                return Response<List<Employee>>.FromValue(_managerFacade.GetEmployeesThatInVacationThisMonth());
+            }
+            catch (Exception e)
+            {
+                return Response<List<Employee>>.FromError(e.Message);
+            }
+        }
+
+        public Response<Dictionary<Project, double>> GetProjectHourRatio()
+        {
+            try
+            {
+                return Response<Dictionary<Project, double>>.FromValue(_managerFacade.GetProjectHourRatio());
+            }
+            catch (Exception e)
+            {
+                return Response<Dictionary<Project, double>>.FromError(e.Message);
+            }
+        }
+
+        public Response<Dictionary<Enums.Reasons, List<Employee>>> GetEmployeesThatInVacationThisMonthAndReason()
+        {
+            try
+            {
+                return Response<Dictionary<Enums.Reasons, List<Employee>>>.FromValue(_managerFacade.GetEmployeesThatInVacationThisMonthAndReason());
+            }
+            catch (Exception e)
+            {
+                return Response<Dictionary<Enums.Reasons, List<Employee>>>.FromError(e.Message);
+            }
+        }
     }
 }
 
