@@ -18,6 +18,7 @@ interface CreateRoleModalProps {
 
 const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose }) => {
   const [roleName, setRoleName] = useState('');
+  const [startDate, setStartDate] = useState('');
   const [description, setDescription] = useState('');
   const [timeZone, setTimeZone] = useState(0);
   const [yearsExperience, setYearsExperience] = useState(0);
@@ -114,6 +115,9 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
     if (!roleName.trim()) {
       errorMessage += "• Role name is required.\n";
     }
+    if(!startDate) {
+      errorMessage += "• Please select a start date.\n";
+    }
     if (yearsExperience < 0) {
       errorMessage += "• Years of experience cannot be negative.\n";
     }
@@ -150,7 +154,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
  
     // create "language" array
     const roleLanguages: Language[] = languages.map((lang, index) => ({
-      languageId: index, // ערך זמני, יתעדכן בשרת
+      languageId: index, 
       languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
       level: lang.level,
     }));
@@ -166,6 +170,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
       skills: roleSkills, 
       yearsExperience,
       jobPercentage,
+      startDate,
     };
   
     try {
@@ -204,6 +209,15 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
                 value={roleName}
                 onChange={(e) => setRoleName(e.target.value)}
                 placeholder="Enter role name"
+                className="input-field"
+              />
+            </div>
+            <div>
+              <label>Start date: </label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 className="input-field"
               />
             </div>

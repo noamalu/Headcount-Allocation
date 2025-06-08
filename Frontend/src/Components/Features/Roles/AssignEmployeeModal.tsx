@@ -5,6 +5,8 @@ import { Employee } from '../../../Types/EmployeeType'
 import { getTimeZoneStringByIndex, getLanguageStringByIndex, getSkillStringByIndex } from '../../../Types/EnumType';
 import { getAssignOptionsToRole } from '../../../Services/ProjectsService';
 import { useDataContext } from '../../../Context/DataContext';
+import EmployeesService from '../../../Services/EmployeesService';
+
 
 const AssignEmployeeModal = ({
   projectId,
@@ -24,6 +26,8 @@ const AssignEmployeeModal = ({
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
   const [showManualButton, setShowManualButton] = useState(false);
   const { roles, updateRole } = useDataContext();
+  const [uiError, setUiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
   const currentRole = roles.find((r) => r.roleId === roleId);
 
   useEffect(() => {
@@ -54,19 +58,43 @@ const AssignEmployeeModal = ({
   //   }
   // };
 
-  const handleAssign = () => {
-    if (selectedEmployee && currentRole) {
-      const updatedRole = { ...currentRole, employeeId: selectedEmployee.employeeId };
-      updateRole(updatedRole);
-      onClose();
+  const handleAssign = async () => {
+    if (!selectedEmployee) {
+      setUiError("You must select the employee you want to assign");
+      return;
+    }
+    setUiError(null);
+    try {
+      if (selectedEmployee && currentRole) {
+        const updatedRole = { ...currentRole, employeeId: selectedEmployee.employeeId };
+        await EmployeesService.assignEmployeeToRole(selectedEmployee.employeeId, updatedRole);
+        updateRole(updatedRole);
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error assigning employee to role:', error);
+      setApiError('An error occurred while assigning employee to role');
     }
   };
+
+  useEffect(() => {
+      if (apiError) {
+        alert(apiError);
+      }
+    }, [apiError]);
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
         <h2>Assign Employee to Role</h2>
+
+        {uiError && (
+          <div className="ui-error" style={{ whiteSpace: 'pre-line' }}>
+            {uiError}
+          </div>
+        )}
+
         <p>Select the best candidate for the role based on their qualifications.</p>
 
         <table className="employees-table">

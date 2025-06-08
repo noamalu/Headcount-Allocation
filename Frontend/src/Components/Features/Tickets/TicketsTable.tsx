@@ -7,6 +7,7 @@ import { getAllTickets, getTicketsByEmployeeId } from '../../../Services/Tickets
 import { useAuth } from '../../../Context/AuthContext';
 import TicketDetailsModal from './TicketDetailsModal';
 import { useDataContext } from '../../../Context/DataContext';
+import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
 // @ts-ignore
 // import { Tooltip } from 'react-tooltip';
 

@@ -9,6 +9,7 @@ import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import EditTicketModal from './EditTicketModal';
 import { useDataContext } from '../../../Context/DataContext';
 import TicketsService from '../../../Services/TicketsService';
+import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
 
 interface TicketDetailsModalProps {
   ticketId: number;

@@ -128,6 +128,9 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
     if (!editedRole.roleName.trim()) {
       errorMessage += "• Role name is required.\n";
     }
+    if(!editedRole.startDate) {
+      errorMessage += "• Please select a start date.\n";
+    }
     if (!editedRole.description.trim()) {
       errorMessage += "• Description is required.\n";
     }
@@ -204,7 +207,19 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
           )}
           
           <div className="details-section">
-              
+            <div className="edit-banner">
+                  <i className="fas fa-calendar-alt"></i>
+                  <span>
+                      <strong>Start Date:</strong>
+                      <input
+                          type="date"
+                          name="startDate"
+                          value={editedRole.startDate.toString().split('T')[0]}
+                          onChange={handleInputChange}
+                          className="input-field input-medium"
+                      />
+                  </span>
+              </div>              
               <div className="edit-banner">
                   <i className="fas fa-briefcase"></i>
                   <span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AssignEmployeeModal from './AssignEmployeeModal';
 import EditRoleModal from './EditRoleModal';
-import { Role } from '../../../Types/RoleType';
+import { formatDate, Role } from '../../../Types/RoleType';
 import { Language, formateLanguage } from '../../../Types/LanguageType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/DetailsModal.css';
@@ -115,7 +115,7 @@ useEffect(() => {
     }
   };
   
-  return (
+  return ( role &&
     <div className="modal-overlay details-modal">
       <div className="modal-content details-modal">
         <button className="close-button" onClick={onClose}>✖</button>
@@ -131,6 +131,10 @@ useEffect(() => {
 
         
         <div className="details-section">
+          <div className="detail-banner">
+            <i className="fas fa-calendar-alt" ></i>
+            <span><strong>Start Date:</strong> {formatDate(role?.startDate)}</span>
+          </div>
           <div className="detail-banner">
             <i className="fas fa-globe" ></i>
             <span><strong>Time Zone:</strong> {role?.timeZone}</span>
