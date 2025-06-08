@@ -192,11 +192,7 @@ namespace API.Controllers
                 var response = _headCountService.GetOpensTickets().Value
                     .Where(ticket => ticket.EmployeeId == employeeId)
                     .Select(ticket =>
-                    {
-                        //To DEBUG
-                        string[] parts = ticket.Description.Split('|');
-                        string absenceReason = parts.Length > 1 ? parts[0] : "Other"; // If includes "|" -> a reason - take it, otherwise -> "Other"
-                        string description = parts.Length > 1 ? parts[1] : parts[0]; // If includes "|" -> description is second item, otherwise -> there is only one item - the description
+                    {                    
 
                         return new Ticket
                         {
@@ -205,8 +201,8 @@ namespace API.Controllers
                             EmployeeName = ticket.EmployeeName,
                             StartDate = ticket.StartDate,
                             EndDate = ticket.EndDate,
-                            AbsenceReason = absenceReason,
-                            Description = description
+                            AbsenceReason = ticket.Reason.ReasonType.ToString(),
+                            Description = ticket.Description
                         };
                     }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(response));
