@@ -162,7 +162,6 @@ namespace HeadcountAllocation.DAL.Repositories
                         EmployeeDTO p = DBcontext.GetInstance().Employees.Find(employee.EmployeeId);
                         if (p != null){
                             p.Email = employee.Email.Address;
-                            p.Password = employee.Password;
                             if (employee.Alerts != null) {
                                 List<MessageDTO> Alerts = new List<MessageDTO>();
                                 foreach (var message in employee.Alerts)
