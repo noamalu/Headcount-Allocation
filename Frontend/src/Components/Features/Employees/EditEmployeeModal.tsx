@@ -86,8 +86,8 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
         languageId: index,
         languageTypeId: l.languageTypeId,
         level: l.level
-      }))
-      
+      })),
+      password: "dummyPassword"      
     };
     console.log('foreignLanguages about to send:', updatedEmployee.foreignLanguages);
     try {
