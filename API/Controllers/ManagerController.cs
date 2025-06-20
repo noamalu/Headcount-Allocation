@@ -116,8 +116,8 @@ namespace API.Controllers
                     EmployeeName = ticket.EmployeeName,
                     StartDate = ticket.StartDate,
                     EndDate = ticket.EndDate,
-                    Description = ticket.Description,
                     AbsenceReason = ticket.Reason.ReasonType.ToString(),
+                    Description = ticket.Description
                 }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(tickets));
             }

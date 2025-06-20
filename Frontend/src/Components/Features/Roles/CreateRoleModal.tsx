@@ -3,7 +3,7 @@ import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
-import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType';
+import { SkillEnum, LanguageEnum, skillEnumToId, getSkillLabel } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
@@ -48,12 +48,18 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
   // Skills Edit:
 
   const handleAddSkill = () => {
-      if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-        setSkillError("Skill already added or no skill was selected.");
-        return;
-      }
-      setSkills([...skills, { skill: selectedSkill, level: 1 }]);
-      setSelectedSkill(""); 
+    if (selectedSkill === "") {
+      setSkillError("Please select a skill.");
+      return;
+    }
+    const parsedSkill = Number(selectedSkill) as SkillEnum;
+    if (skills.some((s) => s.skill === parsedSkill)) {
+      setSkillError('Skill already exists');
+      return;
+    }
+    setSkills([...skills, { skill: parsedSkill, level: 1 }]);
+    setSelectedSkill('');
+    setSkillError("");
   };
 
   const handleLevelChange = (index: number, level: number) => {
@@ -144,10 +150,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
   
     // create "roleSkill" array
     const roleSkills: Skill[] = skills.map((skill, index) => ({
-      skillId: index, // ערך זמני, יתעדכן בשרת
-      skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
+      skillId: index, 
+      skillTypeId: skill.skill,
       level: skill.level,
-      priority: skills.length - index, // חישוב עדיפות
+      priority: skills.length - index, 
     }));
 
     console.log("in CreateRoleModal, skillTypeId: " + roleSkills[0].skillTypeId);
@@ -279,17 +285,22 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
                   id="skillSelect"
                   value={selectedSkill}
                   onChange={(e) => {
-                    setSelectedSkill(e.target.value as SkillEnum);
+                    setSelectedSkill(Number(e.target.value) as SkillEnum);
                     setSkillError("");}
                   }
                   className="dropdown"
               >
-                <option value="" disabled>Select a skill</option>
-                {Object.values(SkillEnum).map((skill) => (
-                    <option key={skill} value={skill}>
-                        {skill}
-                    </option>
-                ))}
+                  <option value="" disabled>Select a skill</option>
+                  {Object.keys(SkillEnum)
+                  .filter((key) => isNaN(Number(key)))
+                  .map((key) => {
+                    const enumKey = key as keyof typeof SkillEnum;
+                    return (
+                      <option key={key} value={SkillEnum[enumKey]}>
+                        {getSkillLabel(SkillEnum[enumKey])}
+                      </option>
+                    );
+                  })}
               </select>
               <button className="add-button" onClick={handleAddSkill}>
                 <i className="fas fa-plus"></i>
@@ -316,7 +327,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={() => handleDrop(index)}
                         >
-                          <td>{skill.skill}</td>
+                          <td>{getSkillLabel(skill.skill)}</td>
                           <td>
                               <select
                                   value={skill.level}

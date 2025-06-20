@@ -9,7 +9,7 @@ export interface Role {
     description: string;
     timeZone: number;
     foreignLanguages: Language[];
-    skills: Skill [];
+    skills: Skill[];
     yearsExperience: number;
     jobPercentage: number;
     startDate: string;

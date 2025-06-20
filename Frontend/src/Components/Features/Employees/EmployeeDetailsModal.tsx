@@ -10,6 +10,7 @@ import EmployeesService, { getEmployeeRolesById } from '../../../Services/Employ
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import EditEmployeeModal from './EditEmployeeModal';
 import { useDataContext } from '../../../Context/DataContext';
+import { getSkillLabel } from '../../../Types/EnumType';
 
 
 interface EmployeeDetailsModalProps {
@@ -155,7 +156,7 @@ interface EmployeeDetailsModalProps {
                         {currentEmployee && currentEmployee.skills.length > 0 ? (
                             currentEmployee?.skills.map((skill, index) => (
                             <tr key={index}>
-                                <td>{formateSkillToString(skill.skillTypeId)}</td>
+                                <td>{getSkillLabel(skill.skillTypeId)}</td>
                                 <td>{skill.level}</td>
                             </tr>
                             ))

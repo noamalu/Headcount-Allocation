@@ -142,7 +142,8 @@ namespace API.Controllers
         [HttpPost("{employeeId}/Ticket")]
         public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {
-            var reason = Enum.TryParse(ticket.AbsenceReason, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
+            var reasonToParse = ticket.AbsenceReason.Replace(" ", "");
+            var reason = Enum.TryParse(reasonToParse, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
                 ? parsedReason
                 : HeadcountAllocation.Domain.Enums.Reasons.Other;
             try

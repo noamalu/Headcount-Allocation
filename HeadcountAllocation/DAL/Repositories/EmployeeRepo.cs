@@ -175,7 +175,7 @@ namespace HeadcountAllocation.DAL.Repositories
                         if (p != null)
                         {
                             p.Email = employee.Email.Address;
-                            p.Password = employee.Password;
+                            // p.Password = employee.Password;
                             if (employee.Alerts != null)
                             {
                                 List<MessageDTO> Alerts = new List<MessageDTO>();
