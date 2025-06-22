@@ -132,7 +132,7 @@ namespace API.Services
                 TimeZone = GetId(role.TimeZone),
                 ForeignLanguages = role.ForeignLanguages.Values?.Select(l => new Language
                 {
-                    LanguageId = l.LanguageID,
+                    LanguageId = GetId(l.LanguageType),
                     LanguageTypeId = GetId(l.LanguageType),
                     Level = l.Level
                 }).ToList() ?? new(),
