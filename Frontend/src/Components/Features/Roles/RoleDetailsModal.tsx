@@ -12,6 +12,7 @@ import ProjectsService from '../../../Services/ProjectsService';
 import { Employee } from '../../../Types/EmployeeType';
 import ManualAssignEmployeeModal from './ManualAssignEmployeeModal';
 import { useDataContext } from '../../../Context/DataContext';
+import { getTimeZoneStringByIndex } from '../../../Types/EnumType';
 
 
 interface RoleDetailsModalProps {
@@ -137,7 +138,7 @@ useEffect(() => {
           </div>
           <div className="detail-banner">
             <i className="fas fa-globe" ></i>
-            <span><strong>Time Zone:</strong> {role?.timeZone}</span>
+            <span><strong>Time Zone:</strong> {getTimeZoneStringByIndex(role?.timeZone)}</span>
           </div>
           <div className="detail-banner">
             <i className="fas fa-briefcase"></i>

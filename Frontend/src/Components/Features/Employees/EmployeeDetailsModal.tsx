@@ -10,7 +10,7 @@ import EmployeesService, { getEmployeeRolesById } from '../../../Services/Employ
 import RoleDetailsModal from '../Roles/RoleDetailsModal';
 import EditEmployeeModal from './EditEmployeeModal';
 import { useDataContext } from '../../../Context/DataContext';
-import { getSkillLabel } from '../../../Types/EnumType';
+import { getSkillLabel, getTimeZoneStringByIndex } from '../../../Types/EnumType';
 
 
 interface EmployeeDetailsModalProps {
@@ -135,7 +135,13 @@ interface EmployeeDetailsModalProps {
             </div>
             <div className="detail-banner">
                 <i className="fas fa-globe" ></i>
-                <span><strong>Time Zone:</strong> {currentEmployee?.timeZone}</span>
+                <span>
+                  <strong>Time Zone:</strong> 
+                  {(currentEmployee &&  currentEmployee?.timeZone > -1)
+                    ? getTimeZoneStringByIndex(currentEmployee.timeZone)
+                    : getTimeZoneStringByIndex(4)
+                  }
+                 </span>
             </div>
           </div>
   

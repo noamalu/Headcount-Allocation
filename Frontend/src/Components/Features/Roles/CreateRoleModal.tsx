@@ -260,10 +260,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
                 <option value="" disabled>
                   Select a time zone
                 </option>
-                <option value={1}>Morning</option>
-                <option value={2}>Noon</option>
-                <option value={3}>Evening</option>
-                <option value={4}>Flexible</option>
+                <option value={0}>Morning</option>
+                <option value={1}>Noon</option>
+                <option value={2}>Evening</option>
+                <option value={3}>Flexible</option>
               </select>
             </div>
           </div>
