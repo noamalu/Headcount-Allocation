@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpPost("Employees")]
         public ActionResult<Response<int>> Create([FromBody] Employee employee)
         {
-            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
+            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageTypeId, lang => new HeadcountAllocation.Domain.Language
             (
                 HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Languages>(lang.LanguageTypeId),
                 lang.Level
@@ -116,6 +116,7 @@ namespace API.Controllers
                     EmployeeName = ticket.EmployeeName,
                     StartDate = ticket.StartDate,
                     EndDate = ticket.EndDate,
+                    AbsenceReason = ticket.Reason.ReasonType.ToString(),
                     Description = ticket.Description
                 }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(tickets));
@@ -124,7 +125,7 @@ namespace API.Controllers
             {
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
-        }    
+        }
 
         [HttpGet("Employees/Utilization")]
         public ActionResult GetEmployeesJobPre()
@@ -243,7 +244,7 @@ namespace API.Controllers
                     Deadline = kvp.Key.Date,
                     RequiredHours = kvp.Key.RequiredHours
                 },
-                Hours = kvp.Value is double.NaN ? 0 : kvp.Value 
+                Hours = kvp.Value is double.NaN ? 0 : kvp.Value
             }).ToList();
             return Ok(projectHourRatio);
         }
@@ -294,6 +295,6 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-        
+
     }
 }

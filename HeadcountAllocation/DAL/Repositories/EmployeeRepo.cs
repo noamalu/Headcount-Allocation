@@ -12,9 +12,9 @@ namespace HeadcountAllocation.DAL.Repositories
 {
     public class EmployeeRepo
     {
-         private static Dictionary<int, Employee> Employees;
+        private static Dictionary<int, Employee> Employees;
 
-         private static Dictionary<string, Employee> EmployeesNames;
+        private static Dictionary<string, Employee> EmployeesNames;
 
         private object Lock;
 
@@ -32,7 +32,8 @@ namespace HeadcountAllocation.DAL.Repositories
             return _employeeRepo;
         }
 
-        public static void Dispose(){
+        public static void Dispose()
+        {
             _employeeRepo = new EmployeeRepo();
         }
 
@@ -52,34 +53,38 @@ namespace HeadcountAllocation.DAL.Repositories
             DBcontext dbContext = DBcontext.GetInstance();
             Employees.Add(employee.EmployeeId, employee);
             EmployeesNames.Add(employee.UserName, employee);
-            try{
+            try
+            {
                 lock (Lock)
                 {
                     EmployeeDTO empdto = new EmployeeDTO(employee);
                     dbContext.Employees.Add(empdto);
-                    
+
                     dbContext.SaveChanges();
                 }
             }
-            catch(Exception e){
+            catch (Exception e)
+            {
                 throw new Exception($"There was a problem in Database use- Add employee + {e}");
             }
-            
+
 
         }
 
         public void Delete(int id)
         {
-            try{
+            try
+            {
                 lock (Lock)
                 {
                     var dbContext = DBcontext.GetInstance();
                     var dbMember = dbContext.Employees.Find(id);
-                    if(dbMember is not null) {
+                    if (dbMember is not null)
+                    {
                         if (Employees.ContainsKey(id))
                         {
                             Employee employee = Employees[id];
-                           
+
                             Employees.Remove(id);
                         }
 
@@ -88,10 +93,11 @@ namespace HeadcountAllocation.DAL.Repositories
                     }
                 }
             }
-            catch(Exception){
+            catch (Exception)
+            {
                 throw new Exception("There was a problem in Database use- Delete employee");
             }
-            
+
         }
         public List<Employee> GetAll()
         {
@@ -105,7 +111,8 @@ namespace HeadcountAllocation.DAL.Repositories
                 return Employees[id];
             else
             {
-                try{
+                try
+                {
                     var dbContext = DBcontext.GetInstance();
                     EmployeeDTO mDto = dbContext.Employees.Find(id);
                     if (mDto != null)
@@ -115,8 +122,9 @@ namespace HeadcountAllocation.DAL.Repositories
                     }
                     throw new ArgumentException("Invalid user ID.");
                 }
-                catch(Exception){
-                throw new Exception("There was a problem in Database use- Get Member");
+                catch (Exception)
+                {
+                    throw new Exception("There was a problem in Database use- Get Member");
                 }
             }
         }
@@ -128,9 +136,11 @@ namespace HeadcountAllocation.DAL.Repositories
                 return EmployeesNames[userName];
             else
             {
-                try{
+                try
+                {
                     EmployeeDTO empDto;
-                    lock(Lock){
+                    lock (Lock)
+                    {
                         var dbContext = DBcontext.GetInstance();
                         empDto = dbContext.Employees.FirstOrDefault(m => m.UserName == userName);
                     }
@@ -144,8 +154,9 @@ namespace HeadcountAllocation.DAL.Repositories
                         throw new ArgumentException("Invalid user name.");
                     }
                 }
-                catch(Exception){
-                throw new Exception("There was a problem in Database use- Get Member");
+                catch (Exception)
+                {
+                    throw new Exception("There was a problem in Database use- Get Member");
                 }
             }
         }
@@ -155,15 +166,18 @@ namespace HeadcountAllocation.DAL.Repositories
             if (ContainsValue(employee))
             {
                 Employees[employee.EmployeeId] = employee;
-                
-                try{
+
+                try
+                {
                     lock (Lock)
                     {
                         EmployeeDTO p = DBcontext.GetInstance().Employees.Find(employee.EmployeeId);
-                        if (p != null){
+                        if (p != null)
+                        {
                             p.Email = employee.Email.Address;
-                            p.Password = employee.Password;
-                            if (employee.Alerts != null) {
+                            // p.Password = employee.Password;
+                            if (employee.Alerts != null)
+                            {
                                 List<MessageDTO> Alerts = new List<MessageDTO>();
                                 foreach (var message in employee.Alerts)
                                 {
@@ -172,7 +186,8 @@ namespace HeadcountAllocation.DAL.Repositories
                                 p.Alerts = Alerts;
                             }
                             p.Alert = employee.Alert;
-                            if(employee.ForeignLanguages != null){
+                            if (employee.ForeignLanguages != null)
+                            {
                                 p.ForeignLanguages = new List<EmployeeLanguagesDTO>();
                                 foreach (var language in employee.ForeignLanguages)
                                 {
@@ -185,18 +200,20 @@ namespace HeadcountAllocation.DAL.Repositories
                         }
                     }
                 }
-                catch(Exception){
-                throw new Exception("There was a problem in Database use- Update employee");
+                catch (Exception)
+                {
+                    throw new Exception("There was a problem in Database use- Update employee");
                 }
-                
+
             }
-            else{
+            else
+            {
                 throw new KeyNotFoundException($"employee with ID {employee.EmployeeId} not found.");
             }
         }
-     
 
-       
+
+
 
         public bool ContainsID(int id)
         {
@@ -212,12 +229,12 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             Employees.Clear();
 
-        }        
+        }
 
         public void ResetDomainData()
         {
             Employees = new Dictionary<int, Employee>();
-            
+
         }
 
         private void Load()
@@ -229,7 +246,7 @@ namespace HeadcountAllocation.DAL.Repositories
             foreach (EmployeeDTO employee in employees)
             {
                 Employees.TryAdd(employee.EmployeeId, new Employee(employee));
-                
+
             }
         }
 
@@ -237,7 +254,7 @@ namespace HeadcountAllocation.DAL.Repositories
         {
             Employee employee = new Employee(employeeDto);
             Employees[employee.EmployeeId] = employee;
-            
+
         }
     }
 }

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+// import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import ProjectsTable from '../Components/Features/Projects/ProjectsTable'; 
 import '../Styles/Projects.css';
 import CreateProjectModal from '../Components/Features/Projects/CreateProjectModal';
@@ -10,20 +11,20 @@ import { useAuth } from '../Context/AuthContext'
 const ProjectsPage: React.FC = () => {
     const {isAdmin} = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const tableRef = useRef<(project: Project) => void>();
-    const updateRef = useRef<(project: Project) => void>();
+    // const tableRef = useRef<(project: Project) => void>();
+    // const updateRef = useRef<(project: Project) => void>();
 
-    const handleProjectCreated = (project: Project) => {
-        if (tableRef.current) {
-            tableRef.current(project); // Send to table
-        }
-    };
+    // const handleProjectCreated = (project: Project) => {
+    //     if (tableRef.current) {
+    //         tableRef.current(project); // Send to table
+    //     }
+    // };
 
-    const handleProjectUpdated = (project: Project) => {
-        if (updateRef.current) {
-          updateRef.current(project);
-        }
-    };
+    // const handleProjectUpdated = (project: Project) => {
+    //     if (updateRef.current) {
+    //       updateRef.current(project);
+    //     }
+    // };
 
     const handleOpenModal = () => {
         setIsModalOpen(true); 
@@ -41,14 +42,18 @@ const ProjectsPage: React.FC = () => {
                 {isAdmin &&
                  <button className="add-project-button" onClick={handleOpenModal}>+ New Project</button>}
             </div>
-            <ProjectsTable
+            <ProjectsTable />
+            {/* <ProjectsTable
                 onProjectCreated={(callback) => (tableRef.current = callback)}
                 onProjectUpdated={(callback) => (updateRef.current = callback)}
-            />     
+            />      */}
             {isModalOpen && (
+                // <CreateProjectModal
+                //     onClose={() => setIsModalOpen(false)} 
+                //     onProjectCreated={handleProjectCreated} // Update list
+                // />
                 <CreateProjectModal
-                    onClose={() => setIsModalOpen(false)} 
-                    onProjectCreated={handleProjectCreated} // Update list
+                onClose={handleCloseModal}
                 />
             )}
         </div>

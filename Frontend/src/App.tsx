@@ -11,24 +11,27 @@ import './Styles/Layout.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import TicketsPage from './Pages/TicketsPage';
 import CalendarPage from './Pages/CalendarPage';
+import { DataProvider } from './Context/DataContext';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-            <Route path="/projects" element={<PrivateRoute><ProjectsPage /></PrivateRoute>} />
-            <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
-            <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
-            <Route path="/calendar" element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
-            <Route path="*" element={<Navigate to="/login" />} />
-          </Routes>
-        </Layout>
-      </Router>
-    </AuthProvider>
+    <DataProvider>
+      <AuthProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+              <Route path="/projects" element={<PrivateRoute><ProjectsPage /></PrivateRoute>} />
+              <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
+              <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
+              <Route path="/calendar" element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
+              <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </AuthProvider>
+    </DataProvider>
   );
 };
 

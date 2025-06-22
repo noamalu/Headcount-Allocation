@@ -9,10 +9,13 @@ export interface Role {
     description: string;
     timeZone: number;
     foreignLanguages: Language[];
-    skills:Skill [];
+    skills: Skill[];
     yearsExperience: number;
     jobPercentage: number;
-    // attributes: { attribute: string; requiredRank: number | string; priority: number }[];
-    // foreignLanguages: [];
-    // skills: [];
+    startDate: string;
   }
+
+  export const formatDate = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("en-GB"); 
+};

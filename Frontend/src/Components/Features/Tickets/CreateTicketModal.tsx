@@ -6,15 +6,10 @@ import '../../../Styles/Shared.css';
 import { AbsenceReasonEnum } from '../../../Types/EnumType';
 import TicketsService from '../../../Services/TicketsService';
 import { useAuth } from '../../../Context/AuthContext';
+import { useDataContext } from '../../../Context/DataContext';
 
 
-const CreateTicketModal: React.FC<{ 
-  onClose: () => void;
-   onTicketCreated: (ticket: Ticket) => void }>
-       = ({
-         onClose,
-         onTicketCreated,
-       }) => {
+const CreateTicketModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [absenceReason, setAbsenceReason] = useState<AbsenceReasonEnum | ''>('');
@@ -22,6 +17,7 @@ const CreateTicketModal: React.FC<{
     const { currentUser, currentId } = useAuth();
     const [uiError, setUiError] = useState<string | null>(null);
     const [apiError, setApiError] = useState<string | null>(null);
+     const { addTicket } = useDataContext();
 
     const absenceReasons = Object.values(AbsenceReasonEnum);
 
@@ -62,7 +58,8 @@ const CreateTicketModal: React.FC<{
         const newTicketId = await TicketsService.sendCreateTicket(newTicket);
         newTicket.ticketId = newTicketId;
         console.log('Ticket created successfully:', newTicket);
-        onTicketCreated(newTicket);
+        // onTicketCreated(newTicket);
+        addTicket(newTicket);
         setApiError(null);
         onClose(); 
     } catch (error) {

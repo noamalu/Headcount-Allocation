@@ -6,11 +6,15 @@ import '../../../Styles/Shared.css';
 import { getAllTickets, getTicketsByEmployeeId } from '../../../Services/TicketsService';
 import { useAuth } from '../../../Context/AuthContext';
 import TicketDetailsModal from './TicketDetailsModal';
+import { useDataContext } from '../../../Context/DataContext';
+import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
 // @ts-ignore
 // import { Tooltip } from 'react-tooltip';
 
-const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+// const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
+  // const [tickets, setTickets] = useState<Ticket[]>([]);
+const TicketsTable: React.FC = () => {
+  const { tickets, setTickets } = useDataContext();
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -30,9 +34,11 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
     try {
       if (isAdmin) {
         const data = await getAllTickets();
+        console.log("getAllTickets ", data);
         setTickets(data);
       } else {
         const data = await getTicketsByEmployeeId(currentId);
+        console.log("getTicketsByEmployeeId ", data);
         setTickets(data);
       }
     } catch (err) {
@@ -47,12 +53,12 @@ const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => v
 }, []);
 
 
-useEffect(() => {
-    const handleTicketCreated = (newTicket: Ticket) => {
-        setTickets((prevTickets) => [...prevTickets, newTicket]);
-    };
-    onTicketCreated(handleTicketCreated); 
-}, [onTicketCreated]);
+// useEffect(() => {
+//     const handleTicketCreated = (newTicket: Ticket) => {
+//         setTickets((prevTickets) => [...prevTickets, newTicket]);
+//     };
+//     onTicketCreated(handleTicketCreated); 
+// }, [onTicketCreated]);
 
 const handleOpenModal = (ticket: Ticket) => {
   setSelectedTicket(ticket);
@@ -89,7 +95,7 @@ if (isLoading) {
               <td>{formatDate(ticket.endDate)}</td>
               <td>
                 <div className={`status-icon ${ticket.isOpen ? 'status-open' : 'status-closed'}`}>
-                    {ticket.isOpen ? '✔' : ''}
+                    {ticket.isOpen ? '' : '✔'}
                 </div>
               </td>
               <td>
@@ -100,7 +106,7 @@ if (isLoading) {
         </tbody>
       </table>
       {selectedTicket && (
-        <TicketDetailsModal ticket={selectedTicket} onClose={handleCloseModal} />
+        <TicketDetailsModal ticketId={selectedTicket.ticketId} onClose={handleCloseModal} />
       )}
     </div>
   );
