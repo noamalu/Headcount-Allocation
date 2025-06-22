@@ -21,7 +21,7 @@ interface ProjectDetailsModalProps {
 // const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {  
   const {isAdmin} = useAuth();
-  const { roles, addRole, addRolesIfNotExist, updateRole } = useDataContext();
+  const { roles, addRole, addRolesIfNotExist, addOrUpdateRoles, updateRole } = useDataContext();
   const { updateProject, deleteProject } = useDataContext();
   const projectRoles = roles.filter((r) => r.projectId === project.projectId);
 
@@ -58,7 +58,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     const fetchRoles = async () => {
       try {
         const fetchedRoles = await getProjectRoles(project.projectId);
-        addRolesIfNotExist(fetchedRoles);
+        addOrUpdateRoles(fetchedRoles);
       } catch (error) {
         console.error('Failed to fetch roles for project:', error);
         setApiError('Failed to load roles');

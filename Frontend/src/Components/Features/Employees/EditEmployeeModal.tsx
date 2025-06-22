@@ -7,7 +7,7 @@ import EmployeesService from '../../../Services/EmployeesService';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
-import { getLanguageStringByIndex, getSkillLabel, LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { getLanguageStringByIndex, getSkillLabel, LanguageEnum, SkillEnum, timeZoneEnumToId } from '../../../Types/EnumType';
 import { useDataContext } from '../../../Context/DataContext';
 
 interface EditEmployeeModalProps {
@@ -231,6 +231,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
                         <strong>Time Zone:</strong>
                         <select
                             id="timeZone"
+                            name="timeZone"
                             value={editedEmployee.timeZone} 
                             onChange={handleInputChange} 
                             className="dropdown"

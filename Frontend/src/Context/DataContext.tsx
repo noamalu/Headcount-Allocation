@@ -21,6 +21,7 @@ interface DataContextType {
 
   addRole: (role: Role) => void;
   addRolesIfNotExist: (newRoles: Role[]) => void;
+  addOrUpdateRoles: (newRoles: Role[]) => void;
   updateRole: (role: Role) => void;
   deleteRole: (roleId: number) => void;
 
@@ -64,6 +65,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const existingIds = new Set(prevRoles.map(r => r.roleId));
       const filteredNew = newRoles.filter(r => !existingIds.has(r.roleId));
       return [...prevRoles, ...filteredNew];
+    });
+  };
+
+  const addOrUpdateRoles = (newRoles: Role[]) => {
+    setRoles((prevRoles) => {
+      const rolesMap = new Map(prevRoles.map(r => [r.roleId, r]));
+  
+      newRoles.forEach(newRole => {
+        rolesMap.set(newRole.roleId, newRole); // יכניס חדש או יעדכן קיים
+      });
+  
+      return Array.from(rolesMap.values());
     });
   };
 
@@ -158,6 +171,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteProject,
         addRole,
         addRolesIfNotExist,
+        addOrUpdateRoles,
         updateRole,
         deleteRole,
         addEmployee,

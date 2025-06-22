@@ -38,7 +38,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
   // const [skills, setSkills] = useState(
   //   role.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level, priority: s.priority }))
   // );
- const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
   const [selectedSkill, setSelectedSkill] = useState('');
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
   const [languageError, setLanguageError] = useState('');
@@ -72,7 +72,11 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
       setLanguageError('Language already exists');
       return;
     }
-    setLanguages([...languages, { language: selectedLanguage, languageTypeId: selectedLanguage as any, level: 1 }]);
+    setLanguages([...languages, {
+      language: selectedLanguage,
+      languageTypeId: Object.values(LanguageEnum).indexOf(selectedLanguage),
+      level: 1
+    }]);
     setSelectedLanguage('');
   };
 
@@ -147,6 +151,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
   // Save:
 
   const handleSave = async () => {
+    console.log('Languages about to send:', languages);
     let errorMessage = "";
     if (!editedRole.roleName.trim()) {
       errorMessage += "• Role name is required.\n";
@@ -189,10 +194,9 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
         priority: index + 1
       }))
     };
-    
-
+    console.log('foreignLanguages about to send:', updatedRole.foreignLanguages);
     try {
-      await ProjectsService.editRole(editedRole, projectId);
+      await ProjectsService.editRole(updatedRole, projectId);
       // onSave(editedRole);
       updateRole(updatedRole);
       onClose();
@@ -278,6 +282,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
                       <strong>Time Zone:</strong>
                       <select
                           id="timeZone"
+                          name="timeZone"
                           value={editedRole.timeZone} 
                           onChange={handleInputChange} 
                           className="dropdown"
