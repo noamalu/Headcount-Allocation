@@ -32,7 +32,7 @@ const EditTicketModal: React.FC<{
       setUiError(null);
       try {
         console.log("Sending edit ticket for: ", editedTicket.ticketId," with details:", editedTicket.absenceReason, editedTicket.description);
-        await TicketsService.editTicket(editedTicket.employeeId, ticket);
+        await TicketsService.editTicket(editedTicket.employeeId, editedTicket);
         setApiError(null);
         // onSave(editedProject); 
         updateTicket(editedTicket);
