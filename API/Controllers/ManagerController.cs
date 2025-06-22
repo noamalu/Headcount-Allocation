@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpPost("Employees")]
         public ActionResult<Response<int>> Create([FromBody] Employee employee)
         {
-            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
+            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageTypeId, lang => new HeadcountAllocation.Domain.Language
             (
                 HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Languages>(lang.LanguageTypeId),
                 lang.Level
