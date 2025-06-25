@@ -38,10 +38,14 @@ builder.Services.AddCors(options =>
 var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
 
 var managerFacade = HeadcountAllocation.Domain.ManagerFacade.GetInstance();
+
+context.SeedStaticTables();
 if(!managerFacade.GetAllEmployees().Select(employee => employee.UserName).Contains("admin"))
     managerFacade.CreateEmployee("admin", "string", "0000000000", 
         "headcount.allocation@gmail.com", 0, new(), new(), 10, 1, true);
-context.SeedStaticTables();
+
+builder.Services.AddHangfire(configuration => 
+    configuration.UseSqlServerStorage("Server=localhost,1433;Database=HeadCountDB;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;")); // TODO: replace this
 
 var app = builder.Build();
 app.UseHangfireDashboard("/jobs"); // http://localhost:port/jobs
