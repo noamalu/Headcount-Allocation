@@ -106,7 +106,7 @@ namespace API.Controllers
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-       
+
 
         [HttpPost("{projectId}/Roles")]
         public async Task<ActionResult> AddRole([Required][FromRoute] int projectId,
@@ -157,4 +157,3 @@ namespace API.Controllers
 
     }
 }
-

@@ -1,5 +1,6 @@
 using API.Services;
 using EcommerceAPI.initialize;
+using Hangfire;
 using HeadcountAllocation.DAL.DTO;
 using HeadcountAllocation.Domain;
 using HeadcountAllocation.Services;
@@ -43,6 +44,8 @@ if(!managerFacade.GetAllEmployees().Select(employee => employee.UserName).Contai
 context.SeedStaticTables();
 
 var app = builder.Build();
+app.UseHangfireDashboard("/jobs"); // http://localhost:port/jobs
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())

@@ -19,11 +19,11 @@ namespace API.Controllers
             _headCountService = headCountService;
             _employeeService = employeeService;
         }
-        
+
         [HttpPost("Employees")]
         public ActionResult<Response<int>> Create([FromBody] Employee employee)
         {
-            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageId, lang => new HeadcountAllocation.Domain.Language
+            var foreignLanguages = employee.ForeignLanguages.ToDictionary(lang => lang.LanguageTypeId, lang => new HeadcountAllocation.Domain.Language
             (
                 HeadcountAllocation.Domain.Enums.GetValueById<HeadcountAllocation.Domain.Enums.Languages>(lang.LanguageTypeId),
                 lang.Level
@@ -57,7 +57,7 @@ namespace API.Controllers
             var response = _headCountService.DeleteEmployee(employeeId);
             return Ok(Response<bool>.FromValue(!response.ErrorOccured));
         }
-        
+
         [HttpPost("Employees/Admin")]
         public ActionResult<Response<int>> CreateAdmin([FromBody] Employee employee)
         {
@@ -88,13 +88,13 @@ namespace API.Controllers
             );
             return Ok(employeeId);
         }
-        
+
         [HttpDelete("Tickets/{ticketId}")]
         public ActionResult<Response> CloseTicket([FromRoute] int ticketId)
         {
             try
             {
-                var response = _headCountService.CloseTicket(ticketId);   
+                var response = _headCountService.CloseTicket(ticketId);
                 return Ok(Response<bool>.FromValue(!response.ErrorOccured));
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.GetOpensTickets();   
+                var response = _headCountService.GetOpensTickets();
                 var tickets = response.Value.Select(ticket => new Ticket
                 {
                     TicketId = ticket.TicketId,
@@ -116,6 +116,7 @@ namespace API.Controllers
                     EmployeeName = ticket.EmployeeName,
                     StartDate = ticket.StartDate,
                     EndDate = ticket.EndDate,
+                    AbsenceReason = ticket.Reason.ReasonType.ToString(),
                     Description = ticket.Description
                 }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(tickets));
@@ -124,7 +125,176 @@ namespace API.Controllers
             {
                 return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
             }
-        }        
-        
+        }
+
+        [HttpGet("Employees/Utilization")]
+        public ActionResult GetEmployeesJobPre()
+        {
+            var response = _headCountService.GetEmployeesJobPre();
+            if (response.ErrorOccured)
+            {
+                return BadRequest(new { error = response.ErrorMessage });
+            }
+            if (response.Value == null)
+            {
+                return NotFound();
+            }
+            var employeeUtilization = response.Value.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Select(e => new Employee
+                {
+                    EmployeeId = e.EmployeeId,
+                    EmployeeName = e.UserName,
+                    PhoneNumber = e.PhoneNumber,
+                    Email = e.Email.Address,
+                    Skills = [.. e.Skills.Values.Select(s => new Skill
+                    {
+                        SkillId = HeadcountAllocation.Domain.Enums.GetId(s.SkillType),
+                        Level = s.Level,
+                        Priority = s.Priority
+                    })],
+                    ForeignLanguages = [.. e.ForeignLanguages.Values.Select(l => new Language
+                    {
+                        LanguageId = HeadcountAllocation.Domain.Enums.GetId(l.LanguageType),
+                        Level = l.Level
+                    })],
+                    TimeZone = HeadcountAllocation.Domain.Enums.GetId(e.TimeZone),
+                    YearsExperience = e.YearsExperience,
+                    JobPercentage = e.JobPercentage,
+                    IsManager = e.IsManager
+                }).ToList()
+            );
+            return Ok(employeeUtilization);
+        }
+
+        [HttpGet("Projects/Deadlines")]
+        public ActionResult<Response<List<Project>>> GetProjectsThatEndThisMonth()
+        {
+            var response = _headCountService.GetProjectsThatEndThisMonth();
+            var projects = response.Value.Select(p => new Project
+            {
+                ProjectId = p.ProjectId,
+                ProjectName = p.ProjectName,
+                Description = p.Description,
+                Deadline = p.Date,
+                RequiredHours = p.RequiredHours
+            }).ToList();
+            return Ok(projects);
+        }
+
+        [HttpGet("Projects/Employees/Count")]
+        public ActionResult<Response<Dictionary<Project, int>>> GetNumEmployeesInProject()
+        {
+            var response = _headCountService.GetNumEmployeesInProject();
+            var projectEmployeeCount = response.Value.Select(kvp => new
+            {
+                Project = new Project
+                {
+                    ProjectId = kvp.Key.ProjectId,
+                    ProjectName = kvp.Key.ProjectName,
+                    Description = kvp.Key.Description,
+                    Deadline = kvp.Key.Date,
+                    RequiredHours = kvp.Key.RequiredHours
+                },
+                Count = kvp.Value
+            }).ToList();
+            return Ok(projectEmployeeCount);
+        }
+
+        [HttpGet("Employees/Vacation")]
+        public ActionResult<Response<List<Employee>>> GetEmployeesThatInVacationThisMonth()
+        {
+            var response = _headCountService.GetEmployeesThatInVacationThisMonth();
+            var employees = response.Value.Select(e => new Employee
+            {
+                EmployeeId = e.EmployeeId,
+                EmployeeName = e.UserName,
+                PhoneNumber = e.PhoneNumber,
+                Email = e.Email.Address,
+                Skills = [.. e.Skills.Values.Select(s => new Skill
+                {
+                    SkillId = HeadcountAllocation.Domain.Enums.GetId(s.SkillType),
+                    Level = s.Level,
+                    Priority = s.Priority
+                })],
+                ForeignLanguages = [.. e.ForeignLanguages.Values.Select(l => new Language
+                {
+                    LanguageId = HeadcountAllocation.Domain.Enums.GetId(l.LanguageType),
+                    Level = l.Level
+                })],
+                TimeZone = HeadcountAllocation.Domain.Enums.GetId(e.TimeZone),
+                YearsExperience = e.YearsExperience,
+                JobPercentage = e.JobPercentage,
+                IsManager = e.IsManager
+            }).ToList();
+            return Ok(response);
+        }
+
+        [HttpGet("Projects/Hours")]
+        public ActionResult GetProjectHourRatio()
+        {
+            var response = _headCountService.GetProjectHourRatio();
+            var projectHourRatio = response.Value.Select(kvp => new
+            {
+                Project = new Project
+                {
+                    ProjectId = kvp.Key.ProjectId,
+                    ProjectName = kvp.Key.ProjectName,
+                    Description = kvp.Key.Description,
+                    Deadline = kvp.Key.Date,
+                    RequiredHours = kvp.Key.RequiredHours
+                },
+                Hours = kvp.Value is double.NaN ? 0 : kvp.Value
+            }).ToList();
+            return Ok(projectHourRatio);
+        }
+
+        [HttpGet("Employees/Vacation/Reasons")]
+        public ActionResult<Response<Dictionary<string, List<Employee>>>> GetEmployeesThatInVacationThisMonthAndReason()
+        {
+            try
+            {
+                var response = _headCountService.GetEmployeesThatInVacationThisMonthAndReason();
+                if (response.ErrorOccured)
+                {
+                    return BadRequest(new { error = response.ErrorMessage });
+                }
+                if (response.Value == null)
+                {
+                    return NotFound();
+                }
+                var employeeReasons = response.Value.ToDictionary(
+                    kvp => kvp.Key.ToString(),
+                    kvp => kvp.Value.Select(e => new Employee
+                    {
+                        EmployeeId = e.EmployeeId,
+                        EmployeeName = e.UserName,
+                        PhoneNumber = e.PhoneNumber,
+                        Email = e.Email.Address,
+                        Skills = [.. e.Skills.Values.Select(s => new Skill
+                        {
+                            SkillId = HeadcountAllocation.Domain.Enums.GetId(s.SkillType),
+                            Level = s.Level,
+                            Priority = s.Priority
+                        })],
+                        ForeignLanguages = [.. e.ForeignLanguages.Values.Select(l => new Language
+                        {
+                            LanguageId = HeadcountAllocation.Domain.Enums.GetId(l.LanguageType),
+                            Level = l.Level
+                        })],
+                        TimeZone = HeadcountAllocation.Domain.Enums.GetId(e.TimeZone),
+                        YearsExperience = e.YearsExperience,
+                        JobPercentage = e.JobPercentage,
+                        IsManager = e.IsManager
+                    }).ToList()
+                );
+                return Ok(employeeReasons);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
+
     }
 }

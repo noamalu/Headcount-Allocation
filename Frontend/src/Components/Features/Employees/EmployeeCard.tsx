@@ -4,8 +4,8 @@ import {Employee} from '../../../Types/EmployeeType'
 
 
 interface EmployeeCardProps {
-  employee: Employee; // Specify that the prop is of type Project
-  onClick: () => void; // Callback for closing the modal
+  employee: Employee; 
+  onClick: () => void; 
 }
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee, onClick }) => {

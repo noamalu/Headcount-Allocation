@@ -4,8 +4,8 @@ import { Language } from './LanguageType'
 import { Role } from './RoleType'
 
 export interface Employee {
-    employeeId: number; 
     employeeName: string;
+    employeeId: number; 
     phoneNumber: string;
     email?: string;
     timeZone: number;

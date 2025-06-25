@@ -4,18 +4,20 @@ import EmployeesSpan from './EmployeesSpan';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import EmployeesService from '../../../Services/EmployeesService';
-import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { getSkillLabel, LanguageEnum, SkillEnum } from '../../../Types/EnumType';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
+import { useDataContext } from '../../../Context/DataContext';
 // import AddRoleModal from '../Roles/NewRoleModal';
 
 
 const CreateEmployeeModal: React.FC<{ 
   onClose: () => void;
-   onEmployeeCreated: (employee: Employee) => void }>
+  //  onEmployeeCreated: (employee: Employee) => void 
+  }>
     = ({
       onClose,
-      onEmployeeCreated,
+      // onEmployeeCreated,
     }) => {
     const [employeeName, setEmployeeName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -33,6 +35,7 @@ const CreateEmployeeModal: React.FC<{
     const [apiError, setApiError] = useState<string | null>(null);
     const [skillError, setSkillError] = useState<string>("");
     const [languageError, setLanguageError] = useState<string>("");
+    const { addEmployee } = useDataContext();
 
     useEffect(() => {
       if (apiError) {
@@ -44,16 +47,17 @@ const CreateEmployeeModal: React.FC<{
     // Skills:
 
     const handleAddSkill = () => {
-      if (!selectedSkill) {
+      if (selectedSkill === "") {
         setSkillError("Please select a skill.");
         return;
       }
-      if (skills.some((s) => s.skill === selectedSkill)) {
-        setSkillError("Skill already added.");
+      const parsedSkill = Number(selectedSkill) as SkillEnum;
+      if (skills.some((s) => s.skill === parsedSkill)) {
+        setSkillError('Skill already exists');
         return;
       }
-      setSkills([...skills, { skill: selectedSkill, level: 1 }]);
-      setSelectedSkill("");
+      setSkills([...skills, { skill: parsedSkill, level: 1 }]);
+      setSelectedSkill('');
       setSkillError("");
     };
 
@@ -122,7 +126,7 @@ const CreateEmployeeModal: React.FC<{
       // Create skills array
       const employeeSkills: Skill[] = skills.map((skill, index) => ({
           skillId: index, 
-          skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
+          skillTypeId: skill.skill,
           level: skill.level,
           priority: 0, 
       }));
@@ -157,7 +161,7 @@ const CreateEmployeeModal: React.FC<{
         const newEmployeeId = await EmployeesService.sendCreateEmployee(newEmployee); // wont be it - NOA
         newEmployee.employeeId = newEmployeeId;
         console.log('Employee created successfully:', newEmployee);
-        onEmployeeCreated(newEmployee);
+        addEmployee(newEmployee);
         setApiError(null);
         onClose(); 
     } catch (error) {
@@ -223,10 +227,10 @@ const CreateEmployeeModal: React.FC<{
                 <option value="" disabled>
                   Select a time zone
                 </option>
-                <option value={1}>Morning</option>
-                <option value={2}>Noon</option>
-                <option value={3}>Evening</option>
-                <option value={4}>Flexible</option>
+                <option value={0}>Morning</option>
+                <option value={1}>Noon</option>
+                <option value={2}>Evening</option>
+                <option value={3}>Flexible</option>
               </select>
             </div>
 
@@ -323,20 +327,22 @@ const CreateEmployeeModal: React.FC<{
             <div className="modal-info-row">
               <label>Add Skill: </label>
               <select
-              id="skillSelect"
-              value={selectedSkill}
-              onChange={(e) => {
-                setSelectedSkill(e.target.value as SkillEnum);
-                setSkillError("");}
-              }
-              className="dropdown"
-              >
-              <option value="" disabled>Select a skill</option>
-              {Object.values(SkillEnum).map((skill) => (
-                  <option key={skill} value={skill}>
-                      {skill}
-                  </option>
-              ))}
+                id="skillSelect"
+                value={selectedSkill}
+                onChange={(e) => {
+                  setSelectedSkill(Number(e.target.value) as SkillEnum);
+                  setSkillError("");}
+                }
+                className="dropdown"
+                >
+                  <option value="" disabled>Select a skill</option>
+                  {Object.keys(SkillEnum)
+                    .filter((key) => isNaN(Number(key)))
+                    .map((key) => (
+                      <option key={key} value={SkillEnum[key as keyof typeof SkillEnum]}>
+                        {getSkillLabel(SkillEnum[key as keyof typeof SkillEnum])}
+                      </option>
+                    ))}
               </select>
               <button className="add-button" onClick={handleAddSkill}>
               <i className="fas fa-plus"></i>
@@ -356,7 +362,7 @@ const CreateEmployeeModal: React.FC<{
             <tbody>
                 {skills.map((sk, index) => (
                 <tr key={index}>
-                    <td>{sk.skill}</td>
+                    <td>{getSkillLabel(sk.skill)}</td>
                     <td>
                     <select
                         value={sk.level}

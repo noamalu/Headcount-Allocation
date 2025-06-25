@@ -40,6 +40,7 @@ namespace HeadcountAllocation.Domain
             Open = ticketDTO.Open;
             Reason = new Reason(ticketDTO.Reason);
         }
+        public Ticket() { }
 
         public void CloseTicket()
         {

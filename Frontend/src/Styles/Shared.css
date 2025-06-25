@@ -209,16 +209,16 @@
   height: 20px;
   border-radius: 4px;
   margin-right: 8px;
-}
-
-.status-open {
-  background-color: #3b883d; 
   color: white;
   justify-content: center;
 }
 
-.status-closed {
+.status-open {
   background-color: #a72b23; 
+}
+
+.status-closed {
+  background-color: #3b883d; 
 }
 
 .ellipsis-text {
@@ -374,4 +374,28 @@
   .cancel-button {
     background-color: #f0f0f0;
     color: #333;
+  }
+
+  .ticket-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin: 10px 0 20px 0;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .ticket-status-badge i {
+    font-size: 1.2rem;
+  }
+  
+  .ticket-status-badge.closed {
+    background-color: #4CAF50; /* ירוק */
+  }
+  
+  .ticket-status-badge.open {
+    background-color: #D32F2F; /* אדום */
   }

@@ -5,34 +5,36 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using static HeadcountAllocation.Domain.Enums;
 
-namespace HeadcountAllocation.Domain{
+namespace HeadcountAllocation.Domain
+{
 
-    public class Employee: User
+    public class Employee : User
     {
 
         PasswordHasher<object> passwordHasher;
 
-        public int EmployeeId{get;set;}
+        public int EmployeeId { get; set; }
 
-        public string PhoneNumber{get;set;}
+        public string PhoneNumber { get; set; }
 
-        public TimeZones TimeZone{get;set;}
-        
-        public ConcurrentDictionary<int, Language> ForeignLanguages{get;set;} = new();
+        public TimeZones TimeZone { get; set; }
 
-        public ConcurrentDictionary<int, Skill> Skills{get;set;} = new();
+        public ConcurrentDictionary<int, Language> ForeignLanguages { get; set; } = new();
 
-        public Dictionary<int, Role> Roles{get;set;} = new();
+        public ConcurrentDictionary<int, Skill> Skills { get; set; } = new();
 
-        public int YearsExperience{get;set;}
+        public Dictionary<int, Role> Roles { get; set; } = new();
 
-        public double JobPercentage{get;set;}
+        public int YearsExperience { get; set; }
 
-        public bool IsManager{get; set;}
+        public double JobPercentage { get; set; }
 
-        public Employee(string name, int employeeId, string phoneNumber, MailAddress email, 
-        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages, 
-        ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string password, bool isManager){
+        public bool IsManager { get; set; }
+
+        public Employee(string name, int employeeId, string phoneNumber, MailAddress email,
+        TimeZones timezone, ConcurrentDictionary<int, Language> foreignLanguages,
+        ConcurrentDictionary<int, Skill> skills, int yearsExperience, double jobPercentage, string password, bool isManager)
+        {
             UserName = name;
             EmployeeId = employeeId;
             PhoneNumber = phoneNumber;
@@ -56,16 +58,20 @@ namespace HeadcountAllocation.Domain{
             YearsExperience = employeeDto.YearExp;
             JobPercentage = employeeDto.JobPercentage;
             Password = employeeDto.Password;
-            if (employeeDto.Roles != null){
-                foreach (RoleDTO roleDTO in employeeDto.Roles){
+            if (employeeDto.Roles != null)
+            {
+                foreach (RoleDTO roleDTO in employeeDto.Roles)
+                {
                     Roles[roleDTO.RoleId] = new Role(roleDTO);
                 }
             }
-            foreach (EmployeeSkillsDTO skillDTO in employeeDto.Skills){
+            foreach (EmployeeSkillsDTO skillDTO in employeeDto.Skills)
+            {
                 Skills[skillDTO.SkillTypeId] = new Skill(skillDTO);
             }
-            foreach (EmployeeLanguagesDTO LanguagesDTO in employeeDto.ForeignLanguages){
-            ForeignLanguages[LanguagesDTO.LanguageTypeId] = new Language(LanguagesDTO);
+            foreach (EmployeeLanguagesDTO LanguagesDTO in employeeDto.ForeignLanguages)
+            {
+                ForeignLanguages[LanguagesDTO.LanguageTypeId] = new Language(LanguagesDTO);
             }
             IsManager = employeeDto.IsManager;
 
@@ -84,63 +90,78 @@ namespace HeadcountAllocation.Domain{
             return result == PasswordVerificationResult.Success;
         }
 
-        public double CalculateJobPercentage(){
-            double sum =0;
-            foreach (var role in Roles.Values){
+        public double CalculateJobPercentage()
+        {
+            double sum = 0;
+            foreach (var role in Roles.Values)
+            {
                 sum = sum + role.JobPercentage;
             }
             return sum;
         }
 
-        public void AssignEmployeeToRole(Role role){
+        public void AssignEmployeeToRole(Role role)
+        {
             Roles.Add(role.RoleId, role);
         }
 
-        public bool Login(){
+        public bool Login()
+        {
             return IsManager;
         }
 
-        public void EditEmail(MailAddress newEmail){
+        public void EditEmail(MailAddress newEmail)
+        {
             Email = newEmail;
         }
 
-        public void EditPhoneNumber(string newPhoneNumber){
+        public void EditPhoneNumber(string newPhoneNumber)
+        {
             PhoneNumber = newPhoneNumber;
         }
 
-        public void EditTimeZone(TimeZones newTimeZone){
+        public void EditTimeZone(TimeZones newTimeZone)
+        {
             TimeZone = newTimeZone;
         }
 
-        public void EditYearOfExpr(int newyearOfExpr){
+        public void EditYearOfExpr(int newyearOfExpr)
+        {
             YearsExperience = newyearOfExpr;
         }
 
-        public void EditJobPercentage(double newJobPercentage){
+        public void EditJobPercentage(double newJobPercentage)
+        {
             JobPercentage = newJobPercentage;
         }
 
-        public ConcurrentDictionary<int, Skill> GetSkills(){
+        public ConcurrentDictionary<int, Skill> GetSkills()
+        {
             return Skills;
         }
 
-        public void AddSkill(Skill newSkill){
+        public void AddSkill(Skill newSkill)
+        {
             Skills.TryAdd(newSkill.SkillId, newSkill);
         }
 
-        public void RemoveSkill(int skillId){
+        public void RemoveSkill(int skillId)
+        {
             Skills.Remove(skillId, out _);
         }
 
-        public ConcurrentDictionary<int, Language> GetLanguages(){
+        public ConcurrentDictionary<int, Language> GetLanguages()
+        {
             return ForeignLanguages;
         }
 
-        public void AddLanguage(Language newLanguage){
+        public void AddLanguage(Language newLanguage)
+        {
             ForeignLanguages.TryAdd(newLanguage.LanguageID, newLanguage);
         }
 
-        public void RemoveLanguage(int languageID){
+        public void RemoveLanguage(int languageID)
+        {
             ForeignLanguages.Remove(languageID, out _);
         }
 
