@@ -117,7 +117,9 @@ namespace HeadcountAllocation.DAL
                 LanguageTypes.AddRange(new List<LanguageTypesDTO>
                 {
                     new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.English, LanguageTypeName = "English" },
-                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" }
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" },
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Spanish, LanguageTypeName = "Spanish" }
+
                 });
             }
 
