@@ -64,24 +64,24 @@ namespace HeadcountAllocation.DAL
 
         public override void Dispose()
         {
-            // Messages.ExecuteDelete();
-            // Events.ExecuteDelete();
-            // EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
-            // EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
-            // RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
-            // RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
-            // TicketReasons.ExecuteDelete();
+            Messages.ExecuteDelete();
+            Events.ExecuteDelete();
+            EmployeeSkills.ExecuteDelete();      // FK to Employees, SkillTypes
+            EmployeeLanguages.ExecuteDelete();   // FK to Employees, LanguageTypes
+            RoleSkills.ExecuteDelete();          // FK to Roles, SkillTypes
+            RoleLanguages.ExecuteDelete();       // FK to Roles, LanguageTypes
+            TicketReasons.ExecuteDelete();
 
-            // Roles.ExecuteDelete();               // FK to Projects, TimeZones
-            // Tickets.ExecuteDelete();
-            // Employees.ExecuteDelete();           // FK to TimeZones
-            // Projects.ExecuteDelete();            // no FKs to Projects
+            Roles.ExecuteDelete();               // FK to Projects, TimeZones
+            Tickets.ExecuteDelete();
+            Employees.ExecuteDelete();           // FK to TimeZones
+            Projects.ExecuteDelete();            // no FKs to Projects
             
 
-            // SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
-            // LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
-            // TimeZones.ExecuteDelete();           // referenced by Employees / Roles
-            // ReasonTypes.ExecuteDelete();
+            SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
+            LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
+            TimeZones.ExecuteDelete();           // referenced by Employees / Roles
+            ReasonTypes.ExecuteDelete();
 
             SaveChanges();
             _instance = new DBcontext();
