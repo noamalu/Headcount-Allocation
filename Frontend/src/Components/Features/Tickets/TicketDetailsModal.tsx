@@ -29,10 +29,6 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const employeeRoles = roles.filter((r) => r.employeeId === ticket?.employeeId);
   const {isAdmin} = useAuth();
   console.log("Ticket loaded in frontend:", ticket);
-  console.log("Ticket loaded isOpen?", ticket?.open);
-
-
-
 
   if (!ticket) {
     return <div>Ticket not found</div>;
@@ -71,12 +67,15 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
     setSelectedRole(null);
   };
 
-  const handleToggleStatus = async () => {
+  const handleToggleStatus = async (newStatus: boolean) => {
+    console.log("handleToggleStatus with initial status: ", ticket.open);
     const updatedTicket = {
       ...ticket,
-      isOpen: !ticket.open,
+      open: newStatus,
     };
+    console.log("handleToggleStatus now status: ", updatedTicket.open);
     try {
+      console.log("handleToggleStatus now do try clause: ", updatedTicket.open);
       await TicketsService.editTicket(ticket.employeeId, updatedTicket); // שליחת עדכון לשרת
       updateTicket(updatedTicket); 
       onClose();
@@ -268,11 +267,11 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
             </button>
             { isAdmin && (
               ticket.open ? (
-                <button className="save-button" onClick={handleToggleStatus}>
+                <button className="save-button" onClick={() => handleToggleStatus(false)}>
                   ✔ Close Ticket
                 </button>
               ) : (
-                <button className="assign-button" onClick={handleToggleStatus}>
+                <button className="assign-button" onClick={() => handleToggleStatus(true)}>
                   ↻ Re-open Ticket
                 </button>
               )

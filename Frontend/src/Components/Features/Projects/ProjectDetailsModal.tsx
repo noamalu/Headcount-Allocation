@@ -203,7 +203,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
               projectRoles.map((role) => (
                 <tr key={role.roleId}>
                   <td>{role.roleName}</td>
-                  <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
+                  <td>{role.employeeId >= 0 ? role.employeeId : "-"}</td>
                   <td>
                     <button className="action-button" onClick={() => handleOpenModal(role)}>
                       🔗
