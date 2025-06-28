@@ -54,7 +54,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   // }, [ticket.employeeId]);
 
 
-  if (loading) return <div>Loading ticket details...</div>;
+  // if (loading) return <div>Loading ticket details...</div>;
 
   const handleOpenModal = (role: Role) => {
     setSelectedRole(role);
