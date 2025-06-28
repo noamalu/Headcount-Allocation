@@ -21,6 +21,7 @@ interface DataContextType {
 
   addRole: (role: Role) => void;
   addRolesIfNotExist: (newRoles: Role[]) => void;
+  addOrUpdateRoles: (newRoles: Role[]) => void;
   updateRole: (role: Role) => void;
   deleteRole: (roleId: number) => void;
 
@@ -67,6 +68,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const addOrUpdateRoles = (newRoles: Role[]) => {
+    setRoles((prevRoles) => {
+      const rolesMap = new Map(prevRoles.map(r => [r.roleId, r]));
+  
+      newRoles.forEach(newRole => {
+        rolesMap.set(newRole.roleId, newRole); // יכניס חדש או יעדכן קיים
+      });
+  
+      return Array.from(rolesMap.values());
+    });
+  };
+
   const updateRole = (updated: Role) => {
     setRoles((prev) =>
       prev.map((r) => (r.roleId === updated.roleId ? updated : r))
@@ -82,20 +95,20 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }))
     );
 
-    if (updated.employeeId && updated.employeeId !== -1) {
-      setEmployees((prev) =>
-        prev.map((e) =>
-          e.employeeId === updated.employeeId
-            ? {
-                ...e,
-                roles: e.roles.map((r) =>
-                  r.roleId === updated.roleId ? updated : r
-                ),
-              }
-            : e
-        )
-      );
-    }
+    // if (updated.employeeId && updated.employeeId !== -1) {
+    //   setEmployees((prev) =>
+    //     prev.map((e) =>
+    //       e.employeeId === updated.employeeId
+    //         ? {
+    //             ...e,
+    //             roles: e.roles.map((r) =>
+    //               r.roleId === updated.roleId ? updated : r
+    //             ),
+    //           }
+    //         : e
+    //     )
+    //   );
+    // }
   };
 
   const deleteRole = (id: number) => {
@@ -106,12 +119,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         roles: p.roles.filter((r) => r.roleId !== id),
       }))
     );
-    setEmployees((prev) =>
-      prev.map((e) => ({
-        ...e,
-        roles: e.roles.filter((r) => r.roleId !== id),
-      }))
-    );
+    // setEmployees((prev) =>
+    //   prev.map((e) => ({
+    //     ...e,
+    //     roles: e.roles.filter((r) => r.roleId !== id),
+    //   }))
+    // );
   };
 
   const addEmployee = (employee: Employee) => {
@@ -158,6 +171,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteProject,
         addRole,
         addRolesIfNotExist,
+        addOrUpdateRoles,
         updateRole,
         deleteRole,
         addEmployee,

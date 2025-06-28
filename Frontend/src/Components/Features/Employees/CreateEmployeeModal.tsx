@@ -152,7 +152,7 @@ const CreateEmployeeModal: React.FC<{
         skills: employeeSkills,
         yearsExperience,
         jobPercentage,
-        roles: [],
+        // roles: [],
         password
       };
 
