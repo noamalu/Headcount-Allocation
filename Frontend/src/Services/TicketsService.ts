@@ -31,9 +31,8 @@ static async sendCreateTicket(ticket: Omit<Ticket, "ticketId">): Promise<number>
 
       static async deleteTicket(employeeId: number, ticketId: number): Promise<void> {
         console.log("attempt to delete ticket " + ticketId + " from employee " + employeeId);
-        return;
         try {
-            const response = await APIClient(`/api/Employee/${employeeId}/Ticket/${ticketId}`, {
+            const response = await APIClient(`/api/Manager/Tickets/${ticketId}`, {
               method: 'DELETE',
             });
     
