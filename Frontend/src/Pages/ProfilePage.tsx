@@ -9,15 +9,19 @@ import '../Styles/Shared.css';
 import EmployeesService, { getEmployeeRolesById } from '../Services/EmployeesService';
 import { Role } from '../Types/RoleType';
 import RoleDetailsModal from '../Components/Features/Roles/RoleDetailsModal';
+import { useDataContext } from '../Context/DataContext';
 
 const ProfilePage: React.FC = () => {
   const { currentId, currentUser, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<Employee | null>(null);
-  const [roles, setRoles] = useState<Role[]>([]);
+  // const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [apiError, setApiError] = useState<string | null>(null);
+  const { roles, } = useDataContext();
+  const employeeRoles = roles.filter((r) => r.employeeId === currentId);
+
 
   useEffect(() => {
     if (apiError) {
@@ -44,26 +48,26 @@ const ProfilePage: React.FC = () => {
     }
   }, [currentId]);
 
-  useEffect(() => {
-    console.log("Start fetch user roles");
-    const fetchEmployeeRoles = async () => {
-      try {
-        if (user != null) {
-          const response = await getEmployeeRolesById(user.employeeId);
-          user.roles = response;
-          setRoles(response);
-          setLoading(false);
-        } 
-      } catch (err: any) {
-        console.error('Error fetching employee roles:', err);
-        setApiError('Failed to fetch roles');
-        setLoading(false);
-      }
-    };
-    if (user) {
-      fetchEmployeeRoles()
-    }
-  }, [currentId]);
+  // useEffect(() => {
+  //   console.log("Start fetch user roles");
+  //   const fetchEmployeeRoles = async () => {
+  //     try {
+  //       if (user != null) {
+  //         const response = await getEmployeeRolesById(user.employeeId);
+  //         user.roles = response;
+  //         setRoles(response);
+  //         setLoading(false);
+  //       } 
+  //     } catch (err: any) {
+  //       console.error('Error fetching employee roles:', err);
+  //       setApiError('Failed to fetch roles');
+  //       setLoading(false);
+  //     }
+  //   };
+  //   if (user) {
+  //     fetchEmployeeRoles()
+  //   }
+  // }, [currentId]);
 
   if (!user) {
     return <div>Loading profile...</div>;
@@ -119,8 +123,8 @@ const ProfilePage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {user.roles && user.roles.length > 0 ? (
-                  user.roles.map((role, index) => (
+              {employeeRoles && employeeRoles.length > 0 ? (
+                  employeeRoles.map((role, index) => (
                   <tr key={index}>
                       <td>{role.roleName}</td>
                       <td>{role.projectId}</td>
@@ -143,7 +147,7 @@ const ProfilePage: React.FC = () => {
         {selectedRole && (
           <RoleDetailsModal 
           projectId={selectedRole.projectId} 
-          role={selectedRole} 
+          roleId={selectedRole.roleId} 
           onClose={handleCloseModal}/>
         )}
 

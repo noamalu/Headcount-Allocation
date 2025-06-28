@@ -17,14 +17,16 @@ interface TicketDetailsModalProps {
 }
 
 const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClose }) => {
-  const [roles, setRoles] = useState<Role[]>([]);
+  // const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const { tickets, deleteTicket, updateTicket } = useDataContext();
+  const { roles, tickets, deleteTicket, updateTicket } = useDataContext();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const ticket = tickets.find((t) => t.ticketId === ticketId);
+  const employeeRoles = roles.filter((r) => r.employeeId === ticket?.employeeId);
+
 
   if (!ticket) {
     return <div>Ticket not found</div>;
@@ -36,20 +38,20 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
     }
   }, [apiError]);
 
-  useEffect(() => {
-    const fetchEmployeeRoles = async () => {
-      try {
-        const response = await getEmployeeRolesById(ticket.employeeId);
-        setRoles(response);
-        setLoading(false);
-      } catch (err: any) {
-        console.error('Error fetching employee roles:', err);
-        setApiError('Failed to fetch roles');
-        setLoading(false);
-      }
-    };
-    fetchEmployeeRoles();
-  }, [ticket.employeeId]);
+  // useEffect(() => {
+  //   const fetchEmployeeRoles = async () => {
+  //     try {
+  //       const response = await getEmployeeRolesById(ticket.employeeId);
+  //       setRoles(response);
+  //       setLoading(false);
+  //     } catch (err: any) {
+  //       console.error('Error fetching employee roles:', err);
+  //       setApiError('Failed to fetch roles');
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchEmployeeRoles();
+  // }, [ticket.employeeId]);
 
 
   if (loading) return <div>Loading ticket details...</div>;
@@ -230,8 +232,8 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
                     </tr>
                 </thead>
                 <tbody>
-                    {roles.length > 0 ? (
-                        roles.map((role, index) => (
+                    {employeeRoles.length > 0 ? (
+                        employeeRoles.map((role, index) => (
                         <tr key={index}>
                             <td>{role.roleName}</td>
                             <td>{role.projectId}</td>

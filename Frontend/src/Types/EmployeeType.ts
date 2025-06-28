@@ -13,6 +13,6 @@ export interface Employee {
     skills: Skill[];
     yearsExperience: number;
     jobPercentage: number;
-    roles: Role[];
+    // roles: Role[];
     password?: string; 
 }
