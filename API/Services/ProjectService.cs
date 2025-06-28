@@ -116,7 +116,8 @@ namespace API.Services
                 }).ToList() ?? new(),
                 YearsExperience = role.YearsExperience,
                 JobPercentage = role.JobPercentage,
-                Description = role.Description
+                Description = role.Description,
+                StartDate = role.StartDate
             }).ToList();
         }
 
