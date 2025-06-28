@@ -7,7 +7,8 @@ import { Ticket } from '../Types/TicketType';
 
 class EmployeesService {
 
-   static async sendCreateEmployee(employee: Omit<Employee, "employeeId" | "roles">): Promise<number> {
+   static async sendCreateEmployee(employee: Omit<Employee, "employeeId">): Promise<number> {
+  // static async sendCreateEmployee(employee: Omit<Employee, "employeeId" | "roles">): Promise<number> {
     console.log("attempt to create employee" + employee.employeeName);
           try {
               const response = await APIClient('/api/Manager/Employees', {
@@ -26,7 +27,8 @@ class EmployeesService {
           }
       }
   
-      static async editEmployee(employee: Omit<Employee, "roles">): Promise<void> {
+      static async editEmployee(employee:Employee): Promise<void> {
+      // static async editEmployee(employee: Omit<Employee, "roles">): Promise<void> {
         console.log("attempt to edit employee " + employee.employeeName);
         try {
           const response = await APIClient(`/api/Employee/${employee.employeeId}`, {

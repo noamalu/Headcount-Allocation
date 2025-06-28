@@ -4,6 +4,8 @@ using HeadcountAllocation.Services;
 using HeadcountAllocation.DAL.DTO;
 using API.Models;
 using API.Services;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace API.Controllers
 {
@@ -116,7 +118,11 @@ namespace API.Controllers
                     EmployeeName = ticket.EmployeeName,
                     StartDate = ticket.StartDate,
                     EndDate = ticket.EndDate,
-                    AbsenceReason = ticket.Reason.ReasonType.ToString(),
+                    AbsenceReason = ticket.Reason.ReasonType
+                                .GetType()
+                                .GetField(ticket.Reason.ReasonType.ToString())
+                                ?.GetCustomAttribute<DescriptionAttribute>()?.Description
+                                ?? ticket.Reason.ReasonType.ToString(),
                     Description = ticket.Description
                 }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(tickets));
