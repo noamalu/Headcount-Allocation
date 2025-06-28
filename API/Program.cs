@@ -39,7 +39,7 @@ var context = HeadcountAllocation.DAL.DBcontext.GetInstance();
 
 var managerFacade = HeadcountAllocation.Domain.ManagerFacade.GetInstance();
 
-context.Dispose();
+// context.Dispose();
 
 context.SeedStaticTables();
 if(!managerFacade.GetAllEmployees().Select(employee => employee.UserName).Contains("admin"))
