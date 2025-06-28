@@ -8,7 +8,7 @@ export interface Ticket {
     endDate: string;
     absenceReason: AbsenceReasonEnum;
     description: string;
-    isOpen: boolean;
+    open: boolean;
   }
 
   export const formatDate = (isoDate: string): string => {

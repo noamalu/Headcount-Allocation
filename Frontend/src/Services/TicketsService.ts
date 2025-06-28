@@ -124,7 +124,7 @@ export const getTicketsByLoggedUser = async (): Promise<Ticket[]> => {
             endDate: "2025-04-30",
             absenceReason: AbsenceReasonEnum.MaterPaterLeave,
             description: "Paternity leave after a son's birth",
-            isOpen: true
+            open: true
         },
         {
             ticketId: 12,
@@ -134,7 +134,7 @@ export const getTicketsByLoggedUser = async (): Promise<Ticket[]> => {
             endDate: "2025-05-15",
             absenceReason: AbsenceReasonEnum.ReserveDuty,
             description: "Annaul reserve duty period, might get 2 weeks longer",
-            isOpen: false
+            open: false
         }
     ];
 

@@ -28,6 +28,10 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const ticket = tickets.find((t) => t.ticketId === ticketId);
   const employeeRoles = roles.filter((r) => r.employeeId === ticket?.employeeId);
   const {isAdmin} = useAuth();
+  console.log("Ticket loaded in frontend:", ticket);
+  console.log("Ticket loaded isOpen?", ticket?.open);
+
+
 
 
   if (!ticket) {
@@ -39,6 +43,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
       alert(apiError);
     }
   }, [apiError]);
+
 
   // useEffect(() => {
   //   const fetchEmployeeRoles = async () => {
@@ -69,11 +74,11 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const handleToggleStatus = async () => {
     const updatedTicket = {
       ...ticket,
-      isOpen: !ticket.isOpen,
+      isOpen: !ticket.open,
     };
     try {
       await TicketsService.editTicket(ticket.employeeId, updatedTicket); // שליחת עדכון לשרת
-      updateTicket(updatedTicket); // עדכון ב־DataContext
+      updateTicket(updatedTicket); 
       onClose();
     } catch (error) {
       console.error("Failed to toggle ticket status:", error);
@@ -188,9 +193,9 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
          
-          <div className={`ticket-status-badge ${ticket.isOpen ? 'open' : 'closed'}`}>
-            <i className={`fas ${ticket.isOpen ? 'fa-times-circle' : 'fa-check-circle'}`}></i>
-            {ticket.isOpen ? ' Open Ticket' : ' Closed Ticket'}
+          <div className={`ticket-status-badge ${ticket.open ? 'open' : 'closed'}`}>
+            <i className={`fas ${ticket.open ? 'fa-times-circle' : 'fa-check-circle'}`}></i>
+            {ticket.open ? ' Open Ticket' : ' Closed Ticket'}
           </div>
 
           <h2>Ticket Details</h2>
@@ -262,7 +267,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
               <i className="fas fa-trash"></i> Delete
             </button>
             { isAdmin && (
-              ticket.isOpen ? (
+              ticket.open ? (
                 <button className="save-button" onClick={handleToggleStatus}>
                   ✔ Close Ticket
                 </button>

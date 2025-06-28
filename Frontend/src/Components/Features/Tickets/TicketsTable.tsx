@@ -94,8 +94,8 @@ if (isLoading) {
               <td>{formatDate(ticket.startDate)}</td>
               <td>{formatDate(ticket.endDate)}</td>
               <td>
-                <div className={`status-icon ${ticket.isOpen ? 'status-open' : 'status-closed'}`}>
-                    {ticket.isOpen ? '' : '✔'}
+                <div className={`status-icon ${ticket.open ? 'status-open' : 'status-closed'}`}>
+                    {ticket.open ? '' : '✔'}
                 </div>
               </td>
               <td>
