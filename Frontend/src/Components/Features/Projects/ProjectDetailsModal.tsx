@@ -22,7 +22,7 @@ interface ProjectDetailsModalProps {
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {  
   const {isAdmin} = useAuth();
   const { roles, addRole, addRolesIfNotExist, addOrUpdateRoles, updateRole } = useDataContext();
-  const { updateProject, deleteProject } = useDataContext();
+  const { projects, updateProject, deleteProject } = useDataContext();
   const projectRoles = roles.filter((r) => r.projectId === project.projectId);
 
   // const [project, setproject] = useState<Project>(project);
@@ -32,6 +32,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const currentProject = projects.find(p => p.projectId === project.projectId) || project;
  
   // useEffect(() => {
   //   const fetchRoles = async () => {
@@ -163,17 +164,17 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>{project.projectName}</h2>
+        <h2>{currentProject.projectName}</h2>
         <div className="modal-info">
           <div className="modal-info-row">
             <div className="detail-small">
-              <i className="fas fa-calendar-alt"></i> {formatDate(project.deadline)}
+              <i className="fas fa-calendar-alt"></i> {formatDate(currentProject.deadline)}
             </div>
             <div className="detail-small">
-              <i className="fas fa-clock"></i> {project.requiredHours} hours
+              <i className="fas fa-clock"></i> {currentProject.requiredHours} hours
             </div>
           </div>
-          <div className="description">{project.description}</div>
+          <div className="description">{currentProject.description}</div>
         </div>
         <table className="roles-table">
           <thead>
@@ -252,7 +253,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
         )}
          {isEditModalOpen && (
           <EditProjectModal
-          project={project}
+          project={currentProject}
           onClose={() => setIsEditModalOpen(false)} />
         )}
         {showConfirmDelete && (
