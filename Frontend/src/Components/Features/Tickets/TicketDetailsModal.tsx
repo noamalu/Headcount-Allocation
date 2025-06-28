@@ -10,6 +10,7 @@ import EditTicketModal from './EditTicketModal';
 import { useDataContext } from '../../../Context/DataContext';
 import TicketsService from '../../../Services/TicketsService';
 import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
+import { useAuth } from '../../../Context/AuthContext';
 
 interface TicketDetailsModalProps {
   ticketId: number;
@@ -26,6 +27,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const ticket = tickets.find((t) => t.ticketId === ticketId);
   const employeeRoles = roles.filter((r) => r.employeeId === ticket?.employeeId);
+  const {isAdmin} = useAuth();
 
 
   if (!ticket) {
@@ -259,15 +261,18 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
             <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
               <i className="fas fa-trash"></i> Delete
             </button>
-            {ticket.isOpen ? (
-              <button className="save-button" onClick={handleToggleStatus}>
-                ✔ Close Ticket
-              </button>
-            ) : (
-              <button className="assign-button" onClick={handleToggleStatus}>
-                ↻ Re-open Ticket
-              </button>
+            { isAdmin && (
+              ticket.isOpen ? (
+                <button className="save-button" onClick={handleToggleStatus}>
+                  ✔ Close Ticket
+                </button>
+              ) : (
+                <button className="assign-button" onClick={handleToggleStatus}>
+                  ↻ Re-open Ticket
+                </button>
+              )
             )}
+            
             <button className="edit-button" onClick={() => setIsEditModalOpen(true)}>
               <i className="fas fa-pen"></i> Edit
             </button>
