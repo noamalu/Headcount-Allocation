@@ -30,11 +30,10 @@ const TicketsPage: React.FC = () => {
                 <h1 className="page-title">My Tickets</h1> 
                 <button className="add-project-button" onClick={handleOpenModal}>+ New Ticket</button>
             </div>
-            <TicketsTable onTicketCreated={(callback) => (tableRef.current = callback)} />            
+            <TicketsTable/>            
             {isModalOpen && (
                 <CreateTicketModal
                     onClose={() => setIsModalOpen(false)} 
-                    onTicketCreated={handleTicketCreated} 
                 />
             )}
         </div>
