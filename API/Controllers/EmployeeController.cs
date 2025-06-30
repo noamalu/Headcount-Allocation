@@ -181,12 +181,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("{employeeId}/Ticket")]
-        public ActionResult<Response> CloseTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
+        [HttpDelete("{employeeId}/Ticket/{ticketId}")]
+        public ActionResult<Response> CloseTicket([FromRoute] int employeeId, [FromRoute] int ticketId)
         {
             try
             {
-                _headCountService.CloseTicket(ticket.TicketId);
+                _headCountService.DeleteTicket(ticketId);
                 return Ok(new Response());
             }
             catch (Exception ex)
@@ -200,7 +200,7 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.GetOpensTickets().Value
+                var response = _headCountService.GetTickets().Value
                     .Where(ticket => ticket.EmployeeId == employeeId)
                     .Select(ticket =>
                     {
@@ -216,7 +216,8 @@ namespace API.Controllers
                                 .GetField(ticket.Reason.ReasonType.ToString())
                                 ?.GetCustomAttribute<DescriptionAttribute>()?.Description
                                 ?? ticket.Reason.ReasonType.ToString(),
-                            Description = ticket.Description
+                            Description = ticket.Description,
+                            Open = ticket.Open
                         };
                     }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(response));
