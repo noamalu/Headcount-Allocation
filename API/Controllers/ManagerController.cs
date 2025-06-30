@@ -96,8 +96,8 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.CloseTicket(ticketId);
-                return Ok(Response<bool>.FromValue(!response.ErrorOccured));
+                _headCountService.DeleteTicket(ticketId);
+                return Ok();
             }
             catch (Exception ex)
             {
