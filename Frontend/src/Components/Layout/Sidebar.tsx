@@ -23,6 +23,9 @@ const Sidebar = () => {
         <li>
           <NavLink to="/tickets" className={getActiveClass}>Tickets</NavLink>
         </li>
+        <li>
+          <NavLink to="/statistics" className={getActiveClass}>Statistics</NavLink>
+        </li>
         {/* <li>Notifications</li> */}
       </ul>
     </div>
