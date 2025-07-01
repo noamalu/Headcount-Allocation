@@ -24,11 +24,11 @@ namespace HeadcountAllocation.DAL
         public virtual DbSet<TimeZonesDTO> TimeZones { get; set; }
         public virtual DbSet<SkillTypesDTO> SkillTypes { get; set; }
         public virtual DbSet<LanguageTypesDTO> LanguageTypes { get; set; }
-        public virtual DbSet<TicketDTO> Tickets {get; set;}
-        public virtual DbSet<EventDTO> Events {get; set;}
-        public virtual DbSet<MessageDTO> Messages {get; set;}
-        public virtual DbSet<ReasonTypesDTO> ReasonTypes {get; set;}
-        public virtual DbSet<TicketReasonsDTO> TicketReasons {get; set;}
+        public virtual DbSet<TicketDTO> Tickets { get; set; }
+        public virtual DbSet<EventDTO> Events { get; set; }
+        public virtual DbSet<MessageDTO> Messages { get; set; }
+        public virtual DbSet<ReasonTypesDTO> ReasonTypes { get; set; }
+        public virtual DbSet<TicketReasonsDTO> TicketReasons { get; set; }
 
         public static void SetTestDatabase()
         {
@@ -52,7 +52,7 @@ namespace HeadcountAllocation.DAL
             Tickets.ExecuteDelete();
             Employees.ExecuteDelete();           // FK to TimeZones
             Projects.ExecuteDelete();            // no FKs to Projects
-            
+
 
             // SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
             // LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
@@ -76,7 +76,7 @@ namespace HeadcountAllocation.DAL
             Tickets.ExecuteDelete();
             Employees.ExecuteDelete();           // FK to TimeZones
             Projects.ExecuteDelete();            // no FKs to Projects
-            
+
 
             SkillTypes.ExecuteDelete();          // referenced by EmployeeSkills / RoleSkills
             LanguageTypes.ExecuteDelete();       // referenced by EmployeeLanguages / RoleLanguages
@@ -117,7 +117,9 @@ namespace HeadcountAllocation.DAL
                 LanguageTypes.AddRange(new List<LanguageTypesDTO>
                 {
                     new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.English, LanguageTypeName = "English" },
-                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" }
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Hebrew, LanguageTypeName = "Hebrew" },
+                    new LanguageTypesDTO { LanguageTypeId = (int)Enums.Languages.Spanish, LanguageTypeName = "Spanish" }
+
                 });
             }
 
@@ -126,7 +128,7 @@ namespace HeadcountAllocation.DAL
                 ReasonTypes.AddRange(new List<ReasonTypesDTO>
                 {
                     new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.LongVacation, ReasonTypeName = "LongVacation" },
-                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MaterPaterLeave, ReasonTypeName = "MaterPaterLeave" },
+                    new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MaternityPaternityLeave, ReasonTypeName = "MaterPaterLeave" },
                     new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MissionAbroad, ReasonTypeName = "MissionAbroad" },
                     new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.MourningLeave, ReasonTypeName = "MourningLeave" },
                     new ReasonTypesDTO { ReasonTypeId = (int)Enums.Reasons.Other, ReasonTypeName = "Other" },

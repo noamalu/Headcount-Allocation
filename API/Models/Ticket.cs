@@ -18,7 +18,8 @@ namespace API.Models
 
         public static explicit operator HeadcountAllocation.Domain.Ticket(Ticket ticket)
         {
-            var reason = Enum.TryParse(ticket.AbsenceReason, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
+            var reasonToParse = ticket.AbsenceReason.Replace(" ", "");
+            var reason = Enum.TryParse(reasonToParse, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
                 ? parsedReason
                 : Enums.Reasons.Other;
             return new HeadcountAllocation.Domain.Ticket(

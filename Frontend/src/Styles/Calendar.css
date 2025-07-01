@@ -35,40 +35,24 @@
 }
 
 .fc-event {
-  background-color: #E8CEBF;
   border: none;
   color: #4F4846;
   font-size: 13px;
   border-radius: 6px;
   padding: 2px 6px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer; 
+  transition: all 0.2s ease;
 }
 
-/* .fc-toolbar-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #4F4846;
-} */
-
-/* .fc-button {
-  background: #266150;
-  border: none;
-  color: white;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-family: 'Poppins';
-  transition: background-color 0.3s ease;
-} */
-
-/* .fc-button:hover {
-  background: #1E4E40;
-} */
-
-/* .fc-button-primary:not(:disabled).fc-button-active,
-.fc-button-primary:not(:disabled):active {
-  background: #1E4E40;
-} */
+.fc-event:hover {
+  filter: brightness(1.05);
+  transform: scale(1.01);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .fc-col-header-cell-cushion {
     color: #1E4E40 !important;
@@ -87,6 +71,8 @@
   
   .fc-button:hover {
     background: #1E4E40 !important;
+    filter: brightness(0.9);
+    transform: scale(1.01);
   }
   
   .fc-button:disabled {
@@ -95,6 +81,6 @@
   }
 
   .fc-day-today {
-    background-color: #FDF8F5 !important; /* או כל צבע אחר שתרצי */
+    background-color: #FDF8F5 !important; 
     border: 2px dashed #E8CEBF;
   }

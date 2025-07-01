@@ -3,19 +3,22 @@ import { Role } from '../../../Types/RoleType';
 import '../../../Styles/Modal.css';
 import '../../../Styles/DetailsModal.css';
 import '../../../Styles/Shared.css';
-import { SkillEnum, LanguageEnum, skillEnumToId } from '../../../Types/EnumType';
+import { SkillEnum, LanguageEnum, skillEnumToId, getSkillLabel } from '../../../Types/EnumType';
 import ProjectsService from '../../../Services/ProjectsService';
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
+import { useDataContext } from '../../../Context/DataContext';
+
 
 interface CreateRoleModalProps {
   projectId: number;
-  onRoleCreated: (newRole: Role) => void;
+  // onRoleCreated: (newRole: Role) => void;
   onClose: () => void;
 }
 
-const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , onRoleCreated }) => {
+const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose }) => {
   const [roleName, setRoleName] = useState('');
+  const [startDate, setStartDate] = useState('');
   const [description, setDescription] = useState('');
   const [timeZone, setTimeZone] = useState(0);
   const [yearsExperience, setYearsExperience] = useState(0);
@@ -29,6 +32,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   const [apiError, setApiError] = useState<string | null>(null);
   const [skillError, setSkillError] = useState<string>("");
   const [languageError, setLanguageError] = useState<string>("");
+  const { addRole } = useDataContext();
 
   useEffect(() => {
     if (apiError) {
@@ -44,12 +48,18 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   // Skills Edit:
 
   const handleAddSkill = () => {
-      if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-        setSkillError("Skill already added or no skill was selected.");
-        return;
-      }
-      setSkills([...skills, { skill: selectedSkill, level: 1 }]);
-      setSelectedSkill(""); 
+    if (selectedSkill === "") {
+      setSkillError("Please select a skill.");
+      return;
+    }
+    const parsedSkill = Number(selectedSkill) as SkillEnum;
+    if (skills.some((s) => s.skill === parsedSkill)) {
+      setSkillError('Skill already exists');
+      return;
+    }
+    setSkills([...skills, { skill: parsedSkill, level: 1 }]);
+    setSelectedSkill('');
+    setSkillError("");
   };
 
   const handleLevelChange = (index: number, level: number) => {
@@ -111,6 +121,9 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
     if (!roleName.trim()) {
       errorMessage += "• Role name is required.\n";
     }
+    if(!startDate) {
+      errorMessage += "• Please select a start date.\n";
+    }
     if (yearsExperience < 0) {
       errorMessage += "• Years of experience cannot be negative.\n";
     }
@@ -137,17 +150,17 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
   
     // create "roleSkill" array
     const roleSkills: Skill[] = skills.map((skill, index) => ({
-      skillId: index, // ערך זמני, יתעדכן בשרת
-      skillTypeId: Object.values(SkillEnum).indexOf(skill.skill),
+      skillId: index, 
+      skillTypeId: skill.skill,
       level: skill.level,
-      priority: skills.length - index, // חישוב עדיפות
+      priority: skills.length - index, 
     }));
 
     console.log("in CreateRoleModal, skillTypeId: " + roleSkills[0].skillTypeId);
  
     // create "language" array
     const roleLanguages: Language[] = languages.map((lang, index) => ({
-      languageId: index, // ערך זמני, יתעדכן בשרת
+      languageId: index, 
       languageTypeId: Object.values(LanguageEnum).indexOf(lang.language), 
       level: lang.level,
     }));
@@ -163,6 +176,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       skills: roleSkills, 
       yearsExperience,
       jobPercentage,
+      startDate,
     };
   
     try {
@@ -171,7 +185,8 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
       console.log("Response keys:", Object.keys(addedRoles));
       newRole.roleId = addedRoles[0].roleId;
       console.log('Role created successfully:', newRole);
-      onRoleCreated(newRole); 
+      // onRoleCreated(newRole); 
+      addRole(newRole);
       setApiError(null);
       onClose();
     } catch (error) {
@@ -200,6 +215,15 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                 value={roleName}
                 onChange={(e) => setRoleName(e.target.value)}
                 placeholder="Enter role name"
+                className="input-field"
+              />
+            </div>
+            <div>
+              <label>Start date: </label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 className="input-field"
               />
             </div>
@@ -236,10 +260,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                 <option value="" disabled>
                   Select a time zone
                 </option>
-                <option value={1}>Morning</option>
-                <option value={2}>Noon</option>
-                <option value={3}>Evening</option>
-                <option value={4}>Flexible</option>
+                <option value={0}>Morning</option>
+                <option value={1}>Noon</option>
+                <option value={2}>Evening</option>
+                <option value={3}>Flexible</option>
               </select>
             </div>
           </div>
@@ -261,17 +285,22 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                   id="skillSelect"
                   value={selectedSkill}
                   onChange={(e) => {
-                    setSelectedSkill(e.target.value as SkillEnum);
+                    setSelectedSkill(Number(e.target.value) as SkillEnum);
                     setSkillError("");}
                   }
                   className="dropdown"
               >
-                <option value="" disabled>Select a skill</option>
-                {Object.values(SkillEnum).map((skill) => (
-                    <option key={skill} value={skill}>
-                        {skill}
-                    </option>
-                ))}
+                  <option value="" disabled>Select a skill</option>
+                  {Object.keys(SkillEnum)
+                  .filter((key) => isNaN(Number(key)))
+                  .map((key) => {
+                    const enumKey = key as keyof typeof SkillEnum;
+                    return (
+                      <option key={key} value={SkillEnum[enumKey]}>
+                        {getSkillLabel(SkillEnum[enumKey])}
+                      </option>
+                    );
+                  })}
               </select>
               <button className="add-button" onClick={handleAddSkill}>
                 <i className="fas fa-plus"></i>
@@ -298,7 +327,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({projectId, onClose , o
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={() => handleDrop(index)}
                         >
-                          <td>{skill.skill}</td>
+                          <td>{getSkillLabel(skill.skill)}</td>
                           <td>
                               <select
                                   value={skill.level}

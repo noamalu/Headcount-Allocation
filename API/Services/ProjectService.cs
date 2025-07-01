@@ -78,6 +78,11 @@ namespace API.Services
                     Console.WriteLine("❌ Role creation task failed: " + task.Exception?.GetBaseException().Message);
                     results.Add(Response<Role>.FromError("Failed to create role"));
                 }
+                else if (task.Result?.Value == null)
+                {
+                    Console.WriteLine("❌ Role creation returned null value.");
+                    results.Add(Response<Role>.FromError("Created role was null."));
+                }
                 else
                 {
                     results.Add(ConvertToApiModel(task.Result));
@@ -91,28 +96,29 @@ namespace API.Services
         public List<Role> GetRolesByProject(int projectId)
         {
             return _headCountService.GetAllRolesByProject(projectId).Value.Values.Select(role => new Role
+            {
+                RoleId = role.RoleId,
+                RoleName = role.RoleName,
+                ProjectId = role.ProjectId,
+                EmployeeId = role.EmployeeId,
+                TimeZone = GetId(role.TimeZone),
+                ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
                 {
-                    RoleId = role.RoleId,
-                    RoleName = role.RoleName,
-                    ProjectId = role.ProjectId,
-                    EmployeeId = role.EmployeeId,
-                    TimeZone = GetId(role.TimeZone),
-                    ForeignLanguages = role.ForeignLanguages.Values?.Select(language => new Language
-                    {
-                        LanguageId = language.LanguageID,
-                        LanguageTypeId = GetId(language.LanguageType),
-                        Level = language.Level
-                    }).ToList() ?? new(),
-                    Skills = role.Skills.Values?.Select(skill => new Skill
-                    {
-                        SkillTypeId = GetId(skill.SkillType),
-                        Level = skill.Level,
-                        Priority = skill.Priority
-                    }).ToList() ?? new(),
-                    YearsExperience = role.YearsExperience,
-                    JobPercentage = role.JobPercentage,
-                    Description = role.Description
-                }).ToList();
+                    LanguageId = language.LanguageID,
+                    LanguageTypeId = GetId(language.LanguageType),
+                    Level = language.Level
+                }).ToList() ?? new(),
+                Skills = role.Skills.Values?.Select(skill => new Skill
+                {
+                    SkillTypeId = GetId(skill.SkillType),
+                    Level = skill.Level,
+                    Priority = skill.Priority
+                }).ToList() ?? new(),
+                YearsExperience = role.YearsExperience,
+                JobPercentage = role.JobPercentage,
+                Description = role.Description,
+                StartDate = role.StartDate
+            }).ToList();
         }
 
         private Response<Role> ConvertToApiModel(Response<HeadcountAllocation.Domain.Role> response)
@@ -127,7 +133,7 @@ namespace API.Services
                 TimeZone = GetId(role.TimeZone),
                 ForeignLanguages = role.ForeignLanguages.Values?.Select(l => new Language
                 {
-                    LanguageId = l.LanguageID,
+                    LanguageId = GetId(l.LanguageType),
                     LanguageTypeId = GetId(l.LanguageType),
                     Level = l.Level
                 }).ToList() ?? new(),
@@ -135,12 +141,14 @@ namespace API.Services
                 Skills = role.Skills.Values?.Select(s => new Skill
                 {
                     SkillTypeId = GetId(s.SkillType),
-                    Level = s.Level
+                    Level = s.Level,
+                    // Priority = s.Priority
                 }).ToList() ?? new(),
 
                 YearsExperience = role.YearsExperience,
                 JobPercentage = role.JobPercentage,
-                Description = role.Description
+                Description = role.Description,
+                // StartDate = role.StartDate
             });
         }
 

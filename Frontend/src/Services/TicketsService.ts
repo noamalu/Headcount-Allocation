@@ -29,6 +29,48 @@ static async sendCreateTicket(ticket: Omit<Ticket, "ticketId">): Promise<number>
           }
       }
 
+      static async deleteTicket(employeeId: number, ticketId: number): Promise<void> {
+        console.log("attempt to delete ticket " + ticketId + " from employee " + employeeId);
+        try {
+            const response = await APIClient(`/api/Manager/Tickets/${ticketId}`, {
+              method: 'DELETE',
+            });
+    
+            if (response.errorOccured) {
+              throw new Error("Failed to delete ticket: " + JSON.stringify(response, null, 2));
+            } else {
+              return; 
+            }
+            
+        } catch (error) {
+            console.error("Error in deleteTicket:", error);
+            throw error;
+        }
+      }
+
+      static async editTicket(employeeId: number, ticket: Ticket): Promise<void> {
+          console.log("attempt to edit ticket " + ticket.absenceReason + " for employee " + employeeId);
+          try {
+              const response = await APIClient(`/api/Employee/${employeeId}/Ticket/`, {
+                method: 'PUT',
+                body: JSON.stringify(ticket),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+      
+              if (response.errorOccured) {
+                throw new Error("Failed to edit Ticket: " + JSON.stringify(response, null, 2));
+              } else {
+                return; 
+              }
+      
+          } catch (error) {
+              console.error("Error in editTicket:", error);
+              throw error;
+          }
+        }
+
 }
 
 export const getAllTickets = async (): Promise<Ticket[]> => {
@@ -62,6 +104,8 @@ export const getAllTickets = async (): Promise<Ticket[]> => {
         throw error;
     }
   };
+
+
 
 
   

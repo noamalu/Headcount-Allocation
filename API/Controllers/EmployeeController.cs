@@ -6,6 +6,8 @@ using API.Models;
 using API.Services;
 using WebSocketSharp.Server;
 using HeadcountAllocation.Domain.Alert;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace API.Controllers
 {
@@ -142,9 +144,18 @@ namespace API.Controllers
         [HttpPost("{employeeId}/Ticket")]
         public ActionResult<Response> OpenTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {
-            var reason = Enum.TryParse(ticket.AbsenceReason, out HeadcountAllocation.Domain.Enums.Reasons parsedReason)
-                ? parsedReason
-                : HeadcountAllocation.Domain.Enums.Reasons.Other;
+            var reason = ticket.AbsenceReason switch
+            {
+                "Reserve Duty" => HeadcountAllocation.Domain.Enums.Reasons.ReserveDuty,
+                "Maternity / Paternity Leave" => HeadcountAllocation.Domain.Enums.Reasons.MaternityPaternityLeave,
+                "Study Leave" => HeadcountAllocation.Domain.Enums.Reasons.StudyLeave,
+                "Sick Leave" => HeadcountAllocation.Domain.Enums.Reasons.SickLeave,
+                "Mourning Leave" => HeadcountAllocation.Domain.Enums.Reasons.MourningLeave,
+                "Long Vacation" => HeadcountAllocation.Domain.Enums.Reasons.LongVacation,
+                "Personal Leave" => HeadcountAllocation.Domain.Enums.Reasons.PersonalLeave,
+                "Mission Abroad" => HeadcountAllocation.Domain.Enums.Reasons.MissionAbroad,
+                _ => HeadcountAllocation.Domain.Enums.Reasons.Other
+            };
             try
             {
                 var response = _headCountService.AddTicket(employeeId, ticket.StartDate, ticket.EndDate, ticket.Description, new(reason));
@@ -174,8 +185,8 @@ namespace API.Controllers
         public ActionResult<Response> CloseTicket([FromRoute] int employeeId, [FromBody] Ticket ticket)
         {
             try
-            {           
-                _headCountService.CloseTicket(ticket.TicketId);    
+            {
+                _headCountService.CloseTicket(ticket.TicketId);
                 return Ok(new Response());
             }
             catch (Exception ex)
@@ -193,11 +204,6 @@ namespace API.Controllers
                     .Where(ticket => ticket.EmployeeId == employeeId)
                     .Select(ticket =>
                     {
-                        //To DEBUG
-                        string[] parts = ticket.Description.Split('|');
-                        string absenceReason = parts.Length > 1 ? parts[0] : "Other"; // If includes "|" -> a reason - take it, otherwise -> "Other"
-                        string description = parts.Length > 1 ? parts[1] : parts[0]; // If includes "|" -> description is second item, otherwise -> there is only one item - the description
-
                         return new Ticket
                         {
                             TicketId = ticket.TicketId,
@@ -205,8 +211,12 @@ namespace API.Controllers
                             EmployeeName = ticket.EmployeeName,
                             StartDate = ticket.StartDate,
                             EndDate = ticket.EndDate,
-                            AbsenceReason = absenceReason,
-                            Description = description
+                            AbsenceReason = ticket.Reason.ReasonType
+                                .GetType()
+                                .GetField(ticket.Reason.ReasonType.ToString())
+                                ?.GetCustomAttribute<DescriptionAttribute>()?.Description
+                                ?? ticket.Reason.ReasonType.ToString(),
+                            Description = ticket.Description
                         };
                     }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(response));

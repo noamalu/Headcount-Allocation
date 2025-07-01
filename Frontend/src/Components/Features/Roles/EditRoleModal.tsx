@@ -6,31 +6,44 @@ import ProjectsService from '../../../Services/ProjectsService';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
-import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { getLanguageStringByIndex, getSkillLabel, LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { useDataContext } from '../../../Context/DataContext';
 
 interface EditRoleModalProps {
   projectId: number;
   role: Role;
   employeeName: string;
   onClose: () => void;
-  onSave: (updatedRole: Role) => void;
+  // onSave: (updatedRole: Role) => void;
 }
 
-const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employeeName, onClose, onSave }) => {
+const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employeeName, onClose }) => {
   const [editedRole, setEditedRole] = useState<Role>({ ...role });
   const [uiError, setUiError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [languages, setLanguages] = useState(
-    role.foreignLanguages.map(l => ({ language: formateLanguage(l.languageTypeId), languageTypeId: l.languageTypeId, level: l.level }))
-  );
-  const [skills, setSkills] = useState(
-    role.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level, priority: s.priority }))
-  );
- const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
-  const [selectedSkill, setSelectedSkill] = useState<SkillEnum | "">("");
+   const [languages, setLanguages] = useState(
+      role.foreignLanguages.map(l => ({
+        language: getLanguageStringByIndex(l.languageTypeId) as LanguageEnum,
+        languageTypeId: l.languageTypeId,
+        level: l.level
+      }))
+    );
+  const [skills, setSkills] = useState<{ skill: SkillEnum; level: number, priority: number}[]>(
+    role.skills.map((s) => ({
+        skill: s.skillTypeId,
+        level: s.level,
+        priority: s.priority
+      }))
+    );
+  // const [skills, setSkills] = useState(
+  //   role.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level, priority: s.priority }))
+  // );
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
+  const [selectedSkill, setSelectedSkill] = useState('');
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);
   const [languageError, setLanguageError] = useState('');
   const [skillError, setSkillError] = useState('');
+  const { updateRole } = useDataContext();
 
 
   useEffect(() => {
@@ -59,7 +72,11 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
       setLanguageError('Language already exists');
       return;
     }
-    setLanguages([...languages, { language: selectedLanguage, languageTypeId: selectedLanguage as any, level: 1 }]);
+    setLanguages([...languages, {
+      language: selectedLanguage,
+      languageTypeId: Object.values(LanguageEnum).indexOf(selectedLanguage),
+      level: 1
+    }]);
     setSelectedLanguage('');
   };
 
@@ -79,26 +96,38 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
 
   // Skills:
 
-  const handleAddSkill = () => {
-    if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-      setSkillError('Skill already added or not selected');
-      return;
-    }
-    setSkills([...skills, { skill: selectedSkill, skillTypeId: selectedSkill as any, level: 1, priority: skills.length + 1 }]);
-    setSelectedSkill('');
-    setSkillError('');
-  };
+    const handleAddSkill = () => {
+      if (selectedSkill === "") 
+        return;
+      const parsedSkill = Number(selectedSkill) as SkillEnum;
+      if (skills.some((s) => s.skill === parsedSkill)) {
+        setSkillError('Skill already exists');
+        return;
+      }
+      setSkills([...skills, { skill: parsedSkill, level: 1, priority: skills.length + 1 }]);
+      setSelectedSkill('');
+    };
+
+  // const handleAddSkill = () => {
+  //   if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
+  //     setSkillError('Skill already added or not selected');
+  //     return;
+  //   }
+  //   setSkills([...skills, { skill: selectedSkill, skillTypeId: selectedSkill as any, level: 1, priority: skills.length + 1 }]);
+  //   setSelectedSkill('');
+  //   setSkillError('');
+  // };
 
   const handleSkillLevelChange = (index: number, level: number) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index].level = level;
-    setSkills(updatedSkills);
+    const updated = [...skills];
+    updated[index].level = level;
+    setSkills(updated);
     setSkillError("");
   };
 
   const handleDeleteSkill = (index: number) => {
-    const updatedSkills = skills.filter((_, i) => i !== index); // מסנן את השורה
-    setSkills(updatedSkills);
+    const updated = skills.filter((_, i) => i !== index); // מסנן את השורה
+    setSkills(updated);
     setSkillError("");
   }; 
 
@@ -122,9 +151,13 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
   // Save:
 
   const handleSave = async () => {
+    console.log('Languages about to send:', languages);
     let errorMessage = "";
     if (!editedRole.roleName.trim()) {
       errorMessage += "• Role name is required.\n";
+    }
+    if(!editedRole.startDate) {
+      errorMessage += "• Please select a start date.\n";
     }
     if (!editedRole.description.trim()) {
       errorMessage += "• Description is required.\n";
@@ -156,16 +189,16 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
       })),
       skills: skills.map((s, index) => ({
         skillId: index,
-        skillTypeId: s.skillTypeId,
+        skillTypeId: s.skill,
         level: s.level,
         priority: index + 1
       }))
     };
-    
-
+    console.log('foreignLanguages about to send:', updatedRole.foreignLanguages);
     try {
-      await ProjectsService.editRole(editedRole, projectId);
-      onSave(editedRole);
+      await ProjectsService.editRole(updatedRole, projectId);
+      // onSave(editedRole);
+      updateRole(updatedRole);
       onClose();
     } catch (error) {
       console.error('Error updating role:', error);
@@ -201,7 +234,19 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
           )}
           
           <div className="details-section">
-              
+            <div className="edit-banner">
+                  <i className="fas fa-calendar-alt"></i>
+                  <span>
+                      <strong>Start Date:</strong>
+                      <input
+                          type="date"
+                          name="startDate"
+                          value={editedRole.startDate.toString().split('T')[0]}
+                          onChange={handleInputChange}
+                          className="input-field input-medium"
+                      />
+                  </span>
+              </div>              
               <div className="edit-banner">
                   <i className="fas fa-briefcase"></i>
                   <span>
@@ -237,14 +282,15 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
                       <strong>Time Zone:</strong>
                       <select
                           id="timeZone"
+                          name="timeZone"
                           value={editedRole.timeZone} 
                           onChange={handleInputChange} 
                           className="dropdown"
                       >
-                          <option value={1}>Morning</option>
-                          <option value={2}>Noon</option>
-                          <option value={3}>Evening</option>
-                          <option value={4}>Flexible</option>
+                          <option value={0}>Morning</option>
+                          <option value={1}>Noon</option>
+                          <option value={2}>Evening</option>
+                          <option value={3}>Flexible</option>
                       </select>
                   </span>
               </div>
@@ -341,17 +387,19 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
                         id="skillSelect"
                         value={selectedSkill}
                         onChange={(e) => {
-                            setSelectedSkill(e.target.value as SkillEnum);
+                            setSelectedSkill(e.target.value);
                             setSkillError('');
                         }}
                         className="dropdown"
                       >
                           <option value="" disabled>Select a skill</option>
-                          {Object.values(SkillEnum).map((skill) => (
-                              <option key={skill} value={skill}>
-                              {skill}
-                              </option>
-                          ))}
+                          {Object.keys(SkillEnum)
+                          .filter((key) => isNaN(Number(key)))
+                          .map((key) => (
+                            <option key={key} value={SkillEnum[key as keyof typeof SkillEnum]}>
+                              {getSkillLabel(SkillEnum[key as keyof typeof SkillEnum])}
+                            </option>
+                            ))}
                       </select>
                       <button className="add-button" onClick={handleAddSkill}>
                         <div className='icon-button'><i className="fas fa-plus"></i></div>
@@ -370,7 +418,7 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
                       </tr>
                       </thead>
                       <tbody>
-                      {skills.map((skill, index) => (
+                      {skills.map((sk, index) => (
                           <tr
                               key={index}
                               draggable
@@ -378,10 +426,10 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
                               onDragOver={(e) => e.preventDefault()}
                               onDrop={() => handleDrop(index)}
                           >
-                          <td>{skill.skill}</td>
+                          <td>{getSkillLabel(sk.skill)}</td>
                           <td>
                               <select
-                              value={skill.level}
+                              value={sk.level}
                               onChange={(e) => handleSkillLevelChange(index, Number(e.target.value))}
                               >
                               {[1, 2, 3].map((level) => (

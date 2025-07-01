@@ -7,28 +7,39 @@ import EmployeesService from '../../../Services/EmployeesService';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import '../../../Styles/DetailsModal.css';
-import { LanguageEnum, SkillEnum } from '../../../Types/EnumType';
+import { getLanguageStringByIndex, getSkillLabel, LanguageEnum, SkillEnum, timeZoneEnumToId } from '../../../Types/EnumType';
+import { useDataContext } from '../../../Context/DataContext';
 
 interface EditEmployeeModalProps {
   employee: Employee;
   onClose: () => void;
-  onSave: (updatedEmployee: Employee) => void;
+  // onSave: (updatedEmployee: Employee) => void;
 }
 
-const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose, onSave }) => {
+// const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose, onSave }) => {
+const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose }) => {  
   const [editedEmployee, setEditedEmployee] = useState<Employee>({ ...employee });
   const [uiError, setUiError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [languages, setLanguages] = useState(
-    employee.foreignLanguages.map(l => ({ language: formateLanguage(l.languageTypeId), languageTypeId: l.languageTypeId, level: l.level }))
+    employee.foreignLanguages.map(l => ({
+      language: getLanguageStringByIndex(l.languageTypeId) as LanguageEnum,
+      languageTypeId: l.languageTypeId,
+      level: l.level
+    }))
   );
-  const [skills, setSkills] = useState(
-    employee.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level }))
+  const [skills, setSkills] = useState<{ skill: SkillEnum; level: number }[]>(
+    employee.skills.map((s) => ({
+      skill: s.skillTypeId,
+      level: s.level
+    }))
   );
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
   const [selectedSkill, setSelectedSkill] = useState('');
   const [languageError, setLanguageError] = useState('');
   const [skillError, setSkillError] = useState('');
+  const { updateEmployee, roles } = useDataContext();
+  const employeeRoles = roles.filter(r => r.employeeId === employee.employeeId);
 
 
   useEffect(() => {
@@ -48,16 +59,48 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     };
   
 
+  // const handleSave = async () => {
+  //   try {
+  //     // await EmployeesService.editEmployee(editedEmployee);
+  //     // onSave(editedEmployee);
+  //     // onClose();
+  //     await EmployeesService.editEmployee(editedEmployee);
+  //     updateEmployee(editedEmployee);
+  //     onClose();
+  //   } catch (error) {
+  //     console.error('Error updating employee:', error);
+  //     setApiError('Failed to update employee.');
+  //   }
+  // };
   const handleSave = async () => {
+    console.log('Languages about to send:', languages);
+    let updatedEmployee: Employee = {
+      ...editedEmployee,
+      skills: skills.map((s, index) => ({
+        skillId: index, 
+        skillTypeId: s.skill,
+        level: s.level,
+        priority: 0 
+      })),
+      foreignLanguages: languages.map((l, index) => ({
+        languageId: index,
+        languageTypeId: l.languageTypeId,
+        level: l.level
+      })),
+      password: "dummyPassword"      
+    };
+    console.log('foreignLanguages about to send:', updatedEmployee.foreignLanguages);
     try {
-      await EmployeesService.editEmployee(editedEmployee);
-      onSave(editedEmployee);
+      await EmployeesService.editEmployee(updatedEmployee);
+      updateEmployee(updatedEmployee);
       onClose();
     } catch (error) {
       console.error('Error updating employee:', error);
       setApiError('Failed to update employee.');
     }
   };
+
+  // Languages:
   
   const handleLanguageLevelChange = (index: number, level: number) => {
     const updated = [...languages];
@@ -70,6 +113,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     updated.splice(index, 1);
     setLanguages(updated);
   };
+  
 
   const handleAddLanguage = () => {
     if (!selectedLanguage) return;
@@ -77,29 +121,39 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
       setLanguageError('Language already exists');
       return;
     }
-    setLanguages([...languages, { language: selectedLanguage, languageTypeId: selectedLanguage as any, level: 1 }]);
+    setLanguages([...languages, {
+      language: selectedLanguage,
+      languageTypeId: Object.values(LanguageEnum).indexOf(selectedLanguage),
+      level: 1
+    }]);
     setSelectedLanguage('');
   };
+
+  // Skills:
 
   const handleSkillLevelChange = (index: number, level: number) => {
     const updated = [...skills];
     updated[index].level = level;
     setSkills(updated);
+    setSkillError("");
   };
 
   const handleDeleteSkill = (index: number) => {
     const updated = [...skills];
     updated.splice(index, 1);
     setSkills(updated);
+    setSkillError("");
   };
 
   const handleAddSkill = () => {
-    if (!selectedSkill) return;
-    if (skills.some((s) => s.skill === selectedSkill)) {
+    if (selectedSkill === "") 
+      return;
+    const parsedSkill = Number(selectedSkill) as SkillEnum;
+    if (skills.some((s) => s.skill === parsedSkill)) {
       setSkillError('Skill already exists');
       return;
     }
-    setSkills([...skills, { skill: selectedSkill, skillTypeId: selectedSkill as any, level: 1 }]);
+    setSkills([...skills, { skill: parsedSkill, level: 1 }]);
     setSelectedSkill('');
   };
 
@@ -177,14 +231,15 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
                         <strong>Time Zone:</strong>
                         <select
                             id="timeZone"
+                            name="timeZone"
                             value={editedEmployee.timeZone} 
                             onChange={handleInputChange} 
                             className="dropdown"
                         >
-                            <option value={1}>Morning</option>
-                            <option value={2}>Noon</option>
-                            <option value={3}>Evening</option>
-                            <option value={4}>Flexible</option>
+                            <option value={0}>Morning</option>
+                            <option value={1}>Noon</option>
+                            <option value={2}>Evening</option>
+                            <option value={3}>Flexible</option>
                         </select>
                     </span>
                 </div>
@@ -201,7 +256,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               id="languageSelect"
               value={selectedLanguage}
               onChange={(e) => {
-                setSelectedLanguage(e.target.value);
+                setSelectedLanguage(e.target.value as LanguageEnum);
                 setLanguageError('');
               }}
               className="dropdown"
@@ -262,20 +317,22 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
                 <div className="modal-info-row">
                     <label>Add Skill: </label>
                     <select
-                    id="skillSelect"
-                    value={selectedSkill}
-                    onChange={(e) => {
-                        setSelectedSkill(e.target.value);
-                        setSkillError('');
-                    }}
-                    className="dropdown"
+                      id="skillSelect"
+                      value={selectedSkill}
+                      onChange={(e) => {
+                          setSelectedSkill(e.target.value);
+                          setSkillError('');
+                      }}
+                      className="dropdown"
                     >
-                    <option value="" disabled>Select a skill</option>
-                    {Object.values(SkillEnum).map((skill) => (
-                        <option key={skill} value={skill}>
-                        {skill}
-                        </option>
-                    ))}
+                        <option value="" disabled>Select a skill</option>
+                        {Object.keys(SkillEnum)
+                        .filter((key) => isNaN(Number(key)))
+                        .map((key) => (
+                          <option key={key} value={SkillEnum[key as keyof typeof SkillEnum]}>
+                            {getSkillLabel(SkillEnum[key as keyof typeof SkillEnum])}
+                          </option>
+                          ))}
                     </select>
                     <button className="add-button" onClick={handleAddSkill}>
                     <div className='icon-button'><i className="fas fa-plus"></i></div>
@@ -295,7 +352,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
                     <tbody>
                     {skills.map((sk, index) => (
                         <tr key={index}>
-                        <td>{sk.skill}</td>
+                        <td>{getSkillLabel(sk.skill)}</td>
                         <td>
                             <select
                             value={sk.level}
@@ -333,7 +390,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
               </tr>
             </thead>
             <tbody>
-              {editedEmployee.roles.map((role, index) => (
+              {employeeRoles.map((role, index) => (
                 <tr key={index}>
                   <td>{role.roleName}</td>
                   <td>{role.projectId}</td>

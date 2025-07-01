@@ -83,7 +83,8 @@ namespace HeadcountAllocation.Domain
 
         public int CreateProject(string projectName, string description, DateTime date, int requiredHours, Dictionary<int, Role> roles)
         {
-            if (projectName == null){
+            if (projectName == null)
+            {
                 throw new Exception("Null projectName");
             }
             Project project = new Project(projectName, projectCount++, description, date, requiredHours, roles);
@@ -255,11 +256,12 @@ namespace HeadcountAllocation.Domain
             Console.WriteLine("intoFacade");
             Dictionary<Employee, double> employees_score = new Dictionary<Employee, double>();
             Dictionary<Employee, double> employees_job_per = new Dictionary<Employee, double>();
-            foreach (Employee employee in Employees.Values){
-            int sum = 0;
-            double score = 0;
-            bool disqualified = false; 
-                if(employee.YearsExperience < role.YearsExperience)
+            foreach (Employee employee in Employees.Values)
+            {
+                int sum = 0;
+                double score = 0;
+                bool disqualified = false;
+                if (employee.YearsExperience < role.YearsExperience)
                     disqualified = true;
 
                 foreach (Language language in role.ForeignLanguages.Values)
@@ -283,30 +285,34 @@ namespace HeadcountAllocation.Domain
                     if (employee.Skills.ContainsKey(skill.SkillId))
                     {
                         Skill employeeSkill = employee.Skills[skill.SkillId];
-                        if (employeeSkill.Level == skill.Level){
-                            score = score +3 * (double)(role.Skills.Count -skill.Priority + 1)/10;
-                            sum = sum+1;
+                        if (employeeSkill.Level == skill.Level)
+                        {
+                            score = score + 3 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
+                            sum = sum + 1;
                         }
-                        else if (employeeSkill.Level > skill.Level){
-                            score = score +2 * (double)(role.Skills.Count -skill.Priority + 1)/10;
-                            sum = sum+1;
+                        else if (employeeSkill.Level > skill.Level)
+                        {
+                            score = score + 2 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
+                            sum = sum + 1;
                         }
-                        else if (employeeSkill.Level+1 == skill.Level)
-                            score = score +1 * (double)(role.Skills.Count -skill.Priority + 1)/10;
+                        else if (employeeSkill.Level + 1 == skill.Level)
+                            score = score + 1 * (double)(role.Skills.Count - skill.Priority + 1) / 10;
                     }
                 }
-                if (sum == role.Skills.Count){
+                if (sum == role.Skills.Count)
+                {
                     if (employee.CalculateJobPercentage() + role.JobPercentage < 100)
-                    employees_job_per[employee] = employee.CalculateJobPercentage();
+                        employees_job_per[employee] = employee.CalculateJobPercentage();
                 }
-                else{
+                else
+                {
                     employees_score[employee] = score;
                 }
-           }
-           Dictionary<Employee, double> sortedEmployeesScore= employees_score.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
-           Dictionary<Employee, double> sortedEmployeesJobPer= employees_job_per.OrderBy(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value);;
-           var combinedDictionary = sortedEmployeesJobPer.Concat(sortedEmployeesScore).ToDictionary(kv => kv.Key, kv => kv.Value); 
-           return combinedDictionary;
+            }
+            Dictionary<Employee, double> sortedEmployeesScore = employees_score.OrderByDescending(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value); ;
+            Dictionary<Employee, double> sortedEmployeesJobPer = employees_job_per.OrderBy(kv => kv.Value).ToDictionary(kv => kv.Key, kv => kv.Value); ;
+            var combinedDictionary = sortedEmployeesJobPer.Concat(sortedEmployeesScore).ToDictionary(kv => kv.Key, kv => kv.Value);
+            return combinedDictionary;
         }
 
 
@@ -395,7 +401,8 @@ namespace HeadcountAllocation.Domain
         }
 
 
-        public Dictionary<string, List<Employee>> GetEmployeesJobPre (){
+        public Dictionary<string, List<Employee>> GetEmployeesJobPre()
+        {
             Dictionary<string, List<Employee>> JobPerEmployees = new Dictionary<string, List<Employee>>();
             foreach (Employee employee in Employees.Values)
             {
@@ -420,29 +427,36 @@ namespace HeadcountAllocation.Domain
             return JobPerEmployees;
         }
 
-        public List<Project> GetProjectsThatEndThisMonth (){
+        public List<Project> GetProjectsThatEndThisMonth()
+        {
             List<Project> projects = new List<Project>();
             foreach (Project project in Projects.Values)
             {
-                if ((project.Date - DateTime.Now).TotalDays <= 30){
+                if ((project.Date - DateTime.Now).TotalDays <= 30)
+                {
                     projects.Add(project);
                 }
             }
             return projects;
         }
 
-        public Dictionary<Project, int> GetNumEmployeesInProject(){
+        public Dictionary<Project, int> GetNumEmployeesInProject()
+        {
             Dictionary<Project, int> EmployeesInProject = new Dictionary<Project, int>();
-            foreach (Project project in Projects.Values){
-                EmployeesInProject[project]= project.Roles.Count();
+            foreach (Project project in Projects.Values)
+            {
+                EmployeesInProject[project] = project.Roles.Count();
             }
             return EmployeesInProject;
         }
 
-        public List<Employee> GetEmployeesThatInVacationThisMonth(){
+        public List<Employee> GetEmployeesThatInVacationThisMonth()
+        {
             List<Employee> EmployeesInVacation = new List<Employee>();
-            foreach (Ticket ticket in Tickets.Values){
-                if ((ticket.StartDate-DateTime.Now).TotalDays<= 30){
+            foreach (Ticket ticket in Tickets.Values)
+            {
+                if ((ticket.StartDate - DateTime.Now).TotalDays <= 30)
+                {
                     EmployeesInVacation.Add(Employees[ticket.EmployeeId]);
                 }
             }
@@ -465,7 +479,8 @@ namespace HeadcountAllocation.Domain
             return ProjectHourRatio;
         }
 
-        public Dictionary<Enums.Reasons, List<Employee>> GetEmployeesThatInVacationThisMonthAndReason(){
+        public Dictionary<Enums.Reasons, List<Employee>> GetEmployeesThatInVacationThisMonthAndReason()
+        {
             Dictionary<Enums.Reasons, List<Employee>> EmployeesInVacation = new Dictionary<Enums.Reasons, List<Employee>>();
             foreach (Ticket ticket in Tickets.Values)
             {
@@ -522,7 +537,7 @@ namespace HeadcountAllocation.Domain
         {
             try
             {
-                if(Employees.Values.Select(emp => emp.UserName).Contains(name))
+                if (Employees.Values.Select(emp => emp.UserName).Contains(name))
                 {
                     throw new Exception($"Employee with name {name} already exists.");
                 }
@@ -778,7 +793,7 @@ namespace HeadcountAllocation.Domain
             {
                 throw new Exception($"No such employee {employee.EmployeeId}");
             }
-            
+
             Employees[employee.EmployeeId] = employee;
             try
             {

@@ -1,6 +1,10 @@
-namespace HeadcountAllocation.Domain{
+using System.ComponentModel;
 
-    public class Enums{
+namespace HeadcountAllocation.Domain
+{
+
+    public class Enums
+    {
 
         public enum TimeZones
         {
@@ -18,7 +22,7 @@ namespace HeadcountAllocation.Domain{
             API,
             Java,
             UI
-            
+
         }
 
 
@@ -31,15 +35,24 @@ namespace HeadcountAllocation.Domain{
 
         public enum Reasons
         {
+            [Description("Reserve Duty")]
             ReserveDuty,
-            MaterPaterLeave,
+            [Description("Maternity / Paternity Leave")]
+            MaternityPaternityLeave,
+            [Description("Study Leave")]
             StudyLeave,
+            [Description("Sick Leave")]
             SickLeave,
+            [Description("Mourning Leave")]
             MourningLeave,
+            [Description("Long Vacation")]
             LongVacation,
+            [Description("Personal Leave")]
             PersonalLeave,
+            [Description("Mission Abroad")]
             MissionAbroad,
-            Other            
+            [Description("Other")]
+            Other
         }
 
         public static int GetId<TEnum>(TEnum enumValue) where TEnum : Enum

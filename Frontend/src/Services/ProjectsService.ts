@@ -101,48 +101,45 @@ class ProjectsService {
 
   static async editRole(role: Role, projectId: number): Promise<void> {
     console.log("attempt to edit role " + role.roleName + " in project " + projectId);
-    return;
-    // try {
-    //     const response = await APIClient(`/api/Project/${projectId}/Roles/Edit`, {
-    //       method: 'PUT',
-    //       body: JSON.stringify(role),
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
+    try {
+        const response = await APIClient(`/api/Project/${projectId}/${role.roleId}/Edit`, {
+          method: 'PUT',
+          body: JSON.stringify(role),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-    //     if (response.errorOccured) {
-    //       throw new Error("Failed to edit Role: " + JSON.stringify(response, null, 2));
-    //     } else {
-    //       return; 
-    //     }
+        if (response.errorOccured) {
+          throw new Error("Failed to edit Role: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
 
-    // } catch (error) {
-    //     console.error("Error in editRole:", error);
-    //     throw error;
-    // }
+    } catch (error) {
+        console.error("Error in editRole:", error);
+        throw error;
+    }
   }
 
   static async deleteRole(roleId: number, projectId: number): Promise<void> {
     console.log("attempt to delete Role " + roleId + " from project " + projectId);
-    return;
-    // try {
-    //     const response = await APIClient(`/api/Project/${projectId}/Roles/Delete/${roleId}`, {
-    //       method: 'DELETE',
-    //     });
+    try {
+        const response = await APIClient(`/api/Project/Delete/${projectId}/Roles/${roleId}`, {
+          method: 'DELETE',
+        });
 
-    //     if (response.errorOccured) {
-    //       throw new Error("Failed to delete role: " + JSON.stringify(response, null, 2));
-    //     } else {
-    //       return; 
-    //     }
+        if (response.errorOccured) {
+          throw new Error("Failed to delete role: " + JSON.stringify(response, null, 2));
+        } else {
+          return; 
+        }
         
-    // } catch (error) {
-    //     console.error("Error in deleteRole:", error);
-    //     throw error;
-    // }
+    } catch (error) {
+        console.error("Error in deleteRole:", error);
+        throw error;
+    }
   }
-  
 
 }
 
