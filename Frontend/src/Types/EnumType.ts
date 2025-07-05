@@ -24,13 +24,13 @@ export enum TimeZonesEnum
 
 export enum AbsenceReasonEnum {
     ReserveDuty = "Reserve Duty",
-    MaterPaterLeave = "Maternity / Paternity Leave",
+    MaternityPaternityLeave = "Maternity / Paternity Leave",
     StudyLeave = "Study Leave",
-    SickLeave = "Long-term Sick Leave",
-    MourningLeave = "Extended Mourning Leave",
+    SickLeave = "Sick Leave",
+    MourningLeave = "Mourning Leave",
     LongVacation = "Long Vacation",
-    PersonalLeave = "Extended Personal Leave",
-    MissionAbroad = "Company Mission Abroad",
+    PersonalLeave = "Personal Leave",
+    MissionAbroad = "Mission Abroad",
     Other = "Other"
 }
 

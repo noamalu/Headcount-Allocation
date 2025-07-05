@@ -109,32 +109,3 @@ export const getAllTickets = async (): Promise<Ticket[]> => {
   
 
 export default TicketsService;
-
-
-export const getTicketsByLoggedUser = async (): Promise<Ticket[]> => {
-
-    const exampleTickets: Ticket[] = [
-        {
-            ticketId: 11,
-            employeeId: 101,
-            employeeName: "Stas",
-            startDate: "2025-04-01",
-            endDate: "2025-04-30",
-            absenceReason: AbsenceReasonEnum.MaterPaterLeave,
-            description: "Paternity leave after a son's birth",
-            open: true
-        },
-        {
-            ticketId: 12,
-            employeeId: 102,
-            employeeName: "Michal",
-            startDate: "2025-05-01",
-            endDate: "2025-05-15",
-            absenceReason: AbsenceReasonEnum.ReserveDuty,
-            description: "Annaul reserve duty period, might get 2 weeks longer",
-            open: false
-        }
-    ];
-
-    return exampleTickets; // מחזיר את הטיקטים לדוגמה
-};
