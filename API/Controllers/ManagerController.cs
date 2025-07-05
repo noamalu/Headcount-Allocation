@@ -96,8 +96,8 @@ namespace API.Controllers
         {
             try
             {
-                var response = _headCountService.CloseTicket(ticketId);
-                return Ok(Response<bool>.FromValue(!response.ErrorOccured));
+                _headCountService.DeleteTicket(ticketId);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -106,11 +106,11 @@ namespace API.Controllers
         }
 
         [HttpGet("Tickets")]
-        public ActionResult<Response> GetOpenTickets()
+        public ActionResult<Response> GetTickets()
         {
             try
             {
-                var response = _headCountService.GetOpensTickets();
+                var response = _headCountService.GetTickets();
                 var tickets = response.Value.Select(ticket => new Ticket
                 {
                     TicketId = ticket.TicketId,
@@ -123,7 +123,8 @@ namespace API.Controllers
                                 .GetField(ticket.Reason.ReasonType.ToString())
                                 ?.GetCustomAttribute<DescriptionAttribute>()?.Description
                                 ?? ticket.Reason.ReasonType.ToString(),
-                    Description = ticket.Description
+                    Description = ticket.Description,
+                    Open = ticket.Open
                 }).ToList();
                 return Ok(Response<List<Ticket>>.FromValue(tickets));
             }
