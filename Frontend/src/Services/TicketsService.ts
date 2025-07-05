@@ -35,13 +35,11 @@ static async sendCreateTicket(ticket: Omit<Ticket, "ticketId">): Promise<number>
             const response = await APIClient(`/api/Manager/Tickets/${ticketId}`, {
               method: 'DELETE',
             });
-    
-            // if (response.errorOccured) {
-            //   throw new Error("Failed to delete ticket: " + JSON.stringify(response, null, 2));
-            // } else {
-            //   return; 
-            // }
-            
+            if (response.errorOccured) {
+              throw new Error("Failed to delete ticket: " + JSON.stringify(response, null, 2));
+            } else {
+              return; 
+            }
         } catch (error) {
             console.error("Error in deleteTicket:", error);
             throw error;

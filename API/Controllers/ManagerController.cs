@@ -97,7 +97,7 @@ namespace API.Controllers
             try
             {
                 _headCountService.DeleteTicket(ticketId);
-                return Ok();
+                return Ok(new Response());
             }
             catch (Exception ex)
             {
