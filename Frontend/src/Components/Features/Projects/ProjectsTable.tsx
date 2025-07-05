@@ -6,11 +6,7 @@ import '../../../Styles/Shared.css';
 import { getProjects } from '../../../Services/ProjectsService';
 import { useDataContext } from '../../../Context/DataContext';
 
-// const ProjectsTable: React.FC<{ 
-//       onProjectCreated: (callback: (project: Project) => void) => void 
-//       onProjectUpdated: (callback: (project: Project) => void) => void;
-//     }> = ({ onProjectCreated, onProjectUpdated }) => {
-  // const [projects, setProjects] = useState<Project[]>([]);
+
 const ProjectsTable: React.FC = () => {
   const { projects, setProjects, addProject, updateProject, deleteProject } = useDataContext();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -33,45 +29,10 @@ const ProjectsTable: React.FC = () => {
     fetchProjects();
 }, []);
 
-// useEffect(() => {
-//   onProjectCreated((newProject) => {
-//     addProject(newProject);
-//   });
-// }, [onProjectCreated]);
-
-// useEffect(() => {
-//   onProjectUpdated((updatedProject) => {
-//     updateProject(updatedProject);
-//   });
-// }, [onProjectUpdated]);
 
 const handleProjectDeleted = (projectId: number) => {
   deleteProject(projectId);
 };
-
-// const handleProjectUpdated = (updatedProject: Project) => {
-//   setProjects((prevProjects) =>
-//     prevProjects.map((p) =>
-//       p.projectId === updatedProject.projectId ? updatedProject : p
-//     )
-//   );
-// };
-
-// useEffect(() => {
-//   onProjectUpdated(handleProjectUpdated);
-// }, [onProjectUpdated]);
-
-
-// useEffect(() => {
-//     const handleProjectCreated = (newProject: Project) => {
-//         setProjects((prevProjects) => [...prevProjects, newProject]);
-//     };
-//     onProjectCreated(handleProjectCreated); 
-// }, [onProjectCreated]);
-
-// const handleProjectDeleted = (projectId: number) => {
-//   setProjects((prev) => prev.filter((p) => p.projectId !== projectId));
-// };
 
 
 useEffect(() => {
@@ -121,10 +82,6 @@ if (isLoading) {
         <ProjectDetailsModal
           project={selectedProject} 
           onClose={handleCloseModal}
-          // onProjectUpdated={handleProjectUpdated}
-          // onProjectDeleted={handleProjectDeleted}
-          // onProjectUpdated={updateProject}
-          // onProjectDeleted={handleProjectDeleted}
         />
       )}
     </div>

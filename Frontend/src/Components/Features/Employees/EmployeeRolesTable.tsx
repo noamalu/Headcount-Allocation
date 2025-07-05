@@ -6,19 +6,6 @@ import { Skill } from '../../../Types/SkillType';
 import { useDataContext } from '../../../Context/DataContext';
 
 
-// interface Role {
-//   roleId: number;
-//   roleName: string;
-//   projectId: number;
-//   employeeId: number;
-//   description: string;
-//   timeZone: number;
-//   foreignLanguages: Language[];
-//   skills: Skill[];
-//   yearsExperience: number;
-//   jobPercentage: number;
-// }
-
 interface EmployeeRolesTableProps {
     employeeId: number;
     onOpenProject: (projectId: number) => void;
@@ -26,34 +13,9 @@ interface EmployeeRolesTableProps {
   }
   
   const EmployeeRolesTable: React.FC<EmployeeRolesTableProps> = ({ employeeId, onOpenProject, onOpenRole }) => {
-    // const [roles, setRoles] = useState<Role[]>([]);
-    // const [loading, setLoading] = useState<boolean>(true);
-    // const [apiError, setApiError] = useState<string | null>(null);
     const { roles } = useDataContext();
     const employeeRoles = roles.filter((r) => r.employeeId === employeeId);
 
-    // useEffect(() => {
-    //   if (apiError) {
-    //     alert(apiError);
-    //   }
-    // }, [apiError]);
-  
-    // useEffect(() => {
-    //   const fetchRoles = async () => {
-    //     try {
-    //       const response = await getEmployeeRolesById(employeeId);
-    //       setRoles(response);
-    //       setLoading(false);
-    //     } catch (err: any) {
-    //       console.error('Error fetching employee roles:', err);
-    //       setApiError('Failed to fetch roles');
-    //       setLoading(false);
-    //     }
-    //   };
-    //   fetchRoles();
-    // }, [employeeId]);
-  
-    // if (loading) return <div>Loading employee roles...</div>;
   
     return (
       <div className="employee-roles-table">

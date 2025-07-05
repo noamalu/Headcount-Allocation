@@ -10,6 +10,7 @@ import EmployeesService, { getEmployeeRolesById } from '../Services/EmployeesSer
 import { Role } from '../Types/RoleType';
 import RoleDetailsModal from '../Components/Features/Roles/RoleDetailsModal';
 import { useDataContext } from '../Context/DataContext';
+import { getTimeZoneStringByIndex } from '../Types/EnumType';
 
 const ProfilePage: React.FC = () => {
   const { currentId, currentUser, isAdmin, logout } = useAuth();
@@ -110,7 +111,7 @@ const ProfilePage: React.FC = () => {
           <div className="detail-row"><span>Phone:</span> {user.phoneNumber}</div>
           <div className="detail-row"><span>Experience:</span> {user.yearsExperience} years</div>
           <div className="detail-row"><span>Job Percentage:</span> {(user.jobPercentage * 100).toFixed(0)}%</div>
-          <div className="detail-row"><span>Time Zone:</span> {user.timeZone}</div>
+          <div className="detail-row"><span>Time Zone:</span> {getTimeZoneStringByIndex(user.timeZone)}</div>
         </div>
 
         <div className="profile-details">

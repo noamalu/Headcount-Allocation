@@ -13,6 +13,7 @@ import { Employee } from '../../../Types/EmployeeType';
 import ManualAssignEmployeeModal from './ManualAssignEmployeeModal';
 import { useDataContext } from '../../../Context/DataContext';
 import { getTimeZoneStringByIndex } from '../../../Types/EnumType';
+import { useAuth } from '../../../Context/AuthContext';
 
 
 interface RoleDetailsModalProps {
@@ -33,6 +34,7 @@ const RoleDetailsModal: React.FC<RoleDetailsModalProps> = ({ projectId, roleId, 
   const {roles, updateRole, deleteRole, employees } = useDataContext();
   const role = roles.find(r => r.roleId === roleId);
   const assignedEmployee = employees.find(e => e.employeeId === role?.employeeId);
+  const {isAdmin} = useAuth();
 
 
 useEffect(() => {
@@ -215,16 +217,23 @@ useEffect(() => {
 
         
         <div className="modal-actions">
-          <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
-            <i className="fas fa-trash"></i> Delete
-          </button>
-          <button onClick={() => setIsAssignModalOpen(true)} className="assign-button">👤 Assign Employee</button>
-          <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
-            <i className="fas fa-pen"></i> Edit
-          </button>
+          {isAdmin && (
+            <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
+              <i className="fas fa-trash"></i> Delete
+            </button>
+          )}
+          {isAdmin && (
+            <button className="assign-button" onClick={() => setIsAssignModalOpen(true)}>
+              👤 Assign Employee
+            </button>
+          )}
+          {isAdmin && (
+            <button className="edit-button" onClick={() => { console.log('Opening edit modal:', !isEditModalOpen); setIsEditModalOpen(true); }}>
+              <i className="fas fa-pen"></i> Edit
+             </button>
+          )}
         </div>
       </div>
-
 
       {role && isAssignModalOpen && (
         <AssignEmployeeModal
