@@ -10,8 +10,19 @@ interface ReasonData {
   count: number;
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AA66CC', '#FF4444'];
-
+const COLORS = [
+  '#0088FE', 
+  '#00C49F', 
+  '#FFBB28', 
+  '#FF8042',
+  '#AA66CC', 
+  '#FF4444', 
+  '#4ECDC4', 
+  '#36A2EB', 
+  '#9966FF', 
+  '#FF6384', 
+  '#C9CBCF',
+];
 const VacationReasonsChart: React.FC = () => {
   const [data, setData] = useState<ReasonData[]>([]);
 
@@ -34,26 +45,33 @@ const VacationReasonsChart: React.FC = () => {
 
   return (
     <div className="chart-container">
-      <h2>Absence Reasons</h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="count"
-            nameKey="reason"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-      </ResponsiveContainer>
+      <div className="card-header">
+        <h2><i className="fas fa-plane-departure"></i> Absence Reasons</h2>
+        <span className="badge">Last updated: today</span>
+      </div>
+      {data.length === 0 ? (
+        <p>No data available.</p>
+      ) : (
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="count"
+              nameKey="reason"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label
+            >
+              {data.map((_, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 };

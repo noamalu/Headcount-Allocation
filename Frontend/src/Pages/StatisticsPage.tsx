@@ -11,10 +11,10 @@ const StatisticsPage: React.FC = () => {
     <div className="statistics-page">
       <h1 className="page-title">Dashboard</h1>
       <div className="stats-grid">
+        <ProjectsProgressChart />
+        <VacationReasonsChart />
         <UtilizationChart />
         <ProjectHourRatioChart />
-        <VacationReasonsChart />
-        <ProjectsProgressChart />
         <EmployeesPerProjectChart />
       </div>
     </div>

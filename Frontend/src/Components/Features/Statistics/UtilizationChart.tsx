@@ -1,34 +1,28 @@
-// src/Components/Statistics/UtilizationChart.tsx
-
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import StatisticsService from '../../../Services/StatisticsService';
 import { Employee } from '../../../Types/EmployeeType';
 
-interface UtilizationData {
-  timeZone: string;
-  averagePercentage: number;
+interface CategoryCount {
+  category: string;
+  count: number;
 }
 
 const UtilizationChart: React.FC = () => {
-  const [data, setData] = useState<UtilizationData[]>([]);
+  const [data, setData] = useState<CategoryCount[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const raw: Record<string, Employee[]> = await StatisticsService.getEmployeesUtilization();
+        console.log('RAW:', raw);
+        const formatted: CategoryCount[] = Object.entries(raw).map(([category, employees]) => ({
+          category,
+          count: employees.length,
+        }));
+        console.log("Formatted categories:", formatted);
 
-        const result: UtilizationData[] = Object.entries(raw).map(([timeZone, employees]) => {
-          const total = employees.reduce((sum, e) => sum + (e.jobPercentage * 100), 0);
-          const avg = employees.length > 0 ? total / employees.length : 0;
-
-          return {
-            timeZone,
-            averagePercentage: Math.round(avg),
-          };
-        });
-
-        setData(result);
+        setData(formatted);
       } catch (error) {
         console.error('Error fetching utilization data:', error);
       }
@@ -39,18 +33,29 @@ const UtilizationChart: React.FC = () => {
 
   return (
     <div className="chart-container">
-      <h2>Average Utilization by Time Zone</h2>
+      <div className="card-header">
+        <h2><i className="fas fa-chart-bar"></i> Utilization Categories</h2>
+        <span className="badge">Last updated: today</span>
+      </div>
+      {data.length === 0 ? (
+        <p>No utilization data available.</p>
+      ) : (
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="timeZone" />
-          <YAxis unit="%" />
+          <XAxis dataKey="category" />
+          <YAxis allowDecimals={false} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="averagePercentage" fill="#8884d8" name="Utilization" />
+          <Bar dataKey="count" fill="#8884d8" name="Employees" />
         </BarChart>
       </ResponsiveContainer>
+      )}
     </div>
+
   );
 };
 
