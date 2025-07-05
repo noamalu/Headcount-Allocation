@@ -8,7 +8,6 @@ import { Employee } from '../Types/EmployeeType';
 class ProjectsService {
 
 
-    // returns the new project's ID
   static async sendCreateProject(project: Omit<Project, "projectId" | "roles">): Promise<number> {
     console.log("attempt to create project" + project.projectName);
           try {
@@ -32,7 +31,6 @@ class ProjectsService {
     static async addRolesToProject(projectId: number, roles: Role[]): Promise<Role[]> {
       console.log("attempt to add role " + roles[0].roleName + " to project id: " + projectId);
       try {
-        //   const response = await APIClient(`/api/Project/${projectId}/Roles`, {
             const response: Array<{ value: Role; errorMessage: string | null; errorOccured: boolean }> = await APIClient(`/api/Project/${projectId}/Roles`, {
               method: 'POST',
               body: JSON.stringify(roles),
@@ -145,16 +143,16 @@ class ProjectsService {
 
 export const getProjects = async (): Promise<Project[]> => {
     const response = await APIClient('/api/Project/All', { method: 'GET' });
-    console.log('getProjects Response:', response); // לוג לבדיקה
-    return fetchResponse(response); // עדיין משתמשים ב-fetchResponse כדי לשמר את הזרימה
+    console.log('getProjects Response:', response); 
+    return fetchResponse(response); 
   };
 
 
   export const getProjectRoles = async (projectId: number): Promise<Role[]> => {
     try {
       const response = await APIClient(`/api/Project/${projectId}/Roles`, { method: 'GET' });
-      console.log('getProjectRoles Response:', response); // לוג לבדיקה
-      return fetchResponse(response); // שימוש בפונקציה fetchResponse לעיבוד התגובה
+      console.log('getProjectRoles Response:', response); 
+      return fetchResponse(response); 
     } catch (error) {
       console.error(`Error fetching roles for project ID ${projectId}:`, error);
       throw error;
@@ -164,34 +162,20 @@ export const getProjects = async (): Promise<Project[]> => {
   export const getAssignOptionsToRole = async (projectId: number, roleId: number): Promise<Employee[]> => {
     try {
       const response = await APIClient(`/api/Project/${projectId}/Roles/${roleId}/Assign`, { method: 'GET' });
-      console.log('getAssignOptionsToRole Response:', response); // לוג לבדיקה
+      console.log('getAssignOptionsToRole Response:', response); 
       if (!response.errorOccured) {
         return  fetchResponse(response); 
       } else {
           throw new Error("Failed to getAssignOptionsToRole: " + JSON.stringify(response, null, 2));
       }
-       // שימוש בפונקציה fetchResponse לעיבוד התגובה
     } catch (error) {
       console.error(`Error fetching assign options for project ID ${projectId} and role ID ${roleId}:`, error);
-      throw error; // משליכים את השגיאה לטיפול חיצוני
+      throw error; 
     }
   };
 
   export const getManualAssignOptionsToRole = async (projectId: number, roleId: number): Promise<Employee[]> => {
     console.log("attempt to getManualAssignOptionsToRole " + roleId + " from project " + projectId);
-    // try {
-    //   const response = await APIClient(`/api/Project/${projectId}/Roles/${roleId}/ManualAssign`, { method: 'GET' });
-    //   console.log('getManualAssignOptionsToRole Response:', response); // לוג לבדיקה
-    //   if (!response.errorOccured) {
-    //     return  fetchResponse(response); 
-    //   } else {
-    //       throw new Error("Failed to getManualAssignOptionsToRole: " + JSON.stringify(response, null, 2));
-    //   }
-    //    // שימוש בפונקציה fetchResponse לעיבוד התגובה
-    // } catch (error) {
-    //   console.error(`Error fetching manual assign options for project ID ${projectId} and role ID ${roleId}:`, error);
-    //   throw error; 
-    // }
     return Promise.resolve([]);
   };
   

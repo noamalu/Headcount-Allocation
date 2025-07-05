@@ -8,7 +8,6 @@ import { Ticket } from '../Types/TicketType';
 class EmployeesService {
 
    static async sendCreateEmployee(employee: Omit<Employee, "employeeId">): Promise<number> {
-  // static async sendCreateEmployee(employee: Omit<Employee, "employeeId" | "roles">): Promise<number> {
     console.log("attempt to create employee" + employee.employeeName);
           try {
               const response = await APIClient('/api/Manager/Employees', {
@@ -28,7 +27,6 @@ class EmployeesService {
       }
   
       static async editEmployee(employee:Employee): Promise<void> {
-      // static async editEmployee(employee: Omit<Employee, "roles">): Promise<void> {
         console.log("attempt to edit employee " + employee.employeeName);
         try {
           const response = await APIClient(`/api/Employee/${employee.employeeId}`, {
@@ -69,54 +67,7 @@ class EmployeesService {
         }
       }
 
-    static async editTicket(employeeId: number, ticket: Ticket): Promise<void> {
-      console.log("attempt to edit Ticket " + ticket.absenceReason + " of Employee " + employeeId);
-      return;
-      // try {
-      //     const response = await APIClient(`/api/Project/${project.projectId}/Edit`, {
-      //       method: 'PUT',
-      //       body: JSON.stringify(project),
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //     });
   
-      //     if (response.errorOccured) {
-      //       throw new Error("Failed to edit Employee: " + JSON.stringify(response, null, 2));
-      //     } else {
-      //       return; 
-      //     }
-  
-      // } catch (error) {
-      //     console.error("Error in editEmployee:", error);
-      //     throw error;
-      // }
-    }
-  
-    static async deleteTicket(employeeId: number, ticketId: number): Promise<void> {
-      console.log("attempt to delete ticket" + ticketId);
-      return;
-      // try {
-      //     const response = await APIClient(`/api/Project/Delete/${projectId}`, {
-      //       method: 'DELETE',
-      //     });
-  
-      //     if (response.errorOccured) {
-      //       throw new Error("Failed to delete Employee: " + JSON.stringify(response, null, 2));
-      //     } else {
-      //       return; 
-      //     }
-          
-      // } catch (error) {
-      //     console.error("Error in deleteEmployee:", error);
-      //     throw error;
-      // }
-    }
-
-
-
-  
-
   static async assignEmployeeToRole(employeeId: number, role: Role): Promise<Response> {
     console.log(`Attempting to assign employee ${employeeId} to role: ${role.roleName}`);
     try {
@@ -139,7 +90,7 @@ class EmployeesService {
       }
     } catch (error) {
       console.error(`Error assigning employee ID ${employeeId} to role:`, error);
-      throw error; // משליכים את השגיאה לטיפול חיצוני
+      throw error; 
     }
   }
 

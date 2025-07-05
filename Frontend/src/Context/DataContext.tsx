@@ -73,7 +73,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const rolesMap = new Map(prevRoles.map(r => [r.roleId, r]));
   
       newRoles.forEach(newRole => {
-        rolesMap.set(newRole.roleId, newRole); // יכניס חדש או יעדכן קיים
+        rolesMap.set(newRole.roleId, newRole); 
       });
   
       return Array.from(rolesMap.values());
@@ -95,20 +95,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }))
     );
 
-    // if (updated.employeeId && updated.employeeId !== -1) {
-    //   setEmployees((prev) =>
-    //     prev.map((e) =>
-    //       e.employeeId === updated.employeeId
-    //         ? {
-    //             ...e,
-    //             roles: e.roles.map((r) =>
-    //               r.roleId === updated.roleId ? updated : r
-    //             ),
-    //           }
-    //         : e
-    //     )
-    //   );
-    // }
   };
 
   const deleteRole = (id: number) => {
@@ -119,12 +105,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         roles: p.roles.filter((r) => r.roleId !== id),
       }))
     );
-    // setEmployees((prev) =>
-    //   prev.map((e) => ({
-    //     ...e,
-    //     roles: e.roles.filter((r) => r.roleId !== id),
-    //   }))
-    // );
   };
 
   const addEmployee = (employee: Employee) => {

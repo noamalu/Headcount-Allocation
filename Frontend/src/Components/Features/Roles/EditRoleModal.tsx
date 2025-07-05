@@ -14,7 +14,6 @@ interface EditRoleModalProps {
   role: Role;
   employeeName: string;
   onClose: () => void;
-  // onSave: (updatedRole: Role) => void;
 }
 
 const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employeeName, onClose }) => {
@@ -105,15 +104,6 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
       setSelectedSkill('');
     };
 
-  // const handleAddSkill = () => {
-  //   if (!selectedSkill || skills.some((s) => s.skill === selectedSkill)) {
-  //     setSkillError('Skill already added or not selected');
-  //     return;
-  //   }
-  //   setSkills([...skills, { skill: selectedSkill, skillTypeId: selectedSkill as any, level: 1, priority: skills.length + 1 }]);
-  //   setSelectedSkill('');
-  //   setSkillError('');
-  // };
 
   const handleSkillLevelChange = (index: number, level: number) => {
     const updated = [...skills];
@@ -194,7 +184,6 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
     console.log('foreignLanguages about to send:', updatedRole.foreignLanguages);
     try {
       await ProjectsService.editRole(updatedRole, projectId);
-      // onSave(editedRole);
       updateRole(updatedRole);
       onClose();
     } catch (error) {

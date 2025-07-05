@@ -7,7 +7,7 @@ export interface Language {
 }
 
 export const formateLanguage = (type: number): string => {
-    return getLanguageStringByIndex(type); // פורמט יום/חודש/שנה
+    return getLanguageStringByIndex(type); 
 };
 
 

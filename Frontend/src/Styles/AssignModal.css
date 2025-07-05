@@ -37,36 +37,36 @@
   color: #fff; /* White text on hover */
 }
 
-/* עיצוב רדיו-באטן */
+
 .custom-radio {
   display: inline-block;
   position: relative;
   width: 20px;
   height: 20px;
-  border: 2px solid #4F4846; /* מסגרת בצבע כהה */
-  border-radius: 50%; /* צורה עגולה */
-  background-color: #E8CEBF; /* רקע בצבע בז' */
-  cursor: pointer; /* סמן לחיץ */
-  transition: all 0.3s ease; /* מעבר חלק */
+  border: 2px solid #4F4846; 
+  border-radius: 50%; 
+  background-color: #E8CEBF; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
 }
 
 .custom-radio:hover {
-  background-color: #e4ae8f; /* רקע כהה יותר בהובר */
+  background-color: #e4ae8f; 
 }
 
 .custom-radio:checked {
-  background-color: #e4ae8f; /* רקע כהה יותר בהובר */
+  background-color: #e4ae8f; 
 }
 
 .custom-radio input[type="radio"] {
-  opacity: 0; /* הסתרת הרדיו המקורי */
+  opacity: 0; 
   position: absolute;
-  z-index: -1; /* שמירת האלמנט מתחת */
+  z-index: -1;
 }
 
 .custom-radio input[type="radio"]:checked + .custom-radio {
-  background-color: #e4ae8f; /* רקע כהה יותר כאשר נבחר */
-  border-color: #4F4846; /* מסגרת כהה */
+  background-color: #e4ae8f;
+  border-color: #4F4846; 
 }
 
 .custom-radio::after {
@@ -77,29 +77,29 @@
   transform: translate(-50%, -50%);
   width: 10px;
   height: 10px;
-  background-color: #4F4846; /* נקודה בצבע כהה */
-  border-radius: 50%; /* עיגול */
+  background-color: #4F4846; 
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .custom-radio input[type="radio"]:checked + .custom-radio::after {
-  opacity: 1; /* הצגת הנקודה כאשר נבחר */
+  opacity: 1; 
 }
 
 .details-list {
   margin: 0;
   padding: 0;
-  list-style: none; /* הסרת הנקודות מרשימות */
+  list-style: none; 
 }
 
 .details-list li {
-  margin-bottom: 4px; /* רווח בין השורות */
+  margin-bottom: 4px; 
 }
 
 .employee-details {
-  background-color: #f9f9f9; /* רקע בהיר לפרטים נוספים */
-  border-top: 1px solid #ddd; /* קו הפרדה */
+  background-color: #f9f9f9; 
+  border-top: 1px solid #ddd; 
   padding: 10px;
 }
 

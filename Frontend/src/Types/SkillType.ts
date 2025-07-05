@@ -1,4 +1,3 @@
-// import { getSkillStringByIndex, SkillEnum } from "./EnumType";
 
 import { SkillEnum } from "./EnumType";
 

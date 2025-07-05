@@ -8,7 +8,6 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <ul>
-        {/* <li className="active">Dashboard</li> */}
         <li>
           <NavLink to="/statistics" className={getActiveClass}>Dashboard</NavLink>
         </li>
@@ -27,7 +26,6 @@ const Sidebar = () => {
           <NavLink to="/tickets" className={getActiveClass}>Tickets</NavLink>
         </li>
         
-        {/* <li>Notifications</li> */}
       </ul>
     </div>
   );

@@ -16,7 +16,6 @@ const ProfilePage: React.FC = () => {
   const { currentId, currentUser, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<Employee | null>(null);
-  // const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -49,26 +48,6 @@ const ProfilePage: React.FC = () => {
     }
   }, [currentId]);
 
-  // useEffect(() => {
-  //   console.log("Start fetch user roles");
-  //   const fetchEmployeeRoles = async () => {
-  //     try {
-  //       if (user != null) {
-  //         const response = await getEmployeeRolesById(user.employeeId);
-  //         user.roles = response;
-  //         setRoles(response);
-  //         setLoading(false);
-  //       } 
-  //     } catch (err: any) {
-  //       console.error('Error fetching employee roles:', err);
-  //       setApiError('Failed to fetch roles');
-  //       setLoading(false);
-  //     }
-  //   };
-  //   if (user) {
-  //     fetchEmployeeRoles()
-  //   }
-  // }, [currentId]);
 
   if (!user) {
     return <div>Loading profile...</div>;

@@ -1,4 +1,3 @@
-// src/Components/Statistics/ProjectHourRatioChart.tsx
 
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend, Cell } from 'recharts';

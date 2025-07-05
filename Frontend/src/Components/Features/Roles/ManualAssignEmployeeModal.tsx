@@ -12,14 +12,11 @@ const ManualAssignEmployeeModal = ({
   projectId,
   roleId,
   onClose,
-  // onAssign,
 }: {
   projectId: number;
   roleId: number;
   onClose: () => void;
-  // onAssign: (employee: Employee) => void;
 }) => {
-  // const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
   const { roles, updateRole, employees } = useDataContext();
@@ -27,22 +24,7 @@ const ManualAssignEmployeeModal = ({
   const [apiError, setApiError] = useState<string | null>(null);
   const currentRole = roles.find((r) => r.roleId === roleId);
   
-  // useEffect(() => {
-  //   const fetchEmployees = async () => {
-  //     try {
-  //       const data: Employee[] = await getManualAssignOptionsToRole(projectId, roleId);
-  //       setEmployees(data);
-  //       if (data.length > 0) {
-  //         setSelectedEmployee(data[0]);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching employees:', error);
-  //     }
-  //   };
-
-  //   fetchEmployees();
-  // }, [roleId]);
-
+ 
   const handleExpand = (employeeId: number) => {
     setExpandedEmployeeId(expandedEmployeeId === employeeId ? null : employeeId);
   };

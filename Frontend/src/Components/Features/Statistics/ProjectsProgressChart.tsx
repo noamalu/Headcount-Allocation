@@ -1,4 +1,3 @@
-// src/Components/Statistics/ProjectsProgressChart.tsx
 
 import React, { useEffect, useState } from 'react';
 import StatisticsService from '../../../Services/StatisticsService';

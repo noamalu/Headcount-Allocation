@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import ProjectDetailsModal from './ProjectDetailsModal';
 import { Ticket, formatDate } from '../../../Types/TicketType';
 import '../../../Styles/Projects.css';
 import '../../../Styles/Shared.css';
@@ -8,11 +7,7 @@ import { useAuth } from '../../../Context/AuthContext';
 import TicketDetailsModal from './TicketDetailsModal';
 import { useDataContext } from '../../../Context/DataContext';
 import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
-// @ts-ignore
-// import { Tooltip } from 'react-tooltip';
 
-// const TicketsTable: React.FC<{ onTicketCreated: (callback: (ticket: Ticket) => void) => void }> = ({ onTicketCreated }) => {
-  // const [tickets, setTickets] = useState<Ticket[]>([]);
 const TicketsTable: React.FC = () => {
   const { tickets, setTickets } = useDataContext();
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
@@ -52,13 +47,6 @@ const TicketsTable: React.FC = () => {
     fetchTickets();
 }, []);
 
-
-// useEffect(() => {
-//     const handleTicketCreated = (newTicket: Ticket) => {
-//         setTickets((prevTickets) => [...prevTickets, newTicket]);
-//     };
-//     onTicketCreated(handleTicketCreated); 
-// }, [onTicketCreated]);
 
 const handleOpenModal = (ticket: Ticket) => {
   setSelectedTicket(ticket);

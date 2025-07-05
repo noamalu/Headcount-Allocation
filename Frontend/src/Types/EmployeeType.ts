@@ -13,6 +13,5 @@ export interface Employee {
     skills: Skill[];
     yearsExperience: number;
     jobPercentage: number;
-    // roles: Role[];
     password?: string; 
 }

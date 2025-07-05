@@ -21,11 +21,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     try {
-      // console.log(`Fake login as ${username}`);
-      // setIsLoggedIn(true);
-      // setIsAdmin(false);
-      // setCurrentUser(username);
-      // setCurrentId(1);
       const userId = await SessionService.login(username, password);
       if (userId != null && userId > -1) {
         setIsLoggedIn(true);

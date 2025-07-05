@@ -44,35 +44,6 @@ useEffect(() => {
 }, [apiError]);
   
 
-  // useEffect(() => {
-  //   if (role.employeeId != -1 && role.employeeId != null && assignedEmployee == null) {
-  //     console.log("Selected employee id:", assignedEmployee);
-  //     console.log("Role employee id:", role.employeeId);
-  //     handleEmployeeDetails(role.employeeId);
-  //   }
-  // }, [role]);
-
-  // useEffect(() => {
-  //   if (assignedEmployee) {
-  //     console.log("Selected employee updated:", assignedEmployee);
-  //   }
-  // }, [assignedEmployee]);
-
-  // const handleAssign = async (employee: Employee) => {
-  //   console.log(`Assigned ${employee.employeeName} to role ${role.roleName}`);
-  //   try {
-  //     role.employeeId = employee.employeeId;
-  //     console.log("assignedEmployeeName before change: " + assignedEmployee?.employeeName + ", will be changed to: " + employee.employeeName);
-  //     setassignedEmployee({ ...employee });
-  //     console.log("assignedEmployeeName after change: " + assignedEmployee?.employeeName);
-  //     const res = await EmployeesService.assignEmployeeToRole(employee.employeeId, role);
-  //     onAssignEmployeeToRole?.(role.roleId, employee.employeeId);
-  //     console.log('employee assigned successfully:', employee.employeeId);
-  //   } catch (error) {
-  //     console.error('Error assigning employee:', error);
-  //     setApiError('An error occurred while assigning the employee');
-  //   }
-  // };
 
   const handleAssign = async (employee: Employee) => {
     if (role) {
@@ -87,24 +58,12 @@ useEffect(() => {
     }   
   };
 
-  // const handleEmployeeDetails = async (employeeId: number) => {
-  //   console.log(`handleEmployeeDetails: ${employeeId}`);
-  //   try {
-  //     const employee =  await EmployeesService.getEmployeeById(employeeId);
-  //     console.log("assignedEmployeeName before change: " + assignedEmployee);
-  //     setassignedEmployee({ ...employee });
-  //   } catch (error) {
-  //     console.error('Error fetching employee details:', error);
-  //     setApiError('An error occurred while fetching employee details');
-  //   }
-  // };
 
   const handleCloseModal = () => {
   };
 
     const handleEditSave = (updatedRole: Role) => {
       console.log('Role updated:', updatedRole);
-      // Update the role details here (e.g., send to API or update state)
     };
 
   const handleDelete = async () => {

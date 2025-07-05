@@ -54,11 +54,9 @@ const CreateTicketModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       };
       
       try {
-        // const newTicketId = 1;
         const newTicketId = await TicketsService.sendCreateTicket(newTicket);
         newTicket.ticketId = newTicketId;
         console.log('Ticket created successfully:', newTicket);
-        // onTicketCreated(newTicket);
         addTicket(newTicket);
         setApiError(null);
         onClose(); 

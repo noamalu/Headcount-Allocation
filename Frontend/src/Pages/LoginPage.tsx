@@ -1,4 +1,3 @@
-// src/Pages/Login.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
@@ -29,7 +28,6 @@ const LoginPage: React.FC = () => {
       return;
     }
     setUiError(null);
-    // const isAdmin = username.toLowerCase() === 'admin'; // TO CHANGE
     try {
       await login(username, password);
       const address = `ws://127.0.0.1:4562/${username}-alerts`;

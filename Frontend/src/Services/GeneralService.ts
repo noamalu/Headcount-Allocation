@@ -5,12 +5,11 @@ export async function fetchResponse<T>(
   ): Promise<T> {
     try {
       const serverResponse = await responsePromise;
-      console.log('Server Response:', serverResponse); // לוג נוסף לבדיקה
+      console.log('Server Response:', serverResponse); 
       if (!serverResponse) {
         throw new Error('Server response is undefined');
       }
   
-      // בדיקה אם המבנה תואם
       if (!('errorOccured' in serverResponse) || !('value' in serverResponse)) {
         console.error('Response format is incorrect:', serverResponse);
         throw new Error('Response format is incorrect');
@@ -18,7 +17,7 @@ export async function fetchResponse<T>(
       if (serverResponse.errorOccured) {
         return Promise.reject(serverResponse.errorMessage || 'Unknown error');
       }
-      console.log('Returned value from fetchResponse:', serverResponse.value); // לוג נוסף לבדיקה
+      console.log('Returned value from fetchResponse:', serverResponse.value); 
       return serverResponse.value;
     } catch (e) {
       console.error('Error in fetchResponse:', e);
@@ -27,18 +26,3 @@ export async function fetchResponse<T>(
     return responsePromise;
   }
   
-
-// export async function fetchResponse<T>(
-//   responsePromise: Promise<ClientResponse<T>>
-// ): Promise<T> {
-//   try {
-//     const serverResponse = await responsePromise;
-//     if (serverResponse.errorOccured) {
-//       return Promise.reject(serverResponse.errorMessage);
-//     }
-//     return serverResponse.value;
-//   } catch (error) {
-//     console.error('Error:', error);
-//     throw new Error('An error occurred while processing your request.');
-//   }
-// }

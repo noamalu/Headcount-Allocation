@@ -3,14 +3,12 @@ import { Ticket } from "../../../Types/TicketType";
 import { AbsenceReasonEnum } from "../../../Types/EnumType";
 import { useDataContext } from "../../../Context/DataContext";
 import TicketsService from "../../../Services/TicketsService";
-// import '../../../Styles/Modal.css';
-// import '../../../Styles/Shared.css'; 
+
 
 
 const EditTicketModal: React.FC<{
     ticket: Ticket;
     onClose: () => void;
-    // onSave: (updatedTicket: Ticket) => void;
   }> = ({ ticket, onClose }) => {
     const [editedTicket, setEditedTicket] = useState<Ticket>({ ...ticket });
     const [uiError, setUiError] = useState<string | null>(null);

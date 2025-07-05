@@ -103,9 +103,4 @@ export const getAllTickets = async (): Promise<Ticket[]> => {
     }
   };
 
-
-
-
-  
-
 export default TicketsService;

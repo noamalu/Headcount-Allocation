@@ -7,13 +7,6 @@ import EmployeesSpan from '../Components/Features/Employees/EmployeesSpan';
 
 const EmployeesPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const spanRef = useRef<(employee: Employee) => void>();
-
-    // const handleEmployeeCreated = (employee: Employee) => {
-    //     if (spanRef.current) {
-    //         spanRef.current(employee); 
-    //     }
-    // };
 
     const handleOpenModal = () => {
         setIsModalOpen(true); 
@@ -30,7 +23,6 @@ const EmployeesPage: React.FC = () => {
                 <h1 className="page-title">Employees</h1> 
                 <button className="add-employee-button" onClick={handleOpenModal}>+ New Employee</button>
             </div>
-            {/* <EmployeesSpan onEmployeeCreated={(callback) => (spanRef.current = callback)} />             */}
             <EmployeesSpan />
             {isModalOpen && (
                 <CreateEmployeeModal onClose={() => setIsModalOpen(false)} />

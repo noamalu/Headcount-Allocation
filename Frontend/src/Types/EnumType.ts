@@ -35,12 +35,6 @@ export enum AbsenceReasonEnum {
 }
 
 export const skillEnumToId = (skill : SkillEnum): number => {
-    // const entries = Object.entries(SkillEnum);
-    // for (const [key, value] of entries) {
-    //     if (key === skill) {
-    //         return Number(value);
-    //     }
-    // }
     return -1;
 }
 
@@ -65,13 +59,6 @@ export const timeZoneEnumToId = (timeZone : TimeZonesEnum): number => {
 }
 
 export const absenceReasonEnumToId = (absenceReason : AbsenceReasonEnum): number => {
-    // const entries = Object.entries(AbsenceReasonEnum);
-    // for (const [key, value] of entries) {
-    //     if (key === absenceReason) {
-    //         return Number(value);
-    //     }
-    // }
-    // return -1;
     return Object.values(AbsenceReasonEnum).indexOf(absenceReason);
 }
 

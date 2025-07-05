@@ -1,4 +1,3 @@
-// src/Components/Statistics/VacationReasonsChart.tsx
 
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Tooltip, Cell, Legend, ResponsiveContainer } from 'recharts';

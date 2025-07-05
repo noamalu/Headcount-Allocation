@@ -393,9 +393,9 @@
   }
   
   .ticket-status-badge.closed {
-    background-color: #4CAF50; /* ירוק */
+    background-color: #4CAF50; 
   }
   
   .ticket-status-badge.open {
-    background-color: #D32F2F; /* אדום */
+    background-color: #D32F2F; 
   }

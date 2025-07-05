@@ -1,4 +1,3 @@
-// import React, { useState, useRef } from 'react';
 import React, { useState } from 'react';
 import ProjectsTable from '../Components/Features/Projects/ProjectsTable'; 
 import '../Styles/Projects.css';
@@ -11,20 +10,6 @@ import { useAuth } from '../Context/AuthContext'
 const ProjectsPage: React.FC = () => {
     const {isAdmin} = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const tableRef = useRef<(project: Project) => void>();
-    // const updateRef = useRef<(project: Project) => void>();
-
-    // const handleProjectCreated = (project: Project) => {
-    //     if (tableRef.current) {
-    //         tableRef.current(project); // Send to table
-    //     }
-    // };
-
-    // const handleProjectUpdated = (project: Project) => {
-    //     if (updateRef.current) {
-    //       updateRef.current(project);
-    //     }
-    // };
 
     const handleOpenModal = () => {
         setIsModalOpen(true); 
@@ -43,15 +28,8 @@ const ProjectsPage: React.FC = () => {
                  <button className="add-project-button" onClick={handleOpenModal}>+ New Project</button>}
             </div>
             <ProjectsTable />
-            {/* <ProjectsTable
-                onProjectCreated={(callback) => (tableRef.current = callback)}
-                onProjectUpdated={(callback) => (updateRef.current = callback)}
-            />      */}
+           
             {isModalOpen && (
-                // <CreateProjectModal
-                //     onClose={() => setIsModalOpen(false)} 
-                //     onProjectCreated={handleProjectCreated} // Update list
-                // />
                 <CreateProjectModal
                 onClose={handleCloseModal}
                 />
