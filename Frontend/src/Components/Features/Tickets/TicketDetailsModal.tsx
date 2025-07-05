@@ -10,6 +10,7 @@ import EditTicketModal from './EditTicketModal';
 import { useDataContext } from '../../../Context/DataContext';
 import TicketsService from '../../../Services/TicketsService';
 import { getAbsenceReasonStringByEnumString } from '../../../Types/EnumType';
+import { useAuth } from '../../../Context/AuthContext';
 
 interface TicketDetailsModalProps {
   ticketId: number;
@@ -26,7 +27,8 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const ticket = tickets.find((t) => t.ticketId === ticketId);
   const employeeRoles = roles.filter((r) => r.employeeId === ticket?.employeeId);
-
+  const {isAdmin} = useAuth();
+  console.log("Ticket loaded in frontend:", ticket);
 
   if (!ticket) {
     return <div>Ticket not found</div>;
@@ -37,6 +39,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
       alert(apiError);
     }
   }, [apiError]);
+
 
   // useEffect(() => {
   //   const fetchEmployeeRoles = async () => {
@@ -64,14 +67,17 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
     setSelectedRole(null);
   };
 
-  const handleToggleStatus = async () => {
+  const handleToggleStatus = async (newStatus: boolean) => {
+    console.log("handleToggleStatus with initial status: ", ticket.open);
     const updatedTicket = {
       ...ticket,
-      isOpen: !ticket.isOpen,
+      open: newStatus,
     };
+    console.log("handleToggleStatus now status: ", updatedTicket.open);
     try {
+      console.log("handleToggleStatus now do try clause: ", updatedTicket.open);
       await TicketsService.editTicket(ticket.employeeId, updatedTicket); // שליחת עדכון לשרת
-      updateTicket(updatedTicket); // עדכון ב־DataContext
+      updateTicket(updatedTicket); 
       onClose();
     } catch (error) {
       console.error("Failed to toggle ticket status:", error);
@@ -186,9 +192,9 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
         <div className="modal-content">
           <button className="close-button" onClick={onClose}>✖</button>
          
-          <div className={`ticket-status-badge ${ticket.isOpen ? 'open' : 'closed'}`}>
-            <i className={`fas ${ticket.isOpen ? 'fa-times-circle' : 'fa-check-circle'}`}></i>
-            {ticket.isOpen ? ' Open Ticket' : ' Closed Ticket'}
+          <div className={`ticket-status-badge ${ticket.open ? 'open' : 'closed'}`}>
+            <i className={`fas ${ticket.open ? 'fa-times-circle' : 'fa-check-circle'}`}></i>
+            {ticket.open ? ' Open Ticket' : ' Closed Ticket'}
           </div>
 
           <h2>Ticket Details</h2>
@@ -259,15 +265,18 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ ticketId, onClo
             <button className="delete-button" onClick={() => setShowConfirmDelete(true)}>
               <i className="fas fa-trash"></i> Delete
             </button>
-            {ticket.isOpen ? (
-              <button className="save-button" onClick={handleToggleStatus}>
-                ✔ Close Ticket
-              </button>
-            ) : (
-              <button className="assign-button" onClick={handleToggleStatus}>
-                ↻ Re-open Ticket
-              </button>
+            { isAdmin && (
+              ticket.open ? (
+                <button className="save-button" onClick={() => handleToggleStatus(false)}>
+                  ✔ Close Ticket
+                </button>
+              ) : (
+                <button className="assign-button" onClick={() => handleToggleStatus(true)}>
+                  ↻ Re-open Ticket
+                </button>
+              )
             )}
+            
             <button className="edit-button" onClick={() => setIsEditModalOpen(true)}>
               <i className="fas fa-pen"></i> Edit
             </button>

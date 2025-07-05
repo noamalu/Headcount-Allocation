@@ -435,6 +435,19 @@ namespace HeadcountAllocation.Services
             }
         }
 
+        public Response<List<Ticket>> GetTickets()
+        {
+            try
+            {
+                return Response<List<Ticket>>.FromValue(_managerFacade.GetTickets());
+            }
+            catch (Exception e)
+            {
+                return Response<List<Ticket>>.FromError(e.Message);
+            }
+        }
+
+
         public Response<List<Ticket>> GetOpensTickets5days()
         {
             try
@@ -569,6 +582,18 @@ namespace HeadcountAllocation.Services
             catch (Exception e)
             {
                 return Response<Dictionary<Enums.Reasons, List<Employee>>>.FromError(e.Message);
+            }
+        }
+
+        public void DeleteTicket(int ticketId)
+        {
+            try
+            {
+                _managerFacade.DeleteTicket(ticketId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error deleting ticket with ID {ticketId}: {e.Message}");
             }
         }
     }

@@ -12,6 +12,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import TicketsPage from './Pages/TicketsPage';
 import CalendarPage from './Pages/CalendarPage';
 import { DataProvider } from './Context/DataContext';
+import StatisticsPage from './Pages/StatisticsPage';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const App: React.FC = () => {
               <Route path="/employees" element={<PrivateRoute><EmployeesPage /></PrivateRoute>} />
               <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
               <Route path="/calendar" element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
+              <Route path="/statistics" element={<PrivateRoute><StatisticsPage /></PrivateRoute>} />             
               <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
           </Layout>

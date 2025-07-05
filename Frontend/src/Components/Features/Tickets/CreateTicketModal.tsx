@@ -50,7 +50,7 @@ const CreateTicketModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         endDate,
         absenceReason: absenceReason as AbsenceReasonEnum,
         description,
-        isOpen: true,
+        open: true,
       };
       
       try {

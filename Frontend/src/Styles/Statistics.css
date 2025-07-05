@@ -1,0 +1,106 @@
+.statistics-page {
+    /* background-color: #FDF8F5; */
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #4F4846;
+  }
+  
+  .stats-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+  
+  .chart-container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .chart-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+  
+  .chart-container h2 {
+    font-size: 1.2rem;
+    color: #4F4846;
+    margin-bottom: 1rem;
+  }
+
+  /* projectProgress */
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4F4846;
+  }
+  
+  .badge {
+    background-color: #E8CEBF;
+    color: #4F4846;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+  }
+  
+  .project-card {
+    background-color: #F9F5F2;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #4F4846;
+  }
+  
+  .project-desc {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .progress-bar-wrapper {
+    background-color: #e0e0e0;
+    height: 8px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+  
+  .progress-bar.urgent {
+    background-color: #ff6b6b;
+  }
+  
+  .progress-bar.soon {
+    background-color: #ffc107;
+  }
+  
+  .progress-bar.normal {
+    background-color: #4ecdc4;
+  }
+  

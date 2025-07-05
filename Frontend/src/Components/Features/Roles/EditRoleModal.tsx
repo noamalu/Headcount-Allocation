@@ -35,9 +35,6 @@ const EditRoleModal: React.FC<EditRoleModalProps> = ({ projectId,  role, employe
         priority: s.priority
       }))
     );
-  // const [skills, setSkills] = useState(
-  //   role.skills.map(s => ({ skill: formateSkillToString(s.skillTypeId), skillTypeId: s.skillTypeId, level: s.level, priority: s.priority }))
-  // );
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageEnum | "">("");
   const [selectedSkill, setSelectedSkill] = useState('');
   const [draggedSkillIndex, setDraggedSkillIndex] = useState<number | null>(null);

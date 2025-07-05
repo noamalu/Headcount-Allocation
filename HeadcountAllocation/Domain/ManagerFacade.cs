@@ -384,6 +384,11 @@ namespace HeadcountAllocation.Domain
             return OpensTickets;
         }
 
+        public List<Ticket> GetTickets()
+        {
+            return Tickets.Values.ToList();
+        }
+
         public List<Ticket> GetOpensTickets5days()
         {
             List<Ticket> OpensTickets = new List<Ticket>();
@@ -866,6 +871,22 @@ namespace HeadcountAllocation.Domain
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        public void DeleteTicket(int ticketId)
+        {
+            try
+            {
+                if (Tickets.ContainsKey(ticketId))
+                {
+                    Tickets.Remove(ticketId);
+                    ticketRepo.Delete(ticketId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"No such ticket {ticketId} " + $"{e}");
             }
         }
     }

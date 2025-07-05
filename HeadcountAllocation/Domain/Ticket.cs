@@ -29,6 +29,18 @@ namespace HeadcountAllocation.Domain
             Reason = reason;
         }
 
+        public Ticket(int ticketId, int employeeId, string employeeName, DateTime startDate, DateTime endDate, string description, Reason reason, bool open)
+        {
+            TicketId = ticketId;
+            EmployeeId = employeeId;
+            EmployeeName = employeeName;
+            StartDate = startDate;
+            EndDate = endDate;
+            Description = description;
+            Open = open;
+            Reason = reason;
+        }
+
         public Ticket(TicketDTO ticketDTO)
         {
             TicketId = ticketDTO.TicketId;
