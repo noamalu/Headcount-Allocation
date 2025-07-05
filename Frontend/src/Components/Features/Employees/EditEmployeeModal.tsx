@@ -13,10 +13,8 @@ import { useDataContext } from '../../../Context/DataContext';
 interface EditEmployeeModalProps {
   employee: Employee;
   onClose: () => void;
-  // onSave: (updatedEmployee: Employee) => void;
 }
 
-// const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose, onSave }) => {
 const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose }) => {  
   const [editedEmployee, setEditedEmployee] = useState<Employee>({ ...employee });
   const [uiError, setUiError] = useState<string | null>(null);
@@ -59,19 +57,6 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ employee, onClose
     };
   
 
-  // const handleSave = async () => {
-  //   try {
-  //     // await EmployeesService.editEmployee(editedEmployee);
-  //     // onSave(editedEmployee);
-  //     // onClose();
-  //     await EmployeesService.editEmployee(editedEmployee);
-  //     updateEmployee(editedEmployee);
-  //     onClose();
-  //   } catch (error) {
-  //     console.error('Error updating employee:', error);
-  //     setApiError('Failed to update employee.');
-  //   }
-  // };
   const handleSave = async () => {
     console.log('Languages about to send:', languages);
     let updatedEmployee: Employee = {

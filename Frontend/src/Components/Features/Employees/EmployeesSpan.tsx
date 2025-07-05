@@ -7,8 +7,7 @@ import '../../../Styles/Shared.css';
 import {getEmployees} from '../../../Services/EmployeesService';
 import { useDataContext } from '../../../Context/DataContext';
 
-// const EmployeesSpan: React.FC<{ onEmployeeCreated: (callback: (employee: Employee) => void) => void }> = ({ onEmployeeCreated }) => {
-  // const [employees, setEmployees] = useState<Employee[]>([]);
+
 const EmployeesSpan: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,24 +38,6 @@ const EmployeesSpan: React.FC = () => {
 }, []);
 
 
-// useEffect(() => {
-//     const handleEmployeeCreated = (newEmployee: Employee) => {
-//         setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
-//     };
-//     onEmployeeCreated(handleEmployeeCreated); 
-// }, [onEmployeeCreated]);
-
-// const handleEmployeeDeleted = (employeeId: number) => {
-//   setEmployees((prev) => prev.filter(e => e.employeeId !== employeeId));
-// };
-
-// const handleEmployeeUpdated = (updatedEmployee: Employee) => {
-//   setEmployees((prev) =>
-//     prev.map(e =>
-//       e.employeeId === updatedEmployee.employeeId ? updatedEmployee : e
-//     )
-//   );
-// };
 
 const handleEmployeeDeleted = (employeeId: number) => {
   deleteEmployee(employeeId);
@@ -95,8 +76,6 @@ if (isLoading) {
         <EmployeeDetailsModal
           employeeId={selectedEmployee.employeeId} 
           onClose={handleCloseModal}
-          // onEmployeeDeleted={handleEmployeeDeleted}
-          // onEmployeeUpdated={handleEmployeeUpdated}
         />
       )}
     </div>

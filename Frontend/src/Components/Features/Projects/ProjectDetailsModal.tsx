@@ -14,19 +14,13 @@ import { useDataContext } from '../../../Context/DataContext';
 interface ProjectDetailsModalProps {
   project: Project; 
   onClose: () => void; 
-  // onProjectUpdated: (project: Project) => void;
-  // onProjectDeleted: (projectId: number) => void;
 }
 
-// const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose, onProjectUpdated, onProjectDeleted }) => {
 const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onClose }) => {  
   const {isAdmin} = useAuth();
   const { roles, addRole, addRolesIfNotExist, addOrUpdateRoles, updateRole } = useDataContext();
   const { projects, updateProject, deleteProject } = useDataContext();
   const projectRoles = roles.filter((r) => r.projectId === project.projectId);
-
-  // const [project, setproject] = useState<Project>(project);
-  // const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
@@ -34,26 +28,6 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const [apiError, setApiError] = useState<string | null>(null);
   const currentProject = projects.find(p => p.projectId === project.projectId) || project;
  
-  // useEffect(() => {
-  //   const fetchRoles = async () => {
-  //     try {
-  //       console.log('Fetching roles for project:', project.projectId);
-  //       const roles = await getProjectRoles(project.projectId); 
-  //       setRoles(roles || {}); 
-  //       setproject((prev) => ({
-  //         ...prev,
-  //         roles: roles || []
-  //       }));
-  //     } catch (error) {
-  //       console.error('Error fetching project roles:', error);
-  //       setApiError('Failed to fetch project roles');
-  //     }
-  //   };
-  
-  //   if (project) {
-  //     fetchRoles(); 
-  //   }
-  // }, [project]);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -75,8 +49,6 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   }, [apiError]);
 
   const handleEditSave = (updatedProject: Project) => {
-    // setproject(updatedProject);
-    // onProjectUpdated(updatedProject);
     updateProject(updatedProject);
     console.log('Project updated:', updatedProject);
   };
@@ -84,7 +56,6 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
   const handleDelete = async () => {
     try {
       await ProjectsService.deleteProject(project.projectId);
-      // onProjectDeleted(project.projectId); 
       deleteProject(project.projectId);
       onClose(); 
     } catch (error) {
@@ -96,36 +67,10 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
 
   const handleRoleCreated = (newRole: Role) => {
     console.log('handleRoleCreated new role:', newRole.roleName);
-    // setRoles((prevRoles) => {
-    //   const updatedRoles = {
-    //     ...prevRoles,
-    //     [newRole.roleId]: newRole,
-    //   };
-    //   console.log("Updated roles:", updatedRoles);
-    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
-    //   return updatedRoles;
-    // });
-    // const updatedRoles = {
-    //   ...roles,
-    //   [newRole.roleId]: newRole,
-    // };
-    // setRoles(updatedRoles);
-    // setproject((prev) => ({ ...prev, roles: updatedRoles }));
     addRole(newRole);
   };
 
   const handleRoleEdited = (updatedRole: Role) => {
-    // setRoles((prevRoles) => {
-    //   const updatedRoles = {
-    //     ...prevRoles,
-    //     [updatedRole.roleId]: { 
-    //       ...prevRoles[updatedRole.roleId], 
-    //       ...updatedRole, 
-    //     },
-    //   };
-    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
-    //   return updatedRoles;
-    // });
     updateRole(updatedRole);
   };
       
@@ -141,14 +86,6 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
 
   const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
     console.log("Assigning employee", employeeId, "to role", roleId);
-    // setRoles((prevRoles) => {
-    //   const updatedRoles = { ...prevRoles }; 
-    //   if (updatedRoles[roleId]) {
-    //     updatedRoles[roleId].employeeId = employeeId; 
-    //   }
-    //   setproject(prev => ({ ...prev, roles: updatedRoles }));
-    //   return updatedRoles; 
-    // });
     const roleToUpdate = roles.find((r) => r.roleId === roleId);
     if (roleToUpdate) {
       updateRole({ ...roleToUpdate, employeeId });
@@ -186,20 +123,6 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           </thead>
           <tbody>
             {projectRoles.length > 0 ? (
-              // Object.entries(roles).map(([roleId, role]) => {
-              //   console.log("Rendering role:", role); // בדקי מה מוצג בטבלה
-              //   return (
-              //     <tr key={roleId}>
-              //       <td>{role.roleName}</td>
-              //       <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
-              //       <td>
-              //         <button className="action-button" onClick={() => handleOpenModal(role)}>
-              //           🔗
-              //         </button>
-              //       </td>
-              //     </tr>
-              //   );
-              // })
               projectRoles.map((role) => (
                 <tr key={role.roleId}>
                   <td>{role.roleName}</td>
@@ -242,13 +165,11 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({ project, onCl
           projectId={project.projectId} 
           roleId={selectedRole.roleId} 
           onClose={handleCloseModal} />
-          // onAssignEmployeeToRole={handleAssignEmployeeToRole} />
         )}
         {isCreateRoleModalOpen && (
           <CreateRoleModal 
           projectId={project.projectId}
           onClose={() => setIsCreateRoleModalOpen(false)}
-          // onRoleCreated={handleRoleCreated} 
           />
         )}
          {isEditModalOpen && (

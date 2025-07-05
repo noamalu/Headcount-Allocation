@@ -8,16 +8,13 @@ import { getSkillLabel, LanguageEnum, SkillEnum } from '../../../Types/EnumType'
 import { Language } from '../../../Types/LanguageType';
 import { Skill } from '../../../Types/SkillType';
 import { useDataContext } from '../../../Context/DataContext';
-// import AddRoleModal from '../Roles/NewRoleModal';
 
 
 const CreateEmployeeModal: React.FC<{ 
   onClose: () => void;
-  //  onEmployeeCreated: (employee: Employee) => void 
   }>
     = ({
       onClose,
-      // onEmployeeCreated,
     }) => {
     const [employeeName, setEmployeeName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -397,7 +394,6 @@ const CreateEmployeeModal: React.FC<{
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
                 className="input-field"
-                // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                 title="Password must be at least 8 characters long and contain both letters and numbers"
                 required
               />

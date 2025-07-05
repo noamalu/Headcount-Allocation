@@ -16,21 +16,16 @@ import { getSkillLabel, getTimeZoneStringByIndex } from '../../../Types/EnumType
 interface EmployeeDetailsModalProps {
     employeeId: number;
     onClose: () => void;
-    // onEmployeeUpdated: (employee: Employee) => void;
-    // onEmployeeDeleted: (employeeId: number) => void;
   }
   
-  // const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employee, onClose, onEmployeeUpdated, onEmployeeDeleted }) => {
-  // const [currentEmployee, setCurrentEmployee] = useState<Employee>(employee);
+  
   const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ employeeId, onClose }) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    // const [roles, setRoles] = useState<Role[]>([]);
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [apiError, setApiError] = useState<string | null>(null);
     const { employees, updateEmployee, deleteEmployee, roles } = useDataContext();
-    // const currentEmployee = employees.find(e => e.employeeId === employee.employeeId);
     const currentEmployee = employees.find(e => e.employeeId === employeeId);
     const employeeRoles = roles.filter((r) => r.employeeId === employeeId);
 
@@ -41,15 +36,10 @@ interface EmployeeDetailsModalProps {
       }
     }, [apiError]);
 
-    // const handleEditSave = (updatedEmployee: Employee) => {
-    //     updateEmployee(updatedEmployee);
-    //     console.log('Employee updated:', updatedEmployee);
-    //   };
-
+   
     const handleDelete = async () => {
       try {
         await EmployeesService.deleteEmployee(employeeId);
-        // onEmployeeDeleted(employee.employeeId);
         deleteEmployee(employeeId);
         onClose();
       } catch (error) {
@@ -59,27 +49,7 @@ interface EmployeeDetailsModalProps {
     };
   
   
-    // useEffect(() => {
-    //   const fetchEmployeeRoles = async () => {
-    //     try {
-    //       const response = await getEmployeeRolesById(employee.employeeId);
-    //       setRoles(response);
-    //       setCurrentEmployee((prev) => ({
-    //         ...prev,
-    //         roles: roles || []
-    //       }));
-    //       setLoading(false);
-    //     } catch (err: any) {
-    //       console.error('Error fetching employee roles:', err);
-    //       setApiError('Failed to fetch roles');
-    //       setLoading(false);
-    //     }
-    //   };
-    //   fetchEmployeeRoles();
-    // }, [employee.employeeId]);
-  
-    // if (loading) return <div>Loading employee roles...</div>;
-
+   
     const handleOpenModal = (role: Role) => {
         console.log("Opening role modal for:", role.roleName, "Role data:", role);
         setSelectedRole(role);
@@ -90,17 +60,6 @@ interface EmployeeDetailsModalProps {
     };
     
       
-    // const handleAssignEmployeeToRole = (roleId: number, employeeId: number) => {
-    //   console.log("Assigning employee", employeeId, "to role", roleId);
-    //   setRoles((prevRoles) => {
-    //     const updatedRoles = { ...prevRoles }; // יצירת עותק של roles
-    //     if (updatedRoles[roleId]) {
-    //       updatedRoles[roleId].employeeId = employeeId; // עדכון ה-employeeId עבור התפקיד המתאים
-    //     }
-    //     return updatedRoles; // החזרת המצב המעודכן
-    //   });
-    //   console.log("Updated roles:", roles); // וידוא התוצאה
-    // };
       
     if (selectedRole) {
       console.log("Selected role being passed to RoleDetailsModal:", selectedRole);
@@ -276,4 +235,3 @@ interface EmployeeDetailsModalProps {
   
   export default EmployeeDetailsModal;
 
-  // onAssignEmployeeToRole={handleAssignEmployeeToRole}

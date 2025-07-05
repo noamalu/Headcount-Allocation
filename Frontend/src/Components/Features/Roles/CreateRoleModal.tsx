@@ -12,7 +12,6 @@ import { useDataContext } from '../../../Context/DataContext';
 
 interface CreateRoleModalProps {
   projectId: number;
-  // onRoleCreated: (newRole: Role) => void;
   onClose: () => void;
 }
 
@@ -70,7 +69,7 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
   };
 
   const handleDeleteSkill = (index: number) => {
-    const updatedSkills = skills.filter((_, i) => i !== index); // מסנן את השורה
+    const updatedSkills = skills.filter((_, i) => i !== index); 
     setSkills(updatedSkills);
     setSkillError("");
   }; 
@@ -419,47 +418,10 @@ const CreateRoleModal: React.FC<CreateRoleModalProps> = ({ projectId, onClose })
             </table>
           </div>
 
-            {/* <tbody>
-            {role.skills.map((skill) => (
-                <tr key={skill.skillId}>
-                  <td>{skill.skillName}</td>
-                  <td>{skill.level}</td>
-                  <td>{skill.priority}</td>
-                  <td> {0}</td>
-                </tr>
-              ))}
-            </tbody> */}
-
-            {/* // roles.map((role, index) => (
-            //   <tr key={index}>
-            //     <td>{role.roleName}</td>
-            //     <td>
-            //       <button
-            //         onClick={() =>
-            //           setRoles(roles.filter((_, idx) => idx !== index))
-            //         }
-            //       >
-            //         Remove
-            //       </button>
-            //     </td>
-            //   </tr>
-            // ))
-          //   }
-          //   </tbody>
-          // </table> */}
           <div className="modal-actions">
             <button className="save-button" onClick={handleSubmit}>
               <i className="fas fa-save"></i> Save Role
             </button>
-            {/* {isAddRoleModalOpen && (
-            <AddRoleModal
-              onSave={(newRole) => {
-                setRoles([...roles, newRole]);
-                setIsAddRoleModalOpen(false);
-              }}
-              onClose={() => setIsAddRoleModalOpen(false)}
-            />
-          )} */}
           </div>
         </div>
       </div>
