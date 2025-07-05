@@ -6,18 +6,9 @@ import ProjectsTable from './ProjectsTable';
 import '../../../Styles/Modal.css';
 import '../../../Styles/Shared.css';
 import ProjectsService from '../../../Services/ProjectsService';
-// import AddRoleModal from '../Roles/NewRoleModal';
 import { useDataContext } from '../../../Context/DataContext';
 
 
-
-// const CreateProjectModal: React.FC<{ 
-//   onClose: () => void;
-//    onProjectCreated: (project: Project) => void }>
-//     = ({
-//       onClose,
-//       onProjectCreated,
-//     }) => {
   const CreateProjectModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [projectName, setProjectName] = useState('');
     const [deadline, setDeadline] = useState('');
@@ -26,8 +17,6 @@ import { useDataContext } from '../../../Context/DataContext';
     const [uiError, setUiError] = useState<string | null>(null);
     const [apiError, setApiError] = useState<string | null>(null);
     const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
-    // const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
-    // const [roles, setRoles] = useState<Role[]>([]);
     const { addProject } = useDataContext();
     
     useEffect(() => {
@@ -122,18 +111,6 @@ import { useDataContext } from '../../../Context/DataContext';
             <button className="save-button" onClick={handleSubmit}>
               <i className="fas fa-save"></i> Save Project
             </button>
-            {/* <button className="addRole-button"onClick={() => { console.log('Opening add role:', !isCreateRoleModalOpen); setIsCreateRoleModalOpen(true); }}>
-            <i className="fas fa-plus"></i> Add Role
-          </button> */}
-            {/* {isAddRoleModalOpen && (
-            <AddRoleModal
-              onSave={(newRole) => {
-                setRoles([...roles, newRole]);
-                setIsAddRoleModalOpen(false);
-              }}
-              onClose={() => setIsAddRoleModalOpen(false)}
-            />
-          )} */}
           </div>
         </div>
       </div>

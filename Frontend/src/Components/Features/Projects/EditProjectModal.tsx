@@ -11,10 +11,8 @@ import { useDataContext } from '../../../Context/DataContext';
 interface EditProjectModalProps {
   project: Project;
   onClose: () => void;
-  // onSave: (updatedProject: Project) => void;
 }
 
-// const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, onSave }) => {
   const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose }) => {
     const [editedProject, setEditedProject] = useState<Project>({ ...project });
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
@@ -50,7 +48,6 @@ interface EditProjectModalProps {
       console.log("Sending edit project for: ", editedProject.projectName," with details:", editedProject.description, editedProject.requiredHours, editedProject.deadline);
       await ProjectsService.editProject(editedProject);
       setApiError(null);
-      // onSave(editedProject); 
       updateProject(editedProject);
       onClose(); 
     } catch (error) {
@@ -131,28 +128,12 @@ interface EditProjectModalProps {
               <th>Action</th>
             </tr>
           </thead>
-          {/* <tbody>
-            {Object.keys(editedProject.roles).length > 0 ? (
-              Object.entries(editedProject.roles).map(([roleId, role]) => {
-                console.log("Rendering role:", role); 
-                return (
-                  <tr key={roleId}>
-                    <td>{role.roleName}</td>
-                    <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
-                    <td>
-                      <button className="action-button" onClick={() => handleOpenModal(role)} disabled>
-                        🔗
-                      </button>
-                    </td>
-                  </tr>
-                );
-              }) */}
               <tbody>
                 {projectRoles.length > 0 ? (
                    projectRoles.map((role) => (
                     <tr key={role.roleId}>
                       <td>{role.roleName}</td>
-                      <td>{role.employeeId && role.employeeId !== -1 ? role.employeeId : "-"}</td>
+                      <td>{role.employeeId >= 0 ? role.employeeId : "-"}</td>
                       <td>
                         <button className="action-button" onClick={() => handleOpenModal(role)} disabled>
                           🔗
@@ -169,10 +150,6 @@ interface EditProjectModalProps {
         </table>
 
         <div className="modal-actions">
-          {/* <button className="save-button" onClick={() => {
-             console.log('Saving edited Project');
-             handleSave();
-             }}> */}
           <button className="save-button" onClick={handleSave}>
             <i className="fa-solid fa-square-check"></i> save
           </button> 

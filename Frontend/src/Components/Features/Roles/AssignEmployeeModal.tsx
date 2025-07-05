@@ -12,16 +12,14 @@ const AssignEmployeeModal = ({
   projectId,
   roleId,
   onClose,
-  // onAssign,
   openManualAssignModal,
 }: {
   projectId: number;
   roleId: number;
   onClose: () => void;
-  // onAssign: (employee: Employee) => void;
   openManualAssignModal: () => void;
 }) => {
-  const [employees, setEmployees] = useState<Employee[]>([]); // הגדרת טיפוס
+  const [employees, setEmployees] = useState<Employee[]>([]); 
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [expandedEmployeeId, setExpandedEmployeeId] = useState<number | null>(null);
   const [showManualButton, setShowManualButton] = useState(false);
@@ -50,13 +48,6 @@ const AssignEmployeeModal = ({
     setExpandedEmployeeId(expandedEmployeeId === employeeId ? null : employeeId);
   };
 
-  // const handleAssign = () => {
-  //   console.log("handleAssign in AssignEmployeeModal");
-  //   if (selectedEmployee) {
-  //     onAssign(selectedEmployee);
-  //     onClose();
-  //   }
-  // };
 
   const handleAssign = async () => {
     if (!selectedEmployee) {

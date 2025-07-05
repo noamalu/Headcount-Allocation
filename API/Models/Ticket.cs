@@ -29,7 +29,8 @@ namespace API.Models
                 ticket.StartDate,
                 ticket.EndDate,
                 ticket.Description,
-                new(reason)
+                new(reason),
+                ticket.Open
                 );
         }
 
